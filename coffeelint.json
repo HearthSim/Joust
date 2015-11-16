@@ -1,0 +1,11 @@
+{
+	"no_tabs": {
+		"name": "no_tabs",
+		"level": "ignore"
+	},
+	"indentation": {
+        "name": "indentation",
+        "value": 4,
+        "level": "ignore"
+    }
+}

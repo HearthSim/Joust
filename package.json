@@ -1,0 +1,27 @@
+{
+  "name": "joust",
+  "version": "0.0.1",
+  "description": "",
+  "main": "src/main.js",
+  "author": "hearthsim",
+  "license": "MIT",
+  "dependencies": {
+    "coffee-react": "^4.0.0",
+    "event-kit": "^1.4.1",
+    "history": "^1.13.1",
+    "lodash": "^3.10.1",
+    "react": "^0.14.0",
+    "react-dom": "^0.14.2",
+    "react-photonkit": "^0.4.1",
+    "react-router": "^1.0",
+    "react-split-pane": "0.1.13",
+    "sax": "^1.1.4"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-copy": "0.0.2",
+    "gulp-less": "^3.0.3",
+    "gulp-rename": "^1.2.2",
+    "gulp-watch": "^4.3.5"
+  }
+}

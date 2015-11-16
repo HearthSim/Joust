@@ -1,0 +1,26 @@
+.mulligan {
+	text-align: center;
+	top: 50%;
+	transform: translateY(-50%);
+	position: absolute;
+	width: 100%;
+	z-index: 25;
+
+	.card {
+		display: inline-block;
+		position: relative;
+		margin-right: 20px;
+		transition: transform 0.25s, top 0.5s;
+		width: 112px;
+		height: 156px;
+		background-size: 112px auto;
+		&:last-child {
+			margin-right: 0;
+		}
+	}
+
+	.card--unknown {
+		background-size: 89px auto;
+	}
+
+}

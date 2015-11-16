@@ -1,0 +1,40 @@
+.replay {
+	display: flex;
+	flex-direction: column;
+	box-sizing: border-box;
+	align-items: stretch;
+	flex-grow: 1;
+}
+
+.replay__game {
+	flex-grow: 1;
+	border-top: 1px solid @border-color;
+	overflow: hidden;
+	background: rgb(209, 193, 108) url(../../image/felt.png) 50% 50% repeat;
+	display: flex;
+	flex-direction: column;
+
+}
+
+.replay__controls {
+	flex-grow: 0;
+	flex-shrink: 0;
+	margin-bottom: 0;
+
+	display: flex;
+	flex-direction: row;
+}
+
+.replay__game > .top {
+	flex-grow: 1;
+	flex-shrink: 1;
+	flex-basis: 50%;
+	position: relative;
+}
+
+.replay__game > .bottom {
+	flex-grow: 1;
+	flex-shrink: 1;
+	flex-basis: 50%;
+	position: relative;
+}

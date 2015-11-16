@@ -1,0 +1,33 @@
+.board {
+	text-align: center;
+	position: absolute;
+	left: 0;
+	width: 100%;
+
+	top: 10px;
+	.card {
+		display: inline-block;
+		top: 0;
+		position: relative;
+		margin-right: 10px;
+		transition: transform 0.25s, top 0.5s;
+		width: 64px;
+		height: 72px;
+		border-radius: 50%;
+	    background-size: 200% auto !important;
+	    background-position: -32px -10px !important;
+	    border: 1px solid white;
+		box-shadow: 0 0 3px 1px black;
+
+		&:last-child {
+			margin-right: 0;
+		}
+
+	}
+
+}
+
+.top .board {
+	top: auto;
+	bottom: 10px;
+}

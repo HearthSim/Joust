@@ -1,0 +1,25 @@
+.player-name {
+	background: rgba(0, 0, 0, 0.5);
+	color: white;
+	text-shadow: 0 0 3px rgba(0, 0, 0, 0.75);
+	padding: 5px;
+	height: 30px;
+	box-sizing: border-box;
+	line-height: 20px;
+	position: absolute;
+	top: ~"calc(50% - 15px)";
+	left: 0;
+
+	&::after {
+		content: '';
+		display: block;
+		position: absolute;
+		right: -10px;
+		top: 0;
+		border-style: solid;
+		border-width: 15px 0 15px 10px;
+		border-color: transparent transparent transparent rgba(0, 0, 0, 0.5);
+		width: 0;
+		height: 0;
+	}
+}
