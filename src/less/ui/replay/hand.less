@@ -33,3 +33,27 @@
 		z-index: 10;
 	}
 }
+
+.hand .card.animate-enter {
+	opacity: 0.1;
+	transform: translateX(30px);
+	margin-left: -30px;
+}
+.hand .card.animate-enter-active {
+	opacity: 1;
+	transform: translateX(0);
+	margin-left: 0;
+	transition: opacity 0.5s, transform 0.7s, margin-left 0.7s;
+}
+.hand .card.animate-leave {
+	opacity: 1;
+	transform: translateY(0);
+	margin-left: 0;
+}
+.hand .card.animate-leave-active {
+	opacity: 0;
+	transform: translateY(-40px);
+	margin-left: -48px;
+	margin-right: -48px;
+	transition: opacity 0.5s, transform 0.7s, margin-left 0.7s, margin-right 0.7s;
+}

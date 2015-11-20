@@ -1,10 +1,15 @@
 React = require 'react'
 fs = require 'fs'
+{subscribe} = require '../../../../subscription'
 
 class Card extends React.Component
 	componentDidMount: ->
-		@props.entity.onStatsChanged =>
+		tagEvents = 'tag-changed:ATK tag-changed:HEALTH tag-changed:DAMAGE'
+		@sub = subscribe @props.entity, tagEvents, =>
 			@forceUpdate()
+
+	componentWillUnmount: ->
+		@sub.off()
 
 	render: ->
 		art = __dirname + "/../../../../../static/standard/#{@props.entity.cardID}.png"
@@ -18,6 +23,9 @@ class Card extends React.Component
 		else
 			style = {}
 			cls = "card card--unknown"
+
+		if @props.entity.tags.TAUNT
+			cls += " card--taunt"
 
 		if @props.stats
 			stats = <div className="card__stats">

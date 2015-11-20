@@ -1,26 +1,12 @@
 {Emitter} = require 'event-kit'
-{zones} = require './enums'
+{zones, zoneNames} = require './enums'
 _ = require 'lodash'
+EventEmitter = require 'events'
 
-class Entity
-	constructor: (definition, @replay) ->
-		@emitter = new Emitter
-		@id = definition.id
-		@tags = definition.tags
-		@name = definition.name
-		@cardID = definition.cardID
-		@mulliganChoices = []
-
-		if @tags.ZONE is zones.HAND
-			@getController()?.notifyHandChanged?()
-		if @tags.ZONE is zones.DECK
-			@getController()?.notifyDeckChanged?()
-		if @tags.ZONE is zones.PLAY
-			@getController()?.notifyBoardChanged?()
-		if @tags.RESOURCES_USED or @tags.RESOURCES
-			@emitter.emit 'mana-changed'
-		if @tags.HERO_ENTITY
-			@emitter.emit 'hero-changed'
+class Entity extends EventEmitter
+	constructor: (@replay) ->
+		EventEmitter.call(this)
+		@tags = {}
 
 	getController: ->
 		if @replay.player?.tags.CONTROLLER is @tags.CONTROLLER
@@ -29,8 +15,20 @@ class Entity
 			return @replay.opponent
 		return null
 
+	getLastController: ->
+		if @replay.player?.tags.CONTROLLER is @lastController
+			return @replay.player
+		else if @replay.opponent?.tags.CONTROLLER is @lastController
+			return @replay.opponent
+		return null
+
 	update: (definition) ->
-		@original = _.pick(@tags, Object.keys(definition.tags))
+		old = _.assign {}, @tags
+
+		if definition.tags.ZONE
+			@lastZone = old.ZONE
+		if definition.tags.CONTROLLER
+			@lastController = old.CONTROLLER
 
 		if definition.id
 			@id = definition.id
@@ -39,38 +37,48 @@ class Entity
 				@tags[k] = v
 		if definition.cardID
 			@cardID = definition.cardID
+			@emit 'revealed', entity: this
+		if definition.name
+			@name = definition.name
 
-		zoneChange = (definition.tags.ZONE_POSITION or definition.tags.CONTROLLER or definition.tags.ZONE)
+		changed = _.pick definition.tags, (value, tag) ->
+			value isnt old[tag]
 
-		if zoneChange and (@original.ZONE is zones.HAND or @tags.ZONE is zones.HAND)
-			@getController()?.notifyHandChanged?()
-		if zoneChange and (@original.ZONE is zones.DECK or @tags.ZONE is zones.DECK)
-			@getController()?.notifyDeckChanged?()
-		if zoneChange and (@original.ZONE is zones.PLAY or @tags.ZONE is zones.PLAY)
-			@getController()?.notifyBoardChanged?()
-		if definition.tags.MULLIGAN_STATE and @tags.MULLIGAN_STATE != @original.MULLIGAN_STATE
-			@emitter.emit 'mulligan-state-changed'
-		if definition.tags.HERO_ENTITY
-			@emitter.emit 'hero-changed', @replay.entities[definition.tags.HERO_ENTITY]
-		if definition.tags.HEALTH
-			@emitter.emit 'stats-changed'
-			@emitter.emit 'health-changed'
-		if definition.tags.ATK
-			@emitter.emit 'stats-changed'
-			@emitter.emit 'attack-changed'
-		if definition.tags.DAMAGE
-			@emitter.emit 'stats-changed'
-			@emitter.emit 'damage-changed'
-		if @tags.RESOURCES_USED or @tags.RESOURCES
-			@emitter.emit 'mana-changed'
+		for tag, value of changed
+			if value isnt old[tag]
+				@emit "tag-changed:#{tag}",
+					entity: this
+					oldValue: old[tag]
+					newValue: value
 
-	onStatsChanged: (callback) ->
-		@emitter.on 'stats-changed', callback
+		if changed.ZONE
+			if old.ZONE
+				@emit "left-#{zoneNames[old.ZONE].toLowerCase()}", entity: this
+				if old.ZONE is zones.DECK
+					@getController()?.entityLeftDeck(this)
+			@emit "entered-#{zoneNames[changed.ZONE].toLowerCase()}", entity: this
+			if changed.ZONE is zones.HAND
+				@getController()?.entityEnteredHand(this)
+			if changed.ZONE is zones.PLAY
+				@getController()?.entityEnteredPlay(this)
+			if changed.ZONE is zones.DECK
+				@getController()?.entityEnteredDeck(this)
+			if changed.ZONE is zones.SECRET
+				@getController()?.entityEnteredSecret(this)
 
-	onHealthChanged: (callback) ->
-		@emitter.on 'health-changed', callback
+		if changed.CONTROLLER
+			if old.ZONE is zones.HAND
+				@emit 'left-hand', entity: this
+				@getController()?.entityEnteredHand(this)
+			if old.ZONE is zones.PLAY
+				@emit 'left-play', entity: this
+				@getController()?.entityEnteredPlay(this)
+			if old.ZONE is zones.DECK
+				@emit 'left-deck', entity: this
+				@getController()?.entityEnteredDeck(this)
+			if old.ZONE is zones.SECRET
+				@emit 'left-secret', entity: this
+				@getController()?.entityEnteredSecret(this)
 
-	onDamageChanged: (callback) ->
-		@emitter.on 'damage-changed', callback
-
+	getLastZone: -> @lastZone
 module.exports = Entity

@@ -1,14 +1,9 @@
-{zones} = require './enums'
+{zones, zoneNames} = require './enums'
 _ = require 'lodash'
 Entity = require './entity'
 
 class Player extends Entity
 	constructor: (definition, replay) ->
-		# Set some default values
-		definition.tags.STARTHANDSIZE ?= 3
-		definition.tags.RESOURCES ?= 1
-		definition.tags.RESOURCES_USED ?= 0
-
 		super(definition, replay)
 
 	getHand: ->
@@ -35,31 +30,19 @@ class Player extends Entity
 		else
 			return @replay.entities[2]
 
-	notifyHandChanged: ->
-		@emitter.emit 'hand-changed'
+	entityEnteredHand: (entity) ->
+		@emit 'entity-entered-hand', {entity}
 
-	notifyDeckChanged: ->
-		@emitter.emit 'deck-changed'
+	entityLeftDeck: (entity) ->
+		@emit 'entity-left-deck', {entity}
 
-	notifyBoardChanged: ->
-		@emitter.emit 'board-changed'
+	entityEnteredDeck: (entity) ->
+		@emit 'entity-entered-deck', {entity}
 
-	onMulliganStateChanged: (callback) ->
-		@emitter.on 'mulligan-state-changed', callback
+	entityEnteredPlay: (entity) ->
+		@emit 'entity-entered-play', {entity}
 
-	onHandChanged: (callback) ->
-		@emitter.on 'hand-changed', callback
-
-	onDeckChanged: (callback) ->
-		@emitter.on 'deck-changed', callback
-
-	onHeroChanged: (callback) ->
-		@emitter.on 'hero-changed', callback
-
-	onBoardChanged: (callback) ->
-		@emitter.on 'board-changed', callback
-
-	onManaChanged: (callback) ->
-		@emitter.on 'mana-changed', callback
+	entityEnteredSecret: (entity) ->
+		@emit 'entity-entered-secret', {entity}
 
 module.exports = Player

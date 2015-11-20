@@ -42,9 +42,9 @@ class HSReplayParser
 					tag: tagNames[node.attributes.tag]
 					value: parseInt(node.attributes.value)
 
-			when 'GameEntity', 'Player', 'FullEntity'
+			when 'GameEntity', 'Player', 'FullEntity', 'ShowEntity'
 				@state.push('entity')
-				@entityDefinition.id = parseInt(node.attributes.id)
+				@entityDefinition.id = parseInt(node.attributes.entity or node.attributes.id)
 				if node.attributes.cardID
 					@entityDefinition.cardID = node.attributes.cardID
 				if node.attributes.name

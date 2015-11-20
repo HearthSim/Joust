@@ -264,6 +264,8 @@ zones =
 	# Not public
 	DISCARD: -2
 
+zoneNames = _.invert(zones)
+
 cardTypes =
 	INVALID: 0
 	GAME: 1
@@ -277,4 +279,4 @@ cardTypes =
 	TOKEN: 9
 	HERO_POWER: 10
 
-module.exports = {tags, tagNames, zones, cardTypes}
+module.exports = {tags, tagNames, zones, zoneNames, cardTypes}

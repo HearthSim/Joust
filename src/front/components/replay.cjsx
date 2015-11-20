@@ -10,6 +10,9 @@ Board = require './ui/replay/board'
 Mana = require './ui/replay/mana'
 Health = require './ui/replay/health'
 Scrubber = require './ui/replay/scrubber'
+Play = require './ui/replay/play'
+
+{subscribe} = require '../../subscription'
 
 class Replay extends React.Component
 	constructor: (props) ->
@@ -19,8 +22,10 @@ class Replay extends React.Component
 
 		@state = replay: new ReplayPlayer(new HSReplayParser(replayPath))
 
-		@state.replay.onPlayersReady => @forceUpdate()
+		@sub = subscribe @state.replay, 'players-ready', => @forceUpdate()
 
+	componentWillUnmount: ->
+		@sub.off()
 
 	render: ->
 		replay = @state.replay
@@ -34,6 +39,7 @@ class Replay extends React.Component
 				<Mulligan entity={replay.opponent} />
 				<Mana entity={replay.opponent} />
 				<Health entity={replay.opponent} />
+				<Play entity={replay.opponent} />
 				<Hand entity={replay.opponent} />
 			</div>
 
@@ -44,6 +50,7 @@ class Replay extends React.Component
 				<Mulligan entity={replay.player} />
 				<Mana entity={replay.player} />
 				<Health entity={replay.player} />
+				<Play entity={replay.player} />
 				<Hand entity={replay.player} />
 			</div>
 

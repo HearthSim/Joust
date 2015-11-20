@@ -5,6 +5,7 @@
 	width: 100%;
 
 	top: 10px;
+
 	.card {
 		display: inline-block;
 		top: 0;
@@ -14,13 +15,19 @@
 		width: 64px;
 		height: 72px;
 		border-radius: 50%;
-	    background-size: 200% auto !important;
-	    background-position: -32px -10px !important;
-	    border: 1px solid white;
+		background-size: 200% auto !important;
+		background-position: -32px -10px !important;
+		border: 1px solid white;
 		box-shadow: 0 0 3px 1px black;
+
 
 		&:last-child {
 			margin-right: 0;
+		}
+
+		&.card--taunt {
+			border-top-left-radius: 25%;
+			border-top-right-radius: 25%;
 		}
 
 	}

@@ -1,19 +1,47 @@
 React = require 'react'
 Card = require './card'
+SubscriptionList = require '../../../../subscription-list'
+ReactCSSTransitionGroup = require 'react-addons-css-transition-group'
+_ = require 'lodash'
 
-class Hand extends React.Component
+Hand = React.createClass
 	componentDidMount: ->
-		@props.entity.onMulliganStateChanged => @forceUpdate()
-		@props.entity.onHandChanged => @forceUpdate()
+		@subs = new SubscriptionList
+
+		for entity in @props.entity.getHand()
+			@subscribeToEntity(entity)
+
+		@subs.add @props.entity, 'entity-entered-hand', ({entity}) =>
+			@subscribeToEntity(entity)
+			@forceUpdate()
+
+		@subs.add @props.entity, 'tag-changed:MULLIGAN_STATE', =>
+			@forceUpdate()
+
+	subscribeToEntity: (entity) ->
+		entitySubs = @subs.add new SubscriptionList
+		entitySubs.add entity, 'left-hand', =>
+			entitySubs.off()
+			@forceUpdate()
+		entitySubs.add entity, 'tag-changed:ZONE_POSITION', =>
+			@forceUpdate()
+
+	componentWillUnmount: ->
+		@subs.off()
 
 	render: ->
 		return null unless @props.entity.tags.MULLIGAN_STATE is 4
 
-		cards = @props.entity.getHand().map (entity) ->
+		active = _.filter @props.entity.getHand(), (entity) -> entity.tags.ZONE_POSITION > 0
+
+		cards = active.map (entity) ->
 			<Card entity={entity} key={entity.id} />
 
-		return <div className="hand">
-			{cards}
-		</div>
+		return <ReactCSSTransitionGroup component="div" className="hand"
+					transitionName="animate" transitionEnterTimeout={700}
+					transitionLeaveTimeout={700}>
+				{cards}
+			</ReactCSSTransitionGroup>
+
 
 module.exports = Hand

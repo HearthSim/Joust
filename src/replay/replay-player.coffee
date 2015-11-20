@@ -1,12 +1,12 @@
 Entity = require './entity'
 Player = require './player'
 HistoryBatch = require './history-batch'
-{Emitter} = require 'event-kit'
 _ = require 'lodash'
+EventEmitter = require 'events'
 
-class ReplayPlayer
+class ReplayPlayer extends EventEmitter
 	constructor: (@parser) ->
-		@emitter = new Emitter
+		EventEmitter.call(this)
 
 		@entities = {}
 		@players = []
@@ -34,12 +34,7 @@ class ReplayPlayer
 		@started = true
 
 	getTotalLength: ->
-		position = @history.length - 1
-		while position >= 0
-			if @history[position].timestamp
-				return @history[position].timestamp - @startTimestamp
-			position--
-		return 0
+		return @history[@history.length - 1].timestamp - @startTimestamp
 
 	getElapsed: ->
 		((new Date).getTime() - @startTime) / 1000
@@ -49,34 +44,36 @@ class ReplayPlayer
 
 	update: ->
 		elapsed = @getElapsed()
-		if @historyPosition < @history.length
-			next = @history[@historyPosition]
-			if not @history[@historyPosition].timestamp
+		while @historyPosition < @history.length
+			if elapsed > @history[@historyPosition].timestamp - @startTimestamp
 				@history[@historyPosition].execute(this)
 				@historyPosition++
 			else
-				if elapsed > @history[@historyPosition].timestamp - @startTimestamp
-					@history[@historyPosition].execute(this)
-					@historyPosition++
-
+				break
 
 	receiveGameEntity: (definition) ->
-		entity = new Entity(definition, this)
+		entity = new Entity(this)
 		@game = @entities[definition.id] = entity
+		entity.update(definition)
 
 	receivePlayer: (definition) ->
-		entity = new Player(definition, this)
+		entity = new Player(this)
 		@entities[definition.id] = entity
 		@players.push(entity)
+		entity.update(definition)
 		if entity.tags.CURRENT_PLAYER
 			@player = entity
 		else
 			@opponent = entity
 
 	receiveEntity: (definition) ->
-		entity = new Entity(definition, this)
-		@entities[definition.id] = entity
+		if @entities[definition.id]
+			entity = @entities[definition.id]
+		else
+			entity = new Entity(this)
 
+		@entities[definition.id] = entity
+		entity.update(definition)
 		if definition.id is 68
 			if definition.cardID is 'GAME_005'
 				@player = entity.getController()
@@ -85,7 +82,7 @@ class ReplayPlayer
 				@opponent = entity.getController()
 				@player = @opponent.getOpponent()
 
-			@emitter.emit 'players-ready'
+			@emit 'players-ready'
 
 	receiveTagChange: (change) ->
 		tags = {}
@@ -115,15 +112,11 @@ class ReplayPlayer
 
 	receiveChosenEntities: (chosen) ->
 
-
 	enqueue: (timestamp, command, args...) ->
 		if not timestamp and @lastBatch
 			@lastBatch.addCommand([command, args])
 		else
 			@lastBatch = new HistoryBatch(timestamp, [command, args])
 			@history.push(@lastBatch)
-
-
-	onPlayersReady: (callback) -> @emitter.on 'players-ready', callback
 
 module.exports = ReplayPlayer

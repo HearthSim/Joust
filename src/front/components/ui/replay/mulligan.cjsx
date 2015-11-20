@@ -1,10 +1,15 @@
 React = require 'react'
 Card = require './card'
 _ = require 'lodash'
+{subscribe} = require '../../../../subscription'
 
 class Mulligan extends React.Component
 	componentDidMount: ->
-		@props.entity.onMulliganStateChanged => @forceUpdate()
+		@sub = subscribe @props.entity, 'tag-changed:MULLIGAN_STATE', ({newValue}) =>
+			@forceUpdate()
+
+	componentWillUnmount: ->
+		@sub.off()
 
 	render: ->
 		return null unless @props.entity.tags.MULLIGAN_STATE < 4

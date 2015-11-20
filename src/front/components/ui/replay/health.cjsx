@@ -1,17 +1,20 @@
 React = require 'react'
+SubscriptionList = require '../../../../subscription-list'
+{subscribe} = require '../../../../subscription'
 
 class Health extends React.Component
 	componentDidMount: ->
 		hero = @props.entity.getHero()
-		if hero
-			hero.onHealthChanged => @forceUpdate()
-			hero.onDamageChanged => @forceUpdate()
 
-		@props.entity.onHeroChanged (entity) =>
-			entity.onHealthChanged => @forceUpdate()
-			entity.onDamageChanged => @forceUpdate()
-
+		@subs = new SubscriptionList
+		@healthSub = subscribe hero, 'tag-changed:HEALTH tag-changed:DAMAGE', => @forceUpdate()
+		@subs.add @healthSub
+		@subs.add @props.entity, 'tag-changed:HERO', =>
+			@healthSub.move @props.entity.getHero()
 			@forceUpdate()
+
+	componentWillUnmount: ->
+		@subs.off()
 
 	render: ->
 		hero = @props.entity.getHero()

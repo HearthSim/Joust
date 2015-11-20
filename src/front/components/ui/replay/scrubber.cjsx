@@ -2,7 +2,10 @@ React = require 'react'
 
 class Scrubber extends React.Component
 	componentDidMount: ->
-		setInterval((=> @forceUpdate()), 500)
+		@int = setInterval((=> @forceUpdate()), 500)
+
+	componentWillUnmount: ->
+		clearInterval(@int)
 
 	render: ->
 		return null unless @props.replay.started
@@ -17,11 +20,11 @@ class Scrubber extends React.Component
 
 		points = []
 
-		for point in replay.getTimestamps()
+		for point, i in replay.getTimestamps()
 			pointStyle =
 				left: ((point / length) * 100) + '%'
 
-			points.push <div className="scrubber__point" style={pointStyle} />
+			points.push <div className="scrubber__point" style={pointStyle} key={i} />
 
 		remaining = Math.floor(length - position)
 		remainingSeconds = ""+(remaining % 60)

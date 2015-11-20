@@ -1,0 +1,25 @@
+.play {
+	position: absolute;
+	top: 50px;
+	left: 100px;
+}
+
+.bottom .play {
+	top: auto;
+	bottom: 50px;
+}
+
+
+.play .card.playing-enter {
+	opacity: 0.1;
+}
+
+.play .card.playing-enter-active {
+	opacity: 1;
+	transition: opacity 1s;
+}
+
+.play .card.playing-leave-active {
+	opacity: 0;
+	transition: opacity 0.5s;
+}
