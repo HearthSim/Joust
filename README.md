@@ -3,7 +3,7 @@
 ## Requirements
 
 - Node.js ~v5.3.0
-- `npm install -g electron-prebuilt typescript tsd`
+- `npm install -g electron-prebuilt typescript gulp`
 
 
 ## Install
@@ -23,7 +23,7 @@ tsd install
 Compile Typescript:  
 
 ```
-tsc -p js
+gulp scripts
 ```
 
 
