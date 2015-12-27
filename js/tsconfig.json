@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es5",
+    "moduleResolution": "node",
+    "isolatedModules": false,
+    "jsx": "react",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "declaration": false,
+    "noImplicitAny": false,
+    "removeComments": true,
+    "noLib": false,
+    "preserveConstEnums": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "sourceMap": true
+  },
+  "filesGlob": [
+    "**/*.ts",
+    "**/*.tsx",
+    "!node_modules/**"
+  ],
+  "files": [
+    "interfaces.d.ts",
+    "joust.tsx",
+    "entity.tsx",
+    "option.tsx",
+    "tag.tsx",
+    "components/endTurnButton.tsx",
+    "components/game.tsx",
+    "components/hero.tsx",
+    "components/heroPower.tsx",
+    "components/player.tsx"
+  ],
+  "exclude": []
+}
