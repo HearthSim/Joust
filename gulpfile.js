@@ -25,6 +25,6 @@ gulp.task('build', function () {
 });
 
 
-gulp.task('watch', ['scripts'], function() {
+gulp.task('watch', ['scripts'], function () {
     gulp.watch(['js/**/*.ts', 'js/**/*.tsx'], ['scripts']);
 });
