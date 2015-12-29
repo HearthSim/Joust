@@ -27,7 +27,16 @@ namespace Joust {
         }
 
         public setTag(key:number, value:number) : Entity {
-            var tags = this.tags.set(key, value);
+            var tags = this.tags;
+            if(value === 0) {
+                tags = this.tags.delete(key);
+            }
+            else {
+                tags = this.tags.set(key, value);
+            }
+            if(tags === this.tags) {
+                return this;
+            }
             return new Entity(this.id, tags, this.cardId);
         }
 

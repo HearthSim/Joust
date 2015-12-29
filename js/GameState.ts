@@ -19,6 +19,9 @@ namespace Joust {
             var entities = this.entities;
             var entity = this.entities.get(id);
             var new_entity = entity.setTag(key, value);
+            if(new_entity === entity) {
+                return this;
+            }
             return new GameState(this.entities.set(id, entity), this.options);
         }
 
