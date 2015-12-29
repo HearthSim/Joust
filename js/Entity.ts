@@ -26,6 +26,10 @@ namespace Joust {
             return this.getTag(202);
         }
 
+        public getZonePosition():number {
+            return this.getTag(263);
+        }
+
         public getTag(key:number) {
             return this.tags ? (this.tags.toJS()[key] || 0) : 0;
         }

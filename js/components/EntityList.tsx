@@ -6,16 +6,19 @@
 namespace Joust.Components {
     export class EntityList extends React.Component<EntityListProps, {}> {
         public render() {
-            var entities = [];
+            var elements = [];
             if (this.props.entities) {
-                this.props.entities.forEach(function (entity) {
+                var entities = this.props.entities.sortBy(function(entity) {
+                    return entity.getZonePosition();
+                });
+                entities.forEach(function (entity) {
                     var id = entity.getCardId() ? (' (CardID=' + entity.getCardId() + ')') : '';
-                    entities.push(<li key={entity.getId()}>Entity #{entity.getId()}{id}</li>);
+                    elements.push(<li key={entity.getId()}>Entity #{entity.getId()}{id}</li>);
                 });
             }
             return (
                 <ul>
-                    {entities}
+                    {elements}
                 </ul>
             );
         }
