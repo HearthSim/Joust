@@ -4,13 +4,10 @@
 'use strict';
 
 namespace Joust.Components {
-    export class TwoPlayerGame extends React.Component<GameProps, {}> {
+    export class TwoPlayerGame extends React.Component<TwoPlayerGameProps, {}> {
         public render() {
-            var entities = this.props.entities;
-
-            var emptyTags = Immutable.Map<number, number>();
-            var player1Tags = emptyTags;
-            var player2Tags = emptyTags;
+            var player1 = this.props.player1;
+            var player2 = this.props.player2;
 
             // returns a filter function for entity controller identity
             var filterByController = function (controller:number) {
@@ -20,14 +17,14 @@ namespace Joust.Components {
             };
 
             // we lazily split up the player controlled entities
-            var player1Entities = this.props.entities.filter(filterByController(2)).toSeq();
-            var player2Entities = this.props.entities.filter(filterByController(3)).toSeq();
+            var player1Entities = this.props.entities.filter(filterByController(player1.getId())).toSeq();
+            var player2Entities = this.props.entities.filter(filterByController(player2.getId())).toSeq();
 
             return (
                 <div>
-                    <Player tags={player1Tags} entities={player1Entities}/>
+                    <Player tags={player1.getTags()} entities={player1Entities}/>
                     <EndTurnButton />
-                    <Player tags={player2Tags} entities={player2Entities}/>
+                    <Player tags={player2.getTags()} entities={player2Entities}/>
                 </div>
             );
         }

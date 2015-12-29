@@ -13,8 +13,9 @@ interface JoustState {
     gameState: Joust.GameState;
 }
 
-interface GameProps extends TaggedProps<any>, EntityListProps {
-
+interface TwoPlayerGameProps extends TaggedProps<any>, EntityListProps {
+    player1: Joust.Entity;
+    player2: Joust.Entity;
 }
 
 interface PlayerProps extends TaggedProps<any>, EntityListProps {

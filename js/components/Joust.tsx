@@ -118,7 +118,7 @@ namespace Joust.Components {
                     break;
                 case 2:
                     return (
-                        <TwoPlayerGame tags={gameTags} entities={entities}/>
+                        <TwoPlayerGame tags={gameTags} player1={players.first()} player2={players.last()} entities={entities}/>
                     );
                     break;
                 default:
