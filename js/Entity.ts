@@ -44,6 +44,12 @@ namespace Joust {
 
             // delete value 0 tags
             if(value === 0) {
+                console.debug('Attempting to delete key ' + key + ' on entity #' + this.getId());
+                tags = tags.withMutations(function (map) {
+                    // set to 0 to ensure it is really deleted
+                    map.set(key, 0).delete(key)
+                });
+
                 tags = tags.delete(key);
             }
             else {
