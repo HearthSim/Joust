@@ -22,15 +22,16 @@
   ],
   "files": [
     "interfaces.d.ts",
-    "joust.tsx",
-    "entity.tsx",
-    "option.tsx",
-    "tag.tsx",
-    "components/endTurnButton.tsx",
-    "components/game.tsx",
-    "components/hero.tsx",
-    "components/heroPower.tsx",
-    "components/player.tsx"
+    "run.tsx",
+    "Entity.ts",
+    "GameState.ts",
+    "Option.ts",
+    "components/EndTurnButton.tsx",
+    "components/TwoPlayerGame.tsx",
+    "components/Hero.tsx",
+    "components/HeroPower.tsx",
+    "components/Joust.tsx",
+    "components/Player.tsx"
   ],
   "exclude": []
 }

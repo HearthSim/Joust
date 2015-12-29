@@ -1,24 +1,23 @@
 /// <reference path="../typings/react/react-global.d.ts" />
-
-
-interface GameState {
-    entities: Array<joust.Entity>;
-    options: Array<joust.Option>;
-}
+/// <reference path='../node_modules/immutable/dist/immutable.d.ts'/>
 
 interface TaggedProps<T> extends React.Props<T> {
-    tags: Array<joust.Tag>;
+    tags: Immutable.Map<number, number>;
 }
 
 interface EntityListProps {
-    entities: Array<joust.Entity>;
+    entities: Immutable.Seq<number, Joust.Entity>;
+}
+
+interface JoustState {
+    gameState: Joust.GameState;
 }
 
 interface GameProps extends TaggedProps<any>, EntityListProps {
 
 }
 
-interface PlayerProps extends TaggedProps<any> {
+interface PlayerProps extends TaggedProps<any>, EntityListProps {
 
 }
 

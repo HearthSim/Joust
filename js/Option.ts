@@ -1,6 +1,7 @@
 /// <reference path="./interfaces.d.ts" />
+'use strict';
 
-namespace joust {
+namespace Joust {
     export class Option {
     }
 }

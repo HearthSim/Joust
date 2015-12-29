@@ -13,10 +13,17 @@ gulp.task('scripts', function () {
         .pipe(ts(tsProject));
 
     return tsResult.js
-        .pipe(uglify())
         .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest('js'));
 });
+
+gulp.task('build', function () {
+    var tsResult = tsProject.src()
+        .pipe(ts(tsProject))
+        .pipe(uglify())
+        .pipe(gulp.dest('js'));
+});
+
 
 gulp.task('watch', ['scripts'], function() {
     gulp.watch(['js/**/*.ts', 'js/**/*.tsx'], ['scripts']);
