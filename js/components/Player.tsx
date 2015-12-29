@@ -6,23 +6,29 @@
 namespace Joust.Components {
     export class Player extends React.Component<PlayerProps, {}> {
         public render() {
-            var emptyTagList = Immutable.Map<number, number>();
-            var heroTags = emptyTagList;
-            var heroPowerTags = emptyTagList;
-            var entities = [];
-            this.props.entities.forEach(function (entity) {
-                entities.push(<li key={entity.getId()}>#{entity.getId()}: {entity.getCardId()}</li>);
-            });
+            var hero = null;
+            var heroPower = null;
             return (
                 <div>
                     <h1>Player</h1>
-                    <Hero tags={heroTags} />
-                    <HeroPower tags={heroPowerTags} />
-                    <h2>Entites</h2>
-                    <ul>
-                        {entities}
-                    </ul>
+                    <Hero entity={hero} />
+                    <HeroPower entity={heroPower} />
+                    <h2>Play</h2>
+                    <EntityList entities={this.props.entities.get(1)} />
+                    <h2>Deck</h2>
+                    <EntityList entities={this.props.entities.get(2)} />
+                    <h2>Hand</h2>
+                    <EntityList entities={this.props.entities.get(3)} />
+                    <h2>Secrets</h2>
+                    <EntityList entities={this.props.entities.get(7)} />
                 </div>
+            );
+        }
+
+        public shouldComponentUpdate(nextProps:PlayerProps, nextState) {
+            return (
+                this.props.entity !== nextProps.entity ||
+                this.props.entities !== nextProps.entities
             );
         }
     }

@@ -5,27 +5,27 @@
 
 namespace Joust.Components {
     export class TwoPlayerGame extends React.Component<TwoPlayerGameProps, {}> {
+
         public render() {
+            var entities = this.props.entities;
             var player1 = this.props.player1;
             var player2 = this.props.player2;
 
-            // returns a filter function for entity controller identity
-            var filterByController = function (controller:number) {
-                return function (entity:Entity):boolean {
-                    return entity && entity.getController() === controller;
-                };
-            };
-
-            // we lazily split up the player controlled entities
-            var player1Entities = this.props.entities.filter(filterByController(player1.getId())).toSeq();
-            var player2Entities = this.props.entities.filter(filterByController(player2.getId())).toSeq();
-
             return (
                 <div>
-                    <Player tags={player1.getTags()} entities={player1Entities}/>
+                    <Player entity={player1} entities={entities.get(player1.getId())} />
                     <EndTurnButton />
-                    <Player tags={player2.getTags()} entities={player2Entities}/>
+                    <Player entity={player2} entities={entities.get(player2.getId())} />
                 </div>
+            );
+        }
+
+        public shouldComponentUpdate(nextProps:TwoPlayerGameProps, nextState) {
+            return (
+                this.props.entity !== nextProps.entity ||
+                this.props.player1 !== nextProps.player1 ||
+                this.props.player2 !== nextProps.player2 ||
+                this.props.entities !== nextProps.entities
             );
         }
     }

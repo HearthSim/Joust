@@ -14,6 +14,10 @@ namespace Joust {
             return this.cardId;
         }
 
+        public getZone():number {
+            return this.getTag(49);
+        }
+
         public getController():number {
             return this.getTag(50);
         }
@@ -22,21 +26,35 @@ namespace Joust {
             return this.getTag(202);
         }
 
-        protected getTag(key:number) {
-            return this.tags.toJS()[key] || 0;
+        public getTag(key:number) {
+            return this.tags ? (this.tags.toJS()[key] || 0) : 0;
         }
 
-        public setTag(key:number, value:number) : Entity {
-            var tags = this.tags;
-            if(value === 0) {
-                tags = this.tags.delete(key);
-            }
-            else {
-                tags = this.tags.set(key, value);
-            }
-            if(tags === this.tags) {
+        public setTag(key:number, value:number):Entity {
+            // verify parameters
+            if (key === null) {
+                console.warn('Attempted setting invalid tag on entity #' + this.getId());
                 return this;
             }
+            if (value === null) {
+                value = 0;
+            }
+
+            var tags = this.tags;
+
+            // delete value 0 tags
+            if(value === 0) {
+                tags = tags.delete(key);
+            }
+            else {
+                tags = tags.set(key, value);
+            }
+
+            // verify tags have actually changed
+            if (tags === this.tags) {
+                return this;
+            }
+
             return new Entity(this.id, tags, this.cardId);
         }
 

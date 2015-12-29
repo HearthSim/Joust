@@ -27,11 +27,12 @@
     "GameState.ts",
     "Option.ts",
     "components/EndTurnButton.tsx",
-    "components/TwoPlayerGame.tsx",
+    "components/EntityList.tsx",
     "components/Hero.tsx",
     "components/HeroPower.tsx",
     "components/Joust.tsx",
-    "components/Player.tsx"
+    "components/Player.tsx",
+    "components/TwoPlayerGame.tsx"
   ],
   "exclude": []
 }

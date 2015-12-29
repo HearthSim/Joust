@@ -10,7 +10,11 @@ namespace Joust.Components {
 
         public constructor(props) {
             super(props);
-            this.state = {gameState: new GameState()};
+            this.state = {gameState: new GameState(
+                Immutable.Map<number, Entity>(),
+                Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Entity>>>(),
+                Immutable.Map<number, Option>()
+            )};
             this.socket = null;
         }
 
@@ -26,7 +30,7 @@ namespace Joust.Components {
         private handlePacket(packet) {
             var type = packet.Type;
             packet = packet[type];
-            //console.log(type, ': ', packet);
+            console.debug(type, ': ', packet);
             switch (type) {
                 case 'GameEntity':
                 case 'Player':
@@ -95,7 +99,8 @@ namespace Joust.Components {
         }
 
         public render() {
-            var entities = this.state.gameState.getEntities().toSeq();
+            var allEntities = this.state.gameState.getEntities();
+            var entityTree = this.state.gameState.getEntityTree();
 
             var filterByCardType = function (cardType:number) {
                 return function (entity:Entity):boolean {
@@ -104,28 +109,30 @@ namespace Joust.Components {
                 };
             };
 
-            //console.log(entities.toJS());
+            // find the game entity
+            var game = allEntities ? allEntities.filter(filterByCardType(1)).first() : null;
+            if(!game) {
+                return <p>Awaiting Game Entity.</p>;
+            }
 
-            var game = entities.find(filterByCardType(1));
-            var gameTags = game ? game.getTags() : null;
-            var players = entities.filter(filterByCardType(2));
-
+            // determine player count
+            var players = allEntities.filter(filterByCardType(2));
             switch (players.count()) {
                 case 0:
-                    return (
-                        <p>Awaiting Player entities.</p>
-                    );
+                    return <p>Awaiting Player entities.</p>;
                     break;
                 case 2:
                     return (
-                        <TwoPlayerGame tags={gameTags} player1={players.first()} player2={players.last()} entities={entities}/>
+                        <TwoPlayerGame entity={game} player1={players.first()} player2={players.last()} entities={entityTree} />
                     );
                     break;
                 default:
-                    return (
-                        <p>Invalid player count: "{players.size}".</p>
-                    );
+                    return <p>Unsupported player count: {players.size}.</p>;
             }
+        }
+
+        public shouldComponentUpdate(nextProps, nextState:JoustState) {
+            return this.state.gameState !== nextState.gameState;
         }
     }
 
