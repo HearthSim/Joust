@@ -11,7 +11,7 @@ namespace Joust.Components {
 		public constructor(props) {
 			super(props);
 			this.state = {
-				gameState: new GameState(
+				gameState: new State.GameState(
 					Immutable.Map<number, Entity>(),
 					Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Entity>>>(),
 					Immutable.Map<number, Option>()
@@ -37,18 +37,21 @@ namespace Joust.Components {
 				case 'GameEntity':
 				case 'Player':
 				case 'FullEntity':
-					var gs = this.state.gameState;
-					var entity = new Entity(packet.EntityID, Immutable.Map<number, number>(packet.Tags), packet.CardID || null);
-					var new_gs = gs.addEntity(entity);
-					this.setState({gameState: new_gs});
+					var entity = new Entity(
+						packet.EntityID,
+						Immutable.Map<number, number>(packet.Tags),
+						packet.CardID || null
+					);
+					this.setState({
+						gameState: this.state.gameState
+							.apply(new State.Mutators.AddEntityMutator(entity))
+					});
 					break;
 				case 'TagChange':
-					var gs = this.state.gameState;
-					var new_gs = gs.tagChange(packet.EntityID, packet.Tag, packet.Value);
-					this.setState({gameState: new_gs});
-					break;
-				case 'Options':
-					//    this.setState({options: packet});
+					this.setState({
+						gameState: this.state.gameState
+							.apply(new State.Mutators.TagChangeMutator(packet.EntityID, packet.Tag, packet.Value))
+					});
 					break;
 				default:
 					console.log('Unknown packet type ' + type);

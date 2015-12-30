@@ -24,7 +24,8 @@
     "interfaces.d.ts",
     "run.tsx",
     "Entity.ts",
-    "GameState.ts",
+    "state/GameState.ts",
+    "state/GameStateMutator.d.ts",
     "Option.ts",
     "components/EndTurnButton.tsx",
     "components/EntityList.tsx",
@@ -32,7 +33,10 @@
     "components/HeroPower.tsx",
     "components/Joust.tsx",
     "components/Player.tsx",
-    "components/TwoPlayerGame.tsx"
+    "components/TwoPlayerGame.tsx",
+    "state/mutators/AddEntityMutator.ts",
+    "state/mutators/TagChangeMutator.ts",
+    "state/mutators/ReplaceEntityMutator.ts"
   ],
   "exclude": []
 }

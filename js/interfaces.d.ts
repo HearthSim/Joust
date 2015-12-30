@@ -10,7 +10,7 @@ interface EntityProps {
 }
 
 interface JoustState {
-	gameState: Joust.GameState;
+	gameState: Joust.State.GameState;
 }
 
 interface TwoPlayerGameProps extends EntityProps, React.Props<any> {
