@@ -39,12 +39,12 @@ namespace Joust.Components {
 				case 'FullEntity':
 					var gs = this.state.gameState;
 					var entity = new Entity(packet.EntityID, Immutable.Map<number, number>(packet.Tags), packet.CardID || null);
-					var new_gs = gs.addEntity(packet.EntityID, entity);
+					var new_gs = gs.addEntity(entity);
 					this.setState({gameState: new_gs});
 					break;
 				case 'TagChange':
 					var gs = this.state.gameState;
-					var new_gs = gs.updateEntity(packet.EntityID, packet.Tag, packet.Value);
+					var new_gs = gs.tagChange(packet.EntityID, packet.Tag, packet.Value);
 					this.setState({gameState: new_gs});
 					break;
 				case 'Options':

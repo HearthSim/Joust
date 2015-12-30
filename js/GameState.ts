@@ -25,10 +25,16 @@ namespace Joust {
 			return this.options;
 		}
 
+		public addEntity(entity:Entity):GameState {
+			var id = entity && entity.getId() || 0;
+			if (id < 1) {
+				console.error('Cannot add entity: Invalid entity id');
+				return this;
+			}
 
-		public addEntity(id:number, entity:Entity):GameState {
 			if (this.entities.get(id)) {
 				console.warn('Overwriting entity with id #' + id);
+				// we might have a stale entity at the old location in the entity tree
 			}
 
 			// add to global entity list
@@ -41,18 +47,49 @@ namespace Joust {
 			return new GameState(entities, entityTree, this.options);
 		}
 
-		public updateEntity(id:number, key:number, value:number):GameState {
-			// add to global entity list
+		public showEntity(id:number, cardId:string, tags:number[][]):GameState {
 			var oldEntity = this.getEntity(id);
 			if (!oldEntity) {
-				console.warn('Cannot update non-existant entity #' + id);
+				console.error('Cannot show non-existent entity #' + id);
+				return this;
+			}
+
+			// we're allocating two entities here. Maybe we do .withMutations() at some point?
+			var newEntity = oldEntity.setCardId(cardId).setTags();
+			return this.updateEntity(newEntity);
+		}
+
+		public hideEntity(id:number, zone:number):GameState {
+			return this;
+		}
+
+		public tagChange(id:number, tag:number, value:number):GameState {
+			var oldEntity = this.getEntity(id);
+			if (!oldEntity) {
+				console.error('Cannot change tag on non-existent entity #' + id);
+				return this;
+			}
+
+			var newEntity = oldEntity.setTag(tag, value);
+			if (newEntity === oldEntity) {
+				console.warn('No tag change (tag ' + tag + ' : ' + oldEntity.getTag(tag) + ' -> ' + value + ') on entity #' + id);
+				return this;
+			}
+
+			return this.updateEntity(newEntity);
+		}
+
+		protected updateEntity(newEntity:Entity):GameState {
+			var id = newEntity && newEntity.getId() || 0;
+			var oldEntity = this.getEntity(id);
+			if (!oldEntity) {
+				console.error('Cannot update non-existent entity #' + id);
 				return this;
 			}
 
 			// verify entity has actually changed
-			var newEntity = oldEntity.setTag(key, value);
 			if (newEntity === oldEntity) {
-				console.warn('No tag change (tag ' + key + ' : ' + oldEntity.getTag(key) + ' -> ' + value + ') on entity #' + id);
+				console.warn('Update has no effect on entity #' + id);
 				return this;
 			}
 
@@ -65,9 +102,7 @@ namespace Joust {
 					.setIn([newEntity.getController(), newEntity.getZone(), id], newEntity);
 			});
 
-			// the game state always changes if we add a new entity
 			return new GameState(entities, entityTree, this.options);
-
 		}
 	}
 }

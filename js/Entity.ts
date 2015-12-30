@@ -37,7 +37,7 @@ namespace Joust {
 		public setTag(key:number, value:number):Entity {
 			// verify parameters
 			if (key === null) {
-				console.warn('Attempted setting invalid tag on entity #' + this.getId());
+				console.warn('Cannot set invalid tag on entity #' + this.getId());
 				return this;
 			}
 			if (value === null) {
@@ -67,6 +67,15 @@ namespace Joust {
 
 		public getTags() {
 			return this.tags;
+		}
+
+		public setTags():Entity {
+			console.warn('Not yet impleted: Entity.setTags()');
+			return this;
+		}
+
+		public setCardId(cardId:string):Entity {
+			return new Entity(this.id, this.tags, cardId);
 		}
 	}
 }
