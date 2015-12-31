@@ -77,15 +77,27 @@ namespace Joust.Protocol {
 
 			var mutator = null;
 			switch (name) {
+				case 'Game':
+					// we're done here
+					this.stateTracker.markGameComplete();
+					break;
 				case 'GameEntity':
-				case 'Player':
 				case 'FullEntity':
 					var entity = new Entity(
 						+node.attributes.id,
 						Immutable.fromJS(node.attributes.tags),
-						node.attributes.cardid || null
+						node.attributes.cardID || null
 					);
 					mutator = new AddEntityMutator(entity);
+					break;
+				case 'Player':
+					var player = new Player(
+						+node.attributes.id,
+						Immutable.fromJS(node.attributes.tags),
+						+node.attributes.playerID
+					);
+					mutator = new AddEntityMutator(player);
+					break;
 					break;
 				case 'ShowEntity':
 					var state = this.stateTracker.getGameState();
@@ -94,7 +106,7 @@ namespace Joust.Protocol {
 						console.error('Cannot show non-existent entity #' + node.attributes.entity);
 						return;
 					}
-					entity = entity.setCardId(node.attributes.cardid || null);
+					entity = entity.setCardId(node.attributes.cardID || null);
 					entity = entity.setTags(Immutable.fromJS(node.attributes.tags));
 					mutator = new ReplaceEntityMutator(entity);
 					break;

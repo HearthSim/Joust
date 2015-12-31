@@ -10,11 +10,12 @@ namespace Joust.Components {
 			var player1 = this.props.player1;
 			var player2 = this.props.player2;
 
+			var emptyEntities = Immutable.Map<number, Immutable.Map<number, Entity>>();
 			return (
 				<div>
-					<Player entity={player1} entities={entities.get(player1.getId()) || Immutable.Map<number, Immutable.Map<number, Joust.Entity>>()}/>
+					<Player player={player1} entities={entities.get(player1.getPlayerId()) || emptyEntities}/>
 					<EndTurnButton/>
-					<Player entity={player2} entities={entities.get(player2.getId()) || Immutable.Map<number, Immutable.Map<number, Joust.Entity>>()}/>
+					<Player player={player2} entities={entities.get(player2.getPlayerId()) || emptyEntities}/>
 				</div>
 			);
 		}

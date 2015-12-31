@@ -27,7 +27,7 @@ namespace Joust.Components {
 
 		public shouldComponentUpdate(nextProps:PlayerProps, nextState) {
 			return (
-				this.props.entity !== nextProps.entity ||
+				this.props.player !== nextProps.player ||
 				this.props.entities !== nextProps.entities
 			);
 		}

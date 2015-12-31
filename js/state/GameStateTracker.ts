@@ -6,6 +6,7 @@ namespace Joust.State {
 
 	export class GameStateTracker {
 
+		private complete:boolean = false;
 		private history:Immutable.Map<number, GameState>;
 
 		constructor(private state?:GameState) {
@@ -28,19 +29,23 @@ namespace Joust.State {
 				return;
 			}
 			this.history = this.history.set(timestamp, this.state);
-			console.log('Mark at ' + (timestamp / 1000) + ' (now at ' + this.history.size + ')');
-			this.listener();
+			//console.log('Mark at ' + (timestamp / 1000) + ' (now at ' + this.history.size + ')');
+		}
+
+		public markGameComplete() {
+			this.complete = true;
 		}
 
 		public getGameState() {
 			return this.state;
 		}
 
-		private listener = null;
-
-		public on(event, cb) {
-			this.listener = cb;
+		public getHistory() {
+			return this.history;
 		}
 
+		public isComplete() {
+			return this.complete;
+		}
 	}
 }

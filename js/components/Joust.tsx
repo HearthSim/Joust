@@ -21,14 +21,27 @@ namespace Joust.Components {
 
 		public componentDidMount() {
 			var tracker = new State.GameStateTracker();
-			tracker.on('update', this.updateState.bind(this));
 			var hsreplay = new Protocol.HSReplayParser(tracker);
 			this.tracker = tracker;
-			hsreplay.parse('sample.xml');
+			hsreplay.parse('sample.hsreplay');
+			this.start = new Date().getTime();
+			setInterval(this.updateState.bind(this), 100);
 		}
 
+		private start:number = 0;
+
 		public updateState() {
-			this.setState({gameState: this.tracker.getGameState()});
+			var history = this.tracker.getHistory();
+			var latest = null;
+			var timeInGame = new Date().getTime() - this.start;
+			history.forEach(function (value, time) {
+				if (timeInGame >= +time && (latest === null || time> latest)) {
+					latest = time;
+				}
+			});
+			if (latest && history.get(latest)) {
+				this.setState({gameState: history.get(latest)});
+			}
 		}
 
 		public render() {
@@ -56,7 +69,7 @@ namespace Joust.Components {
 					break;
 				case 2:
 					return (
-						<TwoPlayerGame entity={game} player1={players.first()} player2={players.last()}
+						<TwoPlayerGame entity={game} player1={players.first() as Joust.Player} player2={players.last() as Joust.Player}
 									   entities={entityTree}/>
 					);
 					break;

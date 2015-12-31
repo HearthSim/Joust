@@ -39,7 +39,8 @@
     "state/mutators/TagChangeMutator.ts",
     "state/mutators/ReplaceEntityMutator.ts",
     "protocol/KettleParser.ts",
-    "protocol/HSReplayParser.ts"
+    "protocol/HSReplayParser.ts",
+    "Player.ts"
   ],
   "exclude": []
 }

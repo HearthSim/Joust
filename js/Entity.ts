@@ -3,7 +3,11 @@
 
 namespace Joust {
 	export class Entity {
-		constructor(private id:number, private tags:Immutable.Map<number, number>, private cardId?:string) {
+		constructor(protected id:number, protected tags:Immutable.Map<number, number>, protected cardId?:string) {
+		}
+
+		protected factory(tags, cardId):Entity {
+			return new Entity(this.id, tags, cardId);
 		}
 
 		public getId():number {
@@ -18,7 +22,7 @@ namespace Joust {
 			return this.getTag(49);
 		}
 
-		public getController():number {
+		public    getController():number {
 			return this.getTag(50);
 		}
 
@@ -62,7 +66,7 @@ namespace Joust {
 				return this;
 			}
 
-			return new Entity(this.id, tags, this.cardId);
+			return this.factory(tags, this.cardId);
 		}
 
 		public getTags() {
@@ -75,11 +79,11 @@ namespace Joust {
 				return this;
 			}
 
-			return new Entity(this.id, mergedTags, this.cardId);
+			return this.factory(mergedTags, this.cardId);
 		}
 
 		public setCardId(cardId:string):Entity {
-			return new Entity(this.id, this.tags, cardId);
+			return this.factory(this.tags, cardId);
 		}
 	}
 }

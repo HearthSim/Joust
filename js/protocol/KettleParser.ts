@@ -28,7 +28,6 @@ namespace Joust.Protocol {
 			var mutator = null;
 			switch (type) {
 				case 'GameEntity':
-				case 'Player':
 				case 'FullEntity':
 					var entity = new Entity(
 						+packet.EntityID,
@@ -36,6 +35,15 @@ namespace Joust.Protocol {
 						packet.CardID || null
 					);
 					mutator = new State.Mutators.AddEntityMutator(entity);
+					break;
+				case 'Player':
+					var player = new Player(
+						+packet.EntityID,
+						Immutable.Map<number, number>(packet.Tags),
+						+packet.PlayerID || +packet.CardID, // default to CardID until Kettle is changed
+						packet.CardID || null
+					);
+					mutator = new State.Mutators.AddEntityMutator(player);
 					break;
 				case 'TagChange':
 					mutator = new State.Mutators.TagChangeMutator(

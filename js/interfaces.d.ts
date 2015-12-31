@@ -14,12 +14,13 @@ interface JoustState {
 }
 
 interface TwoPlayerGameProps extends EntityProps, React.Props<any> {
-	player1: Joust.Entity;
-	player2: Joust.Entity;
+	player1: Joust.Player;
+	player2: Joust.Player;
 	entities: Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Joust.Entity>>>;
 }
 
-interface PlayerProps extends EntityProps, React.Props<any> {
+interface PlayerProps extends React.Props<any> {
+	player: Joust.Player,
 	entities: Immutable.Map<number, Immutable.Map<number, Joust.Entity>>;
 }
 
