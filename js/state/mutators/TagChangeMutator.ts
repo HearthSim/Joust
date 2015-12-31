@@ -17,7 +17,7 @@ namespace Joust.State.Mutators {
 			if (newEntity === oldEntity) {
 				console.warn(
 					'No tag change ' +
-					'(tag ' + this.tag + ' : ' + oldEntity.getTag(this.tag) + ' -> ' + this.value + ') ' +
+					'(tag ' + this.tag + ': ' + oldEntity.getTag(this.tag) + ' → ' + this.value + ') ' +
 					'on entity #' + this.id
 				);
 				return state;

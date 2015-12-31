@@ -10,7 +10,8 @@
   "license": "AGPL-3.0",
   "dependencies": {
     "react": "^0.14.3",
-    "react-dom": "^0.14.3"
+    "react-dom": "^0.14.3",
+    "sax": "^1.1.4"
   },
   "devDependencies": {
     "gulp": "^3.9.0",

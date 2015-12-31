@@ -69,9 +69,13 @@ namespace Joust {
 			return this.tags;
 		}
 
-		public setTags():Entity {
-			console.warn('Not yet impleted: Entity.setTags()');
-			return this;
+		public setTags(tags:Immutable.Map<number, number>):Entity {
+			var mergedTags = this.tags.merge(tags);
+			if (mergedTags === this.tags) {
+				return this;
+			}
+
+			return new Entity(this.id, mergedTags, this.cardId);
 		}
 
 		public setCardId(cardId:string):Entity {

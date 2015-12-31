@@ -6,8 +6,6 @@
 
 namespace Joust.Components {
 	export class Joust extends React.Component<{}, JoustState> {
-		private socket;
-
 		public constructor(props) {
 			super(props);
 			this.state = {
@@ -17,94 +15,20 @@ namespace Joust.Components {
 					Immutable.Map<number, Option>()
 				)
 			};
-			this.socket = null;
 		}
 
-		private sendPacket(packet) {
-			var message = JSON.stringify(packet);
-			return this.socket.write(this.pad(message.length, 4) + message);
-		}
-
-		private pad(number, length) {
-			return Array(length - (number + '').length + 1).join('0') + number;
-		}
-
-		private handlePacket(packet) {
-			var type = packet.Type;
-			packet = packet[type];
-			console.debug(type, ': ', packet);
-			switch (type) {
-				case 'GameEntity':
-				case 'Player':
-				case 'FullEntity':
-					var entity = new Entity(
-						packet.EntityID,
-						Immutable.Map<number, number>(packet.Tags),
-						packet.CardID || null
-					);
-					this.setState({
-						gameState: this.state.gameState
-							.apply(new State.Mutators.AddEntityMutator(entity))
-					});
-					break;
-				case 'TagChange':
-					this.setState({
-						gameState: this.state.gameState
-							.apply(new State.Mutators.TagChangeMutator(packet.EntityID, packet.Tag, packet.Value))
-					});
-					break;
-				default:
-					console.log('Unknown packet type ' + type);
-					break;
-			}
-		}
-
-		private onData(data) {
-			var header = data.substr(0, 4);
-			data = data.substr(4);
-			var packets = JSON.parse(data);
-			packets.forEach(this.handlePacket.bind(this));
-		}
-
-		private onConnect() {
-			var cardList = Immutable.List<String>(Array(30));
-			var portals = cardList.map(function () {
-				return 'GVG_003';
-			});
-			var webspinners = cardList.map(function () {
-				return 'FP1_011';
-			});
-
-			this.sendPacket([{
-				Type: 'CreateGame',
-				CreateGame: {
-					Players: [
-						{
-							Name: 'BlackTea1',
-							Cards: portals.toJS(),
-							Hero: 'HERO_08'
-						},
-						{
-							Name: 'BlackTea2',
-							Cards: webspinners.toJS(),
-							Hero: 'HERO_05'
-						}
-					]
-				}
-			}]);
-			this.socket.on('data', this.onData.bind(this));
-			this.socket.once('close', function () {
-				console.log('Socket closed');
-			});
-		}
+		private tracker;
 
 		public componentDidMount() {
-			var Socket = require('net').Socket;
-			var socket = new Socket();
-			this.socket = socket;
-			socket.setEncoding('utf-8');
-			socket.connect(9111, 'localhost');
-			socket.once('connect', this.onConnect.bind(this));
+			var tracker = new State.GameStateTracker();
+			tracker.on('update', this.updateState.bind(this));
+			var hsreplay = new Protocol.HSReplayParser(tracker);
+			this.tracker = tracker;
+			hsreplay.parse('sample.xml');
+		}
+
+		public updateState() {
+			this.setState({gameState: this.tracker.getGameState()});
 		}
 
 		public render() {

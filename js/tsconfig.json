@@ -26,6 +26,7 @@
     "Entity.ts",
     "state/GameState.ts",
     "state/GameStateMutator.d.ts",
+    "state/GameStateTracker.ts",
     "Option.ts",
     "components/EndTurnButton.tsx",
     "components/EntityList.tsx",
@@ -36,7 +37,9 @@
     "components/TwoPlayerGame.tsx",
     "state/mutators/AddEntityMutator.ts",
     "state/mutators/TagChangeMutator.ts",
-    "state/mutators/ReplaceEntityMutator.ts"
+    "state/mutators/ReplaceEntityMutator.ts",
+    "protocol/KettleParser.ts",
+    "protocol/HSReplayParser.ts"
   ],
   "exclude": []
 }

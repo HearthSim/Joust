@@ -12,9 +12,9 @@ namespace Joust.Components {
 
 			return (
 				<div>
-					<Player entity={player1} entities={entities.get(player1.getId())}/>
+					<Player entity={player1} entities={entities.get(player1.getId()) || Immutable.Map<number, Immutable.Map<number, Joust.Entity>>()}/>
 					<EndTurnButton/>
-					<Player entity={player2} entities={entities.get(player2.getId())}/>
+					<Player entity={player2} entities={entities.get(player2.getId()) || Immutable.Map<number, Immutable.Map<number, Joust.Entity>>()}/>
 				</div>
 			);
 		}

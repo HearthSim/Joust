@@ -12,7 +12,7 @@ namespace Joust.State.Mutators {
 				return state;
 			}
 
-			var id = this.entity.getId();
+			var id = +this.entity.getId();
 			if (id < 1) {
 				console.error('Cannot add entity: Invalid entity id');
 				return state;
