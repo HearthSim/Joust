@@ -1,33 +1,14 @@
 /// <reference path="../typings/react/react-global.d.ts"/>
 /// <reference path='../node_modules/immutable/dist/immutable.d.ts'/>
 
-interface EntityListProps {
-	entities: Immutable.Map<number, Joust.Entity>;
+import Entity = require('./Entity');
+import Player = require('./Player');
+import GameState = require('./state/GameState');
+
+export interface EntityListProps {
+	entities: Immutable.Map<number, Entity>;
 }
 
-interface EntityProps {
-	entity: Joust.Entity;
-}
-
-interface JoustState {
-	gameState: Joust.State.GameState;
-}
-
-interface TwoPlayerGameProps extends EntityProps, React.Props<any> {
-	player1: Joust.Player;
-	player2: Joust.Player;
-	entities: Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Joust.Entity>>>;
-}
-
-interface PlayerProps extends React.Props<any> {
-	player: Joust.Player,
-	entities: Immutable.Map<number, Immutable.Map<number, Joust.Entity>>;
-}
-
-interface HeroProps extends EntityProps, React.Props<any> {
-
-}
-
-interface HeroPowerProps extends EntityProps, React.Props<any> {
-
+export interface EntityProps {
+	entity: Entity;
 }

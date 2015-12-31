@@ -2,14 +2,12 @@
 /// <reference path="../interfaces.d.ts"/>
 'use strict';
 
-namespace Joust.Components {
-
-	export class EndTurnButton extends React.Component<{}, {}> {
-		public render() {
-			return (
-				<button disabled={true}>End Turn</button>
-			);
-		}
+class EndTurnButton extends React.Component<{}, {}> {
+	public render() {
+		return (
+			<button disabled={true}>End Turn</button>
+		);
 	}
-
 }
+
+export = EndTurnButton;

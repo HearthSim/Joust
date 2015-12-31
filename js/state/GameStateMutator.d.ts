@@ -1,9 +1,11 @@
-declare namespace Joust.State {
-	interface ApplyTo {
-		(state:GameState) : GameState;
-	}
+import GameState = require('./GameState');
 
-	export interface GameStateMutator {
-		applyTo: ApplyTo;
-	}
+interface ApplyTo {
+	(state:GameState) : GameState;
 }
+
+interface GameStateMutator {
+	applyTo: ApplyTo;
+}
+
+export = GameStateMutator;

@@ -2,34 +2,45 @@
 /// <reference path="../interfaces.d.ts"/>
 'use strict';
 
-namespace Joust.Components {
-	export class Player extends React.Component<PlayerProps, {}> {
+import PlayerEntity = require('../Player');
+import Entity = require('../Entity');
+import EntityList = require('./EntityList');
+import Hero = require('./Hero');
+import HeroPower = require('./HeroPower');
 
-		public render() {
-			var hero = null;
-			var heroPower = null;
-			return (
-				<div>
-					<h1>Player</h1>
-					<Hero entity={hero}/>
-					<HeroPower entity={heroPower}/>
-					<h2>Play</h2>
-					<EntityList entities={this.props.entities.get(1)}/>
-					<h2>Deck</h2>
-					<EntityList entities={this.props.entities.get(2)}/>
-					<h2>Hand</h2>
-					<EntityList entities={this.props.entities.get(3)}/>
-					<h2>Secrets</h2>
-					<EntityList entities={this.props.entities.get(7)}/>
-				</div>
-			);
-		}
+interface PlayerProps extends React.Props<any> {
+	player: PlayerEntity,
+	entities: Immutable.Map<number, Immutable.Map<number, Entity>>;
+}
 
-		public shouldComponentUpdate(nextProps:PlayerProps, nextState) {
-			return (
-				this.props.player !== nextProps.player ||
-				this.props.entities !== nextProps.entities
-			);
-		}
+class Player extends React.Component<PlayerProps, {}> {
+
+	public render() {
+		var hero = null;
+		var heroPower = null;
+		return (
+			<div>
+				<h1>Player</h1>
+				<Hero entity={hero}/>
+				<HeroPower entity={heroPower}/>
+				<h2>Play</h2>
+				<EntityList entities={this.props.entities.get(1)}/>
+				<h2>Deck</h2>
+				<EntityList entities={this.props.entities.get(2)}/>
+				<h2>Hand</h2>
+				<EntityList entities={this.props.entities.get(3)}/>
+				<h2>Secrets</h2>
+				<EntityList entities={this.props.entities.get(7)}/>
+			</div>
+		);
+	}
+
+	public shouldComponentUpdate(nextProps:PlayerProps, nextState) {
+		return (
+			this.props.player !== nextProps.player ||
+			this.props.entities !== nextProps.entities
+		);
 	}
 }
+
+export = Player;

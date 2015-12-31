@@ -1,7 +1,10 @@
 'use strict';
 
-namespace Joust.State.Mutators {
-	export class ReplaceEntityMutator implements GameStateMutator {
+import GameState = require('../GameState');
+import GameStateMutator = require('../GameStateMutator');
+import Entity = require('../../Entity');
+
+class ReplaceEntityMutator implements GameStateMutator {
 		constructor(public entity:Entity) {
 		}
 
@@ -36,5 +39,6 @@ namespace Joust.State.Mutators {
 
 			return new GameState(entities, entityTree, state.getOptions());
 		}
-	}
 }
+
+export = ReplaceEntityMutator;

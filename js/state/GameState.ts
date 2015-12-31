@@ -2,32 +2,36 @@
 /// <reference path="./GameStateMutator.d.ts"/>
 'use strict';
 
-namespace Joust.State {
-	export class GameState {
+import Entity = require('../Entity');
+import Option = require('../Option');
+import GameStateMutator = require('./GameStateMutator');
 
-		constructor(protected entities:Immutable.Map<number, Entity>,
-					protected entityTree:Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Entity>>>,
-					protected options:Immutable.Map<number, Option>) {
-		}
+class GameState {
 
-		public getEntity(id:number) {
-			return this.entities.get(id);
-		}
+	constructor(protected entities:Immutable.Map<number, Entity>,
+				protected entityTree:Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Entity>>>,
+				protected options:Immutable.Map<number, Option>) {
+	}
 
-		public getEntities():Immutable.Map<number, Entity> {
-			return this.entities;
-		}
+	public getEntity(id:number) {
+		return this.entities.get(id);
+	}
 
-		public getEntityTree():Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Entity>>> {
-			return this.entityTree;
-		}
+	public getEntities():Immutable.Map<number, Entity> {
+		return this.entities;
+	}
 
-		public getOptions():Immutable.Map<number, Option> {
-			return this.options;
-		}
+	public getEntityTree():Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Entity>>> {
+		return this.entityTree;
+	}
 
-		public apply(mutator:GameStateMutator):GameState {
-			return mutator.applyTo(this);
-		}
+	public getOptions():Immutable.Map<number, Option> {
+		return this.options;
+	}
+
+	public apply(mutator:GameStateMutator):GameState {
+		return mutator.applyTo(this);
 	}
 }
+
+export = GameState;

@@ -2,10 +2,16 @@
 /// <reference path="../interfaces.d.ts"/>
 'use strict';
 
-namespace Joust.Components {
-	export class HeroPower extends React.Component<HeroPowerProps, {}> {
-		public render() {
-			return <p>HeroPower</p>;
-		}
+import {EntityProps} from "../interfaces";
+
+interface HeroPowerProps extends EntityProps, React.Props<any> {
+
+}
+
+class HeroPower extends React.Component<HeroPowerProps, {}> {
+	public render() {
+		return <p>HeroPower</p>;
 	}
 }
+
+export = HeroPower;
