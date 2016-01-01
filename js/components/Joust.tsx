@@ -63,7 +63,6 @@ class Joust extends React.Component<{}, JoustState> {
 
 		var filterByCardType = function (cardType:number) {
 			return function (entity:Entity):boolean {
-				//if(entity) console.log(entity.getCardType());
 				return !!entity && entity.getCardType() === cardType;
 			};
 		};

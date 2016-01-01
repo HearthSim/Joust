@@ -1,26 +1,20 @@
+/// <reference path="../../typings/react/react-global.d.ts"/>
 'use strict';
 
-import EntityList = require('./EntityList');
-import Minion = require('./Minion');
+import {EntityProps} from "../interfaces";
 
-class Deck extends EntityList {
+interface MinionProps extends EntityProps, React.Props<any> {
+
+}
+
+class Minion extends React.Component<MinionProps, {}> {
 
 	public render() {
-		var elements = [];
-		if (this.props.entities) {
-			var entities = this.props.entities.sortBy(function (entity) {
-				return entity.getZonePosition();
-			});
-			entities.map(function (entity) {
-				return <Minion  key={entity.getId()} entity={entity}/>;
-			});
-		}
+		var entity = this.props.entity;
 		return (
-			<div>
-				{entities}
-			</div>
+			<span>Minion #{entity.getId()}</span>
 		);
 	}
 }
 
-export = Deck;
+export = Minion;

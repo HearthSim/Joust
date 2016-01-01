@@ -6,7 +6,7 @@ import Player = require('./Player');
 import GameState = require('./state/GameState');
 
 export interface EntityListProps {
-	entities: Immutable.Map<number, Entity>;
+	entities: Immutable.Iterable<number, Entity>;
 }
 
 export interface EntityProps {
