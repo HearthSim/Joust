@@ -49,7 +49,7 @@ class HSReplayParser {
 			case 'Player':
 			case 'FullEntity':
 			case 'ShowEntity':
-				node.attributes.tags = {};
+				node.attributes.tags = Immutable.Map<number, number>();
 				break
 		}
 
@@ -89,7 +89,7 @@ class HSReplayParser {
 			case 'FullEntity':
 				var entity = new Entity(
 					+node.attributes.id,
-					Immutable.fromJS(node.attributes.tags),
+					node.attributes.tags,
 					node.attributes.cardID || null
 				);
 				mutator = new AddEntityMutator(entity);
@@ -97,7 +97,7 @@ class HSReplayParser {
 			case 'Player':
 				var player = new Player(
 					+node.attributes.id,
-					Immutable.fromJS(node.attributes.tags),
+					node.attributes.tags,
 					+node.attributes.playerID
 				);
 				mutator = new AddEntityMutator(player);
@@ -111,12 +111,12 @@ class HSReplayParser {
 					return;
 				}
 				entity = entity.setCardId(node.attributes.cardID || null);
-				entity = entity.setTags(Immutable.fromJS(node.attributes.tags));
+				entity = entity.setTags(node.attributes.tags);
 				mutator = new ReplaceEntityMutator(entity);
 				break;
 			case 'Tag':
 				var parent = this.nodeStack.pop();
-				parent.attributes.tags[+node.attributes.tag] = +node.attributes.value;
+				parent.attributes.tags = parent.attributes.tags.set(+node.attributes.tag, +node.attributes.value);
 				this.nodeStack.push(parent);
 				break;
 			case 'TagChange':
