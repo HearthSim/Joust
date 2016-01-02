@@ -2,5 +2,6 @@ node_modules
 typings
 
 css/**/*.css
+css/**/*.css.map
 js/**/*.js
 js/**/*.js.map
