@@ -38,17 +38,19 @@ html {
   width: 100%;
   z-index: 0;
 
+  max-width: (3 * 75px);
+
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
   flex-basis: 0;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
 
   padding: 10px 0;
-  margin: 0;
+  margin: 0 auto;
 
-  .card:hover {
+  .card.revealed:hover {
 	z-index: 1;
 	transform: scale(1.5) translate(0px, -20px);
 	transition: ease 0.1s;
@@ -56,29 +58,36 @@ html {
 
   > li {
 	height: 100%;
-	max-width: 100px;
-	flex-shrink: 0;
+	max-width: 10%;
+	flex-shrink: 1;
 	flex-grow: 1;
   }
 }
 
+.playable {
+  box-shadow: 0px 0px 20px #00ff00;
+}
+
+.player.top .hand .card.revealed:hover {
+  transform: scale(1.5) translate(0px, 20px);
+}
+
 .card {
-  position: relative;
-  left: 0;
   display: flex;
   flex-direction: column;
   border: black solid 1px;
   background-color: transparent;
-  border-radius: 7px;
+  border-radius: 5%;
   width: 75px;
   height: 100%;
   padding: 0;
+  background-color: beige;
+  margin-left: -100%;
 
   h1 {
-	font-size: 1em;
+	font-size: 0.8em;
 	text-align: center;
 	font-family: "Chancery URW";
-	background-color: papayawhip;
   }
 
   .description {
@@ -103,7 +112,6 @@ html {
   .health, .durability {
 	margin-right: -4px;
   }
-
 }
 
 .cost, .atk, .health, .durability {
@@ -160,6 +168,7 @@ html {
   border: solid 1px black;
   display: flex;
   flex-direction: column;
+  margin-bottom: 10px;
 }
 
 .weapon {
@@ -192,20 +201,26 @@ html {
 }
 
 .deck {
-  display: none;
-  align-self: flex-end;
-  -webkit-align-self: flex-end;
   width: 20px;
   height: 100%;
+  box-sizing: border-box;
+  float: right;
+  background-color: beige;
 
-  padding: 0;
   border: black solid 1px;
+  border-radius: 5px;
+
+  .fatigue {
+	background-color: darkorange;
+  }
 }
 
 .field {
   list-style-type: none;
   width: 100%;
   height: 30%;
+  margin: 0;
+  padding: 10px 0;
 
   display: flex;
   flex-direction: row;
@@ -214,13 +229,11 @@ html {
   justify-content: center;
   align-items: center;
 
-  padding: 0;
-  margin: 0;
-
   > li {
 	flex-shrink: 0;
 	flex-grow: 0;
 	margin: 0 10px;
+	height: 100%;
 
 	> .minion {
 	  margin: 0 auto;
@@ -259,7 +272,7 @@ html {
   display: inline-block;
   border: black solid 1px;
   width: 60px;
-  height: 80px;
+  height: 100%;
   border-radius: 50%;
 
   display: flex;
@@ -270,18 +283,29 @@ html {
   margin: 0 15px;
   width: 70px;
   height: 100%;
-  border-top-left-radius: 50%;
-  border-top-right-radius: 50%;
+  border-radius: 60% 60% 0 0 / 70% 70% 0 0;
   border: solid black 1px;
   display: flex;
   flex-direction: column;
+
+  .atk, .health {
+	margin-bottom: -4px;
+  }
+
+  .atk {
+	margin-left: -4px;
+  }
+
+  .health {
+	margin-right: -4px;
+  }
 }
 
 .no-entity {
   visibility: hidden;
 }
 
-.card, .hero, .minion, .secret {
+.card, .hero, .heroPower, .minion, .secret, .weapon {
   user-select: none;
   -webkit-user-select: none;
   cursor: default;
@@ -290,8 +314,46 @@ html {
 .equipment {
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-between;
   align-items: flex-end;
   padding: 10px 0;
   height: 30%;
+  width: 100%;
+  margin: 0 auto;
+
+  .name {
+	font-family: sans-serif;
+	color: white;
+	font-size: 0.8em;
+	text-shadow: 0px 0px 1px black;
+	height: 2.5em;
+	padding: 0 20px 0 10px;
+	text-align: left;
+	line-height: 2.5em;
+	background-color: rgba(0, 0, 0, 0.5);
+	align-self: center;
+	border-radius: 0 20% 20% 0 / 0 50% 50% 0;
+  }
+
+  .middle {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: flex-end;
+	flex-grow: 1;
+	height: 100%;
+  }
+
+  > div {
+	display: flex;
+	align-items: flex-end;
+	width: 33%;
+	flex-grow: 0;
+	height: 100%;
+
+	&:last-child {
+	  padding-right: 10px;
+	  justify-content: flex-end;
+	}
+  }
 }

@@ -36,11 +36,14 @@ class Joust extends React.Component<{}, JoustState> {
 	public componentDidMount() {
 		var tracker = new GameStateTracker();
 		this.tracker = tracker;
+
 		var hsreplay = new HSReplayParser(tracker);
 		hsreplay.parse('sample.hsreplay');
 		this.start = new Date().getTime();
-/*		var parser = new KettleParser(tracker);
+
+		/*var parser = new KettleParser(tracker);
 		parser.connect(9111, 'localhost');*/
+
 		setInterval(this.updateState.bind(this), 100);
 	}
 
@@ -58,7 +61,7 @@ class Joust extends React.Component<{}, JoustState> {
 		if (latest && history.has(latest)) {
 			this.setState({gameState: history.get(latest)});
 		}
-		//this.setState({gameState: this.tracker.getGameState()});
+//		this.setState({gameState: this.tracker.getGameState()});
 	}
 
 	public render() {

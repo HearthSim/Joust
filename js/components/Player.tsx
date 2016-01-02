@@ -39,6 +39,7 @@ class Player extends React.Component<PlayerProps, {}> {
 		var deck = <Deck entities={this.props.entities.get(2) || Immutable.Map<number, Entity>()}/>;
 		var hand = <Hand entities={this.props.entities.get(3) || Immutable.Map<number, Entity>()}/>;
 		var secrets = <Secrets entities={this.props.entities.get(7) || Immutable.Map<number, Entity>()}/>;
+		var name = <div className="name">{this.props.player.getName()}</div>;
 
 		var classNames = this.props.isTop ? 'player top' : 'player';
 
@@ -47,10 +48,17 @@ class Player extends React.Component<PlayerProps, {}> {
 				<div className={classNames}>
 					{hand}
 					<div className="equipment">
-						{weapon}
-						{hero}
-						{heroPower}
-						{deck}
+						<div>
+							{name}
+						</div>
+						<div className="middle">
+							{weapon}
+							{hero}
+							{heroPower}
+						</div>
+						<div>
+							{deck}
+						</div>
 					</div>
 					{field}
 				</div>
@@ -61,10 +69,17 @@ class Player extends React.Component<PlayerProps, {}> {
 				<div className={classNames}>
 					{field}
 					<div className="equipment">
-						{weapon}
-						{hero}
-						{heroPower}
-						{deck}
+						<div>
+							{name}
+						</div>
+						<div className="middle">
+							{weapon}
+							{hero}
+							{heroPower}
+						</div>
+						<div>
+							{deck}
+						</div>
 					</div>
 					{hand}
 				</div>

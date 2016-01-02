@@ -26,7 +26,7 @@ class Card extends React.Component<CardProps, {}> {
 			}
 
 			return (
-				<div className="card">
+				<div className="card revealed">
 					{cost}
 					<h1 style={{clear: "both"}}>
 						{entity.getCardId()}

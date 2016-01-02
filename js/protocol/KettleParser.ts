@@ -51,7 +51,8 @@ class KettleParser {
 					+packet.EntityID,
 					Immutable.Map<number, number>(packet.Tags),
 					+packet.PlayerID || +packet.EntityID, // default to EntityID until Kettle is changed
-					packet.CardID || null
+					packet.CardID || null,
+					'PlayerName'
 				);
 				console.log('adding player ' + (+packet.PlayerID || +packet.EntityID));
 				mutator = new AddEntityMutator(player);
@@ -60,7 +61,8 @@ class KettleParser {
 				mutator = new TagChangeMutator(
 					+packet.EntityID,
 					+packet.Tag,
-					+packet.Value);
+					+packet.Value
+				);
 				break;
 			default:
 				console.log('Unknown packet type ' + type);

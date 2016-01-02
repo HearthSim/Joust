@@ -98,7 +98,8 @@ class HSReplayParser {
 				var player = new Player(
 					+node.attributes.id,
 					node.attributes.tags,
-					+node.attributes.playerID
+					+node.attributes.playerID,
+					node.attributes.name
 				);
 				mutator = new AddEntityMutator(player);
 				break;

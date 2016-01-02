@@ -19,7 +19,7 @@ gulp.task('scripts', function () {
 gulp.task('styles', function () {
     gulp.src('./css/**/*.less')
         .pipe(sourcemaps.init())
-        .pipe(less({compress: true}))
+        .pipe(less({'strictMath': true}))
         .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest('./css'));
 });
