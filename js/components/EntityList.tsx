@@ -12,6 +12,10 @@ class EntityList extends React.Component<EntityListProps, {}> {
 		return (<span>Entity #{entity.getId()}{id}</span>);
 	}
 
+	protected className():string {
+		return 'entityList';
+	}
+
 	public render() {
 		var elements = [];
 		if (this.props.entities) {
@@ -19,11 +23,11 @@ class EntityList extends React.Component<EntityListProps, {}> {
 				return entity.getZonePosition();
 			});
 			entities.forEach(function (entity) {
-				elements.push(<li key={entity.getId()}>{this.renderEntity(entity)}</li>);
+				elements.push(<li key={entity.getId()}	>{this.renderEntity(entity)}</li>);
 			}.bind(this));
 		}
 		return (
-			<ul>
+			<ul className={this.className()}>
 				{elements}
 			</ul>
 		);

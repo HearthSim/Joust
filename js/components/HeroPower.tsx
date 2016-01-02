@@ -10,7 +10,16 @@ interface HeroPowerProps extends EntityProps, React.Props<any> {
 
 class HeroPower extends React.Component<HeroPowerProps, {}> {
 	public render() {
-		return <p>HeroPower</p>;
+		if (this.props.entity) {
+			return (
+				<div className="heroPower">
+					<div className="cost">{this.props.entity.getCost()}</div>
+				</div>
+			);
+		}
+		else {
+			return <div className="heroPower no-entity"></div>
+		}
 	}
 }
 

@@ -64,7 +64,7 @@ class HSReplayParser {
 			timestamp -= this.timeOffset;
 		}
 
-		if (timestamp && (this.nodeStack.length === this.gameDepth + 1)) {
+		if (timestamp/* && (this.nodeStack.length === this.gameDepth + 1)*/) {
 			this.stateTracker.mark(timestamp);
 		}
 	}

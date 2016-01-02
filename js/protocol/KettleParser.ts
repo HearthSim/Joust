@@ -6,9 +6,14 @@ import Entity = require('../Entity');
 import AddEntityMutator = require('../state/mutators/AddEntityMutator');
 import TagChangeMutator = require('../state/mutators/TagChangeMutator');
 import ReplaceEntityMutator = require('../state/mutators/ReplaceEntityMutator');
+import GameStateTracker = require('../state/GameStateTracker');
 
 class KettleParser {
 	private socket;
+
+	constructor(private tracker:GameStateTracker) {
+
+	}
 
 	public connect(port, host) {
 		var Socket = require('net').Socket;
@@ -45,9 +50,10 @@ class KettleParser {
 				var player = new Player(
 					+packet.EntityID,
 					Immutable.Map<number, number>(packet.Tags),
-					+packet.PlayerID || +packet.CardID, // default to CardID until Kettle is changed
+					+packet.PlayerID || +packet.EntityID, // default to EntityID until Kettle is changed
 					packet.CardID || null
 				);
+				console.log('adding player ' + (+packet.PlayerID || +packet.EntityID));
 				mutator = new AddEntityMutator(player);
 				break;
 			case 'TagChange':
@@ -61,7 +67,8 @@ class KettleParser {
 				break;
 		}
 		if (mutator) {
-			// todo: callback, GameStateTracker?
+			this.tracker.apply(mutator);
+			this.tracker.mark(new Date().getTime());
 		}
 	}
 

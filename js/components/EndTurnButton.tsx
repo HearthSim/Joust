@@ -5,7 +5,7 @@
 class EndTurnButton extends React.Component<{}, {}> {
 	public render() {
 		return (
-			<button disabled={true}>End Turn</button>
+			<button disabled={true} className="endTurnButton">End Turn</button>
 		);
 	}
 }

@@ -17,12 +17,32 @@ class Entity {
 		return this.cardId;
 	}
 
+	public getDamage():number {
+		return this.getTag(44);
+	}
+
+	public getHealth():number {
+		return this.getTag(45);
+	}
+
+	public getAtk():number {
+		return this.getTag(47);
+	}
+
+	public getCost():number {
+		return this.getTag(48);
+	}
+
 	public getZone():number {
 		return this.getTag(49);
 	}
 
-	public    getController():number {
+	public getController():number {
 		return this.getTag(50);
+	}
+
+	public getDurability():number {
+		return this.getTag(187);
 	}
 
 	public getCardType():number {

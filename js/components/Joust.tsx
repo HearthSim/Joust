@@ -13,6 +13,7 @@ import Option = require('../Option');
 import GameState= require('../state/GameState');
 import GameStateTracker = require('../state/GameStateTracker');
 import HSReplayParser = require('../protocol/HSReplayParser');
+import KettleParser = require('../protocol/KettleParser');
 
 interface JoustState {
 	gameState: GameState;
@@ -30,14 +31,16 @@ class Joust extends React.Component<{}, JoustState> {
 		};
 	}
 
-	private tracker;
+	private tracker:GameStateTracker;
 
 	public componentDidMount() {
 		var tracker = new GameStateTracker();
-		var hsreplay = new HSReplayParser(tracker);
 		this.tracker = tracker;
+		var hsreplay = new HSReplayParser(tracker);
 		hsreplay.parse('sample.hsreplay');
 		this.start = new Date().getTime();
+/*		var parser = new KettleParser(tracker);
+		parser.connect(9111, 'localhost');*/
 		setInterval(this.updateState.bind(this), 100);
 	}
 
@@ -48,13 +51,14 @@ class Joust extends React.Component<{}, JoustState> {
 		var latest = null;
 		var timeInGame = new Date().getTime() - this.start;
 		history.forEach(function (value, time) {
-			if (timeInGame >= +time && (latest === null || time > latest)) {
+			if (timeInGame >= +time/4 && (latest === null || time > latest)) {
 				latest = time;
 			}
 		});
-		if (latest && history.get(latest)) {
+		if (latest && history.has(latest)) {
 			this.setState({gameState: history.get(latest)});
 		}
+		//this.setState({gameState: this.tracker.getGameState()});
 	}
 
 	public render() {

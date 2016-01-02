@@ -10,6 +10,8 @@ import Hand = require('./Hand');
 import Hero = require('./Hero');
 import HeroPower = require('./HeroPower');
 import Field = require('./Field');
+import Weapon = require('./Weapon');
+import Secrets = require('./Secrets');
 
 interface PlayerProps extends React.Props<any> {
 	player: PlayerEntity;
@@ -26,33 +28,44 @@ class Player extends React.Component<PlayerProps, {}> {
 			};
 		};
 
-		var hero = <Hero entity={this.props.entities.get(1).filter(filterByCardType(3)).first()}/>;
-		var heroPower = <HeroPower entity={this.props.entities.get(1).filter(filterByCardType(10)).first()}/>;
-		var field = <Field entities={this.props.entities.get(1).filter(filterByCardType(4))}/>;
-		var deck = <Deck entities={this.props.entities.get(2)}/>;
-		var hand = <Hand entities={this.props.entities.get(3)}/>;
-		var secrets = <EntityList entities={this.props.entities.get(7)}/>;
+		var playEntities = this.props.entities.get(1) || Immutable.Map<number, Entity>();
+
+		/* Equipment */
+		var hero = <Hero entity={playEntities.filter(filterByCardType(3)).first()}/>;
+		var heroPower = <HeroPower entity={playEntities.filter(filterByCardType(10)).first()}/>;
+		var weapon = <Weapon entity={playEntities.filter(filterByCardType(7)).first()}/>;
+
+		var field = <Field entities={playEntities.filter(filterByCardType(4))}/>;
+		var deck = <Deck entities={this.props.entities.get(2) || Immutable.Map<number, Entity>()}/>;
+		var hand = <Hand entities={this.props.entities.get(3) || Immutable.Map<number, Entity>()}/>;
+		var secrets = <Secrets entities={this.props.entities.get(7) || Immutable.Map<number, Entity>()}/>;
+
+		var classNames = this.props.isTop ? 'player top' : 'player';
 
 		if (this.props.isTop) {
 			return (
-				<div>
+				<div className={classNames}>
 					{hand}
-					{deck}
-					{secrets}
-					{hero}
-					{heroPower}
+					<div className="equipment">
+						{weapon}
+						{hero}
+						{heroPower}
+						{deck}
+					</div>
 					{field}
 				</div>
 			);
 		}
 		else {
 			return (
-				<div>
+				<div className={classNames}>
 					{field}
-					{deck}
-					{secrets}
-					{hero}
-					{heroPower}
+					<div className="equipment">
+						{weapon}
+						{hero}
+						{heroPower}
+						{deck}
+					</div>
 					{hand}
 				</div>
 			);

@@ -23,7 +23,7 @@ class TwoPlayerGame extends React.Component<TwoPlayerGameProps, {}> {
 
 		var emptyEntities = Immutable.Map<number, Immutable.Map<number, Entity>>();
 		return (
-			<div>
+			<div className="game">
 				<Player player={player1 as PlayerEntity} isTop={true} entities={entities.get(player1.getPlayerId()) || emptyEntities}/>
 				<EndTurnButton/>
 				<Player player={player2 as PlayerEntity} isTop={false} entities={entities.get(player2.getPlayerId()) || emptyEntities}/>

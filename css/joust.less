@@ -1,0 +1,297 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+html {
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+#container {
+  width: 100%;
+  height: 100%;
+}
+
+.game {
+  background-color: beige;
+  width: 100%;
+  height: 100%;
+/*  display: flex;
+  flex-direction: column;*/
+}
+
+.player {
+  width: 100%;
+  height: 50%;
+}
+
+.hand {
+  list-style-type: none;
+  height: 40%;
+  width: 100%;
+  z-index: 0;
+
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  flex-basis: 0;
+  justify-content: center;
+  align-items: center;
+
+  padding: 10px 0;
+  margin: 0;
+
+  .card:hover {
+	z-index: 1;
+	transform: scale(1.5) translate(0px, -20px);
+	transition: ease 0.1s;
+  }
+
+  > li {
+	height: 100%;
+	max-width: 100px;
+	flex-shrink: 0;
+	flex-grow: 1;
+  }
+}
+
+.card {
+  position: relative;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  border: black solid 1px;
+  background-color: transparent;
+  border-radius: 7px;
+  width: 75px;
+  height: 100%;
+  padding: 0;
+
+  h1 {
+	font-size: 1em;
+	text-align: center;
+	font-family: "Chancery URW";
+	background-color: papayawhip;
+  }
+
+  .description {
+	font-family: sans-serif;
+	font-size: 0.8em;
+	margin: 0 4px;
+	text-align: center;
+  }
+
+  .cost {
+	margin: -4px 0 0 -4px;
+  }
+
+  .health, .durability, .atk {
+	margin-bottom: -4px;
+  }
+
+  .atk {
+	margin-left: -4px;
+  }
+
+  .health, .durability {
+	margin-right: -4px;
+  }
+
+}
+
+.cost, .atk, .health, .durability {
+  display: block;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  border-radius: 10px;
+  font-weight: bold;
+  border: black solid 1px;
+  color: white;
+  text-shadow: 0px 0px 2px black;
+  font-size: 1.2em;
+  line-height: 0.95em;
+  font-family: serif;
+}
+
+.atk {
+  background-color: #caab00;
+  float: left;
+}
+
+.health {
+  background-color: #ff6666;
+  float: right;
+}
+
+.health, .durability {
+  &.damaged {
+	color: #dd0000;
+  }
+}
+
+.cost {
+  color: white;
+  background-color: blue;
+  float: left;
+}
+
+.durability {
+  background-color: darkgray;
+  float: right;
+}
+
+.stats {
+  margin-top: auto;
+}
+
+.weapon, .heroPower {
+  float: left;
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  border: solid 1px black;
+  display: flex;
+  flex-direction: column;
+}
+
+.weapon {
+  float: left;
+}
+
+.heroPower {
+  float: right;
+
+  .cost {
+	float: none;
+	margin: -8px auto 0 auto;
+  }
+}
+
+.secret {
+  display: block;
+  width: 25px;
+  height: 25px;
+  text-align: center;
+  border-radius: 12.5px;
+  font-weight: bold;
+  background-color: white;
+  border: black solid 1px;
+}
+
+.endTurnButton {
+  float: right;
+  display: none;
+}
+
+.deck {
+  display: none;
+  align-self: flex-end;
+  -webkit-align-self: flex-end;
+  width: 20px;
+  height: 100%;
+
+  padding: 0;
+  border: black solid 1px;
+}
+
+.field {
+  list-style-type: none;
+  width: 100%;
+  height: 30%;
+
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  flex-basis: 0;
+  justify-content: center;
+  align-items: center;
+
+  padding: 0;
+  margin: 0;
+
+  > li {
+	flex-shrink: 0;
+	flex-grow: 0;
+	margin: 0 10px;
+
+	> .minion {
+	  margin: 0 auto;
+	}
+  }
+}
+
+.field-animation-enter {
+  opacity: 0.01;
+  width: 0;
+//  transform: translate(0px, -20px);
+
+  &.field-animation-enter-active {
+	opacity: 1;
+	width: 62px;
+//	transform: translate(0px, 0px);
+	transition-duration: 0.5s;
+	transition-timing-function: ease-out;
+  }
+}
+
+.field-animation-leave {
+  opacity: 1;
+  width: 62px;
+
+  &.field-animation-leave-active {
+	opacity: 0.01;
+	width: 0;
+	transition-duration: 0.5s;
+	transition-timing-function: ease-out;
+  }
+}
+
+
+.minion {
+  display: inline-block;
+  border: black solid 1px;
+  width: 60px;
+  height: 80px;
+  border-radius: 50%;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.hero {
+  margin: 0 15px;
+  width: 70px;
+  height: 100%;
+  border-top-left-radius: 50%;
+  border-top-right-radius: 50%;
+  border: solid black 1px;
+  display: flex;
+  flex-direction: column;
+}
+
+.no-entity {
+  visibility: hidden;
+}
+
+.card, .hero, .minion, .secret {
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: default;
+}
+
+.equipment {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-end;
+  padding: 10px 0;
+  height: 30%;
+}

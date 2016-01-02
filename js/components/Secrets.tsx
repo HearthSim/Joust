@@ -2,17 +2,17 @@
 
 import EntityList = require('./EntityList');
 import Entity = require('../Entity');
-import Card = require('./Card');
+import Secret = require('./Secret');
 
-class Hand extends EntityList {
+class Secrets extends EntityList {
 
 	protected className():string {
-		return 'hand';
+		return 'secrets';
 	}
 
 	protected renderEntity(entity:Entity) {
-		return (<Card entity={entity}/>);
+		return (<Secret entity={entity}/>);
 	}
 }
 
-export = Hand;
+export = Secrets;
