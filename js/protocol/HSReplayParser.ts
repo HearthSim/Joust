@@ -16,6 +16,7 @@ class HSReplayParser {
 	private nodeStack = [];
 	private timeOffset:number = null;
 	private lastTimestamp:number = null;
+	private complete:number = 0;
 
 	constructor(state:GameStateTracker) {
 		this.stateTracker = state;
@@ -41,8 +42,17 @@ class HSReplayParser {
 	private gameDepth:number = null;
 
 	private onOpenTag(node) {
+		if (this.complete === 2) {
+			return;
+		}
 		switch (node.name) {
 			case 'Game':
+				if (this.complete != 0) {
+					console.warn('Replay contains more than one game, ignoring');
+					this.complete = 2;
+					this.stream.close();
+					return;
+				}
 				this.gameDepth = +this.nodeStack.length + 1;
 				break;
 			case 'GameEntity':
@@ -50,7 +60,22 @@ class HSReplayParser {
 			case 'FullEntity':
 			case 'ShowEntity':
 				node.attributes.tags = Immutable.Map<number, number>();
-				break
+				break;
+			case 'HSReplay':
+				var version = node.attributes.version;
+				if (version) {
+					if (version != '1.0') {
+						console.warn('Unsupported HSReplay version', version, '(expected 1.0)');
+					}
+				}
+				else {
+					console.warn('Replay does not contain HSReplay version');
+				}
+				var build = node.attributes.build;
+				if (!build) {
+					console.warn('Replay does not contain Hearthstone build number');
+				}
+				break;
 		}
 
 		this.nodeStack.push(node);
@@ -70,12 +95,16 @@ class HSReplayParser {
 	}
 
 	private onCloseTag(name) {
+		if (this.complete === 2) {
+			return;
+		}
+
 		//console.debug(Array(this.nodeStack.length).join('\t') + '</' + name + '>');
 		var node = this.nodeStack.pop();
 
 		// sanity check for our stack
 		if (node.name !== name) {
-			console.error("Closing node did not match the opening node from stack");
+			console.error('Closing node did not match the opening node from stack');
 			return;
 		}
 
@@ -84,6 +113,7 @@ class HSReplayParser {
 			case 'Game':
 				// we're done here
 				this.stateTracker.markGameComplete();
+				this.complete = 1;
 				break;
 			case 'GameEntity':
 			case 'FullEntity':
@@ -114,6 +144,13 @@ class HSReplayParser {
 				entity = entity.setCardId(node.attributes.cardID || null);
 				entity = entity.setTags(node.attributes.tags);
 				mutator = new ReplaceEntityMutator(entity);
+				break;
+			case 'HideEntity':
+				mutator = new TagChangeMutator(
+					+node.attributes.entity,
+					49, // zone
+					+node.attributes.zone
+				);
 				break;
 			case 'Tag':
 				var parent = this.nodeStack.pop();
