@@ -108,12 +108,12 @@ class KettleParser {
 			CreateGame: {
 				Players: [
 					{
-						Name: 'BlackTea1',
+						Name: 'Player 1',
 						Cards: portals.toJS(),
 						Hero: 'HERO_08'
 					},
 					{
-						Name: 'BlackTea2',
+						Name: 'Player 2',
 						Cards: webspinners.toJS(),
 						Hero: 'HERO_05'
 					}
