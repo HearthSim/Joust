@@ -4,6 +4,7 @@
 
 import PlayerEntity = require('../Player');
 import Entity = require('../Entity');
+import Option = require('../Option');
 import EntityList = require('./EntityList');
 import Deck = require('./Deck');
 import Hand = require('./Hand');
@@ -16,6 +17,7 @@ import Secrets = require('./Secrets');
 interface PlayerProps extends React.Props<any> {
 	player: PlayerEntity;
 	entities: Immutable.Map<number, Immutable.Map<number, Entity>>;
+	options: Immutable.Map<number, Immutable.Map<number, Option>>;
 	isTop: boolean;
 }
 
@@ -28,18 +30,29 @@ class Player extends React.Component<PlayerProps, {}> {
 			};
 		};
 
+		var emptyEntities = Immutable.Map<number, Entity>();
+		var emptyOptions = Immutable.Map<number, Option>();
+
 		var playEntities = this.props.entities.get(1) || Immutable.Map<number, Entity>();
+		var playOptions = this.props.options.get(1) || Immutable.Map<number, Option>();
 
 		/* Equipment */
-		var hero = <Hero entity={playEntities.filter(filterByCardType(3)).first()}/>;
-		var heroPower = <HeroPower entity={playEntities.filter(filterByCardType(10)).first()}/>;
+		var heroEntity = playEntities.filter(filterByCardType(3)).first();
+		var hero = <Hero entity={heroEntity}
+						 option={heroEntity ? playOptions.get(heroEntity.getId()) : null}/>;
+		var heroPowerEntity = playEntities.filter(filterByCardType(10)).first();
+		var heroPower = <HeroPower entity={heroPowerEntity}
+								   option={heroPowerEntity ? playOptions.get(heroPowerEntity.getId()) : null}/>;
 		var weapon = <Weapon entity={playEntities.filter(filterByCardType(7)).first()}/>;
 
-		var field = <Field entities={playEntities.filter(filterByCardType(4))}/>;
-		var deck = <Deck entities={this.props.entities.get(2) || Immutable.Map<number, Entity>()}/>;
-		var hand = <Hand entities={this.props.entities.get(3) || Immutable.Map<number, Entity>()}/>;
+		var field = <Field entities={playEntities.filter(filterByCardType(4)) || emptyEntities}
+						   options={playOptions || emptyOptions}/>;
+		var deck = <Deck entities={this.props.entities.get(2) || emptyEntities}
+						 options={this.props.options.get(2) || emptyOptions}/>;
+		var hand = <Hand entities={this.props.entities.get(3) || emptyEntities}
+						 options={this.props.options.get(3) || emptyOptions}/>;
 		var secrets = <Secrets entities={this.props.entities.get(7) || Immutable.Map<number, Entity>()}/>;
-		var name = <div className="name">{this.props.player.getName()}</div>;
+		var name = this.props.player.getName() ? <div className="name">{this.props.player.getName()}</div> : null;
 
 		var classNames = this.props.isTop ? 'player top' : 'player';
 
@@ -90,7 +103,8 @@ class Player extends React.Component<PlayerProps, {}> {
 	public shouldComponentUpdate(nextProps:PlayerProps, nextState) {
 		return (
 			this.props.player !== nextProps.player ||
-			this.props.entities !== nextProps.entities
+			this.props.entities !== nextProps.entities ||
+			this.props.options !== nextProps.options
 		);
 	}
 }

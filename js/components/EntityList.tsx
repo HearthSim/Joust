@@ -4,10 +4,11 @@
 
 import {EntityListProps} from "../interfaces";
 import Entity = require('../Entity');
+import Option = require('../Option');
 
 class EntityList extends React.Component<EntityListProps, {}> {
 
-	protected renderEntity(entity:Entity) {
+	protected renderEntity(entity:Entity, option:Option) {
 		var id = entity.getCardId() ? (' (CardID=' + entity.getCardId() + ')') : '';
 		return (<span>Entity #{entity.getId()}{id}</span>);
 	}
@@ -23,7 +24,10 @@ class EntityList extends React.Component<EntityListProps, {}> {
 				return entity.getZonePosition();
 			});
 			entities.forEach(function (entity) {
-				elements.push(<li key={entity.getId()}	>{this.renderEntity(entity)}</li>);
+				elements.push(
+					<li key={entity.getId()}>
+						{this.renderEntity(entity, this.props.options.get(entity.getId()))}
+					</li>);
 			}.bind(this));
 		}
 		return (
@@ -35,7 +39,8 @@ class EntityList extends React.Component<EntityListProps, {}> {
 
 	public shouldComponentUpdate(nextProps:EntityListProps, nextState) {
 		return (
-			this.props.entities !== nextProps.entities
+			this.props.entities !== nextProps.entities ||
+			this.props.options !== nextProps.options
 		);
 	}
 }

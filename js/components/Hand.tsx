@@ -2,6 +2,7 @@
 
 import EntityList = require('./EntityList');
 import Entity = require('../Entity');
+import Option = require('../Option');
 import Card = require('./Card');
 
 class Hand extends EntityList {
@@ -10,8 +11,8 @@ class Hand extends EntityList {
 		return 'hand';
 	}
 
-	protected renderEntity(entity:Entity) {
-		return (<Card entity={entity}/>);
+	protected renderEntity(entity:Entity, option:Option) {
+		return (<Card entity={entity} option={option} />);
 	}
 }
 

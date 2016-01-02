@@ -2,15 +2,16 @@
 /// <reference path="../interfaces.d.ts"/>
 'use strict';
 
-import {EntityProps} from "../interfaces";
+import {EntityProps, OptionProps} from "../interfaces";
 
-interface HeroProps extends EntityProps, React.Props<any> {
+interface HeroProps extends EntityProps, OptionProps, React.Props<any> {
 
 }
 
 class Hero extends React.Component<HeroProps, {}> {
 	public render() {
 		if (this.props.entity) {
+			var classNames = this.props.option ? 'hero playable' : 'hero';
 			var health = null;
 			var atk = null;
 			if (this.props.entity.getAtk()) {
@@ -20,7 +21,7 @@ class Hero extends React.Component<HeroProps, {}> {
 			var healthClasses = this.props.entity.getDamage() > 0 ? 'health damaged' : 'health';
 			health = <div className={healthClasses}>{currentHealth}</div>;
 			return (
-				<div className="hero">
+				<div className={classNames}>
 					<div className="stats">
 						{atk}
 						{health}

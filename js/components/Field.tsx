@@ -3,6 +3,7 @@
 
 import EntityList = require('./EntityList');
 import Entity = require('../Entity');
+import Option = require('../Option');
 import Minion = require('./Minion');
 import ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 
@@ -19,7 +20,7 @@ class Field extends EntityList {
 				return entity.getZonePosition();
 			});
 			entities.forEach(function (entity) {
-				elements.push(<li key={entity.getId()}	>{this.renderEntity(entity)}</li>);
+				elements.push(<li key={entity.getId()}	>{this.renderEntity(entity, this.props.options.get(entity.getId()))}</li>);
 			}.bind(this));
 		}
 		return (
@@ -32,8 +33,8 @@ class Field extends EntityList {
 		);
 	}
 
-	protected renderEntity(entity:Entity) {
-		return (<Minion entity={entity}/>);
+	protected renderEntity(entity:Entity, option:Option) {
+		return (<Minion entity={entity} option={option}/>);
 	}
 }
 

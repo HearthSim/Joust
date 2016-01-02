@@ -64,7 +64,7 @@ html {
   }
 }
 
-.playable {
+.playable, .endTurnButton > button:not(:disabled)  {
   box-shadow: 0px 0px 20px #00ff00;
 }
 
@@ -196,8 +196,19 @@ html {
 }
 
 .endTurnButton {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 10px;
+  width: 100%;
+  height: 0px;
   float: right;
-  display: none;
+
+  button {
+	float: right;
+	height: 25px;
+
+  }
 }
 
 .deck {
@@ -210,7 +221,7 @@ html {
   border: black solid 1px;
   border-radius: 5px;
 
-  .fatigue {
+  &.fatigue {
 	background-color: darkorange;
   }
 }
@@ -219,7 +230,7 @@ html {
   list-style-type: none;
   width: 100%;
   height: 30%;
-  margin: 0;
+  margin: 0 auto;
   padding: 10px 0;
 
   display: flex;

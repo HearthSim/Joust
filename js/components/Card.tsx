@@ -1,9 +1,9 @@
 /// <reference path="../../typings/react/react-global.d.ts"/>
 'use strict';
 
-import {EntityProps} from "../interfaces";
+import {EntityProps, OptionProps} from "../interfaces";
 
-interface CardProps extends EntityProps, React.Props<any> {
+interface CardProps extends EntityProps, OptionProps, React.Props<any> {
 
 }
 
@@ -12,6 +12,10 @@ class Card extends React.Component<CardProps, {}> {
 	public render() {
 		var entity = this.props.entity;
 		if (entity.getCardId() !== null) {
+			var classNames = ['card', 'revealed'];
+			if(this.props.option) {
+				classNames.push('playable');
+			}
 			var cost = <div className="cost">{entity.getCost()}</div>;
 			var stats = null;
 			if (entity.getCardType() === 4) {
@@ -26,7 +30,7 @@ class Card extends React.Component<CardProps, {}> {
 			}
 
 			return (
-				<div className="card revealed">
+				<div className={classNames.join(' ')}>
 					{cost}
 					<h1 style={{clear: "both"}}>
 						{entity.getCardId()}

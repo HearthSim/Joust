@@ -9,6 +9,9 @@ import GameStateTracker = require('../state/GameStateTracker');
 import AddEntityMutator = require('../state/mutators/AddEntityMutator');
 import TagChangeMutator = require('../state/mutators/TagChangeMutator');
 import ReplaceEntityMutator = require('../state/mutators/ReplaceEntityMutator');
+import SetOptionsMutator = require('../state/mutators/SetOptionsMutator');
+import ClearOptionsMutator = require('../state/mutators/ClearOptionsMutator');
+import Option = require('../Option');
 
 class HSReplayParser {
 	private stream:ReadStream;
@@ -61,6 +64,9 @@ class HSReplayParser {
 			case 'ShowEntity':
 				node.attributes.tags = Immutable.Map<number, number>();
 				break;
+			case 'Options':
+				node.attributes.options = Immutable.Map<number, Option>();
+				break;
 			case 'HSReplay':
 				var version = node.attributes.version;
 				if (version) {
@@ -79,19 +85,6 @@ class HSReplayParser {
 		}
 
 		this.nodeStack.push(node);
-		//console.debug(Array(this.nodeStack.length).join('\t') + '<' + node.name + '>');
-
-		var timestamp = node.attributes.ts && this.parseTimestamp(node.attributes.ts) || null;
-		if (timestamp !== null) {
-			if (this.timeOffset === null) {
-				this.timeOffset = timestamp;
-			}
-			timestamp -= this.timeOffset;
-		}
-
-		if (timestamp/* && (this.nodeStack.length === this.gameDepth + 1)*/) {
-			this.stateTracker.mark(timestamp);
-		}
 	}
 
 	private onCloseTag(name) {
@@ -164,10 +157,40 @@ class HSReplayParser {
 					+node.attributes.value
 				);
 				break;
+			case 'Option':
+				var parent = this.nodeStack.pop();
+				var option = new Option(
+					+node.attributes.index,
+					+node.attributes.type,
+					+node.attributes.entity || null
+				);
+				parent.attributes.options = parent.attributes.options.set(+node.attributes.index, option);
+				this.nodeStack.push(parent);
+				break;
+			case 'Options':
+				mutator = new SetOptionsMutator(node.attributes.options);
+				break;
+			case 'SendOption':
+				mutator = new ClearOptionsMutator();
+				break;
 		}
 
 		if (mutator !== null) {
 			this.stateTracker.apply(mutator);
+		}
+
+		//console.debug(Array(this.nodeStack.length).join('\t') + '<' + node.name + '>');
+
+		var timestamp = node.attributes.ts && this.parseTimestamp(node.attributes.ts) || null;
+		if (timestamp !== null) {
+			if (this.timeOffset === null) {
+				this.timeOffset = timestamp;
+			}
+			timestamp -= this.timeOffset;
+		}
+
+		if (timestamp/* && (this.nodeStack.length === this.gameDepth + 1)*/) {
+			this.stateTracker.mark(timestamp);
 		}
 	}
 }

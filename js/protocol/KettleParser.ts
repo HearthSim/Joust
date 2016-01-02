@@ -1,11 +1,12 @@
-/// <reference path="../../typings/sax/sax.d.ts"/>
 'use strict';
 
 import Player = require('../Player');
 import Entity = require('../Entity');
+import Option = require('../Option');
 import AddEntityMutator = require('../state/mutators/AddEntityMutator');
 import TagChangeMutator = require('../state/mutators/TagChangeMutator');
 import ReplaceEntityMutator = require('../state/mutators/ReplaceEntityMutator');
+import SetOptionsMutator = require('../state/mutators/SetOptionsMutator');
 import GameStateTracker = require('../state/GameStateTracker');
 
 class KettleParser {
@@ -54,7 +55,6 @@ class KettleParser {
 					packet.CardID || null,
 					'PlayerName'
 				);
-				console.log('adding player ' + (+packet.PlayerID || +packet.EntityID));
 				mutator = new AddEntityMutator(player);
 				break;
 			case 'TagChange':
@@ -63,6 +63,20 @@ class KettleParser {
 					+packet.Tag,
 					+packet.Value
 				);
+				break;
+			case 'Options':
+				var options = Immutable.Map<number, Option>();
+				options = options.withMutations(function (map) {
+					packet.forEach(function(optionObject:any, index:number) {
+						var option = new Option(
+							index,
+							optionObject.Type,
+							optionObject.MainOption ? optionObject.MainOption.ID : null
+						);
+						map = map.set(index, option);
+					});
+				});
+				mutator = new SetOptionsMutator(options);
 				break;
 			default:
 				console.log('Unknown packet type ' + type);
@@ -106,6 +120,15 @@ class KettleParser {
 				]
 			}
 		}]);
+	}
+
+	public sendOption(option:Option) {
+		this.sendPacket({
+			Type: 'SendOption',
+			SendOption: {
+				Index: option.getIndex()
+			}
+		});
 	}
 
 	private sendPacket(packet) {

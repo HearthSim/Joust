@@ -47,6 +47,8 @@
     "state/mutators/AddEntityMutator.ts",
     "state/mutators/TagChangeMutator.ts",
     "state/mutators/ReplaceEntityMutator.ts",
+    "state/mutators/ClearOptionsMutator.ts",
+    "state/mutators/SetOptionsMutator.ts",
     "protocol/KettleParser.ts",
     "protocol/HSReplayParser.ts"
   ],

@@ -2,10 +2,18 @@
 /// <reference path="../interfaces.d.ts"/>
 'use strict';
 
-class EndTurnButton extends React.Component<{}, {}> {
+import {OptionProps} from "../interfaces";
+
+interface EndTurnButtonProps extends OptionProps, React.Props<any> {
+	callback;
+}
+
+class EndTurnButton extends React.Component<EndTurnButtonProps, {}> {
 	public render() {
 		return (
-			<button disabled={true} className="endTurnButton">End Turn</button>
+			<div className="endTurnButton">
+				<button disabled={!this.props.option} onClick={this.props.callback}>End Turn</button>
+			</div>
 		);
 	}
 }
