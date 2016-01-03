@@ -1,5 +1,6 @@
 /// <reference path="../../typings/react/react.d.ts"/>
 /// <reference path="../interfaces.d.ts"/>
+import {OptionCallbackProps} from "../interfaces";
 'use strict';
 
 import React = require('react');
@@ -16,7 +17,7 @@ import Field = require('./Field');
 import Weapon = require('./Weapon');
 import Secrets = require('./Secrets');
 
-interface PlayerProps extends React.Props<any> {
+interface PlayerProps extends OptionCallbackProps, React.Props<any> {
 	player: PlayerEntity;
 	entities: Immutable.Map<number, Immutable.Map<number, Entity>>;
 	options: Immutable.Map<number, Immutable.Map<number, Option>>;
@@ -45,7 +46,8 @@ class Player extends React.Component<PlayerProps, {}> {
 						 secrets={this.props.entities.get(7) || Immutable.Map<number, Entity>()}/>;
 		var heroPowerEntity = playEntities.filter(filterByCardType(10)).first();
 		var heroPower = <HeroPower entity={heroPowerEntity}
-								   option={heroPowerEntity ? playOptions.get(heroPowerEntity.getId()) : null}/>;
+								   option={heroPowerEntity ? playOptions.get(heroPowerEntity.getId()) : null}
+								   optionCallback={this.props.optionCallback}/>;
 		var weapon = <Weapon entity={playEntities.filter(filterByCardType(7)).first()}/>;
 
 		var field = <Field entities={playEntities.filter(filterByCardType(4)) || emptyEntities}
@@ -53,7 +55,8 @@ class Player extends React.Component<PlayerProps, {}> {
 		var deck = <Deck entities={this.props.entities.get(2) || emptyEntities}
 						 options={this.props.options.get(2) || emptyOptions}/>;
 		var hand = <Hand entities={this.props.entities.get(3) || emptyEntities}
-						 options={this.props.options.get(3) || emptyOptions}/>;
+						 options={this.props.options.get(3) || emptyOptions}
+						 optionCallback={this.props.optionCallback}/>;
 		var name = this.props.player.getName() ? <div className="name">{this.props.player.getName()}</div> : null;
 
 		var classNames = this.props.isTop ? 'player top' : 'player';
@@ -106,7 +109,8 @@ class Player extends React.Component<PlayerProps, {}> {
 		return (
 			this.props.player !== nextProps.player ||
 			this.props.entities !== nextProps.entities ||
-			this.props.options !== nextProps.options
+			this.props.options !== nextProps.options ||
+			this.props.optionCallback !== nextProps.optionCallback
 		);
 	}
 }

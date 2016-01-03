@@ -62,10 +62,10 @@ class HSReplayParser {
 			case 'Player':
 			case 'FullEntity':
 			case 'ShowEntity':
-				node.attributes.tags = Immutable.Map<number, number>();
+				node.attributes.tags = Immutable.Map<string, number>();
 				break;
 			case 'Options':
-				node.attributes.options = Immutable.Map<number, Option>();
+				node.attributes.options = Immutable.Map<string, Option>();
 				break;
 			case 'HSReplay':
 				var version = node.attributes.version;
@@ -126,7 +126,6 @@ class HSReplayParser {
 				);
 				mutator = new AddEntityMutator(player);
 				break;
-				break;
 			case 'ShowEntity':
 				var state = this.stateTracker.getGameState();
 				var entity = state.getEntity(+node.attributes.entity);
@@ -141,19 +140,19 @@ class HSReplayParser {
 			case 'HideEntity':
 				mutator = new TagChangeMutator(
 					+node.attributes.entity,
-					49, // zone
+					'49', // zone
 					+node.attributes.zone
 				);
 				break;
 			case 'Tag':
 				var parent = this.nodeStack.pop();
-				parent.attributes.tags = parent.attributes.tags.set(+node.attributes.tag, +node.attributes.value);
+				parent.attributes.tags = parent.attributes.tags.set('' + node.attributes.tag, +node.attributes.value);
 				this.nodeStack.push(parent);
 				break;
 			case 'TagChange':
 				mutator = new TagChangeMutator(
 					+node.attributes.entity,
-					+node.attributes.tag,
+					'' + node.attributes.tag,
 					+node.attributes.value
 				);
 				break;
@@ -164,7 +163,7 @@ class HSReplayParser {
 					+node.attributes.type,
 					+node.attributes.entity || null
 				);
-				parent.attributes.options = parent.attributes.options.set(+node.attributes.index, option);
+				parent.attributes.options = parent.attributes.options.set('' + node.attributes.index, option);
 				this.nodeStack.push(parent);
 				break;
 			case 'Options':

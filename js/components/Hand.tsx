@@ -14,7 +14,7 @@ class Hand extends EntityList {
 	}
 
 	protected renderEntity(entity:Entity, option:Option) {
-		return (<Card entity={entity} option={option} />);
+		return (<Card entity={entity} option={option} optionCallback={this.props.optionCallback} />);
 	}
 }
 

@@ -7,7 +7,7 @@ class Player extends Entity {
 	protected name:string;
 	protected playerId:number;
 
-	constructor(id:number, tags:Immutable.Map<number, number>, playerId:number, name:string, cardId?:string) {
+	constructor(id:number, tags:Immutable.Map<string, number>, playerId:number, name:string, cardId?:string) {
 		super(id, tags, cardId);
 		this.playerId = playerId;
 		this.name = name;

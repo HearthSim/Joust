@@ -2,7 +2,7 @@
 'use strict';
 
 class Entity {
-	constructor(protected id:number, protected tags:Immutable.Map<number, number>, protected cardId?:string) {
+	constructor(protected id:number, protected tags:Immutable.Map<string, number>, protected cardId?:string) {
 	}
 
 	protected factory(tags, cardId):Entity {
@@ -15,6 +15,10 @@ class Entity {
 
 	public getCardId():string {
 		return this.cardId;
+	}
+
+	public isExhausted():boolean {
+		return this.getTag(43) > 0;
 	}
 
 	public getDamage():number {
@@ -57,11 +61,17 @@ class Entity {
 		return this.getTag(263);
 	}
 
-	public getTag(key:number) {
-		return this.tags ? (this.tags.toJS()[key] || 0) : 0;
+	public isPoweredUp():boolean {
+		return this.getTag(386) > 0;
 	}
 
-	public setTag(key:number, value:number):Entity {
+	public getTag(key:number|string):number {
+		return this.tags ? (+this.tags.get('' + key) || 0) : 0;
+	}
+
+	public setTag(key:string, value:number):Entity {
+		key = '' + key;
+		value = +value;
 		// verify parameters
 		if (key === null) {
 			console.warn('Cannot set invalid tag on entity #' + this.getId());
@@ -79,6 +89,9 @@ class Entity {
 				// set to 0 to ensure it is really deleted
 				map.set(key, 0).delete(key);
 			});
+			if (tags.has(key)) {
+				console.error('Entity could not remove tag ' + key + ' (it is still ' + tags.get(key) + ')');
+			}
 		}
 		else {
 			tags = tags.set(key, value);
@@ -96,7 +109,7 @@ class Entity {
 		return this.tags;
 	}
 
-	public setTags(tags:Immutable.Map<number, number>):Entity {
+	public setTags(tags:Immutable.Map<string, number>):Entity {
 		var mergedTags = this.tags.merge(tags);
 		if (mergedTags === this.tags) {
 			return this;

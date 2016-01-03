@@ -38,9 +38,7 @@ html {
 .hand {
   list-style-type: none;
   height: 40%;
-  width: 100%;
-
-  max-width: (3 * 75px);
+  width: 80%;
 
   display: flex;
   flex-direction: row;
@@ -59,6 +57,8 @@ html {
 	  z-index: 1;
 	  transform: scale(1.5) translate(0px, -20px);
 	}
+
+	margin: 0 auto;
   }
 
   > li {
@@ -68,6 +68,10 @@ html {
 	flex-grow: 1;
   }
 
+}
+
+.playable.powered-up {
+  box-shadow: 0px 0px 20px rgb(255, 200, 0);
 }
 
 .endTurnButton.playable > button {
@@ -92,7 +96,7 @@ html {
   border: black solid 1px;
   background-color: transparent;
   border-radius: 5%;
-  width: 75px;
+  width: 80px;
   height: 100%;
   padding: 0;
   background-color: beige;
@@ -102,11 +106,12 @@ html {
 	font-size: 0.8em;
 	text-align: center;
 	font-family: "Chancery URW";
+	margin: 0 0 10px 0;
   }
 
   .description {
 	font-family: sans-serif;
-	font-size: 0.8em;
+	font-size: 0.5em;
 	margin: 0 4px;
 	text-align: center;
   }
@@ -153,9 +158,12 @@ html {
   float: right;
 }
 
-.health, .durability {
-  &.damaged {
+.atk, .health, .durability, .cost {
+  &.negative {
 	color: #dd0000;
+  }
+  &.positive {
+	color: #29dd4f;
   }
 }
 
@@ -194,6 +202,10 @@ html {
   .cost {
 	float: none;
 	margin: -8px auto 0 auto;
+  }
+
+  &.exhausted {
+	background-color: #ccc;
   }
 }
 
@@ -310,9 +322,17 @@ html {
   width: 60px;
   height: 100%;
   border-radius: 50%;
+  padding-top: 20px;
 
   display: flex;
   flex-direction: column;
+
+  h1 {
+	font-size: 0.8em;
+	text-align: center;
+	font-family: "Chancery URW";
+	margin: 0 0 10px 0;
+  }
 }
 
 .hero {

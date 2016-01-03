@@ -60,16 +60,16 @@ class Joust extends React.Component<{}, JoustState> {
 
 	public updateState() {
 		var history = this.tracker.getHistory();
-		var latest = null;
-		var timeInGame = new Date().getTime() - this.start;
-		history.forEach(function (value, time) {
-			if (timeInGame >= +time / 8 && (latest === null || time > latest)) {
-				latest = time;
-			}
-		});
-		if (latest && history.has(latest)) {
-			this.setState({gameState: history.get(latest)});
-		}
+		 var latest = null;
+		 var timeInGame = new Date().getTime() - this.start;
+		 history.forEach(function (value, time) {
+		 if (timeInGame >= +time / 8 && (latest === null || time > latest)) {
+		 latest = time;
+		 }
+		 });
+		 if (latest && history.has(latest)) {
+		 this.setState({gameState: history.get(latest)});
+		 }
 		//this.setState({gameState: this.tracker.getGameState()});
 	}
 
@@ -86,6 +86,11 @@ class Joust extends React.Component<{}, JoustState> {
 		});
 
 		return optionTree;
+	}
+
+	protected optionCallback(option:Option) {
+		this.kettle.sendOption(option);
+		this.tracker.apply(new ClearOptionsMutator());
 	}
 
 	public render() {
@@ -110,10 +115,6 @@ class Joust extends React.Component<{}, JoustState> {
 		var endTurnOption = options.filter(function (option:Option):boolean {
 			return !!option && option.getType() === 2;
 		}).first();
-		var endTurnCallback = /*endTurnOption ? function () {
-			this.kettle.sendOption(endTurnOption);
-			this.tracker.apply(new ClearOptionsMutator());
-		}.bind(this) : */null;
 
 		// determine player count
 		var players = allEntities.filter(filterByCardType(2)) as Immutable.Map<number, Player>;
@@ -128,9 +129,9 @@ class Joust extends React.Component<{}, JoustState> {
 								   options={optionTree}
 								   entities={entityTree}
 								   endTurnOption={endTurnOption}
-								   endTurnCallback={endTurnCallback}
 					/>
 				);
+				// optionCallback={this.optionCallback.bind(this)}
 				break;
 			default:
 				return <p>Unsupported player count: {players.size}.</p>;

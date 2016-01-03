@@ -51,7 +51,10 @@
     "state/mutators/SetOptionsMutator.ts",
     "protocol/KettleParser.ts",
     "protocol/HSReplayParser.ts",
-    "metadata/HearthstoneJSON.ts"
+    "metadata/HearthstoneJSON.ts",
+    "components/stats/Attack.tsx",
+    "components/stats/Cost.tsx",
+    "components/stats/Health.tsx"
   ],
   "exclude": []
 }

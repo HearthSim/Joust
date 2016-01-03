@@ -4,20 +4,19 @@
 
 import React = require('react');
 
-import {EntityProps} from "../interfaces";
+import {EntityProps, OptionCallbackProps} from "../interfaces";
 import Entity = require('../Entity');
 import Player = require('./Player');
 import Option = require('../Option');
 import PlayerEntity = require('../Player');
 import EndTurnButton = require('./EndTurnButton');
 
-interface TwoPlayerGameProps extends EntityProps, React.Props<any> {
+interface TwoPlayerGameProps extends EntityProps, OptionCallbackProps, React.Props<any> {
 	player1: PlayerEntity;
 	player2: PlayerEntity;
 	entities: Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Entity>>>;
 	options: Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Option>>>;
 	endTurnOption?: Option;
-	endTurnCallback?;
 }
 
 class TwoPlayerGame extends React.Component<TwoPlayerGameProps, {}> {
@@ -35,12 +34,14 @@ class TwoPlayerGame extends React.Component<TwoPlayerGameProps, {}> {
 				<Player player={player1 as PlayerEntity} isTop={true}
 						entities={entities.get(player1.getPlayerId()) || emptyEntities}
 						options={options.get(player1.getPlayerId()) || emptyOptions}
+						optionCallback={this.props.optionCallback}
 				/>
 				<EndTurnButton option={this.props.endTurnOption}
-							   callback={this.props.endTurnCallback} onlyOption={options.count() === 0}/>
+							   optionCallback={this.props.optionCallback} onlyOption={options.count() === 0}/>
 				<Player player={player2 as PlayerEntity} isTop={false}
 						entities={entities.get(player2.getPlayerId()) || emptyEntities}
 						options={options.get(player2.getPlayerId()) || emptyOptions}
+						optionCallback={this.props.optionCallback}
 				/>
 			</div>
 		);
@@ -53,7 +54,7 @@ class TwoPlayerGame extends React.Component<TwoPlayerGameProps, {}> {
 			this.props.player2 !== nextProps.player2 ||
 			this.props.entities !== nextProps.entities ||
 			this.props.options !== nextProps.options ||
-			this.props.endTurnCallback !== nextProps.endTurnCallback
+			this.props.optionCallback !== nextProps.optionCallback
 		);
 	}
 }

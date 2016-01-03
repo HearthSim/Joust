@@ -43,7 +43,8 @@ class EntityList extends React.Component<EntityListProps, {}> {
 	public shouldComponentUpdate(nextProps:EntityListProps, nextState) {
 		return (
 			this.props.entities !== nextProps.entities ||
-			this.props.options !== nextProps.options
+			this.props.options !== nextProps.options ||
+			this.props.optionCallback !== nextProps.optionCallback
 		);
 	}
 }

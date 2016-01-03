@@ -6,7 +6,14 @@ import Entity = require('../../Entity');
 import ReplaceEntityMutator = require('./ReplaceEntityMutator');
 
 class TagChangeMutator implements GameStateMutator {
-	constructor(public id:number, public tag:number, public value:number) {
+	public id;
+	public tag;
+	public value;
+
+	constructor(id:number, tag:string, value:number) {
+		this.id = +id;
+		this.tag = '' + tag;
+		this.value = +value;
 	}
 
 	public applyTo(state:GameState):GameState {
