@@ -1,9 +1,10 @@
-/// <reference path="../../typings/react/react-global.d.ts"/>
+/// <reference path="../../typings/react/react.d.ts"/>
 /// <reference path="../../typings/node/node.d.ts"/>
 /// <reference path="../interfaces.d.ts"/>
 /// <reference path="../../node_modules/immutable/dist/immutable.d.ts"/>
 'use strict';
 
+import React = require('react');
 import TwoPlayerGame = require('./TwoPlayerGame');
 
 import Entity = require('../Entity');
@@ -16,6 +17,8 @@ import HSReplayParser = require('../protocol/HSReplayParser');
 import KettleParser = require('../protocol/KettleParser');
 
 import ClearOptionsMutator = require("../state/mutators/ClearOptionsMutator");
+
+import HearthstoneJSON = require('../metadata/HearthstoneJSON');
 
 interface JoustState {
 	gameState: GameState;
@@ -41,14 +44,16 @@ class Joust extends React.Component<{}, JoustState> {
 		this.tracker = tracker;
 
 		var hsreplay = new HSReplayParser(tracker);
-		hsreplay.parse('sample.hsreplay');
-		this.start = new Date().getTime();
+		 hsreplay.parse('sample.hsreplay');
+		 this.start = new Date().getTime();
 
 		/*var kettle = new KettleParser(tracker);
 		kettle.connect(9111, 'localhost');
 		this.kettle = kettle;*/
 
 		setInterval(this.updateState.bind(this), 100);
+
+		HearthstoneJSON.fetch();
 	}
 
 	private start:number = 0;
@@ -105,10 +110,10 @@ class Joust extends React.Component<{}, JoustState> {
 		var endTurnOption = options.filter(function (option:Option):boolean {
 			return !!option && option.getType() === 2;
 		}).first();
-		var endTurnCallback = /*endTurnOption ? function() {
+		var endTurnCallback = /*endTurnOption ? function () {
 			this.kettle.sendOption(endTurnOption);
 			this.tracker.apply(new ClearOptionsMutator());
-		}.bind(this) :*/ null;
+		}.bind(this) : */null;
 
 		// determine player count
 		var players = allEntities.filter(filterByCardType(2)) as Immutable.Map<number, Player>;

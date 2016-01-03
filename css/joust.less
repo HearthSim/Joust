@@ -21,10 +21,13 @@ html {
 
 .game {
   background-color: beige;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: default;
   width: 100%;
   height: 100%;
-/*  display: flex;
-  flex-direction: column;*/
+  /*  display: flex;
+	flex-direction: column;*/
 }
 
 .player {
@@ -36,7 +39,6 @@ html {
   list-style-type: none;
   height: 40%;
   width: 100%;
-  z-index: 0;
 
   max-width: (3 * 75px);
 
@@ -50,10 +52,13 @@ html {
   padding: 10px 0;
   margin: 0 auto;
 
-  .card.revealed:hover {
-	z-index: 1;
-	transform: scale(1.5) translate(0px, -20px);
-	transition: ease 0.1s;
+  .card {
+	z-index: 0;
+
+	&.revealed:hover {
+	  z-index: 1;
+	  transform: scale(1.5) translate(0px, -20px);
+	}
   }
 
   > li {
@@ -62,10 +67,19 @@ html {
 	flex-shrink: 1;
 	flex-grow: 1;
   }
+
 }
 
-.playable, .endTurnButton > button:not(:disabled)  {
-  box-shadow: 0px 0px 20px #00ff00;
+.endTurnButton.playable > button {
+  box-shadow: 0px 0px 20px rgb(255, 255, 0);
+}
+
+.playable, .endTurnButton.playable.only-option > button {
+  box-shadow: 0px 0px 20px rgb(0, 255, 0);
+
+  &:hover {
+	box-shadow: 0px 0px 20px rgb(255, 255, 255);
+  }
 }
 
 .player.top .hand .card.revealed:hover {
@@ -161,7 +175,6 @@ html {
 }
 
 .weapon, .heroPower {
-  float: left;
   height: 50px;
   width: 50px;
   border-radius: 50%;
@@ -268,12 +281,12 @@ html {
 .field-animation-enter {
   opacity: 0.01;
   width: 0;
-//  transform: translate(0px, -20px);
+  //  transform: translate(0px, -20px);
 
   &.field-animation-enter-active {
 	opacity: 1;
 	width: 62px;
-//	transform: translate(0px, 0px);
+	//	transform: translate(0px, 0px);
 	transition-duration: 0.5s;
 	transition-timing-function: ease-out;
   }
@@ -290,7 +303,6 @@ html {
 	transition-timing-function: ease-out;
   }
 }
-
 
 .minion {
   display: inline-block;
@@ -335,12 +347,6 @@ html {
 
 .no-entity {
   visibility: hidden;
-}
-
-.card, .hero, .heroPower, .minion, .secret, .weapon {
-  user-select: none;
-  -webkit-user-select: none;
-  cursor: default;
 }
 
 .equipment {

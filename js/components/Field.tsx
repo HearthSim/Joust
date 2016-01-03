@@ -1,11 +1,14 @@
-/// <reference path="../../typings/react/react-global.d.ts"/>
+/// <reference path="../../typings/react/react.d.ts"/>
+/// <reference path="../../typings/react/react-addons-css-transition-group.d.ts"/>
 'use strict';
+
+import React = require('react');
+import CSSTransitionGroup = require('react-addons-css-transition-group');
 
 import EntityList = require('./EntityList');
 import Entity = require('../Entity');
 import Option = require('../Option');
 import Minion = require('./Minion');
-import ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 
 class Field extends EntityList {
 
@@ -24,12 +27,12 @@ class Field extends EntityList {
 			}.bind(this));
 		}
 		return (
-			<ReactCSSTransitionGroup component="ul" className={this.className()}
+			<CSSTransitionGroup component="ul" className={this.className()}
 									 transitionName="field-animation" transitionEnterTimeout={500}
 									 transitionLeaveTimeout={500}
 			>
 				{elements}
-			</ReactCSSTransitionGroup>
+			</CSSTransitionGroup>
 		);
 	}
 

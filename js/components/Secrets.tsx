@@ -1,5 +1,7 @@
 'use strict';
 
+import React = require('react');
+
 import EntityList = require('./EntityList');
 import Entity = require('../Entity');
 import Secret = require('./Secret');

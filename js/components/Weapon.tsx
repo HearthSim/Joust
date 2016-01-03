@@ -1,6 +1,7 @@
-/// <reference path="../../typings/react/react-global.d.ts"/>
+/// <reference path="../../typings/react/react.d.ts"/>
 'use strict';
 
+import React = require('react');
 import {EntityProps} from "../interfaces";
 
 interface WeaponProps extends EntityProps, React.Props<any> {

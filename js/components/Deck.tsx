@@ -1,5 +1,6 @@
 'use strict';
 
+import React = require('react');
 import EntityList = require('./EntityList');
 
 class Deck extends EntityList {

@@ -1,6 +1,8 @@
-/// <reference path="../../typings/react/react-global.d.ts"/>
+/// <reference path="../../typings/react/react.d.ts"/>
 /// <reference path="../interfaces.d.ts"/>
 'use strict';
+
+import React = require('react');
 
 import {EntityProps, OptionProps} from "../interfaces";
 import Entity = require('../Entity');

@@ -1,6 +1,8 @@
-/// <reference path="../../typings/react/react-global.d.ts"/>
+/// <reference path="../../typings/react/react.d.ts"/>
 /// <reference path="../interfaces.d.ts"/>
 'use strict';
+
+import React = require('react');
 
 import {EntityProps} from "../interfaces";
 import Entity = require('../Entity');
@@ -34,7 +36,8 @@ class TwoPlayerGame extends React.Component<TwoPlayerGameProps, {}> {
 						entities={entities.get(player1.getPlayerId()) || emptyEntities}
 						options={options.get(player1.getPlayerId()) || emptyOptions}
 				/>
-				<EndTurnButton option={this.props.endTurnOption} callback={this.props.endTurnCallback}/>
+				<EndTurnButton option={this.props.endTurnOption}
+							   callback={this.props.endTurnCallback} onlyOption={options.count() === 0}/>
 				<Player player={player2 as PlayerEntity} isTop={false}
 						entities={entities.get(player2.getPlayerId()) || emptyEntities}
 						options={options.get(player2.getPlayerId()) || emptyOptions}

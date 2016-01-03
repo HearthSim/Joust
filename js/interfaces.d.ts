@@ -1,4 +1,3 @@
-/// <reference path="../typings/react/react-global.d.ts"/>
 /// <reference path='../node_modules/immutable/dist/immutable.d.ts'/>
 
 import Entity = require('./Entity');

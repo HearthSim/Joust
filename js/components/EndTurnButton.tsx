@@ -1,18 +1,28 @@
-/// <reference path="../../typings/react/react-global.d.ts"/>
+/// <reference path="../../typings/react/react.d.ts"/>
 /// <reference path="../interfaces.d.ts"/>
 'use strict';
+
+import React = require('react');
 
 import {OptionProps} from "../interfaces";
 
 interface EndTurnButtonProps extends OptionProps, React.Props<any> {
-	callback;
+	callback?;
+	onlyOption?:boolean;
 }
 
 class EndTurnButton extends React.Component<EndTurnButtonProps, {}> {
 	public render() {
+		var classNames = ['endTurnButton'];
+		if(this.props.option) {
+			classNames.push('playable');
+		}
+		if(this.props.onlyOption) {
+			classNames.push('only-option');
+		}
 		return (
-			<div className="endTurnButton">
-				<button disabled={!this.props.option} onClick={this.props.callback}>End Turn</button>
+			<div className={classNames.join(' ')}>
+				<button disabled={!this.props.callback} onClick={this.props.callback}>End Turn</button>
 			</div>
 		);
 	}
