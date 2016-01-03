@@ -15,8 +15,6 @@ interface CardProps extends EntityProps, OptionProps, React.Props<any> {
 
 }
 
-
-var i = 0;
 class Card extends React.Component<CardProps, {}> {
 
 	protected play() {
@@ -54,7 +52,6 @@ class Card extends React.Component<CardProps, {}> {
 			defaultHealth = data.health;
 		}
 
-
 		var stats = null;
 		if (entity.getCardType() === 4) {
 			var attack = <Attack attack={entity.getAtk()} default={defaultAttack}/>;
@@ -70,9 +67,7 @@ class Card extends React.Component<CardProps, {}> {
 		return (
 			<div className={classNames.join(' ')} onClick={this.play.bind(this)}>
 				<Cost cost={entity.getCost()} default={defaultCost}/>
-				<h1>
-					{title}
-				</h1>
+				<h1>{title}</h1>
 				<p className="description" dangerouslySetInnerHTML={{__html: description}}></p>
 				{stats}
 			</div>
