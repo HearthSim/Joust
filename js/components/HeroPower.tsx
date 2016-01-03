@@ -6,6 +6,9 @@ import React = require('react');
 
 import {EntityProps, OptionProps} from "../interfaces";
 
+import Cost = require('./stats/Cost');
+import HearthstoneJSON = require('../metadata/HearthstoneJSON');
+
 interface HeroPowerProps extends EntityProps, OptionProps, React.Props<any> {
 
 }
@@ -27,9 +30,15 @@ class HeroPower extends React.Component<HeroPowerProps, {}> {
 			if(this.props.entity.isExhausted()) {
 				classNames.push('exhausted');
 			}
+			var defaultCost = null;
+			if(HearthstoneJSON.has(this.props.entity.getCardId())) {
+				var data = HearthstoneJSON.get(this.props.entity.getCardId());
+				defaultCost = data.cost;
+			}
+
 			return (
 				<div className={classNames.join(' ')} onClick={this.use.bind(this)}>
-					<div className="cost">{this.props.entity.getCost()}</div>
+					<Cost cost={this.props.entity.getCost()} default={defaultCost} />
 				</div>
 			);
 		}
