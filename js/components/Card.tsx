@@ -1,4 +1,5 @@
 /// <reference path="../../typings/react/react-global.d.ts"/>
+import HearthstoneJSON = require("../metadata/HearthstoneJSON");
 'use strict';
 
 import {EntityProps, OptionProps} from "../interfaces";
@@ -29,11 +30,13 @@ class Card extends React.Component<CardProps, {}> {
 				stats = <div className="stats">{attack}{durability}</div>
 			}
 
+			var title = HearthstoneJSON.has(entity.getCardId()) ? HearthstoneJSON.get(entity.getCardId()).name : entity.getCardId();
+
 			return (
 				<div className={classNames.join(' ')}>
 					{cost}
 					<h1 style={{clear: "both"}}>
-						{entity.getCardId()}
+						{title}
 					</h1>
 					<p className="description">
 					</p>

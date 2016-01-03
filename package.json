@@ -9,6 +9,7 @@
   "author": "Benedict Etzel <developer@beheh.de>",
   "license": "AGPL-3.0",
   "dependencies": {
+    "get-json": "0.0.2",
     "react": "^0.14.3",
     "react-dom": "^0.14.3",
     "sax": "^1.1.4"
