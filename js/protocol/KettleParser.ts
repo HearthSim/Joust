@@ -83,7 +83,8 @@ class KettleParser {
 						var option = new Option(
 							index,
 							optionObject.Type,
-							optionObject.MainOption ? optionObject.MainOption.ID : null
+							optionObject.MainOption ? optionObject.MainOption.ID : null,
+							optionObject.MainOption ? optionObject.MainOption.Targets : null
 						);
 						map = map.set(index, option);
 					});
@@ -139,8 +140,9 @@ class KettleParser {
 		}]);
 	}
 
-	public sendOption(option:Option) {
+	public sendOption(option:Option, target?:number) {
 		var sendOption = null;
+		target = target || null;
 		switch (option.getType()) {
 			case 2: // end turn
 				sendOption = {Index: option.getIndex()};
@@ -148,7 +150,7 @@ class KettleParser {
 			case 3: // power
 				sendOption = {
 					Index: option.getIndex(),
-					Target: null
+					Target: target
 				};
 				break;
 		}

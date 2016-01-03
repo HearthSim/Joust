@@ -88,8 +88,8 @@ class Joust extends React.Component<{}, JoustState> {
 		return optionTree;
 	}
 
-	protected optionCallback(option:Option) {
-		this.kettle.sendOption(option);
+	protected optionCallback(option:Option, target?:number) {
+		this.kettle.sendOption(option, target);
 		this.tracker.apply(new ClearOptionsMutator());
 	}
 

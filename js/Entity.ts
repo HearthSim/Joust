@@ -49,6 +49,14 @@ class Entity {
 		return this.getTag(187);
 	}
 
+	public isStealthed():boolean {
+		return this.getTag(191) === 1;
+	}
+
+	public isDivineShielded():boolean {
+		return this.getTag(194) === 1;
+	}
+
 	public getClass():number {
 		return this.getTag(199);
 	}

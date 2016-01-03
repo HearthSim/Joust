@@ -161,7 +161,8 @@ class HSReplayParser {
 				var option = new Option(
 					+node.attributes.index,
 					+node.attributes.type,
-					+node.attributes.entity || null
+					+node.attributes.entity || null,
+					[] // todo: parse targets
 				);
 				parent.attributes.options = parent.attributes.options.set('' + node.attributes.index, option);
 				this.nodeStack.push(parent);

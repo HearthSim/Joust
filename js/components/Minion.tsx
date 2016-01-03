@@ -20,11 +20,13 @@ class Minion extends React.Component<MinionProps, {}> {
 			classNames.push('playable');
 		}
 		var entity = this.props.entity;
-		var atkClasses = ['atk'];
-		var healthClasses = ['health'];
-		if (entity.getDamage() > 0) {
-			healthClasses.push('negative');
+		if (entity.isStealthed()) {
+			classNames.push('stealth');
 		}
+		if (entity.isDivineShielded()) {
+			classNames.push('divine-shield');
+		}
+
 
 		var title = null;
 		var defaultAttack = null;

@@ -13,7 +13,7 @@ export interface EntityProps {
 }
 
 export interface OptionCallbackProps {
-	optionCallback?(option:Option) : void;
+	optionCallback?(option:Option, target?:number) : void;
 }
 
 export interface OptionProps extends OptionCallbackProps {
