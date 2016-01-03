@@ -191,8 +191,21 @@ html {
   text-align: center;
   border-radius: 12.5px;
   font-weight: bold;
-  background-color: white;
+  line-height: 1.5em;
+  color: white;
+  background-color: beige;
   border: black solid 1px;
+  text-shadow: 0px 0px 1px black;
+
+  &.hunter {
+	background-color: green;
+  }
+  &.mage {
+	background-color: orchid;
+  }
+  &.paladin {
+	background-color: gold;
+  }
 }
 
 .endTurnButton {
@@ -309,6 +322,14 @@ html {
 
   .health {
 	margin-right: -4px;
+  }
+
+  .secrets {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	list-style-type: none;
+	padding-left: 0;
   }
 }
 

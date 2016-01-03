@@ -45,6 +45,10 @@ class Entity {
 		return this.getTag(187);
 	}
 
+	public getClass():number {
+		return this.getTag(199);
+	}
+
 	public getCardType():number {
 		return this.getTag(202);
 	}

@@ -39,7 +39,8 @@ class Player extends React.Component<PlayerProps, {}> {
 		/* Equipment */
 		var heroEntity = playEntities.filter(filterByCardType(3)).first();
 		var hero = <Hero entity={heroEntity}
-						 option={heroEntity ? playOptions.get(heroEntity.getId()) : null}/>;
+						 option={heroEntity ? playOptions.get(heroEntity.getId()) : null}
+						 secrets={this.props.entities.get(7) || Immutable.Map<number, Entity>()}/>;
 		var heroPowerEntity = playEntities.filter(filterByCardType(10)).first();
 		var heroPower = <HeroPower entity={heroPowerEntity}
 								   option={heroPowerEntity ? playOptions.get(heroPowerEntity.getId()) : null}/>;
@@ -51,7 +52,6 @@ class Player extends React.Component<PlayerProps, {}> {
 						 options={this.props.options.get(2) || emptyOptions}/>;
 		var hand = <Hand entities={this.props.entities.get(3) || emptyEntities}
 						 options={this.props.options.get(3) || emptyOptions}/>;
-		var secrets = <Secrets entities={this.props.entities.get(7) || Immutable.Map<number, Entity>()}/>;
 		var name = this.props.player.getName() ? <div className="name">{this.props.player.getName()}</div> : null;
 
 		var classNames = this.props.isTop ? 'player top' : 'player';

@@ -3,9 +3,11 @@
 'use strict';
 
 import {EntityProps, OptionProps} from "../interfaces";
+import Entity = require('../Entity');
+import Secrets = require('./Secrets');
 
 interface HeroProps extends EntityProps, OptionProps, React.Props<any> {
-
+	secrets: Immutable.Map<number, Entity>;
 }
 
 class Hero extends React.Component<HeroProps, {}> {
@@ -22,6 +24,7 @@ class Hero extends React.Component<HeroProps, {}> {
 			health = <div className={healthClasses}>{currentHealth}</div>;
 			return (
 				<div className={classNames}>
+					<Secrets entities={this.props.secrets}/>
 					<div className="stats">
 						{atk}
 						{health}
@@ -32,6 +35,14 @@ class Hero extends React.Component<HeroProps, {}> {
 		else {
 			return <div className="hero no-entity"></div>;
 		}
+	}
+
+	public shouldComponentUpdate(nextProps:HeroProps, nextState) {
+		return (
+			this.props.entity !== nextProps.entity ||
+			this.props.option !== nextProps.option ||
+			this.props.secrets !== nextProps.secrets
+		);
 	}
 }
 

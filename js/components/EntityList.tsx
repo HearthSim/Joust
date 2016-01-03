@@ -24,9 +24,10 @@ class EntityList extends React.Component<EntityListProps, {}> {
 				return entity.getZonePosition();
 			});
 			entities.forEach(function (entity) {
+				var option = this.props.options ? this.props.options.get(entity.getId()) : null;
 				elements.push(
 					<li key={entity.getId()}>
-						{this.renderEntity(entity, this.props.options.get(entity.getId()))}
+						{this.renderEntity(entity, option)}
 					</li>);
 			}.bind(this));
 		}
