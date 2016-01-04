@@ -8,24 +8,29 @@
 
 ## Install
 
-Install the dependencies (React):  
+Install dependencies:
 
 ```
 npm install
 ```
 
-Install React typings for Typescript:  
+Install additional Typescript typings:
 
 ```
 tsd install
 ```
 
-Compile Typescript:  
+Either compile once:
 
 ```
-gulp scripts
+gulp compile
 ```
 
+Or recompile automatically:
+
+```
+gulp watch
+```
 
 ## Run
 
