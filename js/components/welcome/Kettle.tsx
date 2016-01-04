@@ -50,7 +50,7 @@ class Kettle extends React.Component<KettleProps, KettleState> {
 					</label>
 					<label className="port">
 						Port:
-						<input type="number" placeholder="9111" value={this.state.port} onChange={this.onChangePort.bind(this)} />
+						<input type="number" placeholder="9111" value={''+this.state.port} onChange={this.onChangePort.bind(this)} />
 					</label>
 					<button type="submit">Connect</button>
 				</form>
