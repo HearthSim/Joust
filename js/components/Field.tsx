@@ -23,7 +23,7 @@ class Field extends EntityList {
 				return entity.getZonePosition();
 			});
 			entities.forEach(function (entity) {
-				elements.push(<li key={entity.getId()}	>{this.renderEntity(entity, this.props.options.get(entity.getId()))}</li>);
+				elements.push(<li key={entity.getId()}>{this.renderEntity(entity, this.props.options.get(entity.getId()))}</li>);
 			}.bind(this));
 		}
 		return (
