@@ -53,7 +53,7 @@ class Application extends React.Component<{}, ApplicationState> {
 					<p>Welcome to Joust!</p>
 					<div className="backends">
 						<HSReplay/>
-						<Kettle initializeKettle={this.initializeKettle.bind(this)} />
+						<Kettle initializeKettle={this.initializeKettle.bind(this)}/>
 					</div>
 				</div>
 			)
