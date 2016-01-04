@@ -1,5 +1,6 @@
 'use strict';
 
+import Immutable = require('immutable');
 import GameState = require('../GameState');
 import GameStateMutator = require('../GameStateMutator');
 import Entity = require('../../Entity');
@@ -33,7 +34,7 @@ class AddEntityMutator implements GameStateMutator {
 		entityTree = entityTree.setIn([this.entity.getController(), this.entity.getZone(), id], this.entity);
 
 		// we always mutate the GameState when we add an entity
-		return new GameState(entities, entityTree, state.getOptions());
+		return new GameState(entities, entityTree, state.getOptions(), state.getOptionTree());
 	}
 }
 

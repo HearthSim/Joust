@@ -2,38 +2,22 @@
 /// <reference path="../GameStateMutator.d.ts"/>
 'use strict';
 
+import Immutable = require('immutable');
 import {GameStateManager} from "../../interfaces";
 import GameState = require('../GameState');
 import Entity = require('../../Entity');
 import Option = require('../../Option');
 import GameStateMutator = require('../GameStateMutator');
+import SingleGameStateManager = require("./SingleGameStateManager");
 
-class HistoryGameStateManager implements GameStateManager {
+class HistoryGameStateManager extends SingleGameStateManager {
 
 	protected complete:boolean = false;
 	private history:Immutable.Map<number, GameState>;
 
-	constructor(private gameState?:GameState) {
-		if (!gameState) {
-			this.gameState = new GameState(
-				Immutable.Map<number, Entity>(),
-				Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Entity>>>(),
-				Immutable.Map<number, Option>()
-			);
-		}
+	constructor(protected gameState:GameState) {
+		super(gameState);
 		this.history = Immutable.Map<number, GameState>();
-	}
-
-	public setGameState(gameState:GameState):void {
-		this.gameState = gameState;
-	}
-
-	public getGameState():GameState {
-		return this.gameState;
-	}
-
-	public apply(mutator:GameStateMutator):void {
-		this.gameState = this.gameState.apply(mutator);
 	}
 
 	public mark(timestamp:number):void {
@@ -41,15 +25,8 @@ class HistoryGameStateManager implements GameStateManager {
 			return;
 		}
 		this.history = this.history.set(timestamp, this.gameState);
+		this.emit('mark', timestamp);
 		//console.log('Mark at ' + (timestamp / 1000) + ' (now at ' + this.history.size + ')');
-	}
-
-	public setComplete(complete):void {
-		this.complete = complete;
-	}
-
-	public isComplete():boolean {
-		return this.complete;
 	}
 
 	public getHistory():Immutable.Map<number, GameState> {

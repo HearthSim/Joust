@@ -4,6 +4,7 @@
 
 import React = require('react');
 
+import Immutable = require('immutable');
 import {EntityProps, OptionCallbackProps} from "../interfaces";
 import Entity = require('../Entity');
 import Player = require('./Player');

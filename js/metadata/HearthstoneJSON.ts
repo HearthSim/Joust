@@ -1,6 +1,7 @@
 /// <reference path='../../node_modules/immutable/dist/immutable.d.ts'/>
 
-var getJSON = require('get-json');
+import Immutable = require('immutable');
+import getJSON = require('get-json');
 
 class HearthstoneJSON {
 	protected static cards:Immutable.Map<string, any>;

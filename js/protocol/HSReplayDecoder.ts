@@ -1,6 +1,7 @@
 /// <reference path="../../typings/sax/sax.d.ts"/>
 'use strict';
 
+import Immutable = require('immutable');
 import Sax = require('sax');
 import {ReadStream} from "fs";
 import Player = require('../Player');
@@ -12,6 +13,8 @@ import SetOptionsMutator = require('../state/mutators/SetOptionsMutator');
 import ClearOptionsMutator = require('../state/mutators/ClearOptionsMutator');
 import Option = require('../Option');
 import {GameStateManager} from "../interfaces";
+import {Readable} from 'stream';
+import {createReadStream} from 'fs';
 
 class HSReplayDecoder {
 	private stream:ReadStream;
@@ -22,13 +25,15 @@ class HSReplayDecoder {
 	constructor(public manager:GameStateManager) {
 	}
 
-	public parse(file:string) {
+	public parseFromStream(stream:Readable):void {
 		var sax = Sax.createStream(true, {});
 		sax.on('opentag', this.onOpenTag.bind(this));
 		sax.on('closetag', this.onCloseTag.bind(this));
-		var fs = require('fs');
-		this.stream = fs.createReadStream(file);
-		this.stream.pipe(sax);
+		stream.pipe(sax);
+	}
+
+	public parseFromFile(file:string):void {
+		this.parseFromStream(createReadStream(file));
 	}
 
 	protected parseTimestamp(timestamp:string):number {

@@ -10,6 +10,65 @@ html {
   box-sizing: border-box;
 }
 
+.welcome {
+  font-family: sans-serif;
+  margin: 20px;
+
+  .dropzone {
+	color: gray;
+	font-weight: bold;
+	border: dashed 2px gray;
+	padding: 10px;
+	text-align: center;
+	border-radius: 10px;
+  }
+
+  pre {
+	font-family: monospace;
+  }
+
+  .backends {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+
+	.backend {
+	  width: 45%;
+	  display: inline-block;
+
+	  &.hsreplay {
+	  }
+
+	  &.kettle {
+		form {
+		  margin-top: 10px;
+		  max-width: 250px;
+		  label {
+			display: inline-block;
+			margin: 10px 0;
+			font-size: 0.8em;
+
+			input {
+			  display: block;
+			  width: 100%;
+			}
+
+			&.hostname {
+			  width: 70%;
+			  padding-right: 10px;
+			}
+			&.port {
+			  width: 30%;
+			}
+		  }
+		}
+	  }
+	}
+  }
+}
+
 *, *:before, *:after {
   box-sizing: inherit;
 }

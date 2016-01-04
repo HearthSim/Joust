@@ -4,6 +4,7 @@ import Entity = require('./Entity');
 import Option = require('./Option');
 import GameStateMutator = require("./state/GameStateMutator");
 import GameState = require("./state/GameState");
+import {EventEmitter} from 'events';
 
 export interface EntityListProps extends OptionCallbackProps {
 	entities: Immutable.Iterable<number, Entity>;
@@ -23,7 +24,7 @@ export interface OptionProps extends OptionCallbackProps {
 
 }
 
-export interface GameStateManager {
+export interface GameStateManager extends EventEmitter {
 	setGameState(gameState:GameState) : void;
 	getGameState() : GameState;
 	apply(mutator:GameStateMutator) : void;

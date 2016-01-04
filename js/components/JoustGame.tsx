@@ -18,50 +18,29 @@ import KettleTranscoder = require('../protocol/KettleTranscoder');
 
 import ClearOptionsMutator = require("../state/mutators/ClearOptionsMutator");
 
-import HearthstoneJSON = require('../metadata/HearthstoneJSON');
 import HistoryGameStateManager = require("../state/managers/HistoryGameStateManager");
+
+interface JoustGameProps extends React.Props<any> {
+	manager: GameStateManager;
+}
 
 interface JoustState {
 	gameState: GameState;
 }
 
-class Joust extends React.Component<{}, JoustState> {
-	public constructor(props) {
-		super(props);
-		this.state = {
-			gameState: new GameState(
-				Immutable.Map<number, Entity>(),
-				Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Entity>>>(),
-				Immutable.Map<number, Option>()
-			)
-		};
-	}
+class JoustGame extends React.Component<JoustGameProps, JoustState> {
 
-	private kettle:KettleTranscoder;
-	private manager:HistoryGameStateManager;
+	public constructor() {
+		super();
+		this.state = {gameState: new GameState()};
+	}
 
 	public componentDidMount() {
-		var initialState = new GameState();
-		var tracker = new HistoryGameStateManager(initialState);
-		this.manager = tracker;
-
-		var hsreplay = new HSReplayDecoder(tracker);
-		hsreplay.parse('sample.hsreplay');
-		this.start = new Date().getTime();
-
-		/*var kettle = new KettleTranscoder(manager);
-		 kettle.connect(9111, 'localhost');
-		 this.kettle = kettle;*/
-
-		setInterval(this.updateState.bind(this), 100);
-
-		HearthstoneJSON.fetch();
+		this.props.manager.on('gamestate', this.updateState.bind(this));
 	}
 
-	private start:number = 0;
-
 	public updateState() {
-		var history = this.manager.getHistory();
+		/*var history = this.manager.getHistory();
 		var latest = null;
 		var timeInGame = new Date().getTime() - this.start;
 		history.forEach(function (value, time) {
@@ -71,23 +50,8 @@ class Joust extends React.Component<{}, JoustState> {
 		});
 		if (latest && history.has(latest)) {
 			this.setState({gameState: history.get(latest)});
-		}
-		//this.setState({gameState: this.manager.getGameState()});
-	}
-
-	protected buildOptionTree(options:Immutable.Map<number, Option>, entities:Immutable.Map<number, Entity>):Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Option>>> {
-		var optionTree = Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Option>>>();
-		optionTree = optionTree.withMutations(function (map) {
-			options.forEach(function (option:Option) {
-				if (!option.getEntity()) {
-					return;
-				}
-				var entity = entities.get(option.getEntity());
-				map = map.setIn([entity.getController(), entity.getZone(), entity.getId()], option);
-			});
-		});
-
-		return optionTree;
+		}*/
+		this.setState({gameState: this.props.manager.getGameState()});
 	}
 
 	protected optionCallback(option:Option, target?:number) {
@@ -99,7 +63,7 @@ class Joust extends React.Component<{}, JoustState> {
 		var allEntities = this.state.gameState.getEntities();
 		var entityTree = this.state.gameState.getEntityTree();
 		var options = this.state.gameState.getOptions();
-		var optionTree = this.buildOptionTree(options, allEntities);
+		var optionTree = this.state.gameState.getOptionTree();
 
 		var filterByCardType = function (cardType:number) {
 			return function (entity:Entity):boolean {
@@ -140,10 +104,11 @@ class Joust extends React.Component<{}, JoustState> {
 		}
 	}
 
-	public shouldComponentUpdate(nextProps, nextState:JoustState) {
-		return this.state.gameState !== nextState.gameState;
+	public shouldComponentUpdate(nextProps:JoustGameProps, nextState:JoustState) {
+		return this.props.manager !== nextProps.manager ||
+			this.state.gameState !== nextState.gameState;
 	}
 
 }
 
-export = Joust;
+export = JoustGame;

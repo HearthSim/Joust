@@ -5,12 +5,14 @@
 import Entity = require('../Entity');
 import Option = require('../Option');
 import GameStateMutator = require('./GameStateMutator');
+import Immutable = require('immutable');
 
 class GameState {
 
 	constructor(protected entities?:Immutable.Map<number, Entity>,
 				protected entityTree?:Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Entity>>>,
-				protected options?:Immutable.Map<number, Option>) {
+				protected options?:Immutable.Map<number, Option>,
+				protected optionTree?:Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Option>>>) {
 		if (!this.entities) {
 			this.entities = Immutable.Map<number, Entity>();
 		}
@@ -19,6 +21,9 @@ class GameState {
 		}
 		if (!this.options) {
 			this.options = Immutable.Map<number, Option>();
+		}
+		if (!this.optionTree) {
+			this.optionTree = Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Option>>>();
 		}
 	}
 
@@ -36,6 +41,10 @@ class GameState {
 
 	public getOptions():Immutable.Map<number, Option> {
 		return this.options;
+	}
+
+	public getOptionTree():Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Option>>> {
+		return this.optionTree;
 	}
 
 	public apply(mutator:GameStateMutator):GameState {

@@ -1,6 +1,7 @@
 /// <reference path="../../typings/node/node.d.ts"/>
 'use strict';
 
+import Immutable = require('immutable');
 import Player = require('../Player');
 import Entity = require('../Entity');
 import Option = require('../Option');
@@ -9,6 +10,7 @@ import TagChangeMutator = require('../state/mutators/TagChangeMutator');
 import ReplaceEntityMutator = require('../state/mutators/ReplaceEntityMutator');
 import SetOptionsMutator = require('../state/mutators/SetOptionsMutator');
 import {GameStateManager} from "../interfaces";
+import {Socket} from 'net';
 
 class KettleTranscoder {
 	private socket;
@@ -17,7 +19,6 @@ class KettleTranscoder {
 	}
 
 	public connect(port, host) {
-		var Socket = require('net').Socket;
 		var socket = new Socket();
 		// we don't use set_encoding to parse the length
 		socket.connect(port, host);
@@ -31,6 +32,10 @@ class KettleTranscoder {
 			});
 		}.bind(this));
 		this.socket = socket;
+	}
+
+	public disconnect() {
+		this.socket.close();
 	}
 
 	private handlePacket(packet) {

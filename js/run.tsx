@@ -1,16 +1,13 @@
 /// <reference path='../typings/react/react-dom.d.ts'/>
 'use strict';
 
-import Joust = require('./components/Joust');
+import Application = require('./components/Application');
 import React = require('react');
 import ReactDOM = require('react-dom');
 
 var renderTo = function (id:string) {
-	//var parser = new Joust.Protocol.KettleParser();
-	//parser.connect(9111, 'localhost');
-
 	var joust = ReactDOM.render(
-		<Joust/>,
+		<Application/>,
 		document.getElementById(id)
 	);
 };

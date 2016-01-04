@@ -1,37 +1,42 @@
 /// <reference path="../GameStateMutator.d.ts"/>
 'use strict';
 
+import {EventEmitter} from 'events';
 import {GameStateManager} from "../../interfaces";
 import GameState = require("../GameState");
 import GameStateMutator = require("../GameStateMutator");
 
-class SingleGameStateManager implements GameStateManager {
+class SingleGameStateManager extends EventEmitter implements GameStateManager {
 	protected complete:boolean = false;
 
 	constructor(protected gameState:GameState) {
+		super();
 	}
 
-	setGameState(gameState:GameState):void {
+	public setGameState(gameState:GameState):void {
+		var previous = this.gameState;
 		this.gameState = gameState;
+		this.emit('gamestate', gameState, this.gameState);
 	}
 
-	getGameState():GameState {
-		return undefined;
+	public getGameState():GameState {
+		return this.gameState;
 	}
 
-	apply(mutator:GameStateMutator):void {
-		this.gameState.apply(mutator);
+	public apply(mutator:GameStateMutator):void {
+		var state = this.gameState.apply(mutator);
+		this.setGameState(state);
 	}
 
-	mark(timestamp:number):void {
+	public mark(timestamp:number):void {
 		return;
 	}
 
-	setComplete(complete:boolean):void {
+	public setComplete(complete:boolean):void {
 		this.complete = true;
 	}
 
-	isComplete():boolean {
+	public isComplete():boolean {
 		return this.complete;
 	}
 }
