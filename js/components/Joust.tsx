@@ -2,6 +2,7 @@
 /// <reference path="../../typings/node/node.d.ts"/>
 /// <reference path="../interfaces.d.ts"/>
 /// <reference path="../../node_modules/immutable/dist/immutable.d.ts"/>
+import {GameStateManager} from "../interfaces";
 'use strict';
 
 import React = require('react');
@@ -12,13 +13,13 @@ import Player = require('../Player');
 
 import Option = require('../Option');
 import GameState= require('../state/GameState');
-import GameStateTracker = require('../state/GameStateTracker');
-import HSReplayParser = require('../protocol/HSReplayParser');
-import KettleParser = require('../protocol/KettleParser');
+import HSReplayDecoder = require('../protocol/HSReplayDecoder');
+import KettleTranscoder = require('../protocol/KettleTranscoder');
 
 import ClearOptionsMutator = require("../state/mutators/ClearOptionsMutator");
 
 import HearthstoneJSON = require('../metadata/HearthstoneJSON');
+import HistoryGameStateManager = require("../state/managers/HistoryGameStateManager");
 
 interface JoustState {
 	gameState: GameState;
@@ -36,20 +37,21 @@ class Joust extends React.Component<{}, JoustState> {
 		};
 	}
 
-	private kettle:KettleParser;
-	private tracker:GameStateTracker;
+	private kettle:KettleTranscoder;
+	private manager:HistoryGameStateManager;
 
 	public componentDidMount() {
-		var tracker = new GameStateTracker();
-		this.tracker = tracker;
+		var initialState = new GameState();
+		var tracker = new HistoryGameStateManager(initialState);
+		this.manager = tracker;
 
-		var hsreplay = new HSReplayParser(tracker);
-		 hsreplay.parse('sample.hsreplay');
-		 this.start = new Date().getTime();
+		var hsreplay = new HSReplayDecoder(tracker);
+		hsreplay.parse('sample.hsreplay');
+		this.start = new Date().getTime();
 
-		/*var kettle = new KettleParser(tracker);
-		kettle.connect(9111, 'localhost');
-		this.kettle = kettle;*/
+		/*var kettle = new KettleTranscoder(manager);
+		 kettle.connect(9111, 'localhost');
+		 this.kettle = kettle;*/
 
 		setInterval(this.updateState.bind(this), 100);
 
@@ -59,18 +61,18 @@ class Joust extends React.Component<{}, JoustState> {
 	private start:number = 0;
 
 	public updateState() {
-		var history = this.tracker.getHistory();
-		 var latest = null;
-		 var timeInGame = new Date().getTime() - this.start;
-		 history.forEach(function (value, time) {
-		 if (timeInGame >= +time / 8 && (latest === null || time > latest)) {
-		 latest = time;
-		 }
-		 });
-		 if (latest && history.has(latest)) {
-		 this.setState({gameState: history.get(latest)});
-		 }
-		//this.setState({gameState: this.tracker.getGameState()});
+		var history = this.manager.getHistory();
+		var latest = null;
+		var timeInGame = new Date().getTime() - this.start;
+		history.forEach(function (value, time) {
+			if (timeInGame >= +time / 8 && (latest === null || time > latest)) {
+				latest = time;
+			}
+		});
+		if (latest && history.has(latest)) {
+			this.setState({gameState: history.get(latest)});
+		}
+		//this.setState({gameState: this.manager.getGameState()});
 	}
 
 	protected buildOptionTree(options:Immutable.Map<number, Option>, entities:Immutable.Map<number, Entity>):Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Option>>> {
@@ -89,8 +91,8 @@ class Joust extends React.Component<{}, JoustState> {
 	}
 
 	protected optionCallback(option:Option, target?:number) {
-		this.kettle.sendOption(option, target);
-		this.tracker.apply(new ClearOptionsMutator());
+		//this.kettle.sendOption(option, target);
+		//this.manager.apply(new ClearOptionsMutator());
 	}
 
 	public render() {
@@ -129,9 +131,9 @@ class Joust extends React.Component<{}, JoustState> {
 								   options={optionTree}
 								   entities={entityTree}
 								   endTurnOption={endTurnOption}
+								   optionCallback={this.optionCallback.bind(this)}
 					/>
 				);
-				// optionCallback={this.optionCallback.bind(this)}
 				break;
 			default:
 				return <p>Unsupported player count: {players.size}.</p>;

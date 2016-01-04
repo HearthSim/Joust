@@ -8,9 +8,18 @@ import GameStateMutator = require('./GameStateMutator');
 
 class GameState {
 
-	constructor(protected entities:Immutable.Map<number, Entity>,
-				protected entityTree:Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Entity>>>,
-				protected options:Immutable.Map<number, Option>) {
+	constructor(protected entities?:Immutable.Map<number, Entity>,
+				protected entityTree?:Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Entity>>>,
+				protected options?:Immutable.Map<number, Option>) {
+		if (!this.entities) {
+			this.entities = Immutable.Map<number, Entity>();
+		}
+		if (!this.entityTree) {
+			this.entityTree = Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Entity>>>();
+		}
+		if (!this.options) {
+			this.options = Immutable.Map<number, Option>();
+		}
 	}
 
 	public getEntity(id:number) {

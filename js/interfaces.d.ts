@@ -2,6 +2,8 @@
 
 import Entity = require('./Entity');
 import Option = require('./Option');
+import GameStateMutator = require("./state/GameStateMutator");
+import GameState = require("./state/GameState");
 
 export interface EntityListProps extends OptionCallbackProps {
 	entities: Immutable.Iterable<number, Entity>;
@@ -19,4 +21,13 @@ export interface OptionCallbackProps {
 export interface OptionProps extends OptionCallbackProps {
 	option: Option;
 
+}
+
+export interface GameStateManager {
+	setGameState(gameState:GameState) : void;
+	getGameState() : GameState;
+	apply(mutator:GameStateMutator) : void;
+	mark(timestamp:number) : void;
+	setComplete(complete:boolean) : void;
+	isComplete() : boolean;
 }

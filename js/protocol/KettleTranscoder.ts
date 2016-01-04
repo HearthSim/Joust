@@ -8,12 +8,12 @@ import AddEntityMutator = require('../state/mutators/AddEntityMutator');
 import TagChangeMutator = require('../state/mutators/TagChangeMutator');
 import ReplaceEntityMutator = require('../state/mutators/ReplaceEntityMutator');
 import SetOptionsMutator = require('../state/mutators/SetOptionsMutator');
-import GameStateTracker = require('../state/GameStateTracker');
+import {GameStateManager} from "../interfaces";
 
-class KettleParser {
+class KettleTranscoder {
 	private socket;
 
-	constructor(private tracker:GameStateTracker) {
+	constructor(private manager:GameStateManager) {
 	}
 
 	public connect(port, host) {
@@ -26,6 +26,7 @@ class KettleParser {
 			this.createGame();
 			this.socket.on('data', this.onData.bind(this));
 			this.socket.once('close', function () {
+				this.manager.setComplete(true);
 				console.debug('Lost connection');
 			});
 		}.bind(this));
@@ -92,8 +93,8 @@ class KettleParser {
 				break;
 		}
 		if (mutator) {
-			this.tracker.apply(mutator);
-			this.tracker.mark(new Date().getTime());
+			this.manager.apply(mutator);
+			this.manager.mark(new Date().getTime());
 		}
 	}
 
@@ -168,4 +169,4 @@ class KettleParser {
 	}
 }
 
-export = KettleParser;
+export = KettleTranscoder;

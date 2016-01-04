@@ -5,24 +5,21 @@ import Sax = require('sax');
 import {ReadStream} from "fs";
 import Player = require('../Player');
 import Entity = require('../Entity');
-import GameStateTracker = require('../state/GameStateTracker');
 import AddEntityMutator = require('../state/mutators/AddEntityMutator');
 import TagChangeMutator = require('../state/mutators/TagChangeMutator');
 import ReplaceEntityMutator = require('../state/mutators/ReplaceEntityMutator');
 import SetOptionsMutator = require('../state/mutators/SetOptionsMutator');
 import ClearOptionsMutator = require('../state/mutators/ClearOptionsMutator');
 import Option = require('../Option');
+import {GameStateManager} from "../interfaces";
 
-class HSReplayParser {
+class HSReplayDecoder {
 	private stream:ReadStream;
-	private stateTracker:GameStateTracker;
 	private nodeStack = [];
 	private timeOffset:number = null;
-	private lastTimestamp:number = null;
 	private complete:number = 0;
 
-	constructor(state:GameStateTracker) {
-		this.stateTracker = state;
+	constructor(public manager:GameStateManager) {
 	}
 
 	public parse(file:string) {
@@ -85,6 +82,18 @@ class HSReplayParser {
 		}
 
 		this.nodeStack.push(node);
+
+		var timestamp = node.attributes.ts && this.parseTimestamp(node.attributes.ts) || null;
+		if (timestamp !== null) {
+			if (this.timeOffset === null) {
+				this.timeOffset = timestamp;
+			}
+			timestamp -= this.timeOffset;
+		}
+
+		if (timestamp/* && (this.nodeStack.length === this.gameDepth + 1)*/) {
+			this.manager.mark(timestamp);
+		}
 	}
 
 	private onCloseTag(name) {
@@ -105,7 +114,7 @@ class HSReplayParser {
 		switch (name) {
 			case 'Game':
 				// we're done here
-				this.stateTracker.markGameComplete();
+				this.manager.setComplete(true);
 				this.complete = 1;
 				break;
 			case 'GameEntity':
@@ -127,7 +136,7 @@ class HSReplayParser {
 				mutator = new AddEntityMutator(player);
 				break;
 			case 'ShowEntity':
-				var state = this.stateTracker.getGameState();
+				var state = this.manager.getGameState();
 				var entity = state.getEntity(+node.attributes.entity);
 				if (!entity) {
 					console.error('Cannot show non-existent entity #' + node.attributes.entity);
@@ -176,23 +185,9 @@ class HSReplayParser {
 		}
 
 		if (mutator !== null) {
-			this.stateTracker.apply(mutator);
-		}
-
-		//console.debug(Array(this.nodeStack.length).join('\t') + '<' + node.name + '>');
-
-		var timestamp = node.attributes.ts && this.parseTimestamp(node.attributes.ts) || null;
-		if (timestamp !== null) {
-			if (this.timeOffset === null) {
-				this.timeOffset = timestamp;
-			}
-			timestamp -= this.timeOffset;
-		}
-
-		if (timestamp/* && (this.nodeStack.length === this.gameDepth + 1)*/) {
-			this.stateTracker.mark(timestamp);
+			this.manager.apply(mutator);
 		}
 	}
 }
 
-export = HSReplayParser;
+export = HSReplayDecoder;
