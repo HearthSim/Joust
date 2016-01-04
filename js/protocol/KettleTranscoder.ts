@@ -1,4 +1,5 @@
 /// <reference path="../../typings/node/node.d.ts"/>
+import Iterable = Immutable.Iterable;
 'use strict';
 
 import Immutable = require('immutable');
@@ -14,8 +15,10 @@ import {Socket} from 'net';
 
 class KettleTranscoder {
 	private socket;
+	private buffer:Immutable.List<number>;
 
 	constructor(private manager:GameStateManager) {
+		this.buffer = Immutable.List<number>();
 	}
 
 	public connect(port, host) {
@@ -104,14 +107,36 @@ class KettleTranscoder {
 	}
 
 	private onData(buffer:Buffer) {
-		var position = 0;
-		while (position < buffer.length) {
-			var length = buffer.readInt32LE(position);
-			position += 4;
-			var decoded = buffer.toString('utf-8', 4, length + 4);
-			position += length;
+		this.buffer = this.buffer.withMutations(function(list) {
+			for(var byte of buffer as any) { // this will call buffer.values() and iterate
+				list = list.push(byte);
+			}
+		});
+		this.drainBuffer();
+	}
+
+	private drainBuffer() {
+		while (this.buffer.count() > 0) {
+			if (this.buffer.count() < 4) {
+				return;
+			}
+			// parse length
+			var lengthBytes = [];
+			var temporary = this.buffer;
+			for (var i = 0; i < 4; i++) {
+				lengthBytes[i] = temporary.first();
+				temporary = temporary.shift();
+			}
+			var length = new Buffer(lengthBytes).readInt32LE(0);
+			if (temporary.count() < length) {
+				// wait for more data
+				return;
+			}
+			// decode data and shift buffer
+			var decoded = new Buffer(temporary.toArray()).toString('utf-8');
 			var packets = JSON.parse(decoded);
 			packets.forEach(this.handlePacket.bind(this));
+			this.buffer = temporary.slice(length).toList();
 		}
 	}
 
