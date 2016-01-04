@@ -9,15 +9,11 @@ import TagChangeMutator = require('../state/mutators/TagChangeMutator');
 import ReplaceEntityMutator = require('../state/mutators/ReplaceEntityMutator');
 import SetOptionsMutator = require('../state/mutators/SetOptionsMutator');
 import GameStateTracker = require('../state/GameStateTracker');
-import StringDecoder = require('string_decoder');
 
 class KettleParser {
-	private decoder;
 	private socket;
 
 	constructor(private tracker:GameStateTracker) {
-		console.log(StringDecoder);
-		this.decoder = new StringDecoder.StringDecoder('utf-8');
 	}
 
 	public connect(port, host) {
@@ -101,16 +97,16 @@ class KettleParser {
 		}
 	}
 
-	private onData(bytes:number[]) {
-		var result = 0;
-		for (var i = 0; i < 4; i++) {
-			var char = bytes[i];
-			result += (char & 0xFF) << (i * 8);
+	private onData(buffer:Buffer) {
+		var position = 0;
+		while (position < buffer.length) {
+			var length = buffer.readInt32LE(position);
+			position += 4;
+			var decoded = buffer.toString('utf-8', 4, length + 4);
+			position += length;
+			var packets = JSON.parse(decoded);
+			packets.forEach(this.handlePacket.bind(this));
 		}
-		bytes = bytes.slice(4);
-		var data = this.decoder.write(new Buffer(bytes));
-		var packets = JSON.parse(data);
-		packets.forEach(this.handlePacket.bind(this));
 	}
 
 	private createGame() {
