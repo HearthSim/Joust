@@ -14,6 +14,7 @@ interface KettleState {
 	hostname?:string;
 	port?:number;
 	websocket?:boolean;
+	connecting?:boolean;
 }
 
 class Kettle extends React.Component<KettleProps, KettleState> {
@@ -25,7 +26,9 @@ class Kettle extends React.Component<KettleProps, KettleState> {
 			defaultPort: isNode ? 9111 : 61700,
 			hostname: null,
 			port: null,
-			websocket: !isNode};
+			websocket: !isNode,
+			connecting: false
+		};
 	}
 
 	public onChangeHostname(e) {
@@ -43,6 +46,7 @@ class Kettle extends React.Component<KettleProps, KettleState> {
 
 	public submit(e) {
 		e.preventDefault();
+		this.setState({connecting: true});
 		var hostname = this.state.hostname || this.state.defaultHostname;
 		var port = this.state.port || this.state.defaultPort;
 		if (this.state.websocket) {
@@ -76,19 +80,19 @@ class Kettle extends React.Component<KettleProps, KettleState> {
 					<label className="hostname">
 						Hostname:
 						<input type="text" placeholder={this.state.defaultHostname} value={this.state.hostname}
-							   onChange={this.onChangeHostname.bind(this)}/>
+							   onChange={this.onChangeHostname.bind(this)} disabled={this.state.connecting}/>
 					</label>
 					<label className="port">
 						Port:
 						<input type="number" placeholder={''+this.state.defaultPort} value={''+this.state.port}
-							   onChange={this.onChangePort.bind(this)}/>
+							   onChange={this.onChangePort.bind(this)} disabled={this.state.connecting}/>
 					</label>
 					<label className="websocket">
-						<input type="checkbox" checked={this.state.websocket} disabled={!isNode}
+						<input type="checkbox" checked={this.state.websocket} disabled={!isNode || this.state.connecting}
 							   onChange={this.onChangeWebSocket.bind(this)}/>
 						WebSocket
 					</label>
-					<button type="submit">Connect</button>
+					<button type="submit" disabled={this.state.connecting}>{this.state.connecting && 'Connecting...' || 'Connect'}</button>
 				</form>
 			</div>
 		);

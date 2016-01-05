@@ -48,12 +48,14 @@ class Application extends React.Component<{}, ApplicationState> {
 			}).toJS();
 			kettle.createGame('Player 1', 'HERO_08', webspinners,
 				'Player 2', 'HERO_08', portals);
-		});
+			this.setState({manager: manager});
+		}.bind(this));
 		client.once('close', function() {
-			this.state.manager.setComplete(true);
+			alert('Connection lost.');
+			this.setState({manager: null});
 		}.bind(this));
 		kettle.connect(client);
-		this.setState({manager: manager, optionCallback: function(option:Option, target?:number) {
+		this.setState({optionCallback: function(option:Option, target?:number) {
 			kettle.sendOption(option, target);
 			manager.apply(new ClearOptionsMutator());
 		}});
