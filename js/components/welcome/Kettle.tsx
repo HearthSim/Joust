@@ -74,7 +74,7 @@ class Kettle extends React.Component<KettleProps, KettleState> {
 					Joust can be used as a Kettle client to play Hearthstone in your browser.
 				</p>
 				<p>
-					Fireplace is the simulator behind Kettle and makes sure the game behaves just as you expect.
+					Fireplace is the simulator behind Kettle and makes sure the game behaves just as you'd expect.
 				</p>
 				<pre>
 					git clone&nbsp;

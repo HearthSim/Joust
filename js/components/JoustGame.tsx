@@ -64,7 +64,7 @@ class JoustGame extends React.Component<JoustGameProps, JoustState> {
 		// find the game entity
 		var game = allEntities ? allEntities.filter(filterByCardType(1)).first() : null;
 		if (!game) {
-			return <p className="message">Loading game&hellip;</p>;
+			return <p className="message">Waiting for game&hellip;</p>;
 		}
 
 		// find an end turn option
@@ -76,7 +76,7 @@ class JoustGame extends React.Component<JoustGameProps, JoustState> {
 		var players = allEntities.filter(filterByCardType(2)) as Immutable.Map<number, Player>;
 		switch (players.count()) {
 			case 0:
-				return <p className="message">Loading players&hellip;</p>;
+				return <p className="message">Waiting for players&hellip;</p>;
 				break;
 			case 2:
 				return (
