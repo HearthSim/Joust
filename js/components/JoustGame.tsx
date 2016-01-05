@@ -39,19 +39,10 @@ class JoustGame extends React.Component<JoustGameProps, JoustState> {
 		this.props.manager.on('gamestate', this.updateState.bind(this));
 	}
 
-	public updateState() {
-		/*var history = this.manager.getHistory();
-		var latest = null;
-		var timeInGame = new Date().getTime() - this.start;
-		history.forEach(function (value, time) {
-			if (timeInGame >= +time / 8 && (latest === null || time > latest)) {
-				latest = time;
-			}
-		});
-		if (latest && history.has(latest)) {
-			this.setState({gameState: history.get(latest)});
-		}*/
-		this.setState({gameState: this.props.manager.getGameState()});
+	private start:number;
+
+	public updateState(gameState) {
+		this.setState({gameState: gameState});
 	}
 
 	protected optionCallback(option:Option, target?:number) {
@@ -74,7 +65,7 @@ class JoustGame extends React.Component<JoustGameProps, JoustState> {
 		// find the game entity
 		var game = allEntities ? allEntities.filter(filterByCardType(1)).first() : null;
 		if (!game) {
-			return <p>Awaiting Game Entity.</p>;
+			return <p className="message">Loading game&hellip;</p>;
 		}
 
 		// find an end turn option
@@ -86,7 +77,7 @@ class JoustGame extends React.Component<JoustGameProps, JoustState> {
 		var players = allEntities.filter(filterByCardType(2)) as Immutable.Map<number, Player>;
 		switch (players.count()) {
 			case 0:
-				return <p>Awaiting Player entities.</p>;
+				return <p className="message">Loading players&hellip;</p>;
 				break;
 			case 2:
 				return (
@@ -100,7 +91,7 @@ class JoustGame extends React.Component<JoustGameProps, JoustState> {
 				);
 				break;
 			default:
-				return <p>Unsupported player count: {players.size}.</p>;
+				return <p className="message">Unsupported player count: {players.size}.</p>;
 		}
 	}
 

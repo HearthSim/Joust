@@ -15,8 +15,7 @@ class HearthstoneJSON {
 	}
 
 	public static fetch() {
-		//https://api.hearthstonejson.com/v1/latest/enUS/cards.json
-		getJSON('http://localhost/~benedict/cards.json', function(error, response){
+		getJSON('https://api.hearthstonejson.com/v1/latest/enUS/cards.json', function(error, response){
 
 			if(error) {
 				console.error(error);

@@ -4,6 +4,11 @@ var sourcemaps = require('gulp-sourcemaps');
 var uglify = require('gulp-uglify');
 var less = require('gulp-less');
 
+var browserify = require('browserify');
+var buffer = require('vinyl-buffer');
+var source = require('vinyl-source-stream');
+
+
 var tsProject = ts.createProject('./js/tsconfig.json');
 
 gulp.task('default', ['watch']);
@@ -34,4 +39,20 @@ gulp.task('watch:scripts', ['compile:scripts'], function () {
 
 gulp.task('watch:styles', ['compile:styles'], function () {
     gulp.watch(['css/**/*.less'], ['compile:styles']);
+});
+
+gulp.task('browser', ['compile'], function() {
+    var b = browserify({
+        entries: './js/run.js',
+        debug: true
+    });
+
+    return b.bundle()
+        .pipe(source('joust.js'))
+        .pipe(buffer())
+//        .pipe(sourcemaps.init({loadMaps: true}))
+        // Add transformation tasks to the pipeline here.
+        .pipe(uglify())
+//        .pipe(sourcemaps.write('./'))
+        .pipe(gulp.dest('./dist/'));
 });

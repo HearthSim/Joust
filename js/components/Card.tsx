@@ -43,7 +43,7 @@ class Card extends React.Component<CardProps, {}> {
 			classNames.push('powered-up');
 		}
 
-		var title = null;
+		var title = entity.getCardId();
 		var description = null;
 		var defaultAttack = null;
 		var defaultCost = null;

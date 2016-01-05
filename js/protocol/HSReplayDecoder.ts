@@ -2,8 +2,8 @@
 'use strict';
 
 import Immutable = require('immutable');
+
 import Sax = require('sax');
-import {ReadStream} from "fs";
 import Player = require('../Player');
 import Entity = require('../Entity');
 import AddEntityMutator = require('../state/mutators/AddEntityMutator');
@@ -17,7 +17,7 @@ import {Readable} from 'stream';
 import {createReadStream} from 'fs';
 
 class HSReplayDecoder {
-	private stream:ReadStream;
+	private stream:Readable;
 	private nodeStack = [];
 	private timeOffset:number = null;
 	private complete:number = 0;
@@ -26,10 +26,11 @@ class HSReplayDecoder {
 	}
 
 	public parseFromStream(stream:Readable):void {
+		this.stream = stream;
 		var sax = Sax.createStream(true, {});
 		sax.on('opentag', this.onOpenTag.bind(this));
 		sax.on('closetag', this.onCloseTag.bind(this));
-		stream.pipe(sax);
+		this.stream.pipe(sax);
 	}
 
 	public parseFromFile(file:string):void {
@@ -55,7 +56,6 @@ class HSReplayDecoder {
 				if (this.complete != 0) {
 					console.warn('Replay contains more than one game, ignoring');
 					this.complete = 2;
-					this.stream.close();
 					return;
 				}
 				this.gameDepth = +this.nodeStack.length + 1;

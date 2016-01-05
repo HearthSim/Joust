@@ -27,6 +27,7 @@
     "Player.ts",
     "state/GameState.ts",
     "state/GameStateMutator.d.ts",
+    "state/GameStateScrubber.ts",
     "state/managers/HistoryGameStateManager.ts",
     "state/managers/SingleGameStateManager.ts",
     "Option.ts",

@@ -16,7 +16,7 @@ class SingleGameStateManager extends EventEmitter implements GameStateManager {
 	public setGameState(gameState:GameState):void {
 		var previous = this.gameState;
 		this.gameState = gameState;
-		this.emit('gamestate', gameState, this.gameState);
+		this.emit('gamestate', gameState, previous);
 	}
 
 	public getGameState():GameState {

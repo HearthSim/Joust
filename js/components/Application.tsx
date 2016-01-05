@@ -4,8 +4,9 @@
 
 import React = require('react');
 import SingleGameStateManager = require("../state/managers/SingleGameStateManager");
-import HistoryGameStateManager = require("../state/managers/HistoryGameStateManager");
 import KettleTranscoder = require("../protocol/KettleTranscoder");
+import HistoryGameStateManager = require("../state/managers/HistoryGameStateManager");
+import GameStateScrubber = require("../state/GameStateScrubber");
 import HSReplayDecoder = require("../protocol/HSReplayDecoder");
 import JoustGame = require('./JoustGame');
 import GameState = require("../state/GameState");
@@ -33,11 +34,13 @@ class Application extends React.Component<{}, ApplicationState> {
 		this.setState({manager: manager});
 	}
 
-	public initializeHSReplay() {
+	public initializeHSReplay(stream) {
 		var manager = new HistoryGameStateManager(new GameState());
+		var scrubber = new GameStateScrubber(manager);
 		var hsreplay = new HSReplayDecoder(manager);
-		hsreplay.parseFromFile('sample.hsreplay');
-		this.setState({manager: manager});
+		hsreplay.parseFromStream(stream);
+		this.setState({manager: scrubber});
+		scrubber.play();
 	}
 
 	public render() {
@@ -52,8 +55,8 @@ class Application extends React.Component<{}, ApplicationState> {
 					<h1>Joust</h1>
 					<p>Welcome to Joust!</p>
 					<div className="backends">
-						<HSReplay/>
-						<Kettle initializeKettle={this.initializeKettle.bind(this)}/>
+						<HSReplay callback={this.initializeHSReplay.bind(this)}/>
+						<Kettle callback={this.initializeKettle.bind(this)}/>
 					</div>
 				</div>
 			)

@@ -4,7 +4,7 @@ import React = require('react');
 import isNode = require('is-node');
 
 interface KettleProps extends React.Props<any> {
-	initializeKettle(hostname:string, port:number):void
+	callback(hostname:string, port:number):void
 }
 
 interface KettleState {
@@ -29,7 +29,7 @@ class Kettle extends React.Component<KettleProps, KettleState> {
 
 	public submit(e) {
 		e.preventDefault();
-		this.props.initializeKettle(this.state.hostname || 'localhost', this.state.port || 9111);
+		this.props.callback(this.state.hostname || 'localhost', this.state.port || 9111);
 	}
 
 	public render() {
@@ -50,6 +50,12 @@ class Kettle extends React.Component<KettleProps, KettleState> {
 		return (
 			<div className="backend kettle">
 				<h2>Kettle (Fireplace)</h2>
+				<p>
+					Joust can be used as a Kettle client to play Hearthstone in your browser.
+				</p>
+				<p>
+					Fireplace is the simulator behind Kettle and makes sure the game behaves just as you expect.
+				</p>
 				<pre>
 					git clone&nbsp;
 					<a href="https://github.com/jleclanche/fireplace.git" target="_blank">

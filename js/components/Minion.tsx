@@ -28,7 +28,7 @@ class Minion extends React.Component<MinionProps, {}> {
 		}
 
 
-		var title = null;
+		var title = entity.getCardId();
 		var defaultAttack = null;
 		var defaultHealth = null;
 		if (HearthstoneJSON.has(entity.getCardId())) {
