@@ -15,24 +15,50 @@ class HearthstoneJSON {
 	}
 
 	public static fetch() {
-		getJSON('https://api.hearthstonejson.com/v1/latest/enUS/cards.json', function(error, response){
+		if (typeof(Storage) !== "undefined") {
+			if (typeof localStorage['rawCards'] === 'string') {
+				var result = JSON.parse(localStorage['rawCards']);
+				if (typeof result === 'object') {
+					console.debug('Using card data from local storage');
+					HearthstoneJSON.cards = HearthstoneJSON.parse(result);
+					return;
+				}
+			}
+			if(typeof localStorage['rawCards'] !== 'undefined') {
+				console.warn('Removing invalid card data in local storage');
+				localStorage.removeItem('rawCards');
+			}
+		}
 
-			if(error) {
+		getJSON('https://api.hearthstonejson.com/v1/latest/enUS/cards.json', function (error, response) {
+
+			if (error) {
 				console.error(error);
 				return;
 			}
 
-			var cards = Immutable.Map<string, any>();
-			var results = response;
-
-			cards = cards.withMutations(function(map) {
-				results.forEach(function(card) {
-					map = map.set(card.id, card);
-				});
-			});
-
+			var cards = HearthstoneJSON.parse(response);
 			HearthstoneJSON.cards = cards;
+
+			console.debug('Card definitions loaded from HearthstoneJSON');
+
+			if (typeof(Storage) !== "undefined") {
+				localStorage.setItem('rawCards', JSON.stringify(response));
+				console.debug('Saved card definitions to local storage');
+			}
 		})
+	}
+
+	private static parse(raw) {
+		var cards = Immutable.Map<string, any>();
+		var results = raw;
+
+		cards = cards.withMutations(function (map) {
+			results.forEach(function (card) {
+				map = map.set(card.id, card);
+			});
+		});
+		return cards;
 	}
 }
 
