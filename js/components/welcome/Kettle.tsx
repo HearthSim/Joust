@@ -46,7 +46,8 @@ class Kettle extends React.Component<KettleProps, KettleState> {
 		var hostname = this.state.hostname || this.state.defaultHostname;
 		var port = this.state.port || this.state.defaultPort;
 		if (this.state.websocket) {
-			this.props.callbackWebSocket('ws://' + hostname + ':' + port + '/');
+			var protocol = (document.location.protocol === 'https:') ? 'wss:' :' ws:';
+			this.props.callbackWebSocket(protocol+'//' + hostname + ':' + port + '/');
 		}
 		else {
 			this.props.callbackTCPSocket(hostname, port);
