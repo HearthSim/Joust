@@ -46,7 +46,7 @@ class Application extends React.Component<{}, ApplicationState> {
 			var portals = cardList.map(function () {
 				return 'GVG_003';
 			}).toJS();
-			kettle.createGame('Player 1', 'HERO_08', webspinners,
+			kettle.createGame('Player 1', 'HERO_05', webspinners,
 				'Player 2', 'HERO_08', portals);
 			this.setState({manager: manager});
 		}.bind(this));

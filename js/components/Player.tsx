@@ -52,7 +52,8 @@ class Player extends React.Component<PlayerProps, {}> {
 		var weapon = <Weapon entity={playEntities.filter(filterByCardType(7)).first()}/>;
 
 		var field = <Field entities={playEntities.filter(filterByCardType(4)) || emptyEntities}
-						   options={playOptions || emptyOptions}/>;
+						   options={playOptions || emptyOptions}
+						   optionCallback={this.props.optionCallback}/>;
 		var deck = <Deck entities={this.props.entities.get(2) || emptyEntities}
 						 options={this.props.options.get(2) || emptyOptions}/>;
 		var hand = <Hand entities={this.props.entities.get(3) || emptyEntities}

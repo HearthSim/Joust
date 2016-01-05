@@ -29,6 +29,12 @@ class Option {
 		return this.targets.length > 0;
 	}
 
+	public isTarget(target:number):boolean {
+		return this.targets.filter(function(proposedTarget) {
+			return proposedTarget === target;
+		}).length == 1;
+	}
+
 	public getTargets():number[] {
 		return this.targets;
 	}

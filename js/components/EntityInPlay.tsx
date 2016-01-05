@@ -1,0 +1,94 @@
+'use strict';
+
+import {EntityInPlayProps} from '../interfaces';
+
+import React = require('react');
+import {DragSource, DropTarget} from 'react-dnd';
+import _ = require('lodash');
+
+abstract class EntityInPlay<P extends EntityInPlayProps, S> extends React.Component<P, S> {
+
+	private baseClassName:string = '';
+
+	protected abstract jsx();
+
+	constructor(baseClassName:string) {
+		super();
+		this.baseClassName = baseClassName;
+	}
+
+	protected getClassNames():string[] {
+		var classNames = ['entity', 'in-play'];
+		classNames.push(this.baseClassName);
+		if (this.props.isTarget) {
+			classNames.push('target');
+		}
+		else if (this.props.option) {
+			classNames.push('playable');
+		}
+		if(this.props.entity.isExhausted()) {
+			classNames.push('exhausted');
+		}
+		return classNames;
+	}
+
+	public render() {
+		if(!this.props.entity) {
+			return <div className={this.getClassNames().concat(['no-entity']).join(' ')}>{this.jsx()}</div>;
+		}
+
+		var playable = !!this.props.option;
+		var requiresTarget = this.props.option && this.props.option.hasTargets();
+
+		var jsx = <div className={this.getClassNames().join(' ')}>{this.jsx()}</div>;
+
+		if (playable) {
+			// make draggable
+			jsx = this.props.connectDragSource(jsx);
+		}
+
+		// make drop target
+		jsx = this.props.connectDropTarget(jsx);
+
+		return jsx;
+	}
+
+	public static DragSource() {
+		return DragSource('card', {
+				beginDrag: function (props:EntityInPlayProps) {
+					return {
+						option: props.option,
+						action: props.optionCallback
+					};
+				}
+			},
+			function (connect, monitor) {
+				return {
+					connectDragSource: connect.dragSource(),
+					isDragging: monitor.isDragging()
+				}
+			});
+	}
+
+	public static DropTarget() {
+		return DropTarget('card', {
+				canDrop: function (props:EntityInPlayProps, monitor) {
+					var item = monitor.getItem();
+					return item.option.isTarget(props.entity.getId());
+				},
+				drop: function (props:EntityInPlayProps, monitor, component) {
+					var item = monitor.getItem();
+					item.action(item.option, props.entity.getId());
+				}
+			},
+			function (connect, monitor) {
+				return {
+					connectDropTarget: connect.dropTarget(),
+					isTarget: monitor.canDrop(),
+					isOver: monitor.isOver()
+				}
+			})
+	}
+}
+
+export = EntityInPlay;

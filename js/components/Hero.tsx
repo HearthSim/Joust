@@ -1,33 +1,44 @@
 /// <reference path="../../typings/react/react.d.ts"/>
 /// <reference path="../interfaces.d.ts"/>
+import HearthstoneJSON = require("../metadata/HearthstoneJSON");
 'use strict';
 
 import React = require('react');
 
-import {EntityProps, OptionProps} from "../interfaces";
+import EntityInPlay = require('./EntityInPlay');
+import {EntityInPlayProps} from "../interfaces";
 import Entity = require('../Entity');
 import Secrets = require('./Secrets');
 import Attack = require('./stats/Attack')
 import Health = require('./stats/Health')
+import _ = require('lodash');
 
-interface HeroProps extends EntityProps, OptionProps, React.Props<any> {
+interface HeroProps extends EntityInPlayProps {
 	secrets: Immutable.Map<number, Entity>;
 }
 
-class Hero extends React.Component<HeroProps, {}> {
-	public render() {
-		if (!this.props.entity) {
-			return <div className="hero no-entity"></div>;
-		}
+class Hero extends EntityInPlay<HeroProps, {}> {
+	constructor() {
+		super('hero');
+	}
 
+	protected jsx() {
 		var entity = this.props.entity;
+
+		var title = this.props.entity.getCardId();
+		if (HearthstoneJSON.has(this.props.entity.getCardId())) {
+			var data = HearthstoneJSON.get(this.props.entity.getCardId());
+			var title = '' + data.name;
+		}
 
 		var classNames = this.props.option ? 'hero playable' : 'hero';
 		var health = null;
 		var attack = entity.getAtk() ? <Attack attack={entity.getAtk()}/> : null;
 		return (
-			<div className={classNames}>
+			<div>
 				<Secrets entities={this.props.secrets}/>
+				<h1>{title}</h1>
+
 				<div className="stats">
 					{attack}
 					<Health health={entity.getHealth()} damage={entity.getDamage()}/>
@@ -35,14 +46,9 @@ class Hero extends React.Component<HeroProps, {}> {
 			</div>
 		);
 	}
-
-	public shouldComponentUpdate(nextProps:HeroProps, nextState) {
-		return (
-			this.props.entity !== nextProps.entity ||
-			this.props.option !== nextProps.option ||
-			this.props.secrets !== nextProps.secrets
-		);
-	}
 }
 
-export = Hero;
+export = _.flow(
+	EntityInPlay.DragSource(),
+	EntityInPlay.DropTarget()
+)(Hero);

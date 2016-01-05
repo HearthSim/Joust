@@ -4,48 +4,33 @@
 
 import React = require('react');
 
-import {EntityProps, OptionProps} from "../interfaces";
-
+import {EntityInPlayProps} from "../interfaces";
+import EntityInPlay = require("./EntityInPlay");
 import Cost = require('./stats/Cost');
 import HearthstoneJSON = require('../metadata/HearthstoneJSON');
+import _ = require('lodash');
 
-interface HeroPowerProps extends EntityProps, OptionProps, React.Props<any> {
-
-}
-
-class HeroPower extends React.Component<HeroPowerProps, {}> {
-	protected use() {
-		if(!this.props.option || !this.props.optionCallback) {
-			return;
-		}
-		this.props.optionCallback(this.props.option);
+class HeroPower extends EntityInPlay<EntityInPlayProps, {}> {
+	constructor() {
+		super('heroPower');
 	}
 
-	public render() {
-		if (this.props.entity) {
-			var classNames = ['heroPower'];
-			if(this.props.option) {
-				classNames.push('playable');
-			}
-			if(this.props.entity.isExhausted()) {
-				classNames.push('exhausted');
-			}
-			var defaultCost = null;
-			if(HearthstoneJSON.has(this.props.entity.getCardId())) {
-				var data = HearthstoneJSON.get(this.props.entity.getCardId());
-				defaultCost = data.cost;
-			}
+	protected jsx() {
+		var defaultCost = null;
+		if (HearthstoneJSON.has(this.props.entity.getCardId())) {
+			var data = HearthstoneJSON.get(this.props.entity.getCardId());
+			defaultCost = data.cost;
+		}
 
-			return (
-				<div className={classNames.join(' ')} onClick={this.use.bind(this)}>
-					<Cost cost={this.props.entity.getCost()} default={defaultCost} />
-				</div>
-			);
-		}
-		else {
-			return <div className="heroPower no-entity"></div>
-		}
+		return (
+			<div>
+				<Cost cost={this.props.entity.getCost()} default={defaultCost}/>
+			</div>
+		);
 	}
 }
 
-export = HeroPower;
+export = _.flow(
+	EntityInPlay.DragSource(),
+	EntityInPlay.DropTarget()
+)(HeroPower);

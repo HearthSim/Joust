@@ -35,6 +35,7 @@
     "components/welcome/Kettle.tsx",
     "components/welcome/HSReplay.tsx",
     "components/EndTurnButton.tsx",
+    "components/EntityInPlay.tsx",
     "components/EntityList.tsx",
     "components/Hero.tsx",
     "components/HeroPower.tsx",

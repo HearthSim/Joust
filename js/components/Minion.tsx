@@ -1,24 +1,28 @@
 /// <reference path="../../typings/react/react.d.ts"/>
+/// <reference path="../../typings/react-dnd/react-dnd.d.ts"/>
+/// <reference path="../../typings/lodash/lodash.d.ts"/>
 'use strict';
 
 import React = require('react');
-import {EntityProps, OptionProps} from "../interfaces";
+import EntityInPlay = require('./EntityInPlay');
+import {EntityInPlayProps} from "../interfaces";
 import HearthstoneJSON = require("../metadata/HearthstoneJSON");
 
 import Attack = require('./stats/Attack');
 import Health = require('./stats/Health');
 
-interface MinionProps extends EntityProps, OptionProps, React.Props<any> {
+import {DragSource, DropTarget} from 'react-dnd';
+import _ = require('lodash');
 
-}
+class Minion extends EntityInPlay<EntityInPlayProps, {}> {
 
-class Minion extends React.Component<MinionProps, {}> {
+	constructor() {
+		super('minion');
+	}
 
-	public render() {
-		var classNames = ['minion'];
-		if (this.props.option) {
-			classNames.push('playable');
-		}
+	protected getClassNames():string[] {
+		var classNames = [];
+
 		var entity = this.props.entity;
 		if (entity.isStealthed()) {
 			classNames.push('stealth');
@@ -27,6 +31,11 @@ class Minion extends React.Component<MinionProps, {}> {
 			classNames.push('divine-shield');
 		}
 
+		return super.getClassNames().concat(classNames);
+	}
+
+	public jsx() {
+		var entity = this.props.entity;
 
 		var title = entity.getCardId();
 		var defaultAttack = null;
@@ -39,7 +48,7 @@ class Minion extends React.Component<MinionProps, {}> {
 		}
 
 		return (
-			<div className={classNames.join(' ')}>
+			<div>
 				<h1>{title}</h1>
 				<div className="stats">
 					<Attack attack={entity.getAtk()} default={defaultAttack}/>
@@ -50,4 +59,7 @@ class Minion extends React.Component<MinionProps, {}> {
 	}
 }
 
-export = Minion;
+export = _.flow(
+	EntityInPlay.DragSource(),
+	EntityInPlay.DropTarget()
+)(Minion);

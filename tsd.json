@@ -6,7 +6,7 @@
   "bundle": "typings/tsd.d.ts",
   "installed": {
     "react/react.d.ts": {
-      "commit": "a6ff9f6e195a334afd89e4b721d05e9520eee4c0"
+      "commit": "6a6ad7068a177c0d7a8a20830626cb63277191c5"
     },
     "react/react-addons-create-fragment.d.ts": {
       "commit": "a6ff9f6e195a334afd89e4b721d05e9520eee4c0"
@@ -40,6 +40,12 @@
     },
     "sax/sax.d.ts": {
       "commit": "dc9dabe74a5be62613b17a3605309783a12ff28a"
+    },
+    "react-dnd/react-dnd.d.ts": {
+      "commit": "6a6ad7068a177c0d7a8a20830626cb63277191c5"
+    },
+    "lodash/lodash.d.ts": {
+      "commit": "6a6ad7068a177c0d7a8a20830626cb63277191c5"
     }
   }
 }

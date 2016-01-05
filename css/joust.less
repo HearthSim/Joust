@@ -143,18 +143,28 @@ html {
 .game {
   overflow: hidden;
   background-color: beige;
-  user-select: none;
-  -webkit-user-select: none;
-  cursor: default;
   width: 100%;
   height: 100%;
-  /*  display: flex;
-	flex-direction: column;*/
+}
+
+.game, #application .buttons {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: default;
 }
 
 .player {
   width: 100%;
   height: 50%;
+}
+
+.helper {
+  width: 100%;
+  height: 100%;
 }
 
 .hand {
@@ -192,23 +202,40 @@ html {
 
 }
 
-.playable.powered-up {
-  box-shadow: 0px 0px 10px rgb(255, 220, 0);
-}
+.entity {
+  transition: box-shadow 0.2s, transform 0.2s;
 
-.playable.combo {
-  box-shadow: 0px 0px 20px rgb(255, 255, 100);
+  &.minion, &:not(.playable) {
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+  }
+
+  &.target, &.playable.target, &.minion.target {
+	box-shadow: 0px 0px 5px 2px rgb(255, 120, 0);
+	transform: scale(1.05);
+  }
+
+  &.playable {
+	box-shadow: 0px 0px 10px 1px rgb(0, 255, 0);
+
+	&.powered-up {
+	  box-shadow: 0px 0px 10px rgb(255, 220, 0);
+	}
+
+	&.combo {
+	  box-shadow: 0px 0px 20px rgb(255, 255, 100);
+	}
+  }
 }
 
 .endTurnButton.playable > button {
-  box-shadow: 0px 0px 20px rgb(255, 255, 0);
+  box-shadow: 0px 0px 10px 1px rgb(255, 255, 0);
 }
 
-.playable, .endTurnButton.playable.only-option > button {
-  box-shadow: 0px 0px 20px rgb(0, 255, 0);
+.card.playable, .endTurnButton.playable.only-option > button {
+  box-shadow: 0px 0px 10px 1px rgb(0, 255, 0);
 
   &:hover {
-	box-shadow: 0px 0px 20px rgb(255, 255, 255);
+	box-shadow: 0px 0px 10px 1px rgb(255, 255, 255);
   }
 }
 
@@ -337,12 +364,12 @@ html {
 
 .secret {
   display: block;
-  width: 25px;
-  height: 25px;
+  width: 20px;
+  height: 20px;
   text-align: center;
-  border-radius: 12.5px;
+  border-radius: 50%;
   font-weight: bold;
-  line-height: 1.5em;
+  line-height: 1em;
   color: white;
   background-color: beige;
   border: black solid 1px;
@@ -450,19 +477,23 @@ html {
   border-radius: 50%;
   padding-top: 20px;
 
-  display: flex;
-  flex-direction: column;
+  > div {
 
-  h1 {
-	font-size: 0.8em;
-	text-align: center;
-	font-family: "Chancery URW";
-	margin: 0 0 10px 0;
-  }
+	display: flex;
+	flex-direction: column;
+	height: 100%;
 
-  .stats {
-	width: 90%;
-	margin: auto auto 0 auto;
+	h1 {
+	  font-size: 0.8em;
+	  text-align: center;
+	  font-family: "Chancery URW";
+	  margin: 0 0 10px 0;
+	}
+
+	.stats {
+	  width: 90%;
+	  margin: auto auto 0 auto;
+	}
   }
 }
 
@@ -472,27 +503,40 @@ html {
   height: 100%;
   border-radius: 60% 60% 0 0 / 70% 70% 0 0;
   border: solid black 1px;
-  display: flex;
-  flex-direction: column;
 
-  .atk, .health {
-	margin-bottom: -4px;
-  }
-
-  .atk {
-	margin-left: -4px;
-  }
-
-  .health {
-	margin-right: -4px;
-  }
-
-  .secrets {
+  > div {
 	display: flex;
-	flex-direction: row;
-	justify-content: space-around;
-	list-style-type: none;
-	padding-left: 0;
+	flex-direction: column;
+	height: 100%;
+
+	.atk, .health {
+	  margin-bottom: -4px;
+	}
+
+	.atk {
+	  margin-left: -4px;
+	}
+
+	.health {
+	  margin-right: -4px;
+	}
+
+	h1 {
+	  font-size: 0.9em;
+	  text-align: center;
+	  font-family: "Chancery URW";
+	  margin: 0 0 10px 0;
+	}
+
+	.secrets {
+	  height: 20px;
+	  display: flex;
+	  flex-direction: row;
+	  justify-content: space-around;
+	  list-style-type: none;
+	  margin: -12% 0 10px 0;
+	  padding-left: 0;
+	}
   }
 }
 

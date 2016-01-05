@@ -1,4 +1,5 @@
 /// <reference path="../../typings/react/react.d.ts"/>
+/// <reference path="../../typings/react-dnd/react-dnd.d.ts"/>
 /// <reference path="../interfaces.d.ts"/>
 'use strict';
 
@@ -11,8 +12,11 @@ import Attack = require('./stats/Attack');
 import Health = require('./stats/Health');
 import Cost = require('./stats/Cost');
 
-interface CardProps extends EntityProps, OptionProps, React.Props<any> {
+import {DragSource} from 'react-dnd';
 
+interface CardProps extends EntityProps, OptionProps, React.Props<any> {
+	connectDragSource?(param:any);
+	isDragging?:boolean;
 }
 
 class Card extends React.Component<CardProps, {}> {
@@ -69,15 +73,31 @@ class Card extends React.Component<CardProps, {}> {
 			stats = <div className="stats">{attack}{durability}</div>
 		}
 
-		return (
-			<div className={classNames.join(' ')} onClick={this.play.bind(this)}>
+		var connectDragSource = this.props.connectDragSource;
+		var jsx = (
+			<div className={classNames.join(' ')}>
 				<Cost cost={entity.getCost()} default={defaultCost}/>
 				<h1>{title}</h1>
 				<p className="description" dangerouslySetInnerHTML={{__html: description}}></p>
 				{stats}
 			</div>
 		);
+
+		return (this.props.option ? connectDragSource(jsx) : jsx);
 	}
 }
 
-export = Card;
+export = DragSource('card', {
+		beginDrag: function(props:CardProps) {
+			return {
+				option: props.option,
+				action: props.optionCallback
+			};
+		}
+	},
+	function(connect, monitor) {
+		return {
+			connectDragSource: connect.dragSource(),
+			isDragging: monitor.isDragging()
+		}
+	})(Card);
