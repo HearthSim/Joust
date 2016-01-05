@@ -4,19 +4,28 @@ import React = require('react');
 import isNode = require('is-node');
 
 interface KettleProps extends React.Props<any> {
-	callback(hostname:string, port:number):void
+	callbackTCPSocket(hostname:string, port:number):void
+	callbackWebSocket(url:string):void
 }
 
 interface KettleState {
+	defaultHostname?:string;
+	defaultPort?:number;
 	hostname?:string;
 	port?:number;
+	websocket?:boolean;
 }
 
 class Kettle extends React.Component<KettleProps, KettleState> {
 
 	constructor() {
 		super();
-		this.state = {hostname: null, port: null};
+		this.state = {
+			defaultHostname: isNode ? 'localhost' : 'beheh.de',
+			defaultPort: isNode ? 9111 : 61700,
+			hostname: null,
+			port: null,
+			websocket: !isNode};
 	}
 
 	public onChangeHostname(e) {
@@ -27,26 +36,24 @@ class Kettle extends React.Component<KettleProps, KettleState> {
 		this.setState({port: +e.target.value});
 	}
 
+	public onChangeWebSocket(e) {
+		var checked = e.target.checked;
+		this.setState({websocket: checked});
+	}
+
 	public submit(e) {
 		e.preventDefault();
-		this.props.callback(this.state.hostname || 'localhost', this.state.port || 9111);
+		var hostname = this.state.hostname || this.state.defaultHostname;
+		var port = this.state.port || this.state.defaultPort;
+		if (this.state.websocket) {
+			this.props.callbackWebSocket('ws://' + hostname + ':' + port + '/');
+		}
+		else {
+			this.props.callbackTCPSocket(hostname, port);
+		}
 	}
 
 	public render() {
-		var form = isNode ? (<form onSubmit={this.submit.bind(this)}>
-			<label className="hostname">
-				Hostname:
-				<input type="text" placeholder="localhost" value={this.state.hostname}
-					   onChange={this.onChangeHostname.bind(this)}/>
-			</label>
-			<label className="port">
-				Port:
-				<input type="number" placeholder="9111" value={''+this.state.port}
-					   onChange={this.onChangePort.bind(this)}/>
-			</label>
-			<button type="submit">Connect</button>
-		</form>) :
-			(<p><em>Currently unavailable to web browsers.</em></p>);
 		return (
 			<div className="backend kettle">
 				<h2>Kettle (Fireplace)</h2>
@@ -64,7 +71,24 @@ class Kettle extends React.Component<KettleProps, KettleState> {
 				</pre>
 				<pre>git checkout fireplace</pre>
 				<pre>./kettle/kettle.py [hostname] [port]</pre>
-				{form}
+				<form onSubmit={this.submit.bind(this)}>
+					<label className="hostname">
+						Hostname:
+						<input type="text" placeholder={this.state.defaultHostname} value={this.state.hostname}
+							   onChange={this.onChangeHostname.bind(this)}/>
+					</label>
+					<label className="port">
+						Port:
+						<input type="number" placeholder={''+this.state.defaultPort} value={''+this.state.port}
+							   onChange={this.onChangePort.bind(this)}/>
+					</label>
+					<label className="websocket">
+						<input type="checkbox" checked={this.state.websocket} disabled={!isNode}
+							   onChange={this.onChangeWebSocket.bind(this)}/>
+						WebSocket
+					</label>
+					<button type="submit">Connect</button>
+				</form>
 			</div>
 		);
 	}

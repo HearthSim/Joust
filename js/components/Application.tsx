@@ -15,6 +15,10 @@ import {GameStateManager} from "../interfaces";
 
 import HSReplay = require('./welcome/HSReplay')
 import Kettle = require('./welcome/Kettle')
+import TCPSocketClient = require('../protocol/TCPSocketClient');
+import WebSocketClient = require('../protocol/WebSocketClient');
+import Immutable = require('immutable');
+import {Client} from "../interfaces";
 
 interface ApplicationState {
 	manager:GameStateManager;
@@ -27,11 +31,33 @@ class Application extends React.Component<{}, ApplicationState> {
 		this.state = {manager: null};
 	}
 
-	public initializeKettle(hostname:string, port:number) {
+	protected initializeSocket(client:Client):void {
 		var manager = new SingleGameStateManager(new GameState());
 		var kettle = new KettleTranscoder(manager);
-		kettle.connect(port, hostname);
+		client.once('connect', function () {
+			var cardList = Immutable.List<String>(Array(30));
+			var webspinners = cardList.map(function () {
+				return 'FP1_011';
+			}).toJS();
+			var portals = cardList.map(function () {
+				return 'GVG_003';
+			}).toJS();
+			kettle.createGame('Player 1', 'HERO_08', webspinners,
+				'Player 2', 'HERO_08', portals);
+		});
+		client.once('close', function() {
+			this.state.manager.setComplete(true);
+		}.bind(this));
+		kettle.connect(client);
 		this.setState({manager: manager});
+	}
+
+	public initializeKettleTCPSocket(hostname:string, port:number):void {
+		this.initializeSocket(new TCPSocketClient(hostname, port));
+	}
+
+	public initializeKettleWebSocket(url:string):void {
+		this.initializeSocket(new WebSocketClient(url));
 	}
 
 	public initializeHSReplay(stream) {
@@ -56,7 +82,8 @@ class Application extends React.Component<{}, ApplicationState> {
 					<p>Welcome to Joust!</p>
 					<div className="backends">
 						<HSReplay callback={this.initializeHSReplay.bind(this)}/>
-						<Kettle callback={this.initializeKettle.bind(this)}/>
+						<Kettle callbackTCPSocket={this.initializeKettleTCPSocket.bind(this)}
+								callbackWebSocket={this.initializeKettleWebSocket.bind(this)}/>
 					</div>
 				</div>
 			)

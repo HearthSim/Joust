@@ -12,33 +12,25 @@ import ReplaceEntityMutator = require('../state/mutators/ReplaceEntityMutator');
 import SetOptionsMutator = require('../state/mutators/SetOptionsMutator');
 import {GameStateManager} from "../interfaces";
 import {Socket} from 'net';
+import WebSocket = require('websocket');
+import {Client} from "../interfaces";
 
 class KettleTranscoder {
-	private socket;
+	private client:Client;
 	private buffer:Immutable.List<number>;
 
 	constructor(private manager:GameStateManager) {
 		this.buffer = Immutable.List<number>();
 	}
 
-	public connect(port, host) {
-		var socket = new Socket();
-		// we don't use set_encoding to parse the length
-		socket.connect(port, host);
-		socket.once('connect', function () {
-			console.debug('Connected to socket');
-			this.createGame();
-			this.socket.on('data', this.onData.bind(this));
-			this.socket.once('close', function () {
-				this.manager.setComplete(true);
-				console.debug('Lost connection');
-			});
-		}.bind(this));
-		this.socket = socket;
+	public connect(client:Client) {
+		this.client = client;
+		this.client.on('data', this.onData.bind(this));
+		this.client.connect();
 	}
 
 	public disconnect() {
-		this.socket.close();
+		this.client.disconnect();
 	}
 
 	private handlePacket(packet) {
@@ -106,9 +98,9 @@ class KettleTranscoder {
 		}
 	}
 
-	private onData(buffer:Buffer) {
-		this.buffer = this.buffer.withMutations(function(list) {
-			for(var byte of buffer as any) { // this will call buffer.values() and iterate
+	public onData(buffer:Buffer) {
+		this.buffer = this.buffer.withMutations(function (list) {
+			for (var byte of buffer as any) { // this will call buffer.values() and iterate
 				list = list.push(byte);
 			}
 		});
@@ -140,27 +132,21 @@ class KettleTranscoder {
 		}
 	}
 
-	private createGame() {
-		var cardList = Immutable.List<String>(Array(30));
-		var portals = cardList.map(function () {
-			return 'GVG_003';
-		});
-		var webspinners = cardList.map(function () {
-			return 'FP1_011';
-		});
+	public createGame(player1:string, hero1:string, deck1:string[],
+					   player2:string, hero2:string, deck2:string[]) {
 		this.sendPacket([{
 			Type: 'CreateGame',
 			CreateGame: {
 				Players: [
 					{
-						Name: 'Player 1',
-						Cards: portals.toJS(),
-						Hero: 'HERO_05'
+						Name: player1,
+						Hero: hero1,
+						Cards: deck1
 					},
 					{
-						Name: 'Player 2',
-						Cards: webspinners.toJS(),
-						Hero: 'HERO_05'
+						Name: player2,
+						Hero: hero2,
+						Cards: deck2
 					}
 				]
 			}
@@ -191,7 +177,8 @@ class KettleTranscoder {
 		var message = JSON.stringify(packet);
 		var length = message.length;
 		// todo: we need to properly encode the length (see onData)
-		return this.socket.write(this.pad(length, 4) + message);
+		var buffer = new Buffer(this.pad(length, 4) + message, 'utf-8');
+		return this.client.write(buffer);
 	}
 
 	private pad(number, length) {

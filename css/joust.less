@@ -52,23 +52,33 @@ html {
 	  &.kettle {
 		form {
 		  margin-top: 10px;
-		  max-width: 250px;
+		  max-width: 300px;
 		  label {
 			display: inline-block;
 			margin: 10px 0;
 			font-size: 0.8em;
 
-			input {
+			input:not([type='checkbox']) {
 			  display: block;
 			  width: 100%;
+			  margin: 0;
 			}
 
 			&.hostname {
-			  width: 70%;
+			  width: 60%;
 			  padding-right: 10px;
 			}
 			&.port {
-			  width: 30%;
+			  width: 40%;
+			  padding-right: 10px;
+			}
+			&.websocket {
+			  width: 100%;
+			  margin-top: 0px;
+			  input {
+				margin: 0px 5px 0 0;
+				vertical-align: middle;
+			  }
 			}
 		  }
 		}

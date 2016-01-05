@@ -32,3 +32,9 @@ export interface GameStateManager extends EventEmitter {
 	setComplete(complete:boolean) : void;
 	isComplete() : boolean;
 }
+
+export interface Client extends EventEmitter {
+	connect():void;
+	disconnect():void;
+	write(buffer:Buffer):void;
+}
