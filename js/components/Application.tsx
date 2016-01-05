@@ -51,7 +51,9 @@ class Application extends React.Component<{}, ApplicationState> {
 			this.setState({manager: manager});
 		}.bind(this));
 		client.once('close', function() {
-			alert('Connection lost.');
+			if(this.state.manager && !this.state.manager.isComplete()) {
+				alert('Connection lost.');
+			}
 			this.setState({manager: null});
 		}.bind(this));
 		kettle.connect(client);
@@ -69,6 +71,14 @@ class Application extends React.Component<{}, ApplicationState> {
 		this.initializeSocket(new WebSocketClient(url));
 	}
 
+	protected close() {
+		if(!confirm('Are you sure you want to exit the game?')) {
+			return;
+		}
+		this.state.manager.setComplete(true);
+		this.setState({manager: null});
+	}
+
 	public initializeHSReplay(stream) {
 		var manager = new HistoryGameStateManager(new GameState());
 		var scrubber = new GameStateScrubber(manager);
@@ -82,18 +92,25 @@ class Application extends React.Component<{}, ApplicationState> {
 		if (this.state.manager) {
 			var optionCallback = this.state.optionCallback ? this.state.optionCallback.bind(this) : this.state.optionCallback;
 			return (
-				<JoustGame manager={this.state.manager} optionCallback={optionCallback}/>
+				<div id="application">
+					<div className="buttons">
+						<a href="#" className="close" onClick={this.close.bind(this)}><small>Exit Game </small>&times;</a>
+					</div>
+					<JoustGame manager={this.state.manager} optionCallback={optionCallback}/>
+				</div>
 			);
 		}
 		else {
 			return (
-				<div className="welcome">
-					<h1>Joust</h1>
-					<p>Welcome to Joust!</p>
-					<div className="backends">
-						<HSReplay callback={this.initializeHSReplay.bind(this)}/>
-						<Kettle callbackTCPSocket={this.initializeKettleTCPSocket.bind(this)}
-								callbackWebSocket={this.initializeKettleWebSocket.bind(this)}/>
+				<div id="application">
+					<div className="welcome">
+						<h1>Joust</h1>
+						<p>Welcome to Joust!</p>
+						<div className="backends">
+							<HSReplay callback={this.initializeHSReplay.bind(this)}/>
+							<Kettle callbackTCPSocket={this.initializeKettleTCPSocket.bind(this)}
+									callbackWebSocket={this.initializeKettleWebSocket.bind(this)}/>
+						</div>
 					</div>
 				</div>
 			)

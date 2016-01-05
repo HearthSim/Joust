@@ -9,6 +9,7 @@ import HistoryGameStateManager = require("./managers/HistoryGameStateManager");
 class GameStateScrubber extends EventEmitter implements GameStateManager {
 	protected latestState:GameState = new GameState();
 	protected start:number = null;
+	protected interval:number = null;
 
 	constructor(protected manager:HistoryGameStateManager) {
 		super();
@@ -21,7 +22,7 @@ class GameStateScrubber extends EventEmitter implements GameStateManager {
 		var previous = this.latestState;
 		this.latestState = gameState;
 		this.emit('gamestate', gameState, previous);
-		return;
+		this.on('end', this.pause.bind(this));
 	}
 
 	getGameState():GameState {
@@ -37,7 +38,9 @@ class GameStateScrubber extends EventEmitter implements GameStateManager {
 	}
 
 	setComplete(complete:boolean):void {
-		return;
+		if(complete) {
+			this.emit('end');
+		}
 	}
 
 	isComplete():boolean {
@@ -45,9 +48,16 @@ class GameStateScrubber extends EventEmitter implements GameStateManager {
 	}
 
 	public play() {
-		setInterval(this.updateState.bind(this), 100);
+		this.interval = setInterval(this.updateState.bind(this), 100);
 		this.start = new Date().getTime();
 		this.updateState();
+	}
+
+	public pause() {
+		if(this.interval !== null) {
+			clearInterval(this.interval);
+			this.interval = null;
+		}
 	}
 
 	protected updateState() {

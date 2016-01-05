@@ -26,6 +26,9 @@ class KettleTranscoder {
 	public connect(client:Client) {
 		this.client = client;
 		this.client.on('data', this.onData.bind(this));
+		this.manager.once('end', function () {
+			client.disconnect();
+		});
 		this.client.connect();
 	}
 
@@ -133,7 +136,7 @@ class KettleTranscoder {
 	}
 
 	public createGame(player1:string, hero1:string, deck1:string[],
-					   player2:string, hero2:string, deck2:string[]) {
+					  player2:string, hero2:string, deck2:string[]) {
 		this.sendPacket([{
 			Type: 'CreateGame',
 			CreateGame: {

@@ -43,6 +43,9 @@ class JoustGame extends React.Component<JoustGameProps, JoustState> {
 	private start:number;
 
 	public updateState(gameState) {
+		if(!this.props.manager || this.props.manager.isComplete()) {
+			return;
+		}
 		this.setState({gameState: gameState});
 	}
 

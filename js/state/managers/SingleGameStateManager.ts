@@ -14,6 +14,9 @@ class SingleGameStateManager extends EventEmitter implements GameStateManager {
 	}
 
 	public setGameState(gameState:GameState):void {
+		if(this.complete) {
+			return;
+		}
 		var previous = this.gameState;
 		this.gameState = gameState;
 		this.emit('gamestate', gameState, previous);
@@ -33,7 +36,10 @@ class SingleGameStateManager extends EventEmitter implements GameStateManager {
 	}
 
 	public setComplete(complete:boolean):void {
-		this.complete = true;
+		this.complete = complete;
+		if(complete) {
+			this.emit('end');
+		}
 	}
 
 	public isComplete():boolean {
