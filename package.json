@@ -10,7 +10,6 @@
   "license": "AGPL-3.0",
   "dependencies": {
     "filereader-stream": "^1.0.0",
-    "get-json": "0.0.2",
     "is-node": "0.0.0",
     "react": "^0.14.5",
     "react-addons-css-transition-group": "^0.14.5",
