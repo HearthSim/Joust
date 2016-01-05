@@ -22,6 +22,7 @@ import HistoryGameStateManager = require("../state/managers/HistoryGameStateMana
 
 interface JoustGameProps extends React.Props<any> {
 	manager: GameStateManager;
+	optionCallback?(option:Option, target?:number): void;
 }
 
 interface JoustState {
@@ -43,11 +44,6 @@ class JoustGame extends React.Component<JoustGameProps, JoustState> {
 
 	public updateState(gameState) {
 		this.setState({gameState: gameState});
-	}
-
-	protected optionCallback(option:Option, target?:number) {
-		//this.kettle.sendOption(option, target);
-		//this.manager.apply(new ClearOptionsMutator());
 	}
 
 	public render() {
@@ -86,7 +82,7 @@ class JoustGame extends React.Component<JoustGameProps, JoustState> {
 								   options={optionTree}
 								   entities={entityTree}
 								   endTurnOption={endTurnOption}
-								   optionCallback={this.optionCallback.bind(this)}
+								   optionCallback={this.props.optionCallback}
 					/>
 				);
 				break;

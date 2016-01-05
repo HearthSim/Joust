@@ -19,16 +19,20 @@ import TCPSocketClient = require('../protocol/TCPSocketClient');
 import WebSocketClient = require('../protocol/WebSocketClient');
 import Immutable = require('immutable');
 import {Client} from "../interfaces";
+import ClearOptionsMutator = require("../state/mutators/ClearOptionsMutator");
+import Option = require("../Option");
+
 
 interface ApplicationState {
-	manager:GameStateManager;
+	manager?:GameStateManager;
+	optionCallback?(option:Option, target?:number):void;
 }
 
 class Application extends React.Component<{}, ApplicationState> {
 
 	constructor() {
 		super();
-		this.state = {manager: null};
+		this.state = {manager: null, optionCallback: null};
 	}
 
 	protected initializeSocket(client:Client):void {
@@ -49,7 +53,10 @@ class Application extends React.Component<{}, ApplicationState> {
 			this.state.manager.setComplete(true);
 		}.bind(this));
 		kettle.connect(client);
-		this.setState({manager: manager});
+		this.setState({manager: manager, optionCallback: function(option:Option, target?:number) {
+			kettle.sendOption(option, target);
+			manager.apply(new ClearOptionsMutator());
+		}});
 	}
 
 	public initializeKettleTCPSocket(hostname:string, port:number):void {
@@ -72,7 +79,7 @@ class Application extends React.Component<{}, ApplicationState> {
 	public render() {
 		if (this.state.manager) {
 			return (
-				<JoustGame manager={this.state.manager}/>
+				<JoustGame manager={this.state.manager} optionCallback={this.state.optionCallback.bind(this)}/>
 			);
 		}
 		else {
