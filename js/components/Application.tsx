@@ -78,8 +78,9 @@ class Application extends React.Component<{}, ApplicationState> {
 
 	public render() {
 		if (this.state.manager) {
+			var optionCallback = this.state.optionCallback ? this.state.optionCallback.bind(this) : this.state.optionCallback;
 			return (
-				<JoustGame manager={this.state.manager} optionCallback={this.state.optionCallback.bind(this)}/>
+				<JoustGame manager={this.state.manager} optionCallback={optionCallback}/>
 			);
 		}
 		else {
