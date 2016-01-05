@@ -14,6 +14,7 @@ interface KettleState {
 	hostname?:string;
 	port?:number;
 	websocket?:boolean;
+	websocketSecure?:boolean;
 	connecting?:boolean;
 }
 
@@ -22,11 +23,12 @@ class Kettle extends React.Component<KettleProps, KettleState> {
 	constructor() {
 		super();
 		this.state = {
-			defaultHostname: isNode ? 'localhost' : 'beheh.de',
+			defaultHostname: isNode ? 'localhost' : document.location.host,
 			defaultPort: isNode ? 9111 : 61700,
 			hostname: null,
 			port: null,
 			websocket: !isNode,
+			websocketSecure: (document.location.protocol === 'https:'),
 			connecting: false
 		};
 	}
@@ -44,13 +46,19 @@ class Kettle extends React.Component<KettleProps, KettleState> {
 		this.setState({websocket: checked});
 	}
 
+	public onChangeSecureWebSocket(e) {
+		var checked = e.target.checked;
+		this.setState({websocketSecure: checked});
+	}
+
+
 	public submit(e) {
 		e.preventDefault();
 		this.setState({connecting: true});
 		var hostname = this.state.hostname || this.state.defaultHostname;
 		var port = this.state.port || this.state.defaultPort;
 		if (this.state.websocket) {
-			var protocol = (document.location.protocol === 'https:') ? 'wss:' :' ws:';
+			var protocol = (this.state.websocketSecure) ? 'wss:' :' ws:';
 			this.props.callbackWebSocket(protocol+'//' + hostname + ':' + port + '/');
 		}
 		else {
@@ -91,6 +99,11 @@ class Kettle extends React.Component<KettleProps, KettleState> {
 						<input type="checkbox" checked={this.state.websocket} disabled={!isNode || this.state.connecting}
 							   onChange={this.onChangeWebSocket.bind(this)}/>
 						WebSocket
+					</label>
+					<label className="websocket">
+						<input type="checkbox" checked={this.state.websocketSecure} disabled={!this.state.websocket}
+							   onChange={this.onChangeSecureWebSocket.bind(this)}/>
+						Secure
 					</label>
 					<button type="submit" disabled={this.state.connecting}>{this.state.connecting && 'Connecting...' || 'Connect'}</button>
 				</form>
