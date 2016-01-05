@@ -40,7 +40,7 @@ class HSReplayDecoder {
 	protected parseTimestamp(timestamp:string):number {
 		if (timestamp.match(/^\d{2}:\d{2}:\d{2}/)) {
 			// prepend a date
-			timestamp = '1970-01-01 ' + timestamp;
+			timestamp = '1970-01-01T' + timestamp;
 		}
 		return new Date(timestamp).getTime();
 	}
