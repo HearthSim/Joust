@@ -44,7 +44,8 @@ class Player extends React.Component<PlayerProps, {}> {
 		var heroEntity = playEntities.filter(filterByCardType(3)).first();
 		var hero = <Hero entity={heroEntity}
 						 option={heroEntity ? playOptions.get(heroEntity.getId()) : null}
-						 secrets={this.props.entities.get(7) || Immutable.Map<number, Entity>()}/>;
+						 secrets={this.props.entities.get(7) || Immutable.Map<number, Entity>()}
+						 optionCallback={this.props.optionCallback}/>;
 		var heroPowerEntity = playEntities.filter(filterByCardType(10)).first();
 		var heroPower = <HeroPower entity={heroPowerEntity}
 								   option={heroPowerEntity ? playOptions.get(heroPowerEntity.getId()) : null}
