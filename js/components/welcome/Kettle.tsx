@@ -161,7 +161,7 @@ class Kettle extends React.Component<KettleProps, KettleState> {
 							WebSocket
 						</label>
 						<label>
-							<input type="checkbox" checked={this.state.websocketSecure} disabled={!this.state.websocket}
+							<input type="checkbox" checked={this.state.websocketSecure} disabled={this.state.connecting || !this.state.websocket}
 								   onChange={this.onChangeSecureWebSocket.bind(this)}/>
 							Secure
 						</label>
@@ -171,10 +171,10 @@ class Kettle extends React.Component<KettleProps, KettleState> {
 					<h3>Options:</h3>
 					<div className="decks">
 						<label>Deck 1:
-							<SelectDeck presets={decks} default={0} onSelect={this.onSelectDeck1.bind(this)}/>
+							<SelectDeck presets={decks} default={0} disabled={this.state.connecting} onSelect={this.onSelectDeck1.bind(this)}/>
 						</label>
 						<label>Deck 2:
-							<SelectDeck presets={decks} default={1} onSelect={this.onSelectDeck2.bind(this)}/>
+							<SelectDeck presets={decks} default={1} disabled={this.state.connecting} onSelect={this.onSelectDeck2.bind(this)}/>
 						</label>
 					</div>
 				</form>

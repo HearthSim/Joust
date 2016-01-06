@@ -5,6 +5,7 @@ import React = require('react');
 interface SelectDeckProps extends React.Props<any> {
 	onSelect(hero:string, deck:string[]):void;
 	default:number;
+	disabled:boolean;
 	presets;
 }
 
@@ -33,7 +34,7 @@ class SelectDeck extends React.Component<SelectDeckProps, SelectDeckState> {
 			options.push(<option key={i} value={i}>{deck.name}</option>);
 		}
 		return (
-			<select onChange={this.onChange.bind(this)} defaultValue={''+this.props.default}>
+			<select disabled={this.props.disabled} onChange={this.onChange.bind(this)} defaultValue={''+this.props.default}>
 				{options}
 			</select>
 		)
