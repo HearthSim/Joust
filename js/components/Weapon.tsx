@@ -32,7 +32,7 @@ class Weapon extends React.Component<WeaponProps, {}> {
 					<h1>{title}</h1>
 					<div className="stats">
 						<Attack attack={entity.getAtk()} default={defaultAttack} />
-						<Durability durability={entity.getDurability()} damage={entity.getDamage()} default={defaultAttack} />
+						<Durability durability={entity.getDurability()} damage={entity.getDamage()} default={defaultDurability} />
 					</div>
 				</div>
 			);
