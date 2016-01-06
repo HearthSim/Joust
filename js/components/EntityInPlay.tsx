@@ -30,7 +30,7 @@ abstract class EntityInPlay<P extends EntityInPlayProps, S> extends React.Compon
 		else if (this.props.option) {
 			classNames.push('playable');
 		}
-		if (this.props.entity.isExhausted()) {
+		if (this.props.entity && this.props.entity.isExhausted()) {
 			classNames.push('exhausted');
 		}
 		return classNames;
@@ -43,7 +43,7 @@ abstract class EntityInPlay<P extends EntityInPlayProps, S> extends React.Compon
 
 	public render() {
 		if (!this.props.entity) {
-			return <div className={this.getClassNames().concat(['no-entity']).join(' ')}>{this.jsx()}</div>;
+			return <div className={this.getClassNames().concat(['no-entity']).join(' ')}></div>;
 		}
 
 		var playable = !!this.props.option;
