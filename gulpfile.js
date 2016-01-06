@@ -9,7 +9,7 @@ var buffer = require('vinyl-buffer');
 var source = require('vinyl-source-stream');
 
 
-var tsProject = ts.createProject('./js/tsconfig.json');
+var tsProject = ts.createProject('./tsconfig.json');
 
 gulp.task('default', ['watch']);
 
