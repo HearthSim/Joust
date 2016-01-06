@@ -128,7 +128,7 @@ class KettleTranscoder {
 				return;
 			}
 			// decode data and shift buffer
-			var decoded = new Buffer(temporary.toArray()).toString('utf-8');
+			var decoded = new Buffer(temporary.slice(0, length).toArray()).toString('utf-8');
 			var packets = JSON.parse(decoded);
 			packets.forEach(this.handlePacket.bind(this));
 			this.buffer = temporary.slice(length).toList();
