@@ -1,6 +1,7 @@
 /// <reference path="../../typings/react/react.d.ts"/>
 /// <reference path="../../typings/react/react-addons-css-transition-group.d.ts"/>
 /// <reference path="../../typings/react-dnd/react-dnd.d.ts"/>
+import {EntityListProps} from "../interfaces";
 'use strict';
 
 import EntityInPlay = require("./EntityInPlay");
@@ -46,12 +47,12 @@ class Field extends EntityList {
 
 export = DropTarget('card',
 	{
-		canDrop: function (props:EntityInPlayProps, monitor) {
-			var item = monitor.getItem() as EntityInPlayProps;
+		canDrop: function (props:EntityListProps, monitor) {
+			var item = monitor.getItem();
 			return !item.option.hasTargets();
 		},
-		drop: function (props:EntityInPlayProps, monitor, component) {
-			var item = monitor.getItem();
+		drop: function (props:EntityListProps, monitor, component) {
+			var item = monitor.getItem() ;
 			item.action(item.option);
 		}
 	},

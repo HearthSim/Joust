@@ -68,7 +68,7 @@ abstract class EntityInPlay<P extends EntityInPlayProps, S> extends React.Compon
 	}
 
 	public static DragSource() {
-		return DragSource('card', {
+		return DragSource<EntityInPlayProps>('card', {
 				beginDrag: function (props:EntityInPlayProps) {
 					return {
 						option: props.option,
@@ -85,7 +85,7 @@ abstract class EntityInPlay<P extends EntityInPlayProps, S> extends React.Compon
 	}
 
 	public static DropTarget() {
-		return DropTarget('card', {
+		return DropTarget<EntityInPlayProps>('card', {
 				canDrop: function (props:EntityInPlayProps, monitor) {
 					var item = monitor.getItem();
 					return item.option.isTarget(props.entity.getId());

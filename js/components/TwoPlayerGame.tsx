@@ -65,4 +65,4 @@ class TwoPlayerGame extends React.Component<TwoPlayerGameProps, {}> {
 	}
 }
 
-export = DragDropContext(HTML5Backend)(TwoPlayerGame);
+export = DragDropContext<TwoPlayerGameProps>(HTML5Backend)(TwoPlayerGame);
