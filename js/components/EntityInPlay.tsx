@@ -17,6 +17,10 @@ abstract class EntityInPlay<P extends EntityInPlayProps, S> extends React.Compon
 		this.baseClassName = baseClassName;
 	}
 
+	protected playWithClick():boolean {
+		return false;
+	}
+
 	protected getClassNames():string[] {
 		var classNames = ['entity', 'in-play'];
 		classNames.push(this.baseClassName);
@@ -26,25 +30,35 @@ abstract class EntityInPlay<P extends EntityInPlayProps, S> extends React.Compon
 		else if (this.props.option) {
 			classNames.push('playable');
 		}
-		if(this.props.entity.isExhausted()) {
+		if (this.props.entity.isExhausted()) {
 			classNames.push('exhausted');
 		}
 		return classNames;
 	}
 
+	public click(e) {
+		e.preventDefault();
+		this.props.optionCallback(this.props.option);
+	}
+
 	public render() {
-		if(!this.props.entity) {
+		if (!this.props.entity) {
 			return <div className={this.getClassNames().concat(['no-entity']).join(' ')}>{this.jsx()}</div>;
 		}
 
 		var playable = !!this.props.option;
 		var requiresTarget = this.props.option && this.props.option.hasTargets();
 
-		var jsx = <div className={this.getClassNames().join(' ')}>{this.jsx()}</div>;
-
-		if (playable) {
-			// make draggable
-			jsx = this.props.connectDragSource(jsx);
+		var jsx = null;
+		if (playable && !requiresTarget && this.playWithClick()) {
+			jsx = <div className={this.getClassNames().join(' ')} onClick={this.click.bind(this)}>{this.jsx()}</div>
+		}
+		else {
+			jsx = <div className={this.getClassNames().join(' ')}>{this.jsx()}</div>;
+			if (playable) {
+				// make draggable
+				jsx = this.props.connectDragSource(jsx);
+			}
 		}
 
 		// make drop target

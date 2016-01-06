@@ -15,6 +15,10 @@ class HeroPower extends EntityInPlay<EntityInPlayProps, {}> {
 		super('heroPower');
 	}
 
+	protected playWithClick():boolean {
+		return true;
+	}
+
 	protected jsx() {
 		var defaultCost = null;
 		if (HearthstoneJSON.has(this.props.entity.getCardId())) {
