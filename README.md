@@ -3,7 +3,7 @@
 ## Requirements
 
 - Node.js ~v5.3.0
-- `npm install -g electron-prebuilt typescript gulp`
+- `npm install -g electron-prebuilt typescript tsd gulp`
 
 
 ## Install
