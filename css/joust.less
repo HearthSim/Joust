@@ -61,7 +61,7 @@ html {
 			margin: 10px 0;
 			font-size: 0.8em;
 
-			input:not([type='checkbox']) {
+			input:not([type='checkbox']), select {
 			  display: block;
 			  width: 100%;
 			  margin: 0;
@@ -75,16 +75,31 @@ html {
 			  width: 40%;
 			  padding-right: 10px;
 			}
-			&.websocket {
+		  }
+		  .websocket {
+			width: 100%;
+			margin: 0 0 15px 0;
+			label {
 			  display: inline-block;
-			  margin: 0px 10px 15px 0;
+			  margin: 0px 10px 0 0;
 			  input {
 				margin: 0px 5px 0 0;
 				vertical-align: middle;
 			  }
 			}
-
 		  }
+		  .decks {
+			label {
+			  width: 50%;
+			  padding: 0 10px 0 0;
+			}
+		  }
+
+		  h3 {
+			font-size: 0.8em;
+			margin: 25px 0 0 0;
+		  }
+
 		  button {
 			display: block;
 		  }

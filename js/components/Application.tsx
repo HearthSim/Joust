@@ -35,44 +35,39 @@ class Application extends React.Component<{}, ApplicationState> {
 		this.state = {manager: null, optionCallback: null};
 	}
 
-	protected initializeSocket(client:Client):void {
+	protected initializeSocket(client:Client, hero1:string, deck1:string[], hero2:string, deck2:string[]):void {
 		var manager = new SingleGameStateManager(new GameState());
 		var kettle = new KettleTranscoder(manager);
 		client.once('connect', function () {
-			var cardList = Immutable.List<String>(Array(30));
-			var webspinners = cardList.map(function () {
-				return 'FP1_011';
-			}).toJS();
-			var portals = cardList.map(function () {
-				return 'GVG_003';
-			}).toJS();
-			kettle.createGame('Player 1', 'HERO_05', webspinners,
-				'Player 2', 'HERO_08', portals);
+			kettle.createGame('Player 1', hero1, deck1,
+				'Player 2', hero2, deck2);
 			this.setState({manager: manager});
 		}.bind(this));
-		client.once('close', function() {
-			if(this.state.manager && !this.state.manager.isComplete()) {
+		client.once('close', function () {
+			if (this.state.manager && !this.state.manager.isComplete()) {
 				alert('Connection lost.');
 			}
 			this.setState({manager: null});
 		}.bind(this));
 		kettle.connect(client);
-		this.setState({optionCallback: function(option:Option, target?:number) {
-			kettle.sendOption(option, target);
-			manager.apply(new ClearOptionsMutator());
-		}});
+		this.setState({
+			optionCallback: function (option:Option, target?:number) {
+				kettle.sendOption(option, target);
+				manager.apply(new ClearOptionsMutator());
+			}
+		});
 	}
 
-	public initializeKettleTCPSocket(hostname:string, port:number):void {
-		this.initializeSocket(new TCPSocketClient(hostname, port));
+	public initializeKettleTCPSocket(hostname:string, port:number, hero1:string, deck1:string[], hero2:string, deck2:string[]):void {
+		this.initializeSocket(new TCPSocketClient(hostname, port), hero1, deck1, hero2, deck2);
 	}
 
-	public initializeKettleWebSocket(url:string):void {
-		this.initializeSocket(new WebSocketClient(url));
+	public initializeKettleWebSocket(url:string, hero1:string, deck1:string[], hero2:string, deck2:string[]):void {
+		this.initializeSocket(new WebSocketClient(url), hero1, deck1, hero2, deck2);
 	}
 
 	protected close() {
-		if(!confirm('Are you sure you want to exit the game?')) {
+		if (!confirm('Are you sure you want to exit the game?')) {
 			return;
 		}
 		this.state.manager.setComplete(true);
@@ -94,7 +89,8 @@ class Application extends React.Component<{}, ApplicationState> {
 			return (
 				<div id="application">
 					<div className="buttons">
-						<a href="#" className="close" onClick={this.close.bind(this)}><small>Exit Game </small>&times;</a>
+						<a href="#" className="close" onClick={this.close.bind(this)}><small>Exit Game</small>&times;
+						</a>
 					</div>
 					<JoustGame manager={this.state.manager} optionCallback={optionCallback}/>
 				</div>

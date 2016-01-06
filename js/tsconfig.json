@@ -33,6 +33,7 @@
     "Option.ts",
     "components/Application.tsx",
     "components/welcome/Kettle.tsx",
+    "components/welcome/SelectDeck.tsx",
     "components/welcome/HSReplay.tsx",
     "components/EndTurnButton.tsx",
     "components/EntityInPlay.tsx",
