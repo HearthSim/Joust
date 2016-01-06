@@ -16,40 +16,40 @@ gulp.task('default', ['watch']);
 gulp.task('compile', ['compile:scripts', 'compile:styles'])
 
 gulp.task('compile:scripts', function () {
-    var tsResult = tsProject.src()
-        .pipe(sourcemaps.init())
-        .pipe(ts(tsProject)).js
-        .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest('./js'));
+	var tsResult = tsProject.src()
+		.pipe(sourcemaps.init())
+		.pipe(ts(tsProject)).js
+		.pipe(sourcemaps.write('.'))
+		.pipe(gulp.dest('./js'));
 });
 
 gulp.task('compile:styles', function () {
-    gulp.src('./css/**/*.less')
-        .pipe(sourcemaps.init())
-        .pipe(less({'strictMath': true}))
-        .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest('./css'));
+	gulp.src('./css/**/*.less')
+		.pipe(sourcemaps.init())
+		.pipe(less({'strictMath': true}))
+		.pipe(sourcemaps.write('.'))
+		.pipe(gulp.dest('./css'));
 });
 
 gulp.task('watch', ['watch:scripts', 'watch:styles']);
 
 gulp.task('watch:scripts', ['compile:scripts'], function () {
-    gulp.watch(['js/**/*.ts', 'js/**/*.tsx'], ['compile:scripts']);
+	gulp.watch(['js/**/*.ts', 'js/**/*.tsx'], ['compile:scripts']);
 });
 
 gulp.task('watch:styles', ['compile:styles'], function () {
-    gulp.watch(['css/**/*.less'], ['compile:styles']);
+	gulp.watch(['css/**/*.less'], ['compile:styles']);
 });
 
-gulp.task('browserify', ['compile'], function() {
-    var b = browserify({
-        entries: './js/run.js',
-        debug: true
-    });
+gulp.task('browserify', ['compile'], function () {
+	var b = browserify({
+		entries: './js/run.js',
+		debug: true
+	});
 
-    return b.bundle()
-        .pipe(source('joust.js'))
-        .pipe(buffer())
-        .pipe(uglify())
-        .pipe(gulp.dest('./dist'));
+	return b.bundle()
+		.pipe(source('joust.js'))
+		.pipe(buffer())
+		.pipe(uglify())
+		.pipe(gulp.dest('./dist'));
 });
