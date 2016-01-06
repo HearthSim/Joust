@@ -18,6 +18,8 @@ import Field = require('./Field');
 import Weapon = require('./Weapon');
 import Secrets = require('./Secrets');
 
+import {Zone, CardType} from '../enums'
+
 interface PlayerProps extends OptionCallbackProps, React.Props<any> {
 	player: PlayerEntity;
 	entities: Immutable.Map<number, Immutable.Map<number, Entity>>;
@@ -37,28 +39,28 @@ class Player extends React.Component<PlayerProps, {}> {
 		var emptyEntities = Immutable.Map<number, Entity>();
 		var emptyOptions = Immutable.Map<number, Option>();
 
-		var playEntities = this.props.entities.get(1) || Immutable.Map<number, Entity>();
-		var playOptions = this.props.options.get(1) || Immutable.Map<number, Option>();
+		var playEntities = this.props.entities.get(Zone.PLAY) || Immutable.Map<number, Entity>();
+		var playOptions = this.props.options.get(Zone.PLAY) || Immutable.Map<number, Option>();
 
 		/* Equipment */
-		var heroEntity = playEntities.filter(filterByCardType(3)).first();
+		var heroEntity = playEntities.filter(filterByCardType(CardType.HERO)).first();
 		var hero = <Hero entity={heroEntity}
 						 option={heroEntity ? playOptions.get(heroEntity.getId()) : null}
-						 secrets={this.props.entities.get(7) || Immutable.Map<number, Entity>()}
+						 secrets={this.props.entities.get(Zone.SECRET) || Immutable.Map<number, Entity>()}
 						 optionCallback={this.props.optionCallback}/>;
-		var heroPowerEntity = playEntities.filter(filterByCardType(10)).first();
+		var heroPowerEntity = playEntities.filter(filterByCardType(CardType.HERO_POWER)).first();
 		var heroPower = <HeroPower entity={heroPowerEntity}
 								   option={heroPowerEntity ? playOptions.get(heroPowerEntity.getId()) : null}
 								   optionCallback={this.props.optionCallback}/>;
-		var weapon = <Weapon entity={playEntities.filter(filterByCardType(7)).first()}/>;
+		var weapon = <Weapon entity={playEntities.filter(filterByCardType(CardType.WEAPON)).first()}/>;
 
-		var field = <Field entities={playEntities.filter(filterByCardType(4)) || emptyEntities}
+		var field = <Field entities={playEntities.filter(filterByCardType(CardType.MINION)) || emptyEntities}
 						   options={playOptions || emptyOptions}
 						   optionCallback={this.props.optionCallback}/>;
-		var deck = <Deck entities={this.props.entities.get(2) || emptyEntities}
-						 options={this.props.options.get(2) || emptyOptions}/>;
-		var hand = <Hand entities={this.props.entities.get(3) || emptyEntities}
-						 options={this.props.options.get(3) || emptyOptions}
+		var deck = <Deck entities={this.props.entities.get(Zone.DECK) || emptyEntities}
+						 options={this.props.options.get(Zone.DECK) || emptyOptions}/>;
+		var hand = <Hand entities={this.props.entities.get(Zone.HAND) || emptyEntities}
+						 options={this.props.options.get(Zone.HAND) || emptyOptions}
 						 optionCallback={this.props.optionCallback}/>;
 		var name = this.props.player.getName() ? <div className="name">{this.props.player.getName()}</div> : null;
 

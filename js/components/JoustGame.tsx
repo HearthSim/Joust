@@ -2,7 +2,6 @@
 /// <reference path="../../typings/node/node.d.ts"/>
 /// <reference path="../interfaces.d.ts"/>
 /// <reference path="../../node_modules/immutable/dist/immutable.d.ts"/>
-import {GameStateManager} from "../interfaces";
 'use strict';
 
 import React = require('react');
@@ -16,9 +15,11 @@ import GameState= require('../state/GameState');
 import HSReplayDecoder = require('../protocol/HSReplayDecoder');
 import KettleTranscoder = require('../protocol/KettleTranscoder');
 
+import {GameStateManager} from "../interfaces";
 import ClearOptionsMutator = require("../state/mutators/ClearOptionsMutator");
 
 import HistoryGameStateManager = require("../state/managers/HistoryGameStateManager");
+import {OptionType, CardType} from '../enums'
 
 interface JoustGameProps extends React.Props<any> {
 	manager: GameStateManager;
@@ -62,18 +63,18 @@ class JoustGame extends React.Component<JoustGameProps, JoustState> {
 		};
 
 		// find the game entity
-		var game = allEntities ? allEntities.filter(filterByCardType(1)).first() : null;
+		var game = allEntities ? allEntities.filter(filterByCardType(CardType.GAME)).first() : null;
 		if (!game) {
 			return <p className="message">Waiting for game&hellip;</p>;
 		}
 
 		// find an end turn option
 		var endTurnOption = options.filter(function (option:Option):boolean {
-			return !!option && option.getType() === 2;
+			return !!option && option.getType() === OptionType.END_TURN;
 		}).first();
 
 		// determine player count
-		var players = allEntities.filter(filterByCardType(2)) as Immutable.Map<number, Player>;
+		var players = allEntities.filter(filterByCardType(CardType.PLAYER)) as Immutable.Map<number, Player>;
 		switch (players.count()) {
 			case 0:
 				return <p className="message">Waiting for players&hellip;</p>;
