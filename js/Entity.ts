@@ -1,6 +1,8 @@
 /// <reference path='../node_modules/immutable/dist/immutable.d.ts'/>
 'use strict';
 
+import {GameTag} from './enums';
+
 class Entity {
 	constructor(protected id:number, protected tags:Immutable.Map<string, number>, protected cardId?:string) {
 	}
@@ -18,75 +20,75 @@ class Entity {
 	}
 
 	public getResourcesUsed():number {
-		return this.getTag(25);
+		return this.getTag(GameTag.RESOURCES_USED);
 	}
 
 	public getResources():number {
-		return this.getTag(26);
+		return this.getTag(GameTag.RESOURCES);
 	}
 
 	public isExhausted():boolean {
-		return this.getTag(43) > 0;
+		return this.getTag(GameTag.EXHAUSTED) > 0;
 	}
 
 	public getDamage():number {
-		return this.getTag(44);
+		return this.getTag(GameTag.DAMAGE);
 	}
 
 	public getHealth():number {
-		return this.getTag(45);
+		return this.getTag(GameTag.HEALTH);
 	}
 
 	public getAtk():number {
-		return this.getTag(47);
+		return this.getTag(GameTag.ATK);
 	}
 
 	public getCost():number {
-		return this.getTag(48);
+		return this.getTag(GameTag.COST);
 	}
 
 	public getZone():number {
-		return this.getTag(49);
+		return this.getTag(GameTag.ZONE);
 	}
 
 	public getController():number {
-		return this.getTag(50);
+		return this.getTag(GameTag.CONTROLLER);
 	}
 
 	public getDurability():number {
-		return this.getTag(187);
+		return this.getTag(GameTag.DURABILITY);
 	}
 
 	public isTaunter():boolean {
-		return this.getTag(190) > 0;
+		return this.getTag(GameTag.TAUNT) > 0;
 	}
 
 	public isStealthed():boolean {
-		return this.getTag(191) > 0;
+		return this.getTag(GameTag.STEALTH) > 0;
 	}
 
 	public isDivineShielded():boolean {
-		return this.getTag(194) > 0;
+		return this.getTag(GameTag.DIVINE_SHIELD) > 0;
 	}
 
 	public getClass():number {
-		return this.getTag(199);
+		return this.getTag(GameTag.CLASS);
 	}
 
 	public getCardType():number {
-		return this.getTag(202);
+		return this.getTag(GameTag.CARDTYPE);
 	}
 
 	public isFrozen():boolean {
-		return this.getTag(260) > 0;
+		return this.getTag(GameTag.FROZEN) > 0;
 	}
 
 	public getZonePosition():number {
-		return this.getTag(263);
+		return this.getTag(GameTag.ZONE_POSITION);
 	}
 
 	public isPoweredUp():boolean {
-		return this.getTag(386) > 0;
+		return this.getTag(GameTag.POWERED_UP) > 0;
 	}
 
 	public getTag(key:number|string):number {
