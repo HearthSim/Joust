@@ -15,37 +15,47 @@ var tsProject = ts.createProject('./tsconfig.json');
 
 gulp.task('default', ['watch']);
 
-gulp.task('compile', ['compile:scripts', 'compile:styles'])
+gulp.task('compile', ['compile:scripts', 'compile:styles', 'html']);
 
 gulp.task('compile:scripts', function () {
 	var tsResult = tsProject.src()
 		.pipe(sourcemaps.init())
 		.pipe(ts(tsProject)).js
 		.pipe(sourcemaps.write('.'))
-		.pipe(gulp.dest('./js'));
+		.pipe(gulp.dest('./dist'));
 });
 
 gulp.task('compile:styles', function () {
-	gulp.src('./css/**/*.less')
+	gulp.src('./less/**/*.less')
 		.pipe(sourcemaps.init())
 		.pipe(less({'strictMath': true}))
 		.pipe(sourcemaps.write('.'))
-		.pipe(gulp.dest('./css'));
+		.pipe(gulp.dest('./dist'));
 });
 
-gulp.task('watch', ['watch:scripts', 'watch:styles']);
+gulp.task('html', function() {
+	gulp.src('./html/**/*.html')
+		.pipe(gulp.dest('./dist'));
+});
+
+gulp.task('watch', ['watch:scripts', 'watch:styles', 'watch:html']);
 
 gulp.task('watch:scripts', ['compile:scripts'], function () {
-	gulp.watch(['js/**/*.ts', 'js/**/*.tsx'], ['compile:scripts']);
+	gulp.watch(['ts/**/*.ts', 'ts/**/*.tsx'], ['compile:scripts']);
 });
 
 gulp.task('watch:styles', ['compile:styles'], function () {
-	gulp.watch(['css/**/*.less'], ['compile:styles']);
+	gulp.watch(['less/**/*.less'], ['compile:styles']);
 });
+
+gulp.task('watch:html', ['html'], function () {
+	gulp.watch(['html/**/*.html'], ['html']);
+});
+
 
 gulp.task('browserify', ['compile'], function () {
 	var b = browserify({
-		entries: './js/run.js',
+		entries: './dist/run.js',
 		debug: true
 	});
 
@@ -76,5 +86,5 @@ gulp.task('enums', function () {
 			file.contents = new Buffer(out);
 			callback(null, file);
 		}))
-		.pipe(gulp.dest('./js'));
+		.pipe(gulp.dest('./ts'));
 });

@@ -1,9 +1,11 @@
 node_modules
 typings
+dist
 
 enums.json
 
-css/**/*.css
-css/**/*.css.map
-js/**/*.js
-js/**/*.js.map
+# outdated, but keep around
+less/**/*.css
+less/**/*.css.map
+ts/**/*.js
+ts/**/*.js.map
