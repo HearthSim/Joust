@@ -41,7 +41,7 @@ gulp.task('watch:styles', ['compile:styles'], function () {
     gulp.watch(['css/**/*.less'], ['compile:styles']);
 });
 
-gulp.task('browser', ['compile'], function() {
+gulp.task('browserify', ['compile'], function() {
     var b = browserify({
         entries: './js/run.js',
         debug: true
@@ -50,9 +50,6 @@ gulp.task('browser', ['compile'], function() {
     return b.bundle()
         .pipe(source('joust.js'))
         .pipe(buffer())
-//        .pipe(sourcemaps.init({loadMaps: true}))
-        // Add transformation tasks to the pipeline here.
         .pipe(uglify())
-//        .pipe(sourcemaps.write('./'))
-        .pipe(gulp.dest('./dist/'));
+        .pipe(gulp.dest('./dist'));
 });
