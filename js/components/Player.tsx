@@ -62,6 +62,26 @@ class Player extends React.Component<PlayerProps, {}> {
 						 optionCallback={this.props.optionCallback}/>;
 		var name = this.props.player.getName() ? <div className="name">{this.props.player.getName()}</div> : null;
 
+		var crystals = [];
+		for (var i = 0; i < this.props.player.getResources(); i++) {
+			var crystalClassNames = ['crystal'];
+			if (i < (this.props.player.getResources() - this.props.player.getResourcesUsed())) {
+				crystalClassNames.push('full');
+			}
+			else {
+				crystalClassNames.push('empty');
+			}
+			crystals.push(<div key={i} className={crystalClassNames.join(' ')}></div>);
+		}
+		var resources = this.props.player.getResources();
+		var available = resources - this.props.player.getResourcesUsed();
+		var tray = (
+			<div className="tray">
+				<span>{available}/{resources}</span>
+				{crystals}
+			</div>
+		);
+
 		var classNames = this.props.isTop ? 'player top' : 'player';
 
 		if (this.props.isTop) {
@@ -72,10 +92,14 @@ class Player extends React.Component<PlayerProps, {}> {
 						<div>
 							{name}
 						</div>
+						<div></div>
 						<div className="middle">
 							{weapon}
 							{hero}
 							{heroPower}
+						</div>
+						<div>
+							{tray}
 						</div>
 						<div>
 							{deck}
@@ -93,10 +117,14 @@ class Player extends React.Component<PlayerProps, {}> {
 						<div>
 							{name}
 						</div>
+						<div></div>
 						<div className="middle">
 							{weapon}
 							{hero}
 							{heroPower}
+						</div>
+						<div>
+							{tray}
 						</div>
 						<div>
 							{deck}

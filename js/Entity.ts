@@ -17,6 +17,14 @@ class Entity {
 		return this.cardId;
 	}
 
+	public getResourcesUsed():number {
+		return this.getTag(25);
+	}
+
+	public getResources():number {
+		return this.getTag(26);
+	}
+
 	public isExhausted():boolean {
 		return this.getTag(43) > 0;
 	}
@@ -49,12 +57,16 @@ class Entity {
 		return this.getTag(187);
 	}
 
+	public isTaunter():boolean {
+		return this.getTag(190) > 0;
+	}
+
 	public isStealthed():boolean {
-		return this.getTag(191) === 1;
+		return this.getTag(191) > 0;
 	}
 
 	public isDivineShielded():boolean {
-		return this.getTag(194) === 1;
+		return this.getTag(194) > 0;
 	}
 
 	public getClass():number {
@@ -63,6 +75,10 @@ class Entity {
 
 	public getCardType():number {
 		return this.getTag(202);
+	}
+
+	public isFrozen():boolean {
+		return this.getTag(260) > 0;
 	}
 
 	public getZonePosition():number {

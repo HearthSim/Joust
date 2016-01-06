@@ -30,8 +30,22 @@ abstract class EntityInPlay<P extends EntityInPlayProps, S> extends React.Compon
 		else if (this.props.option) {
 			classNames.push('playable');
 		}
-		if (this.props.entity && this.props.entity.isExhausted()) {
-			classNames.push('exhausted');
+		if (this.props.entity) {
+			if (this.props.entity.isExhausted()) {
+				classNames.push('exhausted');
+			}
+			if (this.props.entity.isStealthed()) {
+				classNames.push('stealth');
+			}
+			if (this.props.entity.isDivineShielded()) {
+				classNames.push('divine-shield');
+			}
+			if (this.props.entity.isTaunter()) {
+				classNames.push('taunt');
+			}
+			if (this.props.entity.isFrozen()) {
+				classNames.push('frozen');
+			}
 		}
 		return classNames;
 	}

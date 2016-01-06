@@ -20,20 +20,6 @@ class Minion extends EntityInPlay<EntityInPlayProps, {}> {
 		super('minion');
 	}
 
-	protected getClassNames():string[] {
-		var classNames = [];
-
-		var entity = this.props.entity;
-		if (entity.isStealthed()) {
-			classNames.push('stealth');
-		}
-		if (entity.isDivineShielded()) {
-			classNames.push('divine-shield');
-		}
-
-		return super.getClassNames().concat(classNames);
-	}
-
 	public jsx() {
 		var entity = this.props.entity;
 
