@@ -1,4 +1,3 @@
-/// <reference path="../../typings/websocket/websocket.d.ts"/>
 'use strict';
 
 import {EventEmitter} from 'events';

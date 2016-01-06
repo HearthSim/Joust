@@ -12,7 +12,6 @@ import ReplaceEntityMutator = require('../state/mutators/ReplaceEntityMutator');
 import SetOptionsMutator = require('../state/mutators/SetOptionsMutator');
 import {GameStateManager} from "../interfaces";
 import {Socket} from 'net';
-import WebSocket = require('websocket');
 import {Client} from "../interfaces";
 
 class KettleTranscoder {
