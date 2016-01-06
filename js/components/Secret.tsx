@@ -18,6 +18,9 @@ class Secret extends React.Component<SecretProps, {}> {
 		if (secretClass) {
 			classNames.push(secretClass);
 		}
+		if(entity.isExhausted()) {
+			classNames.push('exhausted');
+		}
 		return (
 			<div className={classNames.join(' ')}>?</div>
 		);

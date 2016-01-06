@@ -62,6 +62,7 @@
     "metadata/HearthstoneJSON.ts",
     "components/stats/Attack.tsx",
     "components/stats/Cost.tsx",
+    "components/stats/Durability.tsx",
     "components/stats/Health.tsx"
   ],
   "exclude": []
