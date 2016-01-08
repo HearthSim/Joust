@@ -82,7 +82,7 @@ gulp.task('enums', function () {
 				out += foo.join(',\n') + '\n';
 				out += '}\n';
 			});
-			file.path = 'enums.tsx';
+			file.path = 'enums.ts';
 			file.contents = new Buffer(out);
 			callback(null, file);
 		}))
