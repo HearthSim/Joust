@@ -25,6 +25,7 @@ import Option = require("../Option");
 
 interface ApplicationState {
 	manager?:GameStateManager;
+	connecting?:boolean;
 	optionCallback?(option:Option, target?:number):void;
 }
 
@@ -32,25 +33,32 @@ class Application extends React.Component<{}, ApplicationState> {
 
 	constructor() {
 		super();
-		this.state = {manager: null, optionCallback: null};
+		this.state = {manager: null, connecting: false, optionCallback: null};
 	}
 
 	protected initializeSocket(client:Client, hero1:string, deck1:string[], hero2:string, deck2:string[]):void {
 		var manager = new SingleGameStateManager(new GameState());
 		var kettle = new KettleTranscoder(manager);
 		client.once('connect', function () {
-			kettle.createGame('Player 1', hero1, deck1,
-				'Player 2', hero2, deck2);
-			this.setState({manager: manager});
+			kettle.createGame(
+				"Player 1", hero1, deck1,
+				"Player 2", hero2, deck2
+			);
+			this.setState({manager: manager, connecting: false});
 		}.bind(this));
 		client.once('close', function () {
 			if (this.state.manager && !this.state.manager.isComplete()) {
-				alert('Connection lost.');
+				alert("Connection lost.");
 			}
-			this.setState({manager: null});
+			this.setState({manager: null, connecting: false});
+		}.bind(this));
+		client.once('error', function (err) {
+			alert("Connection failed.");
+			this.setState({manager: null, connecting: false});
 		}.bind(this));
 		kettle.connect(client);
 		this.setState({
+			connecting: true,
 			optionCallback: function (option:Option, target?:number) {
 				kettle.sendOption(option, target);
 				manager.apply(new ClearOptionsMutator());
@@ -67,7 +75,7 @@ class Application extends React.Component<{}, ApplicationState> {
 	}
 
 	protected close() {
-		if (!confirm('Are you sure you want to exit the game?')) {
+		if (!confirm("Are you sure you want to exit the game?")) {
 			return;
 		}
 		this.state.manager.setComplete(true);
@@ -105,7 +113,8 @@ class Application extends React.Component<{}, ApplicationState> {
 						<div className="backends">
 							<HSReplay callback={this.initializeHSReplay.bind(this)}/>
 							<Kettle callbackTCPSocket={this.initializeKettleTCPSocket.bind(this)}
-									callbackWebSocket={this.initializeKettleWebSocket.bind(this)}/>
+									callbackWebSocket={this.initializeKettleWebSocket.bind(this)}
+									connecting={this.state.connecting}/>
 						</div>
 					</div>
 				</div>

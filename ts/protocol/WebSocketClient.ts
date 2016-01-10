@@ -21,8 +21,11 @@ class WebSocketClient extends EventEmitter implements Client {
 		this.connection.onmessage = function (e) {
 			this.emit('data', new Buffer(e.data));
 		}.bind(this);
+		this.connection.onerror = function(err) {
+			this.emit('error', err);
+		}.bind(this);
 		this.connection.onclose = function (err) {
-			console.debug("Lost connection: ", err);
+			console.debug("Lost connection");
 			this.emit('close');
 		}.bind(this);
 	}

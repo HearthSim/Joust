@@ -19,6 +19,9 @@ class TCPSocketClient extends EventEmitter implements Client {
 			this.socket.on('data', function (data) {
 				this.emit('data', data);
 			}.bind(this));
+			this.socket.once('error', function (err) {
+				this.emit('error', err);
+			}.bind(this));
 			this.socket.once('close', function () {
 				console.debug("Lost connection");
 				this.emit('close');

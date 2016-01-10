@@ -7,6 +7,7 @@ import SelectDeck = require('./SelectDeck');
 interface KettleProps extends React.Props<any> {
 	callbackTCPSocket(hostname:string, port:number, hero1:string, deck1:string[], hero2:string, deck2:string[]):void
 	callbackWebSocket(url:string, hero1:string, deck1:string[], hero2:string, deck2:string[]):void
+	connecting:boolean;
 }
 
 interface KettleState {
@@ -16,7 +17,6 @@ interface KettleState {
 	port?:number;
 	websocket?:boolean;
 	websocketSecure?:boolean;
-	connecting?:boolean;
 	hero1?:string;
 	deck1?:string[];
 	hero2?:string;
@@ -34,7 +34,6 @@ class Kettle extends React.Component<KettleProps, KettleState> {
 			port: null,
 			websocket: !isNode,
 			websocketSecure: (document.location.protocol === 'https:'),
-			connecting: false,
 			hero1: '',
 			deck1: [],
 			hero2: '',
@@ -70,7 +69,6 @@ class Kettle extends React.Component<KettleProps, KettleState> {
 
 	public submit(e) {
 		e.preventDefault();
-		this.setState({connecting: true});
 		var hostname = this.state.hostname || this.state.defaultHostname;
 		var port = this.state.port || this.state.defaultPort;
 		if (this.state.websocket) {
@@ -146,35 +144,35 @@ class Kettle extends React.Component<KettleProps, KettleState> {
 					<label className="hostname">
 						Hostname:
 						<input type="text" placeholder={this.state.defaultHostname} value={this.state.hostname}
-							   onChange={this.onChangeHostname.bind(this)} disabled={this.state.connecting}/>
+							   onChange={this.onChangeHostname.bind(this)} disabled={this.props.connecting}/>
 					</label>
 					<label className="port">
 						Port:
 						<input type="number" placeholder={''+this.state.defaultPort} value={''+this.state.port}
-							   onChange={this.onChangePort.bind(this)} disabled={this.state.connecting}/>
+							   onChange={this.onChangePort.bind(this)} disabled={this.props.connecting}/>
 					</label>
 					<div className="websocket">
 						<label>
 							<input type="checkbox" checked={this.state.websocket}
-								   disabled={!isNode || this.state.connecting}
+								   disabled={!isNode || this.props.connecting}
 								   onChange={this.onChangeWebSocket.bind(this)}/>
 							WebSocket
 						</label>
 						<label>
-							<input type="checkbox" checked={this.state.websocketSecure} disabled={this.state.connecting || !this.state.websocket}
+							<input type="checkbox" checked={this.state.websocketSecure} disabled={this.props.connecting || !this.state.websocket}
 								   onChange={this.onChangeSecureWebSocket.bind(this)}/>
 							Secure
 						</label>
 					</div>
 					<button type="submit"
-							disabled={this.state.connecting}>{this.state.connecting && 'Connecting...' || 'Connect'}</button>
+							disabled={this.props.connecting}>{this.props.connecting && 'Connecting...' || 'Connect'}</button>
 					<h3>Options:</h3>
 					<div className="decks">
 						<label>Deck 1:
-							<SelectDeck presets={decks} default={0} disabled={this.state.connecting} onSelect={this.onSelectDeck1.bind(this)}/>
+							<SelectDeck presets={decks} default={0} disabled={this.props.connecting} onSelect={this.onSelectDeck1.bind(this)}/>
 						</label>
 						<label>Deck 2:
-							<SelectDeck presets={decks} default={1} disabled={this.state.connecting} onSelect={this.onSelectDeck2.bind(this)}/>
+							<SelectDeck presets={decks} default={1} disabled={this.props.connecting} onSelect={this.onSelectDeck2.bind(this)}/>
 						</label>
 					</div>
 				</form>
