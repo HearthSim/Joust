@@ -5,7 +5,7 @@ module.exports = {
 		filename: 'bundle.js'
 	},
 	resolve: {
-		extensions: ['', '.webpack.js', '.web.js', '.ts', '.tsx', '.js'],
+		extensions: ['', '.webpack.js', '.web.js', '.ts', '.tsx', '.js']
 	},
 	module: {
 		loaders: [
@@ -13,8 +13,9 @@ module.exports = {
 		]
 	},
 	node: {
-		// these modules will be provided electron
+		// these modules are (possibly) provided by electron
 		fs: 'empty',
 		net: 'empty'
-	}
+	},
+	target: 'electron'
 }
