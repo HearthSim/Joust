@@ -11,7 +11,7 @@ var webpack = require('webpack-stream');
 
 gulp.task('default', ['watch']);
 
-gulp.task('compile', ['compile:scripts', 'compile:styles', 'html']);
+gulp.task('compile', ['compile:scripts', 'compile:styles', 'html', 'fonts', 'images']);
 
 gulp.task('compile:scripts', function () {
 	return gulp.src('ts/run.tsx')
@@ -40,6 +40,16 @@ gulp.task('compile:styles', function () {
 gulp.task('html', function () {
 	return gulp.src('html/**/*.html')
 		.pipe(gulp.dest('dist/'));
+});
+
+gulp.task('fonts', function () {
+	return gulp.src('fonts/*.ttf')
+		.pipe(gulp.dest('dist/fonts/'));
+});
+
+gulp.task('images', function () {
+	return gulp.src(['images/*.png', 'images/*.jpg'])
+		.pipe(gulp.dest('dist/images/'));
 });
 
 gulp.task('watch', ['watch:styles', 'watch:html'], function () {

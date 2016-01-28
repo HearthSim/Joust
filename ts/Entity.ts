@@ -59,6 +59,10 @@ class Entity {
 		return this.getTag(GameTag.DURABILITY);
 	}
 
+	public isLegendary():boolean {
+		return this.getTag(GameTag.RARITY) == 5;
+	}
+
 	public isTaunter():boolean {
 		return this.getTag(GameTag.TAUNT) > 0;
 	}

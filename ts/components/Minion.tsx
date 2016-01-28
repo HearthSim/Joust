@@ -8,6 +8,8 @@ import EntityInPlay = require('./EntityInPlay');
 import {EntityInPlayProps} from "../interfaces";
 import HearthstoneJSON = require("../metadata/HearthstoneJSON");
 
+import InPlayCardArt = require('./InPlayCardArt');
+
 import Attack = require('./stats/Attack');
 import Health = require('./stats/Health');
 
@@ -35,7 +37,7 @@ class Minion extends EntityInPlay<EntityInPlayProps, {}> {
 
 		return (
 			<div>
-				<h1>{title}</h1>
+				<InPlayCardArt taunt={entity.isTaunter()} legendary={entity.isLegendary()} cardId={entity.getCardId()}/>
 				<div className="stats">
 					<Attack attack={entity.getAtk()} default={defaultAttack}/>
 					<Health health={entity.getHealth()} damage={entity.getDamage()} default={defaultHealth}/>

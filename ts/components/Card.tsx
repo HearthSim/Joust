@@ -12,6 +12,8 @@ import Attack = require('./stats/Attack');
 import Health = require('./stats/Health');
 import Cost = require('./stats/Cost');
 
+import InHandCardArt = require('./InHandCardArt');
+
 import {DragSource} from 'react-dnd';
 
 interface CardProps extends EntityProps, OptionProps, React.Props<any> {
@@ -36,7 +38,7 @@ class Card extends React.Component<CardProps, {}> {
 	public render() {
 		var entity = this.props.entity;
 		if (entity.getCardId() === null) {
-			return <div className="card"></div>;
+			return <div className="card"><InHandCardArt cardHidden={true}/></div>;
 		}
 
 		var classNames = ['card', 'revealed'];
@@ -62,6 +64,7 @@ class Card extends React.Component<CardProps, {}> {
 		}
 
 		var stats = null;
+		var textStyle = { color: "black" };
 		if (entity.getCardType() === 4) {
 			var attack = <Attack attack={entity.getAtk()} default={defaultAttack}/>;
 			var health = <Health health={entity.getHealth()} damage={entity.getDamage()} default={defaultHealth}/>;
@@ -71,14 +74,18 @@ class Card extends React.Component<CardProps, {}> {
 			var attack = <Attack attack={entity.getAtk()} default={defaultAttack}/>;
 			var durability = <div className="durability">{entity.getDurability()}</div>;
 			stats = <div className="stats">{attack}{durability}</div>
+			textStyle = { color: "white" };
 		}
 
 		var connectDragSource = this.props.connectDragSource;
 		var jsx = (
 			<div className={classNames.join(' ')}>
+				<InHandCardArt cardId={entity.getCardId()} cardType={entity.getCardType()} legendary={entity.isLegendary()}/>
 				<Cost cost={entity.getCost()} default={defaultCost}/>
 				<h1>{title}</h1>
-				<p className="description" dangerouslySetInnerHTML={{__html: description}}></p>
+				<div className="description">
+					<p style={textStyle} dangerouslySetInnerHTML={{__html: description}}></p>
+				</div>
 				{stats}
 			</div>
 		);
