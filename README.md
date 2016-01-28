@@ -3,7 +3,7 @@
 ## Requirements
 
 - Node.js ~v5.3.0
-- `npm install -g electron-prebuilt typescript tsd gulp`
+- `npm install -g electron-prebuilt tsd gulp`
 
 
 ## Install
@@ -14,26 +14,36 @@ Install dependencies:
 npm install
 ```
 
-Install additional Typescript typings:
+Install additional TypeScript typings:
 
 ```
 tsd install
 ```
 
-Either compile once:
+Compile and package:
 
 ```
 gulp compile
 ```
 
-Or recompile automatically:
-
-```
-gulp watch
-```
 
 ## Run
 
 ```
 electron .
+```
+
+
+## Development
+
+Watch TypeScript with webpack:
+
+```
+webpack -d --watch
+```
+
+Watch HTML/LESS:
+
+```
+gulp watch:styles
 ```
