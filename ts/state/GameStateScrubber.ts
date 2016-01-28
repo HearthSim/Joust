@@ -13,6 +13,7 @@ class GameStateScrubber extends EventEmitter implements GameStateManager {
 
 	constructor(protected manager:HistoryGameStateManager) {
 		super();
+		this.on('end', this.pause.bind(this));
 	}
 
 	setGameState(gameState:GameState):void {
@@ -22,7 +23,6 @@ class GameStateScrubber extends EventEmitter implements GameStateManager {
 		var previous = this.latestState;
 		this.latestState = gameState;
 		this.emit('gamestate', gameState, previous);
-		this.on('end', this.pause.bind(this));
 	}
 
 	getGameState():GameState {
