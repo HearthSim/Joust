@@ -9,7 +9,8 @@
     "noImplicitAny": false,
     "removeComments": true,
     "noLib": false,
-    "suppressImplicitAnyIndexErrors": true
+    "suppressImplicitAnyIndexErrors": true,
+    "sourceMap": true
   },
   "filesGlob": [
     "ts/**/*.ts",
