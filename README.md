@@ -45,5 +45,5 @@ webpack -d --watch
 Watch HTML/LESS:
 
 ```
-gulp watch:styles
+gulp watch
 ```
