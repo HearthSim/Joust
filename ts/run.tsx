@@ -1,3 +1,4 @@
+/// <reference path='global.d.ts'/>
 /// <reference path='../typings/react/react-dom.d.ts'/>
 'use strict';
 
