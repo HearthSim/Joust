@@ -1,3 +1,13 @@
+@font-face {
+  font-family: "Belwe Bd BT";
+  src: url("./fonts/Belwe.ttf");
+}
+
+@font-face {
+  font-family: "Franklin Gothic Condensed";
+  src: url("./fonts/FranklinGothic.ttf");
+}
+
 html, body {
   margin: 0;
   padding: 0;
@@ -198,9 +208,8 @@ html {
 
   > li {
 	height: 100%;
-	max-width: 10%;
 	flex-shrink: 1;
-	flex-grow: 1;
+	flex-grow: 0;
 
 	.card {
 	  z-index: 0;
@@ -221,7 +230,7 @@ html {
   transition: box-shadow 0.15s, transform 0.15s;
 
   &.minion, &:not(.playable) {
-	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+	// box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
   }
 
   &.target, &.playable.target, &.minion.target {
@@ -246,7 +255,7 @@ html {
   }
 
   &.taunt {
-	background-color: darkgrey;
+	//background-color: darkgrey;
   }
 
   &.divine-shield {
@@ -276,71 +285,109 @@ html {
 }
 
 .card {
+  position: relative;
   display: flex;
   flex-direction: column;
-  border: black solid 1px;
   background-color: transparent;
-  border-radius: 5%;
-  width: 80px;
   height: 100%;
   padding: 0;
-  background-color: beige;
   margin-left: -100%;
 
   h1 {
-	font-size: 0.8em;
-	text-align: center;
-	font-family: "Chancery URW";
-	margin: 0 0 10px 0;
+  position: absolute;
+  font-size: 0.5em;
+  text-align: center;
+  font-family: "Belwe Bd BT";
+  margin: 0 8%;
+  width: 84%;
+  top: 52%;
+  color: white;
+  text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000;
+  }
+
+  div.visuals {
+    position: relative;
+    img {
+      position: absolute;
+    }
+    .inhand-minion {
+      width: 78%;
+      top: 6%;;
+      left: 11%;
+      -webkit-clip-path: ellipse(36% 47% at 50% 50%);
+    }
+    .inhand-spell {
+      width: 70%;
+      top: 11%;;
+      left: 14%;
+      -webkit-clip-path: inset(8% 0% 12% 0%);
+    }
+    .inhand-weapon {
+      width: 67%;
+      top: 11%;;
+      left: 17%;
+      -webkit-clip-path: circle(50% at 50% 50%);
+    }
+    .inhand-base, .inhand-legendary {
+      height: 100%;
+    }
   }
 
   .description {
-	font-family: sans-serif;
-	font-size: 0.5em;
-	margin: 0 4px;
-	text-align: center;
+    position: absolute;
+    font-family: "Franklin Gothic Condensed", sans-serif;
+    font-size: 0.5em;
+    margin: 0 16%;
+    text-align: center;
+    line-height: 1em;
+    height: 26%;
+    width: 68%;
+    top: 66%;
+    p {
+      position: absolute;
+      margin: 0;
+      paddign: 0;
+      top: 50%;
+      transform: translate(0, -50%);
+    }
   }
 
   .cost {
-	margin: -4px 0 0 -4px;
-  }
-
-  .health, .durability, .atk {
-	margin-bottom: -4px;
+    top: 8%;
+    left: 4%;
   }
 
   .atk {
-	margin-left: -4px;
+    left: 6%;
+    top: 84%;
   }
 
   .health, .durability {
-	margin-right: -4px;
+    left: 78%;
+    top: 84%;
   }
 }
 
 .cost, .atk, .health, .durability {
+  position: absolute;
   display: block;
   width: 20px;
   height: 20px;
   text-align: center;
-  border-radius: 10px;
-  font-weight: bold;
-  border: black solid 1px;
   color: white;
   text-shadow: 0px 0px 2px black;
   font-size: 1.2em;
   line-height: 0.95em;
-  font-family: serif;
-}
-
-.atk {
-  background-color: #e2e200;
-  float: left;
-}
-
-.health {
-  background-color: #f5494c;
-  float: right;
+  font-family: "Belwe Bd BT", serif;
+  text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000;
 }
 
 .atk, .health, .durability, .cost {
@@ -354,13 +401,6 @@ html {
 
 .cost {
   color: white;
-  background-color: #1d51e1;
-  float: left;
-}
-
-.durability {
-  background-color: darkgray;
-  float: right;
 }
 
 .stats {
@@ -473,7 +513,6 @@ html {
   > li {
 	flex-shrink: 0;
 	flex-grow: 0;
-	margin: 0 10px;
 	height: 100%;
 
 	> .minion {
@@ -509,12 +548,29 @@ html {
 }
 
 .minion {
+  position: relative;
   display: inline-block;
-  border: ridge black 1px;
-  width: 60px;
   height: 100%;
-  border-radius: 50%;
-  padding-top: 20px;
+
+  div.visuals {
+    position: relative;
+    img {
+      position: absolute;
+    }
+    .inplay-base, .inplay-legendary, .inplay-taunt {
+      height: 100%;
+    }
+    .inplay-portrait {
+      width: 85%;
+      top: 10%;;
+      left: 7%;
+      -webkit-clip-path: ellipse(35% 45% at 50% 46%);
+    }
+    .inplay-legendary {
+      position: absolute;
+      height: 100%;
+    }
+  }
 
   > div {
 
@@ -522,16 +578,22 @@ html {
 	flex-direction: column;
 	height: 100%;
 
-	h1 {
-	  font-size: 0.8em;
-	  text-align: center;
-	  font-family: "Chancery URW";
-	  margin: 0 0 10px 0;
-	}
-
 	.stats {
-	  width: 90%;
-	  margin: auto auto 0 auto;
+    position: realtive;
+    width: 90%;
+    margin: auto auto 0 auto;
+
+    .atk {
+      left: 20%;
+      top: 62%;
+      font-size: 1.2em;
+    }
+
+    .health {
+      left: 61%;
+      top: 62%;
+      font-size: 1.2em;
+    }
 	}
   }
 }
