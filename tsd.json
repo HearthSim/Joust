@@ -6,46 +6,52 @@
   "bundle": "typings/tsd.d.ts",
   "installed": {
     "react/react.d.ts": {
-      "commit": "6a6ad7068a177c0d7a8a20830626cb63277191c5"
+      "commit": "86dbea8fc37d9473fee465da4f0a21bea4f8cbd9"
     },
     "react/react-addons-create-fragment.d.ts": {
-      "commit": "a6ff9f6e195a334afd89e4b721d05e9520eee4c0"
+      "commit": "86dbea8fc37d9473fee465da4f0a21bea4f8cbd9"
     },
     "react/react-dom.d.ts": {
-      "commit": "a6ff9f6e195a334afd89e4b721d05e9520eee4c0"
+      "commit": "86dbea8fc37d9473fee465da4f0a21bea4f8cbd9"
     },
     "react/react-addons-css-transition-group.d.ts": {
-      "commit": "a6ff9f6e195a334afd89e4b721d05e9520eee4c0"
+      "commit": "86dbea8fc37d9473fee465da4f0a21bea4f8cbd9"
     },
     "react/react-addons-transition-group.d.ts": {
-      "commit": "a6ff9f6e195a334afd89e4b721d05e9520eee4c0"
+      "commit": "86dbea8fc37d9473fee465da4f0a21bea4f8cbd9"
     },
     "react/react-addons-linked-state-mixin.d.ts": {
-      "commit": "a6ff9f6e195a334afd89e4b721d05e9520eee4c0"
+      "commit": "86dbea8fc37d9473fee465da4f0a21bea4f8cbd9"
     },
     "react/react-addons-perf.d.ts": {
-      "commit": "a6ff9f6e195a334afd89e4b721d05e9520eee4c0"
+      "commit": "86dbea8fc37d9473fee465da4f0a21bea4f8cbd9"
     },
     "react/react-addons-pure-render-mixin.d.ts": {
-      "commit": "a6ff9f6e195a334afd89e4b721d05e9520eee4c0"
+      "commit": "86dbea8fc37d9473fee465da4f0a21bea4f8cbd9"
     },
     "react/react-addons-test-utils.d.ts": {
-      "commit": "a6ff9f6e195a334afd89e4b721d05e9520eee4c0"
+      "commit": "86dbea8fc37d9473fee465da4f0a21bea4f8cbd9"
     },
     "react/react-addons-update.d.ts": {
-      "commit": "a6ff9f6e195a334afd89e4b721d05e9520eee4c0"
+      "commit": "86dbea8fc37d9473fee465da4f0a21bea4f8cbd9"
     },
     "node/node.d.ts": {
-      "commit": "419793fb796b0e5c1ed11e018ad28475de0c3735"
+      "commit": "86dbea8fc37d9473fee465da4f0a21bea4f8cbd9"
     },
     "sax/sax.d.ts": {
-      "commit": "dc9dabe74a5be62613b17a3605309783a12ff28a"
+      "commit": "86dbea8fc37d9473fee465da4f0a21bea4f8cbd9"
     },
     "react-dnd/react-dnd.d.ts": {
-      "commit": "6a6ad7068a177c0d7a8a20830626cb63277191c5"
+      "commit": "86dbea8fc37d9473fee465da4f0a21bea4f8cbd9"
     },
     "lodash/lodash.d.ts": {
-      "commit": "6a6ad7068a177c0d7a8a20830626cb63277191c5"
+      "commit": "86dbea8fc37d9473fee465da4f0a21bea4f8cbd9"
+    },
+    "react/react-addons-shallow-compare.d.ts": {
+      "commit": "86dbea8fc37d9473fee465da4f0a21bea4f8cbd9"
+    },
+    "react/react-global.d.ts": {
+      "commit": "86dbea8fc37d9473fee465da4f0a21bea4f8cbd9"
     }
   }
 }
