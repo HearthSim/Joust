@@ -24,7 +24,7 @@ app.on('ready', function () {
     mainWindow = new BrowserWindow({width: 800, height: 600, title: 'Joust'});
 
     // and load the electron.html of the app.
-    mainWindow.loadURL('file://' + __dirname + '/dist/electron.html');
+    mainWindow.loadURL('file://' + __dirname + '/dist/index.html');
 
     // Open the DevTools.
     mainWindow.webContents.openDevTools();

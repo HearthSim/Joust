@@ -47,3 +47,14 @@ Watch HTML/LESS:
 ```
 gulp watch
 ```
+
+
+## Deployment
+
+To package for web browsers:
+
+```
+gulp compile:web
+```
+
+Point browsers to `dist/index.html`.

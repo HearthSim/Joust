@@ -19,6 +19,16 @@ gulp.task('compile:scripts', function () {
 		.pipe(gulp.dest('dist/'));
 });
 
+gulp.task('compile:web', ['compile:scripts:web', 'compile:styles', 'html']);
+
+gulp.task('compile:scripts:web', function () {
+	var config = require('./webpack.config.js');
+	config.target = 'web';
+	return gulp.src('ts/run.tsx')
+		.pipe(webpack(config))
+		.pipe(gulp.dest('dist/'));
+});
+
 gulp.task('compile:styles', function () {
 	return gulp.src('less/**/*.less')
 		.pipe(sourcemaps.init())
