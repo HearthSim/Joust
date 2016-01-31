@@ -1,8 +1,7 @@
 {
   "compilerOptions": {
     "declaration": false,
-    "module": "commonjs",
-    "target": "es5",
+    "target": "es6",
     "moduleResolution": "node",
     "isolatedModules": false,
     "jsx": "react",
@@ -18,6 +17,7 @@
   ],
   "files": [
     "ts/interfaces.d.ts",
+    "ts/enums.d.ts",
     "ts/run.tsx",
     "ts/Entity.ts",
     "ts/Player.ts",

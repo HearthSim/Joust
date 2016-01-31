@@ -1,26 +1,25 @@
 /// <reference path="../../typings/react/react.d.ts"/>
 /// <reference path="../interfaces.d.ts"/>
-'use strict';
 
-import React = require('react');
-import SingleGameStateManager = require("../state/managers/SingleGameStateManager");
-import KettleTranscoder = require("../protocol/KettleTranscoder");
-import HistoryGameStateManager = require("../state/managers/HistoryGameStateManager");
-import GameStateScrubber = require("../state/GameStateScrubber");
-import HSReplayDecoder = require("../protocol/HSReplayDecoder");
-import JoustGame = require('./JoustGame');
-import GameState = require("../state/GameState");
-import HearthstoneJSON = require('../metadata/HearthstoneJSON');
+import * as React from 'react';
+import SingleGameStateManager from "../state/managers/SingleGameStateManager";
+import KettleTranscoder from "../protocol/KettleTranscoder";
+import HistoryGameStateManager from "../state/managers/HistoryGameStateManager";
+import GameStateScrubber from "../state/GameStateScrubber";
+import HSReplayDecoder from "../protocol/HSReplayDecoder";
+import JoustGame from './JoustGame';
+import GameState from "../state/GameState";
+import HearthstoneJSON from '../metadata/HearthstoneJSON';
 import {GameStateManager} from "../interfaces";
 
-import HSReplay = require('./welcome/HSReplay')
-import Kettle = require('./welcome/Kettle')
-import TCPSocketClient = require('../protocol/TCPSocketClient');
-import WebSocketClient = require('../protocol/WebSocketClient');
-import Immutable = require('immutable');
+import HSReplay from './welcome/HSReplay'
+import Kettle from './welcome/Kettle'
+import TCPSocketClient from '../protocol/TCPSocketClient';
+import WebSocketClient from '../protocol/WebSocketClient';
+import * as Immutable from 'immutable';
 import {Client} from "../interfaces";
-import ClearOptionsMutator = require("../state/mutators/ClearOptionsMutator");
-import Option = require("../Option");
+import ClearOptionsMutator from "../state/mutators/ClearOptionsMutator";
+import Option from "../Option";
 
 
 interface ApplicationState {
@@ -127,4 +126,4 @@ class Application extends React.Component<{}, ApplicationState> {
 	}
 }
 
-export = Application;
+export default Application;

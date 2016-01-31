@@ -1,7 +1,5 @@
-'use strict';
-
-import React = require('react');
-import FileReaderStream = require('filereader-stream')
+import * as React from 'react';
+import FileReaderStream from 'filereader-stream'
 
 interface HSReplayProps extends React.Props<any> {
 	callback(stream):void
@@ -66,13 +64,25 @@ class HSReplay extends React.Component<HSReplayProps, HSReplayState> {
 			<div className="backend hsreplay">
 				<h2>HSReplay</h2>
 				<p>
-					Joust can replay Hearthstone matches from <code>.hsreplay</code> files.
+					Joust can replay Hearthstone matches from
+					<code>.hsreplay</code>
+					files.
 				</p>
 				<p>
-					You can generate your own <code>.hsreplay</code> files by <a href="https://github.com/jleclanche/fireplace/wiki/How-to-enable-logging" target="_blank"> enabling logging</a> and running one of the converters from <a href="https://github.com/hearthsim/hsreplay" target="_blank">hearthsim/hsreplay</a>.
+					You can generate your own
+					<code>.hsreplay</code>
+					files by
+					<a href="https://github.com/jleclanche/fireplace/wiki/How-to-enable-logging" target="_blank">
+						enabling logging
+					</a>
+					and running one of the converters from<a href="https://github.com/hearthsim/hsreplay"
+															 target="_blank">hearthsim/hsreplay</a>.
 				</p>
 				<p>
-					<a href="https://github.com/Epix37/Hearthstone-Deck-Tracker/" target="_blank">Hearthstone Deck Tracker</a> will start converting your games automatically soon.
+					<a href="https://github.com/Epix37/Hearthstone-Deck-Tracker/" target="_blank">
+						Hearthstone Deck Tracker
+					</a>
+					will start converting your games automatically soon.
 				</p>
 				<div className={classNames.join(' ')} onDrop={this.onDrop.bind(this)}
 					 onDragOver={this.onDragOver.bind(this)}
@@ -83,13 +93,13 @@ class HSReplay extends React.Component<HSReplayProps, HSReplayState> {
 					</p>
 				</div>
 				<p>
-				<small>&hellip;or</small>&nbsp;
-				<input type="file" accept="application/vnd.hearthsim-hsreplay+xml,application/xml"
-					   onChange={this.onSelect.bind(this)}/>
+					<small>&hellip;or</small>&nbsp;
+					<input type="file" accept="application/vnd.hearthsim-hsreplay+xml,application/xml"
+						   onChange={this.onSelect.bind(this)}/>
 				</p>
 			</div>
 		);
 	}
 }
 
-export = HSReplay;
+export default HSReplay;

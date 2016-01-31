@@ -1,8 +1,6 @@
-'use strict';
-
-import GameState = require('../GameState');
-import GameStateMutator = require('../GameStateMutator');
-import Option = require('../../Option');
+import GameState from '../GameState';
+import GameStateMutator from '../GameStateMutator';
+import Option from '../../Option';
 
 class ClearOptionsMutator implements GameStateMutator {
 	constructor() {
@@ -18,4 +16,4 @@ class ClearOptionsMutator implements GameStateMutator {
 	}
 }
 
-export = ClearOptionsMutator;
+export default ClearOptionsMutator;

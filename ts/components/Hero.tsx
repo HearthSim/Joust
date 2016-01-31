@@ -1,17 +1,16 @@
 /// <reference path="../../typings/react/react.d.ts"/>
 /// <reference path="../interfaces.d.ts"/>
-import HearthstoneJSON = require("../metadata/HearthstoneJSON");
-'use strict';
+import HearthstoneJSON from "../metadata/HearthstoneJSON";
 
-import React = require('react');
+import * as React from 'react';
 
-import EntityInPlay = require('./EntityInPlay');
+import EntityInPlay from './EntityInPlay';
 import {EntityInPlayProps} from "../interfaces";
-import Entity = require('../Entity');
-import Secrets = require('./Secrets');
-import Attack = require('./stats/Attack')
-import Health = require('./stats/Health')
-import _ = require('lodash');
+import Entity from '../Entity';
+import Secrets from './Secrets';
+import Attack from './stats/Attack'
+import Health from './stats/Health'
+import * as _ from 'lodash';
 
 interface HeroProps extends EntityInPlayProps {
 	secrets: Immutable.Map<number, Entity>;
@@ -48,7 +47,7 @@ class Hero extends EntityInPlay<HeroProps, {}> {
 	}
 }
 
-export = _.flow(
+export default _.flow(
 	EntityInPlay.DragSource(),
 	EntityInPlay.DropTarget()
 )(Hero);

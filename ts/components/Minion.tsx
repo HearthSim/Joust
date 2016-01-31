@@ -1,20 +1,19 @@
 /// <reference path="../../typings/react/react.d.ts"/>
 /// <reference path="../../typings/react-dnd/react-dnd.d.ts"/>
 /// <reference path="../../typings/lodash/lodash.d.ts"/>
-'use strict';
 
-import React = require('react');
-import EntityInPlay = require('./EntityInPlay');
+import * as React from 'react';
+import EntityInPlay from './EntityInPlay';
 import {EntityInPlayProps} from "../interfaces";
-import HearthstoneJSON = require("../metadata/HearthstoneJSON");
+import HearthstoneJSON from "../metadata/HearthstoneJSON";
 
-import InPlayCardArt = require('./InPlayCardArt');
+import InPlayCardArt from './InPlayCardArt';
 
-import Attack = require('./stats/Attack');
-import Health = require('./stats/Health');
+import Attack from './stats/Attack';
+import Health from './stats/Health';
 
 import {DragSource, DropTarget} from 'react-dnd';
-import _ = require('lodash');
+import * as _ from 'lodash';
 
 class Minion extends EntityInPlay<EntityInPlayProps, {}> {
 
@@ -47,7 +46,7 @@ class Minion extends EntityInPlay<EntityInPlayProps, {}> {
 	}
 }
 
-export = _.flow(
+export default _.flow(
 	EntityInPlay.DragSource(),
 	EntityInPlay.DropTarget()
 )(Minion);

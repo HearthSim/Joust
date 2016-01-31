@@ -1,17 +1,16 @@
 /// <reference path="../../typings/sax/sax.d.ts"/>
-'use strict';
 
-import Immutable = require('immutable');
+import * as Immutable from 'immutable';
 
-import Sax = require('sax');
-import Player = require('../Player');
-import Entity = require('../Entity');
-import AddEntityMutator = require('../state/mutators/AddEntityMutator');
-import TagChangeMutator = require('../state/mutators/TagChangeMutator');
-import ReplaceEntityMutator = require('../state/mutators/ReplaceEntityMutator');
-import SetOptionsMutator = require('../state/mutators/SetOptionsMutator');
-import ClearOptionsMutator = require('../state/mutators/ClearOptionsMutator');
-import Option = require('../Option');
+import * as Sax from 'sax';
+import Player from '../Player';
+import Entity from '../Entity';
+import AddEntityMutator from '../state/mutators/AddEntityMutator';
+import TagChangeMutator from '../state/mutators/TagChangeMutator';
+import ReplaceEntityMutator from '../state/mutators/ReplaceEntityMutator';
+import SetOptionsMutator from '../state/mutators/SetOptionsMutator';
+import ClearOptionsMutator from '../state/mutators/ClearOptionsMutator';
+import Option from '../Option';
 import {GameStateManager} from "../interfaces";
 import {Readable} from 'stream';
 import {createReadStream} from 'fs';
@@ -195,4 +194,4 @@ class HSReplayDecoder {
 	}
 }
 
-export = HSReplayDecoder;
+export default HSReplayDecoder;

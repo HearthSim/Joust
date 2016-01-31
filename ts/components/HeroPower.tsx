@@ -1,14 +1,13 @@
 /// <reference path="../../typings/react/react.d.ts"/>
 /// <reference path="../interfaces.d.ts"/>
-'use strict';
 
-import React = require('react');
+import * as React from 'react';
 
 import {EntityInPlayProps} from "../interfaces";
-import EntityInPlay = require("./EntityInPlay");
-import Cost = require('./stats/Cost');
-import HearthstoneJSON = require('../metadata/HearthstoneJSON');
-import _ = require('lodash');
+import EntityInPlay from "./EntityInPlay";
+import Cost from './stats/Cost';
+import HearthstoneJSON from '../metadata/HearthstoneJSON';
+import * as _ from 'lodash';
 
 class HeroPower extends EntityInPlay<EntityInPlayProps, {}> {
 	constructor() {
@@ -34,7 +33,7 @@ class HeroPower extends EntityInPlay<EntityInPlayProps, {}> {
 	}
 }
 
-export = _.flow(
+export default _.flow(
 	EntityInPlay.DragSource(),
 	EntityInPlay.DropTarget()
 )(HeroPower);

@@ -9,7 +9,7 @@ module.exports = {
 	},
 	module: {
 		loaders: [
-			{ test: /\.tsx?$/, loader: 'ts-loader' }
+			{ test: /\.tsx?$/, loader: 'babel-loader?presets[]=react&presets[]=es2015!ts-loader' }
 		]
 	},
 	node: {

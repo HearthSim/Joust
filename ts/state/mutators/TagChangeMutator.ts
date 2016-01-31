@@ -1,9 +1,7 @@
-'use strict';
-
-import GameState = require('../GameState');
-import GameStateMutator = require('../GameStateMutator');
-import Entity = require('../../Entity');
-import ReplaceEntityMutator = require('./ReplaceEntityMutator');
+import GameState from '../GameState';
+import GameStateMutator from '../GameStateMutator';
+import Entity from '../../Entity';
+import ReplaceEntityMutator from './ReplaceEntityMutator';
 
 class TagChangeMutator implements GameStateMutator {
 	public id;
@@ -38,4 +36,4 @@ class TagChangeMutator implements GameStateMutator {
 	}
 }
 
-export = TagChangeMutator;
+export default TagChangeMutator;

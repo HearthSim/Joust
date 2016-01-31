@@ -1,11 +1,10 @@
 /// <reference path="../../typings/react/react.d.ts"/>
-import HearthstoneJSON = require("../metadata/HearthstoneJSON");
-'use strict';
+import HearthstoneJSON from "../metadata/HearthstoneJSON";
 
-import React = require('react');
+import * as React from 'react';
 import {EntityProps} from "../interfaces";
-import Attack = require('./stats/Attack');
-import Durability = require('./stats/Durability');
+import Attack from './stats/Attack';
+import Durability from './stats/Durability';
 
 interface WeaponProps extends EntityProps, React.Props<any> {
 
@@ -14,7 +13,7 @@ interface WeaponProps extends EntityProps, React.Props<any> {
 class Weapon extends React.Component<WeaponProps, {}> {
 
 	public render() {
-		if(this.props.entity) {
+		if (this.props.entity) {
 			var entity = this.props.entity;
 
 			var title = entity.getCardId();
@@ -31,8 +30,9 @@ class Weapon extends React.Component<WeaponProps, {}> {
 				<div className="weapon">
 					<h1>{title}</h1>
 					<div className="stats">
-						<Attack attack={entity.getAtk()} default={defaultAttack} />
-						<Durability durability={entity.getDurability()} damage={entity.getDamage()} default={defaultDurability} />
+						<Attack attack={entity.getAtk()} default={defaultAttack}/>
+						<Durability durability={entity.getDurability()} damage={entity.getDamage()}
+									default={defaultDurability}/>
 					</div>
 				</div>
 			);
@@ -45,4 +45,4 @@ class Weapon extends React.Component<WeaponProps, {}> {
 	}
 }
 
-export = Weapon;
+export default Weapon;

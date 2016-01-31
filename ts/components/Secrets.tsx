@@ -1,10 +1,8 @@
-'use strict';
+import * as React from 'react';
 
-import React = require('react');
-
-import EntityList = require('./EntityList');
-import Entity = require('../Entity');
-import Secret = require('./Secret');
+import EntityList from './EntityList';
+import Entity from '../Entity';
+import Secret from './Secret';
 
 class Secrets extends EntityList {
 
@@ -17,4 +15,4 @@ class Secrets extends EntityList {
 	}
 }
 
-export = Secrets;
+export default Secrets;

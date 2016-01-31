@@ -1,6 +1,4 @@
-'use strict';
-
-import React = require('react');
+import * as React from 'react';
 
 interface SelectDeckProps extends React.Props<any> {
 	onSelect(hero:string, deck:string[]):void;
@@ -29,16 +27,17 @@ class SelectDeck extends React.Component<SelectDeckProps, SelectDeckState> {
 
 	public render() {
 		var options = [];
-		for(var i in this.props.presets) {
+		for (var i in this.props.presets) {
 			var deck = this.props.presets[i];
 			options.push(<option key={i} value={i}>{deck.name}</option>);
 		}
 		return (
-			<select disabled={this.props.disabled} onChange={this.onChange.bind(this)} defaultValue={''+this.props.default}>
+			<select disabled={this.props.disabled} onChange={this.onChange.bind(this)}
+					defaultValue={''+this.props.default}>
 				{options}
 			</select>
 		)
 	}
 }
 
-export = SelectDeck;
+export default SelectDeck;

@@ -1,10 +1,8 @@
-import GameStateMutator = require("./GameStateMutator");
-'use strict';
-
-import GameState = require("./GameState");
+import GameState from "./GameState";
 import {GameStateManager} from "../interfaces";
 import {EventEmitter} from 'events';
-import HistoryGameStateManager = require("./managers/HistoryGameStateManager");
+import HistoryGameStateManager from "./managers/HistoryGameStateManager";
+import GameStateMutator from "./GameStateMutator";
 
 class GameStateScrubber extends EventEmitter implements GameStateManager {
 	protected latestState:GameState = new GameState();
@@ -38,7 +36,7 @@ class GameStateScrubber extends EventEmitter implements GameStateManager {
 	}
 
 	setComplete(complete:boolean):void {
-		if(complete) {
+		if (complete) {
 			this.emit('end');
 		}
 	}
@@ -54,7 +52,7 @@ class GameStateScrubber extends EventEmitter implements GameStateManager {
 	}
 
 	public pause() {
-		if(this.interval !== null) {
+		if (this.interval !== null) {
 			clearInterval(this.interval);
 			this.interval = null;
 		}
@@ -75,4 +73,4 @@ class GameStateScrubber extends EventEmitter implements GameStateManager {
 	}
 }
 
-export = GameStateScrubber;
+export default GameStateScrubber;

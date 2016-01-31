@@ -1,7 +1,7 @@
 declare module "filereader-stream" {
 	function internal(string?:string):void;
 
-	export = internal;
+	export default internal;
 }
 
 declare module "react-dnd-html5-backend" {
@@ -14,5 +14,5 @@ declare module "react-dnd-html5-backend" {
 
 declare module "is-node" {
 	var isNode:boolean;
-	export = isNode;
+	export default isNode;
 }

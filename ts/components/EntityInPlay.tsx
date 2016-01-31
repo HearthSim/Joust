@@ -1,10 +1,8 @@
-'use strict';
-
 import {EntityInPlayProps} from '../interfaces';
 
-import React = require('react');
+import * as React from 'react';
 import {DragSource, DropTarget} from 'react-dnd';
-import _ = require('lodash');
+import * as _ from 'lodash';
 
 abstract class EntityInPlay<P extends EntityInPlayProps, S> extends React.Component<P, S> {
 
@@ -119,4 +117,4 @@ abstract class EntityInPlay<P extends EntityInPlayProps, S> extends React.Compon
 	}
 }
 
-export = EntityInPlay;
+export default EntityInPlay;

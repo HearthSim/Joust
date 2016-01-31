@@ -1,20 +1,19 @@
 /// <reference path="../../typings/react/react.d.ts"/>
 /// <reference path="../../typings/react-dnd/react-dnd.d.ts"/>
 /// <reference path="../interfaces.d.ts"/>
-'use strict';
 
-import React = require('react');
+import * as React from 'react';
 
-import Immutable = require('immutable');
+import * as Immutable from 'immutable';
 import {EntityProps, OptionCallbackProps} from "../interfaces";
-import Entity = require('../Entity');
-import Player = require('./Player');
-import Option = require('../Option');
-import PlayerEntity = require('../Player');
-import EndTurnButton = require('./EndTurnButton');
+import Entity from '../Entity';
+import Player from './Player';
+import Option from '../Option';
+import PlayerEntity from '../Player';
+import EndTurnButton from './EndTurnButton';
 
 import {DragDropContext} from 'react-dnd';
-import HTML5Backend = require('react-dnd-html5-backend');
+import HTML5Backend from 'react-dnd-html5-backend';
 
 interface TwoPlayerGameProps extends EntityProps, OptionCallbackProps, React.Props<any> {
 	player1: PlayerEntity;
@@ -65,4 +64,4 @@ class TwoPlayerGame extends React.Component<TwoPlayerGameProps, {}> {
 	}
 }
 
-export = DragDropContext<TwoPlayerGameProps>(HTML5Backend)(TwoPlayerGame);
+export default DragDropContext<TwoPlayerGameProps>(HTML5Backend)(TwoPlayerGame);

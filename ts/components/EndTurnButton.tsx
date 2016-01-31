@@ -1,8 +1,7 @@
 /// <reference path="../../typings/react/react.d.ts"/>
 /// <reference path="../interfaces.d.ts"/>
-'use strict';
 
-import React = require('react');
+import * as React from 'react';
 
 import {OptionProps} from "../interfaces";
 
@@ -35,4 +34,4 @@ class EndTurnButton extends React.Component<EndTurnButtonProps, {}> {
 	}
 }
 
-export = EndTurnButton;
+export default EndTurnButton;

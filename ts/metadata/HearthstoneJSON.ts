@@ -1,8 +1,8 @@
 /// <reference path='../../node_modules/immutable/dist/immutable.d.ts'/>
 
-import Immutable = require('immutable');
-import https = require('https');
-import URL = require('url');
+import * as Immutable from 'immutable';
+import * as https from 'https';
+import * as URL from 'url';
 
 class HearthstoneJSON {
 	protected static cards:Immutable.Map<string, any>;
@@ -16,7 +16,7 @@ class HearthstoneJSON {
 	}
 
 	public static fetch() {
-		if(typeof(Storage) !== "undefined") {
+		if (typeof(Storage) !== "undefined") {
 			if (typeof localStorage['rawCards'] === 'string') {
 				var result = JSON.parse(localStorage['rawCards']);
 				if (typeof result === 'object') {
@@ -46,7 +46,7 @@ class HearthstoneJSON {
 			res.on('end', function () {
 				console.debug('Card definitions received from HearthstoneJSON');
 				var data = JSON.parse(json);
-				if(typeof data === 'object') {
+				if (typeof data === 'object') {
 					var cards = HearthstoneJSON.parse(data);
 					HearthstoneJSON.cards = cards;
 					console.debug('Card definitions parsed');
@@ -76,4 +76,4 @@ class HearthstoneJSON {
 	}
 }
 
-export = HearthstoneJSON;
+export default HearthstoneJSON;

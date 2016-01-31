@@ -1,11 +1,9 @@
-'use strict';
+import * as React from 'react';
 
-import React = require('react');
-
-import EntityList = require('./EntityList');
-import Entity = require('../Entity');
-import Option = require('../Option');
-import Card = require('./Card');
+import EntityList from './EntityList';
+import Entity from '../Entity';
+import Option from '../Option';
+import Card from './Card';
 
 class Hand extends EntityList {
 
@@ -14,8 +12,8 @@ class Hand extends EntityList {
 	}
 
 	protected renderEntity(entity:Entity, option:Option) {
-		return (<Card entity={entity} option={option} optionCallback={this.props.optionCallback} />);
+		return (<Card entity={entity} option={option} optionCallback={this.props.optionCallback}/>);
 	}
 }
 
-export = Hand;
+export default Hand;

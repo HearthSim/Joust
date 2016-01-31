@@ -1,10 +1,10 @@
 /// <reference path='../node_modules/immutable/dist/immutable.d.ts'/>
 
-import React = require('react');
-import Entity = require('./Entity');
-import Option = require('./Option');
-import GameStateMutator = require("./state/GameStateMutator");
-import GameState = require("./state/GameState");
+import * as React from 'react';
+import Entity from './Entity';
+import Option from './Option';
+import GameStateMutator from "./state/GameStateMutator";
+import GameState from "./state/GameState";
 import {EventEmitter} from 'events';
 
 export interface DropTargetProps {

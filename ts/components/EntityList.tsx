@@ -1,12 +1,11 @@
 /// <reference path="../../typings/react/react.d.ts"/>
 /// <reference path="../interfaces.d.ts"/>
-'use strict';
 
-import React = require('react');
+import * as React from 'react';
 
 import {EntityListProps} from "../interfaces";
-import Entity = require('../Entity');
-import Option = require('../Option');
+import Entity from '../Entity';
+import Option from '../Option';
 
 class EntityList extends React.Component<EntityListProps, {}> {
 
@@ -49,4 +48,4 @@ class EntityList extends React.Component<EntityListProps, {}> {
 	}
 }
 
-export = EntityList;
+export default EntityList;

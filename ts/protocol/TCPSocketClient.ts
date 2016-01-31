@@ -1,5 +1,3 @@
-'use strict';
-
 import {EventEmitter} from 'events';
 import {Socket} from 'net';
 import {Client} from "../interfaces";
@@ -40,4 +38,4 @@ class TCPSocketClient extends EventEmitter implements Client {
 	}
 }
 
-export = TCPSocketClient;
+export default TCPSocketClient;

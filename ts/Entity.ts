@@ -1,5 +1,4 @@
 /// <reference path='../node_modules/immutable/dist/immutable.d.ts'/>
-'use strict';
 
 import {GameTag} from './enums';
 
@@ -153,4 +152,4 @@ class Entity {
 	}
 }
 
-export = Entity;
+export default Entity;

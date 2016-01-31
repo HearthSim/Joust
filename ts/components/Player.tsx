@@ -1,22 +1,21 @@
 /// <reference path="../../typings/react/react.d.ts"/>
 /// <reference path="../interfaces.d.ts"/>
 import {OptionCallbackProps} from "../interfaces";
-'use strict';
 
-import React = require('react');
+import * as React from 'react';
 
-import Immutable = require('immutable');
-import PlayerEntity = require('../Player');
-import Entity = require('../Entity');
-import Option = require('../Option');
-import EntityList = require('./EntityList');
-import Deck = require('./Deck');
-import Hand = require('./Hand');
-import Hero = require('./Hero');
-import HeroPower = require('./HeroPower');
-import Field = require('./Field');
-import Weapon = require('./Weapon');
-import Secrets = require('./Secrets');
+import * as Immutable from 'immutable';
+import PlayerEntity from '../Player';
+import Entity from '../Entity';
+import Option from '../Option';
+import EntityList from './EntityList';
+import Deck from './Deck';
+import Hand from './Hand';
+import Hero from './Hero';
+import HeroPower from './HeroPower';
+import Field from './Field';
+import Weapon from './Weapon';
+import Secrets from './Secrets';
 
 import {Zone, CardType} from '../enums'
 
@@ -148,4 +147,4 @@ class Player extends React.Component<PlayerProps, {}> {
 	}
 }
 
-export = Player;
+export default Player;

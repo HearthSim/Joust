@@ -2,15 +2,14 @@
 /// <reference path="../../typings/react/react-addons-css-transition-group.d.ts"/>
 /// <reference path="../../typings/react-dnd/react-dnd.d.ts"/>
 import {EntityListProps} from "../interfaces";
-'use strict';
 
-import EntityInPlay = require("./EntityInPlay");
-import React = require('react');
+import EntityInPlay from "./EntityInPlay";
+import * as React from 'react';
 
-import EntityList = require('./EntityList');
-import Entity = require('../Entity');
-import Option = require('../Option');
-import Minion = require('./Minion');
+import EntityList from './EntityList';
+import Entity from '../Entity';
+import Option from '../Option';
+import Minion from './Minion';
 
 import {EntityInPlayProps} from '../interfaces';
 
@@ -45,14 +44,14 @@ class Field extends EntityList {
 	}
 }
 
-export = DropTarget('card',
+export default DropTarget('card',
 	{
 		canDrop: function (props:EntityListProps, monitor) {
 			var item = monitor.getItem();
 			return !item.option.hasTargets();
 		},
 		drop: function (props:EntityListProps, monitor, component) {
-			var item = monitor.getItem() ;
+			var item = monitor.getItem();
 			item.action(item.option);
 		}
 	},

@@ -1,7 +1,6 @@
 /// <reference path="../../typings/react/react.d.ts"/>
-'use strict';
 
-import React = require('react');
+import * as React from 'react';
 var Dimensions = require('react-dimensions');
 
 class InPlayCardArt extends React.Component<any, {}> {
@@ -29,15 +28,15 @@ class InPlayCardArt extends React.Component<any, {}> {
 		// 	portrait = cardArtBaseUrl + this.props.cardId + ".jpg";
 		// }
 
-		return(
+		return (
 			<div className="visuals" style={style}>
 				{taunter}
-				<img className="inplay-portrait" src={portrait} />
-				<img className="inplay-base" src={imgDir + "inplay_minion.png"} />
+				<img className="inplay-portrait" src={portrait}/>
+				<img className="inplay-base" src={imgDir + "inplay_minion.png"}/>
 				{legendary}
 			</div>
-    );
+		);
 	}
 }
 
-export = Dimensions()(InPlayCardArt);
+export default Dimensions()(InPlayCardArt);

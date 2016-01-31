@@ -1,14 +1,12 @@
-'use strict';
-
-import React = require('react');
-import EntityList = require('./EntityList');
+import * as React from 'react';
+import EntityList from './EntityList';
 
 class Deck extends EntityList {
 
 	public render() {
 		var tooltip = null;
 		var classNames = ['deck'];
-		switch(this.props.entities.size) {
+		switch (this.props.entities.size) {
 			case 0:
 				tooltip = 'No cards remaining';
 				classNames.push('fatigue');
@@ -24,4 +22,4 @@ class Deck extends EntityList {
 	}
 }
 
-export = Deck;
+export default Deck;

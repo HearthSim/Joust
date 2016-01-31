@@ -1,5 +1,3 @@
-'use strict';
-
 import {EventEmitter} from 'events';
 import {Client} from '../interfaces';
 
@@ -20,7 +18,7 @@ class WebSocketClient extends EventEmitter implements Client {
 		this.connection.onmessage = function (e) {
 			this.emit('data', new Buffer(e.data));
 		}.bind(this);
-		this.connection.onerror = function(err) {
+		this.connection.onerror = function (err) {
 			this.emit('error', err);
 		}.bind(this);
 		this.connection.onclose = function (err) {
@@ -38,4 +36,4 @@ class WebSocketClient extends EventEmitter implements Client {
 	}
 }
 
-export = WebSocketClient;
+export default WebSocketClient;

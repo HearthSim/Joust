@@ -1,8 +1,6 @@
-'use strict';
-
-import React = require('react');
-import isNode = require('is-node');
-import SelectDeck = require('./SelectDeck');
+import * as React from 'react';
+import isNode from 'is-node';
+import SelectDeck from './SelectDeck';
 
 interface KettleProps extends React.Props<any> {
 	callbackTCPSocket(hostname:string, port:number, hero1:string, deck1:string[], hero2:string, deck2:string[]):void
@@ -159,7 +157,8 @@ class Kettle extends React.Component<KettleProps, KettleState> {
 							WebSocket
 						</label>
 						<label>
-							<input type="checkbox" checked={this.state.websocketSecure} disabled={this.props.connecting || !this.state.websocket}
+							<input type="checkbox" checked={this.state.websocketSecure}
+								   disabled={this.props.connecting || !this.state.websocket}
 								   onChange={this.onChangeSecureWebSocket.bind(this)}/>
 							Secure
 						</label>
@@ -169,10 +168,12 @@ class Kettle extends React.Component<KettleProps, KettleState> {
 					<h3>Options:</h3>
 					<div className="decks">
 						<label>Deck 1:
-							<SelectDeck presets={decks} default={0} disabled={this.props.connecting} onSelect={this.onSelectDeck1.bind(this)}/>
+							<SelectDeck presets={decks} default={0} disabled={this.props.connecting}
+										onSelect={this.onSelectDeck1.bind(this)}/>
 						</label>
 						<label>Deck 2:
-							<SelectDeck presets={decks} default={1} disabled={this.props.connecting} onSelect={this.onSelectDeck2.bind(this)}/>
+							<SelectDeck presets={decks} default={1} disabled={this.props.connecting}
+										onSelect={this.onSelectDeck2.bind(this)}/>
 						</label>
 					</div>
 				</form>
@@ -181,4 +182,4 @@ class Kettle extends React.Component<KettleProps, KettleState> {
 	}
 }
 
-export = Kettle;
+export default Kettle;

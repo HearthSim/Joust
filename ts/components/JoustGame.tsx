@@ -2,23 +2,22 @@
 /// <reference path="../../typings/node/node.d.ts"/>
 /// <reference path="../interfaces.d.ts"/>
 /// <reference path="../../node_modules/immutable/dist/immutable.d.ts"/>
-'use strict';
 
-import React = require('react');
-import TwoPlayerGame = require('./TwoPlayerGame');
+import * as React from 'react';
+import TwoPlayerGame from './TwoPlayerGame';
 
-import Entity = require('../Entity');
-import Player = require('../Player');
+import Entity from '../Entity';
+import Player from '../Player';
 
-import Option = require('../Option');
-import GameState= require('../state/GameState');
-import HSReplayDecoder = require('../protocol/HSReplayDecoder');
-import KettleTranscoder = require('../protocol/KettleTranscoder');
+import Option from '../Option';
+import GameState from '../state/GameState';
+import HSReplayDecoder from '../protocol/HSReplayDecoder';
+import KettleTranscoder from '../protocol/KettleTranscoder';
 
 import {GameStateManager} from "../interfaces";
-import ClearOptionsMutator = require("../state/mutators/ClearOptionsMutator");
+import ClearOptionsMutator from "../state/mutators/ClearOptionsMutator";
 
-import HistoryGameStateManager = require("../state/managers/HistoryGameStateManager");
+import HistoryGameStateManager from "../state/managers/HistoryGameStateManager";
 import {OptionType, CardType} from '../enums'
 
 interface JoustGameProps extends React.Props<any> {
@@ -44,7 +43,7 @@ class JoustGame extends React.Component<JoustGameProps, JoustState> {
 	private start:number;
 
 	public updateState(gameState) {
-		if(!this.props.manager || this.props.manager.isComplete()) {
+		if (!this.props.manager || this.props.manager.isComplete()) {
 			return;
 		}
 		this.setState({gameState: gameState});
@@ -78,7 +77,6 @@ class JoustGame extends React.Component<JoustGameProps, JoustState> {
 		switch (players.count()) {
 			case 0:
 				return <p className="message">Waiting for players&hellip;</p>;
-				break;
 			case 2:
 				return (
 					<TwoPlayerGame entity={game} player1={players.first()}
@@ -89,7 +87,6 @@ class JoustGame extends React.Component<JoustGameProps, JoustState> {
 								   optionCallback={this.props.optionCallback}
 					/>
 				);
-				break;
 			default:
 				return <p className="message">Unsupported player count: {players.size}.</p>;
 		}
@@ -102,4 +99,4 @@ class JoustGame extends React.Component<JoustGameProps, JoustState> {
 
 }
 
-export = JoustGame;
+export default JoustGame;

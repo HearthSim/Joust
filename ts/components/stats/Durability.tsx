@@ -1,7 +1,6 @@
 /// <reference path="../../../typings/react/react.d.ts"/>
-'use strict';
 
-import React = require('react');
+import * as React from 'react';
 
 interface DurabilityProps extends React.Props<any> {
 	durability: number;
@@ -22,4 +21,4 @@ class Durability extends React.Component<DurabilityProps, {}> {
 	}
 }
 
-export = Durability;
+export default Durability;

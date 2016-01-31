@@ -1,18 +1,17 @@
 /// <reference path="../../typings/react/react.d.ts"/>
 /// <reference path="../../typings/react-dnd/react-dnd.d.ts"/>
 /// <reference path="../interfaces.d.ts"/>
-'use strict';
 
-import React = require('react');
+import * as React from 'react';
 
 import {EntityProps, OptionProps} from "../interfaces";
-import HearthstoneJSON = require("../metadata/HearthstoneJSON");
+import HearthstoneJSON from "../metadata/HearthstoneJSON";
 
-import Attack = require('./stats/Attack');
-import Health = require('./stats/Health');
-import Cost = require('./stats/Cost');
+import Attack from './stats/Attack';
+import Health from './stats/Health';
+import Cost from './stats/Cost';
 
-import InHandCardArt = require('./InHandCardArt');
+import InHandCardArt from './InHandCardArt';
 
 import {DragSource} from 'react-dnd';
 
@@ -38,7 +37,9 @@ class Card extends React.Component<CardProps, {}> {
 	public render() {
 		var entity = this.props.entity;
 		if (entity.getCardId() === null) {
-			return <div className="card"><InHandCardArt cardHidden={true}/></div>;
+			return <div className="card">
+				<InHandCardArt cardHidden={true}/>
+			</div>;
 		}
 
 		var classNames = ['card', 'revealed'];
@@ -64,7 +65,7 @@ class Card extends React.Component<CardProps, {}> {
 		}
 
 		var stats = null;
-		var textStyle = { color: "black" };
+		var textStyle = {color: "black"};
 		if (entity.getCardType() === 4) {
 			var attack = <Attack attack={entity.getAtk()} default={defaultAttack}/>;
 			var health = <Health health={entity.getHealth()} damage={entity.getDamage()} default={defaultHealth}/>;
@@ -74,13 +75,14 @@ class Card extends React.Component<CardProps, {}> {
 			var attack = <Attack attack={entity.getAtk()} default={defaultAttack}/>;
 			var durability = <div className="durability">{entity.getDurability()}</div>;
 			stats = <div className="stats">{attack}{durability}</div>
-			textStyle = { color: "white" };
+			textStyle = {color: "white"};
 		}
 
 		var connectDragSource = this.props.connectDragSource;
 		var jsx = (
 			<div className={classNames.join(' ')}>
-				<InHandCardArt cardId={entity.getCardId()} cardType={entity.getCardType()} legendary={entity.isLegendary()}/>
+				<InHandCardArt cardId={entity.getCardId()} cardType={entity.getCardType()}
+							   legendary={entity.isLegendary()}/>
 				<Cost cost={entity.getCost()} default={defaultCost}/>
 				<h1>{title}</h1>
 				<div className="description">
@@ -94,15 +96,15 @@ class Card extends React.Component<CardProps, {}> {
 	}
 }
 
-export = DragSource('card', {
-		beginDrag: function(props:CardProps) {
+export default DragSource('card', {
+		beginDrag: function (props:CardProps) {
 			return {
 				option: props.option,
 				action: props.optionCallback
 			};
 		}
 	},
-	function(connect, monitor) {
+	function (connect, monitor) {
 		return {
 			connectDragSource: connect.dragSource(),
 			isDragging: monitor.isDragging()

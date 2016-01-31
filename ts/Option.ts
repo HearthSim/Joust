@@ -1,5 +1,3 @@
-'use strict';
-
 class Option {
 	protected index:number;
 	protected type:number;
@@ -30,9 +28,9 @@ class Option {
 	}
 
 	public isTarget(target:number):boolean {
-		return this.targets.filter(function(proposedTarget) {
-			return proposedTarget === target;
-		}).length == 1;
+		return this.targets.filter(function (proposedTarget) {
+				return proposedTarget === target;
+			}).length == 1;
 	}
 
 	public getTargets():number[] {
@@ -40,4 +38,4 @@ class Option {
 	}
 }
 
-export = Option;
+export default Option;

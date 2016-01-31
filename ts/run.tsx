@@ -1,10 +1,9 @@
 /// <reference path='global.d.ts'/>
 /// <reference path='../typings/react/react-dom.d.ts'/>
-'use strict';
 
-import Application = require('./components/Application');
-import React = require('react');
-import ReactDOM = require('react-dom');
+import Application from './components/Application';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 
 var renderTo = function (id:string) {
 	var joust = ReactDOM.render(

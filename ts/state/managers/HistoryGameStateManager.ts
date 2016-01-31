@@ -1,14 +1,13 @@
 /// <reference path="../../../node_modules/immutable/dist/immutable.d.ts"/>
 /// <reference path="../GameStateMutator.d.ts"/>
-'use strict';
 
-import Immutable = require('immutable');
+import * as Immutable from 'immutable';
 import {GameStateManager} from "../../interfaces";
-import GameState = require('../GameState');
-import Entity = require('../../Entity');
-import Option = require('../../Option');
-import GameStateMutator = require('../GameStateMutator');
-import SingleGameStateManager = require("./SingleGameStateManager");
+import GameState from '../GameState';
+import Entity from'../../Entity';
+import Option from '../../Option';
+import GameStateMutator from '../GameStateMutator';
+import SingleGameStateManager from "./SingleGameStateManager";
 
 class HistoryGameStateManager extends SingleGameStateManager {
 
@@ -34,4 +33,4 @@ class HistoryGameStateManager extends SingleGameStateManager {
 	}
 }
 
-export = HistoryGameStateManager;
+export default HistoryGameStateManager;

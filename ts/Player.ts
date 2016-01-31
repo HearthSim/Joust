@@ -1,7 +1,6 @@
 /// <reference path='../node_modules/immutable/dist/immutable.d.ts'/>
-'use strict';
 
-import Entity = require('./Entity');
+import Entity from './Entity';
 
 class Player extends Entity {
 	protected name:string;
@@ -26,4 +25,4 @@ class Player extends Entity {
 	}
 }
 
-export = Player;
+export default Player;

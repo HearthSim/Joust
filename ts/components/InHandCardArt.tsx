@@ -1,7 +1,6 @@
 /// <reference path="../../typings/react/react.d.ts"/>
-'use strict';
 
-import React = require('react');
+import * as React from 'react';
 var Dimensions = require('react-dimensions');
 
 class InHandCardArt extends React.Component<any, {}> {
@@ -41,14 +40,14 @@ class InHandCardArt extends React.Component<any, {}> {
 			legendary = <img className="inhand-legendary" src={imgDir + "inhand_minion_legendary.png"}/>;
 		}
 
-		return(
+		return (
 			<div className="visuals" style={style}>
-				<img className={portraitClass} src={portrait} />
-				<img className={baseClass} src={base} />
+				<img className={portraitClass} src={portrait}/>
+				<img className={baseClass} src={base}/>
 				{legendary}
 			</div>
-    );
+		);
 	}
 }
 
-export = Dimensions()(InHandCardArt);
+export default Dimensions()(InHandCardArt);

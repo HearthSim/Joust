@@ -1,11 +1,10 @@
 /// <reference path="../../node_modules/immutable/dist/immutable.d.ts"/>
 /// <reference path="./GameStateMutator.d.ts"/>
-'use strict';
 
-import Entity = require('../Entity');
-import Option = require('../Option');
-import GameStateMutator = require('./GameStateMutator');
-import Immutable = require('immutable');
+import Entity from '../Entity';
+import Option from '../Option';
+import GameStateMutator from './GameStateMutator';
+import * as Immutable from 'immutable';
 
 class GameState {
 
@@ -52,4 +51,4 @@ class GameState {
 	}
 }
 
-export = GameState;
+export default GameState;

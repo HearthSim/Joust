@@ -1,7 +1,6 @@
 /// <reference path="../../../typings/react/react.d.ts"/>
-'use strict';
 
-import React = require('react');
+import * as React from 'react';
 
 interface HealthProps extends React.Props<any> {
 	health: number;
@@ -22,4 +21,4 @@ class Health extends React.Component<HealthProps, {}> {
 	}
 }
 
-export = Health;
+export default Health;

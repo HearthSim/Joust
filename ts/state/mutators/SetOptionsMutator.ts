@@ -1,10 +1,8 @@
-'use strict';
-
-import Immutable = require('immutable');
-import Entity = require("../../Entity");
-import GameState = require('../GameState');
-import GameStateMutator = require('../GameStateMutator');
-import Option = require('../../Option');
+import * as Immutable from 'immutable';
+import Entity from "../../Entity";
+import GameState from '../GameState';
+import GameStateMutator from '../GameStateMutator';
+import Option from '../../Option';
 
 class SetOptionsMutator implements GameStateMutator {
 	constructor(public options:Immutable.Map<number, Option>) {
@@ -37,4 +35,4 @@ class SetOptionsMutator implements GameStateMutator {
 	}
 }
 
-export = SetOptionsMutator;
+export default SetOptionsMutator;

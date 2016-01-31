@@ -1,10 +1,9 @@
 /// <reference path="../GameStateMutator.d.ts"/>
-'use strict';
 
 import {EventEmitter} from 'events';
 import {GameStateManager} from "../../interfaces";
-import GameState = require("../GameState");
-import GameStateMutator = require("../GameStateMutator");
+import GameState from "../GameState";
+import GameStateMutator from "../GameStateMutator";
 
 class SingleGameStateManager extends EventEmitter implements GameStateManager {
 	protected complete:boolean = false;
@@ -14,7 +13,7 @@ class SingleGameStateManager extends EventEmitter implements GameStateManager {
 	}
 
 	public setGameState(gameState:GameState):void {
-		if(this.complete) {
+		if (this.complete) {
 			return;
 		}
 		var previous = this.gameState;
@@ -37,7 +36,7 @@ class SingleGameStateManager extends EventEmitter implements GameStateManager {
 
 	public setComplete(complete:boolean):void {
 		this.complete = complete;
-		if(complete) {
+		if (complete) {
 			this.emit('end');
 		}
 	}
@@ -47,4 +46,4 @@ class SingleGameStateManager extends EventEmitter implements GameStateManager {
 	}
 }
 
-export = SingleGameStateManager;
+export default SingleGameStateManager;

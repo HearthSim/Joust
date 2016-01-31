@@ -1,7 +1,6 @@
 /// <reference path="../../typings/react/react.d.ts"/>
-'use strict';
 
-import React = require('react');
+import * as React from 'react';
 import {EntityProps} from "../interfaces";
 
 interface SecretProps extends EntityProps, React.Props<any> {
@@ -18,7 +17,7 @@ class Secret extends React.Component<SecretProps, {}> {
 		if (secretClass) {
 			classNames.push(secretClass);
 		}
-		if(entity.isExhausted()) {
+		if (entity.isExhausted()) {
 			classNames.push('exhausted');
 		}
 		return (
@@ -27,4 +26,4 @@ class Secret extends React.Component<SecretProps, {}> {
 	}
 }
 
-export = Secret;
+export default Secret;

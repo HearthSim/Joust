@@ -1,15 +1,14 @@
 /// <reference path="../../typings/node/node.d.ts"/>
 import Iterable = Immutable.Iterable;
-'use strict';
 
-import Immutable = require('immutable');
-import Player = require('../Player');
-import Entity = require('../Entity');
-import Option = require('../Option');
-import AddEntityMutator = require('../state/mutators/AddEntityMutator');
-import TagChangeMutator = require('../state/mutators/TagChangeMutator');
-import ReplaceEntityMutator = require('../state/mutators/ReplaceEntityMutator');
-import SetOptionsMutator = require('../state/mutators/SetOptionsMutator');
+import * as Immutable from 'immutable';
+import Player from '../Player';
+import Entity from '../Entity';
+import Option from '../Option';
+import AddEntityMutator from '../state/mutators/AddEntityMutator';
+import TagChangeMutator from '../state/mutators/TagChangeMutator';
+import ReplaceEntityMutator from '../state/mutators/ReplaceEntityMutator';
+import SetOptionsMutator from '../state/mutators/SetOptionsMutator';
 import {GameStateManager} from "../interfaces";
 import {Socket} from 'net';
 import {Client} from "../interfaces";
@@ -188,4 +187,4 @@ class KettleTranscoder {
 	}
 }
 
-export = KettleTranscoder;
+export default KettleTranscoder;

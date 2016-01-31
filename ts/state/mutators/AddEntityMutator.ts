@@ -1,9 +1,7 @@
-'use strict';
-
-import Immutable = require('immutable');
-import GameState = require('../GameState');
-import GameStateMutator = require('../GameStateMutator');
-import Entity = require('../../Entity');
+import * as Immutable from 'immutable';
+import GameState from '../GameState';
+import GameStateMutator from '../GameStateMutator';
+import Entity from '../../Entity';
 
 class AddEntityMutator implements GameStateMutator {
 	constructor(public entity:Entity) {
@@ -38,4 +36,4 @@ class AddEntityMutator implements GameStateMutator {
 	}
 }
 
-export = AddEntityMutator;
+export default AddEntityMutator;
