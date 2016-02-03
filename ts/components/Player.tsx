@@ -64,7 +64,7 @@ class Player extends React.Component<PlayerProps, {}> {
 		var name = this.props.player.getName() ? <div className="name">{this.props.player.getName()}</div> : null;
 
 		var crystals = [];
-		for (var i = 0; i < this.props.player.getResources(); i++) {
+		for (let i = 0; i < this.props.player.getResources(); i++) {
 			var crystalClassNames = ['crystal'];
 			if (i < (this.props.player.getResources() - this.props.player.getResourcesUsed())) {
 				crystalClassNames.push('full');

@@ -81,7 +81,7 @@ class Kettle extends React.Component<KettleProps, KettleState> {
 	public render() {
 		var repeat = function (array:any[], times:number):any[] {
 			var result = array;
-			for (var i = 0; i < times; i++) {
+			for (let i = 0; i < times; i++) {
 				result = result.concat(array)
 			}
 			return result;

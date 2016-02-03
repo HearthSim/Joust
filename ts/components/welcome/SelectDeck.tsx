@@ -4,7 +4,7 @@ interface SelectDeckProps extends React.Props<any> {
 	onSelect(hero:string, deck:string[]):void;
 	default:number;
 	disabled:boolean;
-	presets;
+	presets:any;
 }
 
 interface SelectDeckState {
@@ -27,7 +27,7 @@ class SelectDeck extends React.Component<SelectDeckProps, SelectDeckState> {
 
 	public render() {
 		var options = [];
-		for (var i in this.props.presets) {
+		for (let i in this.props.presets) {
 			var deck = this.props.presets[i];
 			options.push(<option key={i} value={i}>{deck.name}</option>);
 		}

@@ -113,7 +113,7 @@ class KettleTranscoder {
 
 	public onData(buffer:Buffer) {
 		this.buffer = this.buffer.withMutations(function (list) {
-			for (var byte of buffer as any) { // this will call buffer.values() and iterate
+			for (let byte of buffer as any) { // this will call buffer.values() and iterate
 				list = list.push(byte);
 			}
 		});
@@ -128,7 +128,7 @@ class KettleTranscoder {
 			// parse length
 			var lengthBytes = [];
 			var temporary = this.buffer;
-			for (var i = 0; i < 4; i++) {
+			for (let i = 0; i < 4; i++) {
 				lengthBytes[i] = temporary.first();
 				temporary = temporary.shift();
 			}
