@@ -104,7 +104,7 @@ abstract class EntityInPlay<P extends EntityInPlayProps, S> extends React.Compon
 				},
 				drop: function (props:EntityInPlayProps, monitor, component) {
 					var item = monitor.getItem();
-					item.action(item.option, props.entity.getId());
+					item.action(item.option, props.entity.getId(), 0);
 				}
 			},
 			function (connect, monitor) {

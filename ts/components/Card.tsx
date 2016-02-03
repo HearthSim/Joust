@@ -22,18 +22,6 @@ interface CardProps extends EntityProps, OptionProps, React.Props<any> {
 
 class Card extends React.Component<CardProps, {}> {
 
-	protected play() {
-		if (!this.props.option || !this.props.optionCallback) {
-			return;
-		}
-		var target = null;
-		if (this.props.option.hasTargets()) {
-			console.warn('Valid target(s): ' + this.props.option.getTargets().join(', '));
-			target = this.props.option.getTargets()[0];
-		}
-		this.props.optionCallback(this.props.option, target);
-	}
-
 	public render() {
 		var entity = this.props.entity;
 		if (entity.getCardId() === null) {

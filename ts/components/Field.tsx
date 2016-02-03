@@ -52,7 +52,7 @@ export default DropTarget('card',
 		},
 		drop: function (props:EntityListProps, monitor, component) {
 			var item = monitor.getItem();
-			item.action(item.option);
+			item.action(item.option, undefined, 0);
 		}
 	},
 	function (connect, monitor) {

@@ -25,7 +25,7 @@ import Option from "../Option";
 interface ApplicationState {
 	manager?:GameStateManager;
 	connecting?:boolean;
-	optionCallback?(option:Option, target?:number):void;
+	optionCallback?(option:Option, target?:number, position?:number):void;
 }
 
 class Application extends React.Component<{}, ApplicationState> {
@@ -58,8 +58,8 @@ class Application extends React.Component<{}, ApplicationState> {
 		kettle.connect(client);
 		this.setState({
 			connecting: true,
-			optionCallback: function (option:Option, target?:number) {
-				kettle.sendOption(option, target);
+			optionCallback: function (option:Option, target?:number, position?:number) {
+				kettle.sendOption(option, target, position);
 				manager.apply(new ClearOptionsMutator());
 			}
 		});

@@ -12,6 +12,7 @@ import SetOptionsMutator from '../state/mutators/SetOptionsMutator';
 import {GameStateManager} from "../interfaces";
 import {Socket} from 'net';
 import {Client} from "../interfaces";
+import {ChoiceType} from "../enums";
 
 class KettleTranscoder {
 	private client:Client;
@@ -89,6 +90,17 @@ class KettleTranscoder {
 				});
 				mutator = new SetOptionsMutator(options);
 				break;
+			case 'EntityChoices':
+				var entities = packet.Entities;
+				switch(packet.Type) {
+					case ChoiceType.GENERAL:
+						console.log('Choose between the following entities: ' + entities);
+						break;
+					default:
+						console.error("Unknown choice type "+packet.Type);
+						break;
+				}
+				break;
 			default:
 				console.log('Unknown packet type ' + type);
 				break;
@@ -154,7 +166,7 @@ class KettleTranscoder {
 		}]);
 	}
 
-	public sendOption(option:Option, target?:number) {
+	public sendOption(option:Option, target?:number, position?:number):void {
 		var sendOption = null;
 		target = target || null;
 		switch (option.getType()) {
@@ -166,12 +178,26 @@ class KettleTranscoder {
 					Index: option.getIndex(),
 					Target: target
 				};
+				if(typeof position === "number") {
+					sendOption.Position = position;
+				}
+				console.log(sendOption);
 				break;
 		}
 		this.sendPacket({
 			Type: 'SendOption',
 			SendOption: sendOption
 		});
+	}
+
+	public chooseEntitites(entities:Entity[]):void {
+		var ids = entities.map(function(entity:Entity) {
+			return entity.getId();
+		});
+		this.sendPacket({
+			Type: 'ChooseEntities',
+			ChooseEntities: ids
+		})
 	}
 
 	private sendPacket(packet) {
