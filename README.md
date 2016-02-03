@@ -2,8 +2,8 @@
 
 ## Requirements
 
-- Node.js ~v5.3.0
-- `npm install -g electron-prebuilt tsd gulp webpack`
+- Node.js ~v5.6.0
+- `npm install -g electron-prebuilt typings gulp webpack`
 
 
 ## Install
@@ -17,7 +17,7 @@ npm install
 Install additional TypeScript typings:
 
 ```
-tsd install
+typings install
 ```
 
 Compile and package:

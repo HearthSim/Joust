@@ -1,11 +1,13 @@
-import * as Immutable from 'immutable';
+import * as Immutable from "immutable";
 import Entity from "../../Entity";
 import GameState from '../GameState';
 import GameStateMutator from '../GameStateMutator';
 import Option from '../../Option';
+import BaseMutator from "./BaseMutator";
 
-class SetOptionsMutator implements GameStateMutator {
+class SetOptionsMutator extends BaseMutator implements GameStateMutator {
 	constructor(public options:Immutable.Map<number, Option>) {
+		super();
 	}
 
 	public applyTo(state:GameState):GameState {
@@ -17,7 +19,7 @@ class SetOptionsMutator implements GameStateMutator {
 
 		var optionTree = this.buildOptionTree(this.options, state.getEntities());
 
-		return new GameState(state.getEntities(), state.getEntityTree(), this.options, optionTree)
+		return new GameState(state.getEntities(), state.getEntityTree(), this.options, optionTree, this.time || state.getTime())
 	}
 
 	protected buildOptionTree(options:Immutable.Map<number, Option>, entities:Immutable.Map<number, Entity>):Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Option>>> {

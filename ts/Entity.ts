@@ -1,5 +1,3 @@
-/// <reference path='../node_modules/immutable/dist/immutable.d.ts'/>
-
 import {GameTag} from './enums';
 
 class Entity {
@@ -94,15 +92,15 @@ class Entity {
 		return this.getTag(GameTag.POWERED_UP) > 0;
 	}
 
-	public getTag(key:number|string):number {
+	public getTag(key:number):number {
 		return this.tags ? (+this.tags.get('' + key) || 0) : 0;
 	}
 
-	public setTag(key:string, value:number):Entity {
-		key = '' + key;
+	public setTag(key:number, value:number):Entity {
+		var strkey = '' + key;
 		value = +value;
 		// verify parameters
-		if (key === null) {
+		if (strkey === null) {
 			console.warn('Cannot set invalid tag on entity #' + this.getId());
 			return this;
 		}
@@ -116,14 +114,14 @@ class Entity {
 		if (value === 0) {
 			tags = tags.withMutations(function (map) {
 				// set to 0 to ensure it is really deleted
-				map.set(key, 0).delete(key);
+				map.set(strkey, 0).delete(strkey);
 			});
-			if (tags.has(key)) {
-				console.error('Entity could not remove tag ' + key + ' (it is still ' + tags.get(key) + ')');
+			if (tags.has(strkey)) {
+				console.error('Entity could not remove tag ' + strkey + ' (it is still ' + tags.get(strkey) + ')');
 			}
 		}
 		else {
-			tags = tags.set(key, value);
+			tags = tags.set(strkey, value);
 		}
 
 		// verify tags have actually changed

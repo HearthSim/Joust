@@ -6,6 +6,7 @@ interface ApplyTo {
 
 interface GameStateMutator {
 	applyTo: ApplyTo;
+	time: number;
 }
 
 export default GameStateMutator;

@@ -1,40 +1,80 @@
-/// <reference path="../../typings/sax/sax.d.ts"/>
+import * as Stream from "stream";
+import * as Sax from "sax";
+import * as Immutable from "immutable";
+import SetOptionsMutator from "../state/mutators/SetOptionsMutator";
+import ClearOptionsMutator from "../state/mutators/ClearOptionsMutator";
+import TagChangeMutator from "../state/mutators/TagChangeMutator";
+import ReplaceEntityMutator from "../state/mutators/ReplaceEntityMutator";
+import AddEntityMutator from "../state/mutators/AddEntityMutator";
+import Option from "../Option";
+import Entity from "../Entity";
+import Player from "../Player";
+import {GameTag} from "../enums";
+import ShowEntityMutator from "../state/mutators/ShowEntityMutator";
 
-import * as Immutable from 'immutable';
+class HSReplayDecoder extends Stream.Transform {
 
-import * as Sax from 'sax';
-import Player from '../Player';
-import Entity from '../Entity';
-import AddEntityMutator from '../state/mutators/AddEntityMutator';
-import TagChangeMutator from '../state/mutators/TagChangeMutator';
-import ReplaceEntityMutator from '../state/mutators/ReplaceEntityMutator';
-import SetOptionsMutator from '../state/mutators/SetOptionsMutator';
-import ClearOptionsMutator from '../state/mutators/ClearOptionsMutator';
-import Option from '../Option';
-import {GameStateManager} from "../interfaces";
-import {Readable} from 'stream';
-import {createReadStream} from 'fs';
+	private sax:Sax.SAXStream;
+	private targetGame:number;
+	private currentGame:number;
+	private nodeStack;
+	private timeOffset:number;
+	private cardIds:Immutable.Map<number, String>;
 
-class HSReplayDecoder {
-	private stream:Readable;
-	private nodeStack = [];
-	private timeOffset:number = null;
-	private complete:number = 0;
+	constructor(opts?:Stream.TransformOptions) {
+		opts = opts || {};
+		opts.objectMode = true;
+		super(opts);
 
-	constructor(public manager:GameStateManager) {
+		this.currentGame = 0;
+		this.targetGame = 0;
+		this.nodeStack = [];
+		this.timeOffset = null;
+		this.cardIds = Immutable.Map<number, String>();
+
+		this.sax = Sax.createStream(true, {});
+		this.sax.on('opentag', this.onOpenTag.bind(this));
+		this.sax.on('closetag', this.onCloseTag.bind(this));
 	}
 
-	public parseFromStream(stream:Readable):void {
-		this.stream = stream;
-		var sax = Sax.createStream(true, {});
-		sax.on('opentag', this.onOpenTag.bind(this));
-		sax.on('closetag', this.onCloseTag.bind(this));
-		this.stream.pipe(sax);
+	_write(chunk:any, encoding:string, callback:Function):void {
+		this.sax.write(chunk, encoding, callback);
 	}
 
-	public parseFromFile(file:string):void {
-		this.parseFromStream(createReadStream(file));
+	_read(size:number):void {
+		return;
 	}
+
+	/*protected revealHiddenInformation(stream:Stream.Readable, cb:() => void) {
+	 var sax = Sax.createStream(true, {});
+	 var game = 0;
+	 sax.on('opentag', function (node) {
+	 if (game > 1) {
+	 return;
+	 }
+	 var id = null;
+	 switch (node.name) {
+	 case 'Game':
+	 game++;
+	 break;
+	 case 'FullEntity':
+	 id = +node.attributes.id;
+	 case 'ShowEntity':
+	 if (!id) {
+	 id = +node.attributes.entity;
+	 }
+	 if (node.attributes.cardID) {
+	 this.cardIds = this.cardIds.set(id, node.attributes.cardID);
+	 }
+	 break;
+	 }
+	 }.bind(this));
+	 sax.on('end', function () {
+	 console.debug("Revealing " + this.cardIds.count() + " entities in advance");
+	 cb();
+	 }.bind(this));
+	 stream.pipe(sax);
+	 }*/
 
 	protected parseTimestamp(timestamp:string):number {
 		if (timestamp.match(/^\d{2}:\d{2}:\d{2}/)) {
@@ -44,20 +84,12 @@ class HSReplayDecoder {
 		return new Date(timestamp).getTime();
 	}
 
-	private gameDepth:number = null;
-
 	private onOpenTag(node) {
-		if (this.complete === 2) {
+		if (this.currentGame !== this.targetGame && node.name !== 'Game' && node.name !== 'HSReplay') {
 			return;
 		}
 		switch (node.name) {
 			case 'Game':
-				if (this.complete != 0) {
-					console.warn('Replay contains more than one game, ignoring');
-					this.complete = 2;
-					return;
-				}
-				this.gameDepth = +this.nodeStack.length + 1;
 				break;
 			case 'GameEntity':
 			case 'Player':
@@ -85,53 +117,59 @@ class HSReplayDecoder {
 				break;
 		}
 
+		/*var timestamp = node.attributes.ts && this.parseTimestamp(node.attributes.ts) || null;
+		 if (timestamp !== null) {
+		 if (this.timeOffset === null) {
+		 this.timeOffset = timestamp;
+		 }
+		 timestamp -= this.timeOffset;
+		 }*/
+
 		this.nodeStack.push(node);
-
-		var timestamp = node.attributes.ts && this.parseTimestamp(node.attributes.ts) || null;
-		if (timestamp !== null) {
-			if (this.timeOffset === null) {
-				this.timeOffset = timestamp;
-			}
-			timestamp -= this.timeOffset;
-		}
-
-		if (timestamp/* && (this.nodeStack.length === this.gameDepth + 1)*/) {
-			this.manager.mark(timestamp);
-		}
 	}
 
 	private onCloseTag(name) {
-		if (this.complete === 2) {
+		//console.debug(Array(this.nodeStack.length).join('\t') + '</' + name + '>');
+
+		if (this.currentGame !== this.targetGame && name !== 'Game') {
 			return;
 		}
 
-		//console.debug(Array(this.nodeStack.length).join('\t') + '</' + name + '>');
 		var node = this.nodeStack.pop();
 
 		// sanity check for our stack
 		if (node.name !== name) {
-			console.error('Closing node did not match the opening node from stack');
+			console.error('Closing node did not match the opening node from stack (Stack: ' + node.name + ', Node: ' + name + ')');
 			return;
 		}
 
 		var mutator = null;
 		switch (name) {
 			case 'Game':
-				// we're done here
-				this.manager.setComplete(true);
-				this.complete = 1;
+				if (++this.currentGame > this.targetGame) {
+					// we're done here
+					return;
+				}
 				break;
 			case 'GameEntity':
 			case 'FullEntity':
-				var entity = new Entity(
-					+node.attributes.id,
+			{
+				let id = +node.attributes.id;
+				let cardId = node.attributes.cardID;
+				if (!cardId && this.cardIds.has(id)) {
+					cardId = this.cardIds.get(id);
+					console.debug('Revealing entity', id, 'as', cardId);
+				}
+				let entity = new Entity(
+					id,
 					node.attributes.tags,
-					node.attributes.cardID || null
+					cardId || null
 				);
 				mutator = new AddEntityMutator(entity);
 				break;
+			}
 			case 'Player':
-				var player = new Player(
+				let player = new Player(
 					+node.attributes.id,
 					node.attributes.tags,
 					+node.attributes.playerID,
@@ -140,58 +178,71 @@ class HSReplayDecoder {
 				mutator = new AddEntityMutator(player);
 				break;
 			case 'ShowEntity':
-				var state = this.manager.getGameState();
-				var entity = state.getEntity(+node.attributes.entity);
-				if (!entity) {
-					console.error('Cannot show non-existent entity #' + node.attributes.entity);
-					return;
-				}
-				entity = entity.setCardId(node.attributes.cardID || null);
-				entity = entity.setTags(node.attributes.tags);
-				mutator = new ReplaceEntityMutator(entity);
+			{
+				mutator = new ShowEntityMutator(
+					+node.attributes.entity,
+					node.attributes.cardID || null,
+					node.attributes.tags
+				);
 				break;
+			}
 			case 'HideEntity':
 				mutator = new TagChangeMutator(
 					+node.attributes.entity,
-					'49', // zone
+					GameTag.ZONE, // zone
 					+node.attributes.zone
 				);
 				break;
 			case 'Tag':
-				var parent = this.nodeStack.pop();
+			{
+				let parent = this.nodeStack.pop();
 				parent.attributes.tags = parent.attributes.tags.set('' + node.attributes.tag, +node.attributes.value);
 				this.nodeStack.push(parent);
 				break;
+			}
 			case 'TagChange':
 				mutator = new TagChangeMutator(
 					+node.attributes.entity,
-					'' + node.attributes.tag,
+					+node.attributes.tag,
 					+node.attributes.value
 				);
 				break;
 			case 'Option':
-				var parent = this.nodeStack.pop();
-				var option = new Option(
+			{
+				let parent = this.nodeStack.pop();
+				let option = new Option(
 					+node.attributes.index,
 					+node.attributes.type,
 					+node.attributes.entity || null,
 					[] // todo: parse targets
 				);
-				parent.attributes.options = parent.attributes.options.set('' + node.attributes.index, option);
+				parent.attributes.options = parent.attributes.options.set(+node.attributes.index, option);
 				this.nodeStack.push(parent);
 				break;
+			}
 			case 'Options':
 				mutator = new SetOptionsMutator(node.attributes.options);
 				break;
 			case 'SendOption':
 				mutator = new ClearOptionsMutator();
 				break;
+			default:
+				//console.warn('Unknown HSReplay tag "' + node.name + '"');
+				break;
 		}
 
 		if (mutator !== null) {
-			this.manager.apply(mutator);
+			// todo: set timestamp in mutator
+			if (node.attributes.ts) {
+				var timestamp = this.parseTimestamp(node.attributes.ts);
+				if (timestamp) {
+					mutator.time = timestamp;
+				}
+			}
+			this.push(mutator);
 		}
 	}
+
 }
 
 export default HSReplayDecoder;

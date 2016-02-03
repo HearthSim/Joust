@@ -1,77 +1,99 @@
-/// <reference path='../../node_modules/immutable/dist/immutable.d.ts'/>
+import * as Immutable from "immutable";
+import * as https from "https";
+import * as URL from "url";
+import {EventEmitter} from "events";
+import {CardType} from "../enums";
+import {CardData} from "../interfaces";
 
-import * as Immutable from 'immutable';
-import * as https from 'https';
-import * as URL from 'url';
+/**
+ * Convenience class for fetching card meta data from HearthstoneJSON.com
+ */
+class HearthstoneJSON extends EventEmitter {
 
-class HearthstoneJSON {
-	protected static cards:Immutable.Map<string, any>;
+	protected url:string;
 
-	public static has(id:string) {
-		return HearthstoneJSON.cards && HearthstoneJSON.cards.has(id);
+	constructor(url:string) {
+		super();
+		this.url = url;
 	}
 
-	public static get(id:string) {
-		return HearthstoneJSON.cards.get(id);
+	/**
+	 * Attempts to load the card data, first from localStorage, then from the url.
+	 */
+	public load():void {
+		if (!this.loadFromLocalStorage()) {
+			this.loadFromUrl(this.url);
+		}
 	}
 
-	public static fetch() {
+	protected loadFromLocalStorage():boolean {
 		if (typeof(Storage) !== "undefined") {
-			if (typeof localStorage['rawCards'] === 'string') {
-				var result = JSON.parse(localStorage['rawCards']);
-				if (typeof result === 'object') {
-					console.debug('Using card data from local storage');
-					HearthstoneJSON.cards = HearthstoneJSON.parse(result);
-					return;
+			if (typeof localStorage["rawCards"] === "string") {
+				var result = JSON.parse(localStorage["rawCards"]);
+				if (typeof result === "object") {
+					console.debug("Loaded card data from local storage (" + result.length + " cards)");
+					this.parse(result);
+					return true;
 				}
 			}
-			if (typeof localStorage['rawCards'] !== 'undefined') {
-				console.warn('Removing invalid card data in local storage');
-				localStorage.removeItem('rawCards');
+			if (typeof localStorage["rawCards"] !== "undefined") {
+				console.warn("Removing invalid card data in local storage");
+				localStorage.removeItem("rawCards");
 			}
 		}
+		return false;
+	}
 
-		var url = URL.parse('https://api.hearthstonejson.com/v1/latest/enUS/cards.json');
-		https.get({host: url.host, port: +url.port, path: url.path, protocol: url.protocol}, function (res) {
-			if (res.statusCode != 200) {
-				console.error('Fetching card data failed with status code ' + res.statusCode);
-				return;
+	protected loadFromUrl(url:string):void {
+		console.debug("Loading card data from " + url);
+		var parsed = URL.parse(url);
+		https.get({
+			host: parsed.host,
+			port: +parsed.port,
+			path: parsed.path,
+			protocol: parsed.protocol
+		}, function (response) {
+			if (response.statusCode != 200) {
+				console.error("Fetching card data failed with status code " + response.statusCode);
+				return false;
 			}
 
-			var json = '';
-			res.on('data', function (data) {
+			var json = "";
+			response.on("data", function (data) {
 				json += data;
 			});
 
-			res.on('end', function () {
-				console.debug('Card definitions received from HearthstoneJSON');
+			response.on("end", function () {
 				var data = JSON.parse(json);
-				if (typeof data === 'object') {
-					var cards = HearthstoneJSON.parse(data);
-					HearthstoneJSON.cards = cards;
-					console.debug('Card definitions parsed');
+				console.debug("Received card data (" + data.length + " cards)");
+				if (typeof data === "object") {
+					var cards = this.parse(data);
 
 					if (typeof(Storage) !== "undefined") {
-						localStorage.setItem('rawCards', json);
-						console.debug('Saved card definitions to local storage');
+						localStorage.setItem("rawCards", json);
+						console.debug("Card data saved to local storage");
 					}
+
+					return true;
 				}
 				else {
-					console.debug('Could not parse card definitions');
+					console.debug("Could not parse card data");
 				}
-			});
-		});
+			}.bind(this));
+		}.bind(this));
 	}
 
-	private static parse(raw) {
-		var cards = Immutable.Map<string, any>();
-		var results = raw;
+	protected parse(raw):Immutable.Map<string, CardData> {
+		var cards = Immutable.Map<string, CardData>();
 
 		cards = cards.withMutations(function (map) {
-			results.forEach(function (card) {
+			raw.forEach(function (card:CardData) {
 				map = map.set(card.id, card);
 			});
 		});
+
+		this.emit("cards", cards);
+
 		return cards;
 	}
 }

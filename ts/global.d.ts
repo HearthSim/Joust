@@ -1,7 +1,17 @@
 declare module "filereader-stream" {
-	function internal(string?:string):void;
+	function internal(file?:string, options?:any):any;
 
 	export default internal;
+}
+
+declare module "websocket-stream" {
+	import * as Stream from "stream";
+
+	class WebSocketStream extends Stream.Duplex {
+		constructor(target, protocols?, options?);
+	}
+
+	export default WebSocketStream;
 }
 
 declare module "react-dnd-html5-backend" {

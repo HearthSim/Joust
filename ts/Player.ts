@@ -1,5 +1,3 @@
-/// <reference path='../node_modules/immutable/dist/immutable.d.ts'/>
-
 import Entity from './Entity';
 
 class Player extends Entity {
