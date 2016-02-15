@@ -29,7 +29,7 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 		opts.objectMode = true;
 		super(opts);
 
-		this.currentGame = 0;
+		this.currentGame = -1;
 		this.targetGame = 0;
 		this.nodeStack = [];
 		this.timeOffset = null;
@@ -58,11 +58,13 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 	}
 
 	private onOpenTag(node) {
-		if (this.currentGame !== this.targetGame && node.name !== 'Game' && node.name !== 'HSReplay') {
+		if (this.currentGame > this.targetGame) {
 			return;
 		}
+
 		switch (node.name) {
 			case 'Game':
+				this.currentGame++;
 				break;
 			case 'GameEntity':
 			case 'Player':
@@ -90,7 +92,7 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 				break;
 		}
 
-		if (node.attributes.ts) {
+		if (node.attributes.ts && this.currentGame === this.targetGame) {
 			let timestamp = this.parseTimestamp(node.attributes.ts);
 			if (timestamp) {
 				if (this.clearOptionsOnTimestamp) {
@@ -111,7 +113,7 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 	private onCloseTag(name) {
 		//console.debug(Array(this.nodeStack.length).join('\t') + '</' + name + '>');
 
-		if (this.currentGame !== this.targetGame && name !== 'Game') {
+		if (this.currentGame > this.targetGame) {
 			return;
 		}
 
@@ -123,14 +125,13 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 			return;
 		}
 
+		if (this.currentGame !== this.targetGame) {
+			return;
+		}
+
 		var mutator = null;
 		switch (name) {
 			case 'Game':
-				if (++this.currentGame > this.targetGame) {
-					// we're done here
-					return;
-				}
-				break;
 			case 'GameEntity':
 			case 'FullEntity':
 			{
