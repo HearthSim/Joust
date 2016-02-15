@@ -15,8 +15,9 @@ import Secrets from './Secrets';
 
 import {Zone, CardType} from '../../enums'
 import {OptionCallbackProps, CardDataProps} from "../../interfaces";
+import {CardOracleProps} from "../../interfaces";
 
-interface PlayerProps extends OptionCallbackProps, CardDataProps, React.Props<any> {
+interface PlayerProps extends OptionCallbackProps, CardDataProps, CardOracleProps, React.Props<any> {
 	player: PlayerEntity;
 	entities: Immutable.Map<number, Immutable.Map<number, Entity>>;
 	options: Immutable.Map<number, Immutable.Map<number, Option>>;
@@ -66,6 +67,7 @@ class Player extends React.Component<PlayerProps, {}> {
 						 options={this.props.options.get(Zone.HAND) || emptyOptions}
 						 optionCallback={this.props.optionCallback}
 						 cards={this.props.cards}
+						 cardOracle={this.props.cardOracle}
 						 isTop={this.props.isTop}
 		/>;
 		var name = this.props.player.getName() ? <div className="name">{this.props.player.getName()}</div> : null;

@@ -6,6 +6,7 @@ import GameWrapper from "./GameWrapper";
 import {InteractiveBackend} from "../interfaces";
 import GameStateScrubber from "../state/GameStateScrubber";
 import GameStateSink from "../state/GameStateSink";
+import {CardOracle} from "../interfaces";
 
 interface GameWidgetProps extends CardDataProps, React.Props<any> {
 	sink:GameStateSink;
@@ -13,6 +14,7 @@ interface GameWidgetProps extends CardDataProps, React.Props<any> {
 	scrubber?:GameStateScrubber;
 	getImageURL?:(cardId:string) => string;
 	exitGame?:() => void;
+	cardOracle: CardOracle;
 	width?:any;
 	height?:any;
 }
@@ -66,7 +68,7 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 		}
 
 		parts.push(<GameWrapper key="game" state={this.state.gameState} interaction={this.props.interaction}
-								cards={this.props.cards} swapPlayers={this.state.swapPlayers}/>);
+								cards={this.props.cards} swapPlayers={this.state.swapPlayers} cardOracle={this.props.cardOracle.getCardMap()}/>);
 
 		if (this.props.scrubber) {
 			parts.push(<Scrubber key="scrubber" scrubber={this.props.scrubber}

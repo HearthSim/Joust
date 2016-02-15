@@ -10,8 +10,9 @@ import EndTurnButton from './EndTurnButton';
 
 import {DragDropContext} from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
+import {CardOracleProps} from "../../interfaces";
 
-interface TwoPlayerGameProps extends EntityProps, CardDataProps, OptionCallbackProps, React.Props<any> {
+interface TwoPlayerGameProps extends EntityProps, CardDataProps, CardOracleProps, OptionCallbackProps, React.Props<any> {
 	player1: PlayerEntity;
 	player2: PlayerEntity;
 	entities: Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Entity>>>;
@@ -35,6 +36,7 @@ class TwoPlayerGame extends React.Component<TwoPlayerGameProps, {}> {
 						entities={entities.get(player1.getPlayerId()) || emptyEntities}
 						options={options.get(player1.getPlayerId()) || emptyOptions}
 						optionCallback={this.props.optionCallback}
+						cardOracle={this.props.cardOracle}
 						cards={this.props.cards}
 				/>
 				<EndTurnButton option={this.props.endTurnOption}
@@ -43,6 +45,7 @@ class TwoPlayerGame extends React.Component<TwoPlayerGameProps, {}> {
 						entities={entities.get(player2.getPlayerId()) || emptyEntities}
 						options={options.get(player2.getPlayerId()) || emptyOptions}
 						optionCallback={this.props.optionCallback}
+						cardOracle={this.props.cardOracle}
 						cards={this.props.cards}
 				/>
 			</div>

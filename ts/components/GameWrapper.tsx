@@ -7,8 +7,9 @@ import Entity from "../Entity";
 import Option from "../Option";
 import PlayerEntity from "../Player";
 import {InteractiveBackend} from "../interfaces";
+import {CardOracleProps} from "../interfaces";
 
-interface GameWrapperProps extends CardDataProps, React.Props<any> {
+interface GameWrapperProps extends CardDataProps, CardOracleProps, React.Props<any> {
 	state:GameState;
 	interaction?:InteractiveBackend;
 	swapPlayers?:boolean;
@@ -68,6 +69,7 @@ class GameWrapper extends React.Component<GameWrapperProps, {}> {
 					endTurnOption={endTurnOption}
 					optionCallback={this.props.interaction && this.props.interaction.sendOption.bind(this.props.interaction)}
 					cards={this.props.cards}
+					cardOracle={this.props.cardOracle}
 				/>;
 			default:
 				return <div>Unsupported player count ({playerCount}).</div>

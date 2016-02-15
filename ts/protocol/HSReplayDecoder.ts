@@ -12,15 +12,16 @@ import Player from "../Player";
 import {GameTag} from "../enums";
 import ShowEntityMutator from "../state/mutators/ShowEntityMutator";
 import SetTimeMutator from "../state/mutators/SetTimeMutator";
+import {CardOracle} from "../interfaces";
 
-class HSReplayDecoder extends Stream.Transform {
+class HSReplayDecoder extends Stream.Transform implements CardOracle {
 
 	private sax:Sax.SAXStream;
 	private targetGame:number;
 	private currentGame:number;
 	private nodeStack;
 	private timeOffset:number;
-	private cardIds:Immutable.Map<number, String>;
+	private cardIds:Immutable.Map<number, string>;
 	private clearOptionsOnTimestamp:boolean;
 
 	constructor(opts?:Stream.TransformOptions) {
@@ -32,7 +33,7 @@ class HSReplayDecoder extends Stream.Transform {
 		this.targetGame = 0;
 		this.nodeStack = [];
 		this.timeOffset = null;
-		this.cardIds = Immutable.Map<number, String>();
+		this.cardIds = Immutable.Map<number, string>();
 		this.clearOptionsOnTimestamp = false;
 
 		this.sax = Sax.createStream(true, {});
@@ -90,7 +91,7 @@ class HSReplayDecoder extends Stream.Transform {
 		}
 
 		if (node.attributes.ts) {
-			let timestamp = this.parseTimestamp(node.attributes.ts)
+			let timestamp = this.parseTimestamp(node.attributes.ts);
 			if (timestamp) {
 				if (this.clearOptionsOnTimestamp) {
 					let clearMutator = new ClearOptionsMutator();
@@ -118,7 +119,7 @@ class HSReplayDecoder extends Stream.Transform {
 
 		// sanity check for our stack
 		if (node.name !== name) {
-			console.error('Closing node did not match the opening node from stack (Stack: ' + node.name + ', Node: ' + name + ')');
+			console.error("Closing node did not match the opening node from stack (Stack: " + node.name + ", Node: " + name + ")");
 			return;
 		}
 
@@ -134,11 +135,8 @@ class HSReplayDecoder extends Stream.Transform {
 			case 'FullEntity':
 			{
 				let id = +node.attributes.id;
-				let cardId = node.attributes.cardID;
-				if (!cardId && this.cardIds.has(id)) {
-					cardId = this.cardIds.get(id);
-					console.debug('Revealing entity', id, 'as', cardId);
-				}
+				let cardId = node.attributes.cardID || null;
+				this.revealEntity(id, cardId);
 				let entity = new Entity(
 					id,
 					node.attributes.tags,
@@ -158,9 +156,12 @@ class HSReplayDecoder extends Stream.Transform {
 				break;
 			case 'ShowEntity':
 			{
+				let id = +node.attributes.entity;
+				let cardId = node.attributes.cardID || null;
+				this.revealEntity(id, cardId);
 				mutator = new ShowEntityMutator(
-					+node.attributes.entity,
-					node.attributes.cardID || null,
+					id,
+					cardId,
 					node.attributes.tags
 				);
 				break;
@@ -217,6 +218,19 @@ class HSReplayDecoder extends Stream.Transform {
 		}
 	}
 
+	protected revealEntity(id:number, cardId:string) {
+		if (!cardId || !id) {
+			return;
+		}
+		id = +id;
+		cardId = '' + cardId;
+		this.cardIds = this.cardIds.set(id, cardId);
+	}
+
+
+	public getCardMap() {
+		return this.cardIds;
+	}
 }
 
 export default HSReplayDecoder;

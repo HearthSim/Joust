@@ -9,11 +9,12 @@ import FileReaderStream from 'filereader-stream'
 import GameStateScrubber from "../state/GameStateScrubber";
 import GameStateTracker from "../state/GameStateTracker";
 import GameStateSink from "../state/GameStateSink";
+import {CardOracle} from "../interfaces";
 
 interface SetupWidgetProps extends React.Props<any> {
 	defaultHostname:string;
 	defaultPort:number;
-	onSetup:(sink:GameStateSink, interaction?:InteractiveBackend, scrubber?:GameStateScrubber) => void;
+	onSetup:(sink:GameStateSink, interaction?:InteractiveBackend, scrubber?:GameStateScrubber, oracle?:CardOracle) => void;
 }
 
 interface SetupWidgetState {
@@ -95,14 +96,15 @@ class SetupWidget extends React.Component<SetupWidgetProps, SetupWidgetState> {
 		/* HSReplay -> Joust */
 
 		var scrubber = new GameStateScrubber();
+		var decoder = new HSReplayDecoder();
 		var sink = filestream // sink is returned by the last .pipe()
-			.pipe(new HSReplayDecoder()) // json -> mutators
+			.pipe(decoder) // json -> mutators
 			.pipe(new GameStateTracker()) // mutators -> latest gamestate
 			.pipe(scrubber) // gamestate -> gamestate emit on scrub past
 			.pipe(new GameStateSink()); // gamestate
 
 
-		this.props.onSetup(sink, null, scrubber);
+		this.props.onSetup(sink, null, scrubber, decoder);
 	}
 
 	protected onSubmitKettle(e):void {
@@ -156,7 +158,6 @@ class SetupWidget extends React.Component<SetupWidgetProps, SetupWidgetState> {
 			console.log('Connection closed');
 		}.bind(this));
 	}
-
 
 }
 

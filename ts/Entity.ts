@@ -1,4 +1,5 @@
 import {GameTag} from './enums';
+import {Rarity} from "./enums";
 
 class Entity {
 	constructor(protected id:number, protected tags:Immutable.Map<string, number>, protected cardId?:string) {
@@ -57,7 +58,7 @@ class Entity {
 	}
 
 	public isLegendary():boolean {
-		return this.getTag(GameTag.RARITY) == 5;
+		return this.getTag(GameTag.RARITY) === Rarity.LEGENDARY;
 	}
 
 	public isTaunter():boolean {

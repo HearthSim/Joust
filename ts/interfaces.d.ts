@@ -19,7 +19,7 @@ export interface EntityInPlayProps extends EntityProps, OptionProps, DragSourceP
 	isTarget:boolean;
 }
 
-export interface EntityListProps extends OptionCallbackProps, DropTargetProps, CardDataProps, React.Props<any> {
+export interface EntityListProps extends OptionCallbackProps, DropTargetProps, CardDataProps, CardOracleProps, React.Props<any> {
 	entities: Immutable.Iterable<number, Entity>;
 	options?: Immutable.Iterable<number, Option>;
 	isTop?: boolean;
@@ -106,4 +106,12 @@ export interface CardData {
 
 export interface CardDataProps {
 	cards:Immutable.Map<string, CardData>;
+}
+
+export interface CardOracleProps {
+	cardOracle?: Immutable.Map<number, string>;
+}
+
+export interface CardOracle {
+	getCardMap(): Immutable.Map<number, string>;
 }
