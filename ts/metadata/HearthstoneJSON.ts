@@ -51,7 +51,8 @@ class HearthstoneJSON extends EventEmitter {
 			host: parsed.host,
 			port: +parsed.port,
 			path: parsed.path,
-			protocol: parsed.protocol
+			protocol: parsed.protocol,
+			withCredentials: false
 		}, function (response) {
 			if (response.statusCode != 200) {
 				console.error("Fetching card data failed with status code " + response.statusCode);
