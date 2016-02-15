@@ -31,7 +31,7 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 
 	public componentDidMount() {
 		this.cb = this.updateState.bind(this);
-		this.props.scrubber.on('update', this.cb.bind(this));
+		this.props.scrubber.on('update', this.cb);
 	}
 
 	protected updateState():void {
@@ -45,7 +45,7 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 		});
 	}
 
-	protected componentWillUnmount() {
+	public componentWillUnmount() {
 		this.props.scrubber.removeListener('update', this.cb);
 	}
 
