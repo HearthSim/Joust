@@ -26,9 +26,13 @@ class Card extends React.Component<CardProps, {}> {
 			</div>;
 		}
 
+		var draggable = this.props.option && this.props.optionCallback;
 		var classNames = ['card', 'revealed'];
 		if (this.props.option) {
 			classNames.push('playable');
+		}
+		if (draggable) {
+			classNames.push('draggable');
 		}
 		if (entity.isPoweredUp()) {
 			classNames.push('powered-up');
@@ -80,7 +84,7 @@ class Card extends React.Component<CardProps, {}> {
 			</div>
 		);
 
-		return (this.props.option ? connectDragSource(jsx) : jsx);
+		return (draggable ? connectDragSource(jsx) : jsx);
 	}
 }
 

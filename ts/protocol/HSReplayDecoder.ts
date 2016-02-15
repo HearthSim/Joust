@@ -11,6 +11,7 @@ import Entity from "../Entity";
 import Player from "../Player";
 import {GameTag} from "../enums";
 import ShowEntityMutator from "../state/mutators/ShowEntityMutator";
+import SetTimeMutator from "../state/mutators/SetTimeMutator";
 
 class HSReplayDecoder extends Stream.Transform {
 
@@ -20,6 +21,7 @@ class HSReplayDecoder extends Stream.Transform {
 	private nodeStack;
 	private timeOffset:number;
 	private cardIds:Immutable.Map<number, String>;
+	private clearOptionsOnTimestamp:boolean;
 
 	constructor(opts?:Stream.TransformOptions) {
 		opts = opts || {};
@@ -31,6 +33,7 @@ class HSReplayDecoder extends Stream.Transform {
 		this.nodeStack = [];
 		this.timeOffset = null;
 		this.cardIds = Immutable.Map<number, String>();
+		this.clearOptionsOnTimestamp = false;
 
 		this.sax = Sax.createStream(true, {});
 		this.sax.on('opentag', this.onOpenTag.bind(this));
@@ -44,37 +47,6 @@ class HSReplayDecoder extends Stream.Transform {
 	_read(size:number):void {
 		return;
 	}
-
-	/*protected revealHiddenInformation(stream:Stream.Readable, cb:() => void) {
-	 var sax = Sax.createStream(true, {});
-	 var game = 0;
-	 sax.on('opentag', function (node) {
-	 if (game > 1) {
-	 return;
-	 }
-	 var id = null;
-	 switch (node.name) {
-	 case 'Game':
-	 game++;
-	 break;
-	 case 'FullEntity':
-	 id = +node.attributes.id;
-	 case 'ShowEntity':
-	 if (!id) {
-	 id = +node.attributes.entity;
-	 }
-	 if (node.attributes.cardID) {
-	 this.cardIds = this.cardIds.set(id, node.attributes.cardID);
-	 }
-	 break;
-	 }
-	 }.bind(this));
-	 sax.on('end', function () {
-	 console.debug("Revealing " + this.cardIds.count() + " entities in advance");
-	 cb();
-	 }.bind(this));
-	 stream.pipe(sax);
-	 }*/
 
 	protected parseTimestamp(timestamp:string):number {
 		if (timestamp.match(/^\d{2}:\d{2}:\d{2}/)) {
@@ -117,13 +89,20 @@ class HSReplayDecoder extends Stream.Transform {
 				break;
 		}
 
-		/*var timestamp = node.attributes.ts && this.parseTimestamp(node.attributes.ts) || null;
-		 if (timestamp !== null) {
-		 if (this.timeOffset === null) {
-		 this.timeOffset = timestamp;
-		 }
-		 timestamp -= this.timeOffset;
-		 }*/
+		if (node.attributes.ts) {
+			let timestamp = this.parseTimestamp(node.attributes.ts)
+			if (timestamp) {
+				if (this.clearOptionsOnTimestamp) {
+					let clearMutator = new ClearOptionsMutator();
+					clearMutator.time = timestamp;
+					this.push(clearMutator);
+					this.clearOptionsOnTimestamp = false;
+				}
+				else {
+					this.push(new SetTimeMutator(timestamp));
+				}
+			}
+		}
 
 		this.nodeStack.push(node);
 	}
@@ -224,7 +203,9 @@ class HSReplayDecoder extends Stream.Transform {
 				mutator = new SetOptionsMutator(node.attributes.options);
 				break;
 			case 'SendOption':
-				mutator = new ClearOptionsMutator();
+				// SendOption usually doesn't have a timestamp:
+				// if we ClearOptions here, we won't see any options at all
+				this.clearOptionsOnTimestamp = true;
 				break;
 			default:
 				//console.warn('Unknown HSReplay tag "' + node.name + '"');
@@ -232,13 +213,6 @@ class HSReplayDecoder extends Stream.Transform {
 		}
 
 		if (mutator !== null) {
-			// todo: set timestamp in mutator
-			if (node.attributes.ts) {
-				var timestamp = this.parseTimestamp(node.attributes.ts);
-				if (timestamp) {
-					mutator.time = timestamp;
-				}
-			}
 			this.push(mutator);
 		}
 	}

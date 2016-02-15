@@ -62,11 +62,12 @@ abstract class EntityInPlay<P extends EntityInPlayProps, S> extends React.Compon
 
 		var jsx = null;
 		if (playable && !requiresTarget && this.playWithClick()) {
-			jsx = <div className={this.getClassNames().join(' ')} onClick={this.click.bind(this)}>{this.jsx()}</div>
+			jsx = <div className={this.getClassNames().join(' ')}
+					  onClick={(playable && this.props.optionCallback) ? this.click.bind(this) : null}>{this.jsx()}</div>
 		}
 		else {
 			jsx = <div className={this.getClassNames().join(' ')}>{this.jsx()}</div>;
-			if (playable) {
+			if (playable && this.props.optionCallback) {
 				// make draggable
 				jsx = this.props.connectDragSource(jsx);
 			}

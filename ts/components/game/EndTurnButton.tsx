@@ -25,7 +25,7 @@ class EndTurnButton extends React.Component<EndTurnButtonProps, {}> {
 		}
 		return (
 			<div className={classNames.join(' ')}>
-				<button disabled={!this.props.option} onClick={this.endTurn.bind(this)}>End Turn</button>
+				<button disabled={!this.props.option || !this.props.optionCallback} onClick={this.endTurn.bind(this)}>End Turn</button>
 			</div>
 		);
 	}

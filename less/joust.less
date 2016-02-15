@@ -161,7 +161,7 @@ html {
 }
 
 .endTurnButton.playable.only-option > button {
-	box-shadow: 0px 0px 10px 1px rgb(0, 255, 0);
+  box-shadow: 0px 0px 10px 1px rgb(0, 255, 0);
 }
 
 .card.dragging {
@@ -170,7 +170,6 @@ html {
 
 .card.playable {
   -webkit-filter: drop-shadow(0px 0px 7px rgb(0, 255, 0));
-  cursor: -webkit-grab; cursor: -moz-grab;
 
   &:hover {
 	-webkit-filter: drop-shadow(0px 0px 10px white);
@@ -183,6 +182,11 @@ html {
   &.combo {
 	box-shadow: 0px 0px 20px rgb(255, 255, 100);
   }
+}
+
+.card.draggable {
+  cursor: -webkit-grab;
+  cursor: -moz-grab;
 }
 
 .player.top .hand .card.revealed:hover {
