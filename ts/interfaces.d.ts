@@ -68,6 +68,8 @@ export interface StreamScrubber extends EventEmitter {
 	canRewind():boolean;
 	rewind():void;
 	getCurrentTime():number;
+	getSpeed():number;
+	canPlay():boolean;
 }
 
 export interface CardData {

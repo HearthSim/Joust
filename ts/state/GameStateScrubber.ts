@@ -14,7 +14,7 @@ class GameStateScrubber extends Stream.Transform implements StreamScrubber {
 		this.interval = null;
 		this.initialTime = null;
 		this.currentTime = 0;
-		this.speed = 3;
+		this.speed = 1;
 		this.history = new GameStateHistory();
 		this.lastState = null;
 		this.endTime = null;
@@ -78,15 +78,14 @@ class GameStateScrubber extends Stream.Transform implements StreamScrubber {
 			return;
 		}
 
-		this.emit('update');
-
 		if (this.isPlaying() && this.speed != 0) {
 			let now = new Date().getTime();
 			let elapsed = (now - this.lastUpdate) * this.speed;
 			this.lastUpdate = now;
 			this.currentTime += elapsed;
 
-			if (this.currentTime + this.initialTime > this.endTime) {
+			if (this.hasEnded()) {
+				this.currentTime = this.endTime - this.initialTime;
 				this.pause();
 				return;
 			}
@@ -97,7 +96,10 @@ class GameStateScrubber extends Stream.Transform implements StreamScrubber {
 			this.lastState = latest;
 			this.push(latest);
 		}
+
+		this.emit('update');
 	}
+
 
 	public seek(time:number):void {
 		this.currentTime = time;
@@ -117,6 +119,10 @@ class GameStateScrubber extends Stream.Transform implements StreamScrubber {
 		this.speed = speed;
 	}
 
+	public getSpeed():number {
+		return this.speed;
+	}
+
 	public canInteract():boolean {
 		return this.initialTime !== null;
 	}
@@ -127,6 +133,14 @@ class GameStateScrubber extends Stream.Transform implements StreamScrubber {
 
 	public getCurrentTime():number {
 		return this.currentTime;
+	}
+
+	public hasEnded():boolean {
+		return this.currentTime + this.initialTime >= this.endTime;
+	}
+
+	public canPlay():boolean {
+		return !this.hasEnded() && this.canInteract();
 	}
 }
 
