@@ -83,7 +83,7 @@ class Card extends React.Component<CardProps, {}> {
 				stats = <div className="stats">{attack}{health}</div>
 				break;
 			case CardType.WEAPON:
-				var attack = <Attack attack={this.props.isHidden ? entity.getAtk() : defaultAttack}
+				var attack = <Attack attack={!this.props.isHidden ? entity.getAtk() : defaultAttack}
 									 default={defaultAttack}/>;
 				var durability = <div
 					className="durability">{!this.props.isHidden ? entity.getDurability() : defaultDurability}</div>;
