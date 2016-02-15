@@ -54,8 +54,6 @@ class Joust extends React.Component<{}, JoustState> {
 								interaction={this.state.interaction}
 								scrubber={this.state.scrubber}
 								exitGame={this.exitGame.bind(this)}
-								height="600"
-								width="600"
 					/>;
 				break;
 		}
