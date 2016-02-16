@@ -36,7 +36,6 @@ class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 		}
 		else if (time) {
 			this.play();
-			console.debug('Setting initial time to ' + time);
 			this.initialTime = time;
 		}
 		else {
