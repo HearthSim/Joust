@@ -24,6 +24,7 @@ module.exports = {
 		);
 	},
 	renderHSReplay(target:string, url:string, opts?) {
+		opts = opts || {};
 		var scrubber = new GameStateScrubber();
 		var decoder = new HSReplayDecoder();
 
