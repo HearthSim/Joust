@@ -74,10 +74,6 @@ html {
 
 .game, #application .buttons {
   -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
   cursor: default;
 }
@@ -134,12 +130,12 @@ html {
   }
 
   &.target, &.playable.target, &.minion.target {
-	-webkit-filter: drop-shadow(0px 0px 7px rgb(255, 120, 0));
+	filter: drop-shadow(0px 0px 7px rgb(255, 120, 0));
 	transform: scale(1.05);
   }
 
   &.playable {
-	-webkit-filter: drop-shadow(0px 0px 7px rgb(0, 255, 0));
+	filter: drop-shadow(0px 0px 7px rgb(0, 255, 0));
   }
 
   &.stealth {
@@ -170,10 +166,9 @@ html {
 
 .card.playable {
   filter: drop-shadow(0px 0px 7px rgb(0, 255, 0));
-  -webkit-filter: drop-shadow(0px 0px 7px rgb(0, 255, 0));
 
   &:hover {
-	-webkit-filter: drop-shadow(0px 0px 10px white);
+	filter: drop-shadow(0px 0px 10px white);
   }
 
   &.powered-up {
@@ -187,8 +182,6 @@ html {
 
 .card.draggable {
   cursor: grab;
-  cursor: -webkit-grab;
-  cursor: -moz-grab;
 }
 
 .player.top .hand .card.revealed:hover {
@@ -228,19 +221,19 @@ html {
 	  width: 78%;
 	  top: 6%;;
 	  left: 11%;
-	  -webkit-clip-path: ellipse(36% 47% at 50% 50%);
+	  clip-path: ellipse(36% 47% at 50% 50%);
 	}
 	.inhand-spell {
 	  width: 70%;
 	  top: 11%;;
 	  left: 14%;
-	  -webkit-clip-path: inset(8% 0% 12% 0%);
+	  clip-path: inset(8% 0% 12% 0%);
 	}
 	.inhand-weapon {
 	  width: 67%;
 	  top: 11%;;
 	  left: 17%;
-	  -webkit-clip-path: circle(50% at 50% 50%);
+	  clip-path: circle(50% at 50% 50%);
 	}
 	.inhand-base, .inhand-legendary {
 	  height: 100%;
@@ -475,7 +468,7 @@ html {
 	  width: 85%;
 	  top: 10%;;
 	  left: 7%;
-	  -webkit-clip-path: ellipse(35% 45% at 50% 46%);
+	  clip-path: ellipse(35% 45% at 50% 46%);
 	}
 	.inplay-legendary {
 	  position: absolute;

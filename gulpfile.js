@@ -3,6 +3,7 @@ var gutil = require('gulp-util');
 
 var sourcemaps = require('gulp-sourcemaps');
 var less = require('gulp-less');
+var autoprefixer = require('gulp-autoprefixer');
 
 var _ = require('lodash');
 var through = require('through2');
@@ -33,6 +34,7 @@ gulp.task('compile:styles', function () {
 	return gulp.src('less/**/*.less')
 		.pipe(sourcemaps.init())
 		.pipe(less({'strictMath': true}))
+		.pipe(autoprefixer({browsers: ['last 2 versions']}))
 		.pipe(sourcemaps.write('.'))
 		.pipe(gulp.dest('dist/'));
 });
