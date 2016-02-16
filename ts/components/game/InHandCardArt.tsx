@@ -1,4 +1,5 @@
 import * as React from "react";
+import {CardType} from "../../enums";
 var Dimensions = require('react-dimensions');
 
 class InHandCardArt extends React.Component<any, {}> {
@@ -26,12 +27,15 @@ class InHandCardArt extends React.Component<any, {}> {
 			portrait = null;
 			base = imgDir + "cardback.png";
 		}
-		if (this.props.cardType === 5) {
-			portraitClass = "inhand-spell";
-			base = imgDir + "inhand_spell.png";
-		} else if (this.props.cardType === 7) {
-			portraitClass = "inhand-weapon";
-			base = imgDir + "inhand_weapon.png";
+		switch (this.props.cardType) {
+			case CardType.SPELL:
+				portraitClass = "inhand-spell";
+				base = imgDir + "inhand_spell.png";
+				break;
+			case CardType.WEAPON:
+				portraitClass = "inhand-weapon";
+				base = imgDir + "inhand_weapon.png";
+				break;
 		}
 
 		if (this.props.legendary) {
