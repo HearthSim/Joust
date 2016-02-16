@@ -23,6 +23,7 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 	private timeOffset:number;
 	private cardIds:Immutable.Map<number, string>;
 	private clearOptionsOnTimestamp:boolean;
+	private playerMap:Immutable.Map<string, number>;
 
 	constructor(opts?:Stream.TransformOptions) {
 		opts = opts || {};
@@ -35,6 +36,7 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 		this.timeOffset = null;
 		this.cardIds = Immutable.Map<number, string>();
 		this.clearOptionsOnTimestamp = false;
+		this.playerMap = Immutable.Map<string, number>();
 
 		this.sax = Sax.createStream(true, {});
 		this.sax.on('opentag', this.onOpenTag.bind(this));
@@ -77,6 +79,9 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 				if (version) {
 					if (version != '1.0') {
 						console.warn('Unsupported HSReplay version', version, '(expected 1.0)');
+					}
+					else {
+						console.debug('Found valid HSReplay version', version);
 					}
 				}
 				else {
@@ -128,11 +133,10 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 
 		var mutator = null;
 		switch (name) {
-			case 'Game':
 			case 'GameEntity':
 			case 'FullEntity':
 			{
-				let id = +node.attributes.id;
+				let id = this.resolveEntityId(node.attributes.id);
 				let cardId = node.attributes.cardID || null;
 				this.revealEntity(id, cardId);
 				let entity = new Entity(
@@ -144,17 +148,22 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 				break;
 			}
 			case 'Player':
+			{
+				let id = +node.attributes.id;
+				let name = '' + node.attributes.name;
+				this.playerMap = this.playerMap.set(name, id);
 				let player = new Player(
-					+node.attributes.id,
+					id,
 					node.attributes.tags,
 					+node.attributes.playerID,
-					node.attributes.name
+					name
 				);
 				mutator = new AddEntityMutator(player);
 				break;
+			}
 			case 'ShowEntity':
 			{
-				let id = +node.attributes.entity;
+				let id = this.resolveEntityId(node.attributes.entity);
 				let cardId = node.attributes.cardID || null;
 				this.revealEntity(id, cardId);
 				mutator = new ShowEntityMutator(
@@ -166,7 +175,7 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 			}
 			case 'HideEntity':
 				mutator = new TagChangeMutator(
-					+node.attributes.entity,
+					this.resolveEntityId(node.attributes.entity),
 					GameTag.ZONE, // zone
 					+node.attributes.zone
 				);
@@ -180,7 +189,7 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 			}
 			case 'TagChange':
 				mutator = new TagChangeMutator(
-					+node.attributes.entity,
+					this.resolveEntityId(node.attributes.entity),
 					+node.attributes.tag,
 					+node.attributes.value
 				);
@@ -191,7 +200,7 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 				let option = new Option(
 					+node.attributes.index,
 					+node.attributes.type,
-					+node.attributes.entity || null,
+					this.resolveEntityId(node.attributes.entity) || null,
 					[] // todo: parse targets
 				);
 				parent.attributes.options = parent.attributes.options.set(+node.attributes.index, option);
@@ -214,6 +223,21 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 		if (mutator !== null) {
 			this.push(mutator);
 		}
+	}
+
+	protected resolveEntityId(id:number|string):number {
+		if (!isNaN(+id)) {
+			return +id;
+		}
+
+		var str = '' + id;
+		if (this.playerMap.has(str)) {
+			return +this.playerMap.get(str);
+		}
+		else {
+			console.warn('Could not resolve invalid entity id "' + id + '"');
+		}
+		return +id;
 	}
 
 	protected revealEntity(id:number, cardId:string) {
