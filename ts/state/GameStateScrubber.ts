@@ -3,13 +3,14 @@ import * as Stream from "stream";
 import {StreamScrubber} from "../interfaces";
 import GameStateHistory from "./GameStateHistory";
 
-class GameStateScrubber extends Stream.Transform implements StreamScrubber {
+class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 
 	protected history:GameStateHistory;
 
-	constructor(opts?:Stream.TransformOptions) {
+	constructor(opts?:Stream.DuplexOptions) {
 		opts = opts || {};
 		opts.objectMode = true;
+		opts.allowHalfOpen = true;
 		super(opts);
 		this.interval = null;
 		this.initialTime = null;
@@ -24,7 +25,7 @@ class GameStateScrubber extends Stream.Transform implements StreamScrubber {
 	protected currentTime:number;
 	protected endTime:number;
 
-	_transform(gameState:any, encoding:string, callback:Function):void {
+	_write(gameState:any, encoding:string, callback:Function):void {
 
 		// setup initial time if unknown
 		var time = gameState.getTime();
@@ -51,6 +52,10 @@ class GameStateScrubber extends Stream.Transform implements StreamScrubber {
 		}
 
 		callback();
+	}
+
+	_read():void {
+		return;
 	}
 
 	protected lastUpdate:number;
