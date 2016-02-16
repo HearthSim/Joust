@@ -20,6 +20,7 @@
     "react-dnd-html5-backend": "^2.0.2",
     "react-dom": "^0.14.6",
     "sax": "^1.1.5",
+    "string-stream": "0.0.7",
     "websocket-stream": "^3.1.0"
   },
   "devDependencies": {

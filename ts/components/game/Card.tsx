@@ -48,7 +48,7 @@ class Card extends React.Component<CardProps, {}> {
 		var defaultDurability = null;
 		var cardType = entity.getCardType();
 		if (this.props.cards && this.props.cards.has(entity.getCardId())) {
-			var data = this.props.cards.get(entity.getCardId());
+			var data = this.props.cards && this.props.cards.get(entity.getCardId());
 			title = data.name;
 			description = data.text;
 			defaultAttack = data.attack;

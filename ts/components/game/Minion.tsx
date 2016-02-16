@@ -22,7 +22,7 @@ class Minion extends EntityInPlay<EntityInPlayProps, {}> {
 		var title = entity.getCardId();
 		var defaultAttack = null;
 		var defaultHealth = null;
-		if (this.props.cards.has(entity.getCardId())) {
+		if (this.props.cards && this.props.cards.has(entity.getCardId())) {
 			var data = this.props.cards.get(entity.getCardId());
 			title = data.name;
 			defaultAttack = data.attack;
