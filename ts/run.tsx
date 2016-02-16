@@ -40,7 +40,7 @@ module.exports = {
 
 		opts.sink = sink;
 		opts.scrubber = scrubber;
-		opts.oracle = decoder;
+		opts.cardOracle = decoder;
 
 		ReactDOM.render(
 			React.createElement(GameWidget, opts),
