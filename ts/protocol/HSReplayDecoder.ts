@@ -41,12 +41,8 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 		this.sax.on('closetag', this.onCloseTag.bind(this));
 	}
 
-	_write(chunk:any, encoding:string, callback:Function):void {
+	_transform(chunk:any, encoding:string, callback:Function):void {
 		this.sax.write(chunk, encoding, callback);
-	}
-
-	_read(size:number):void {
-		return;
 	}
 
 	protected parseTimestamp(timestamp:string):number {
