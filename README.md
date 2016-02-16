@@ -1,4 +1,4 @@
-# Joust
+# Joust [![Build Status](https://travis-ci.org/HearthSim/joust.svg?branch=master)](https://travis-ci.org/HearthSim/joust)
 
 ## Requirements
 
