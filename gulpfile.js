@@ -8,7 +8,8 @@ var autoprefixer = require('gulp-autoprefixer');
 var _ = require('lodash');
 var through = require('through2');
 
-var webpack = require('webpack-stream');
+var webpack = require('webpack');
+var webpackStream = require('webpack-stream');
 
 gulp.task('default', ['watch']);
 
@@ -16,7 +17,7 @@ gulp.task('compile', ['compile:scripts', 'compile:styles', 'html', 'fonts', 'ima
 
 gulp.task('compile:scripts', function () {
 	return gulp.src('ts/run.tsx')
-		.pipe(webpack(require('./webpack.config.js')))
+		.pipe(webpackStream(require('./webpack.config.js')))
 		.pipe(gulp.dest('dist/'));
 });
 
@@ -25,8 +26,16 @@ gulp.task('compile:web', ['compile:scripts:web', 'compile:styles', 'html', 'font
 gulp.task('compile:scripts:web', function () {
 	var config = require('./webpack.config.js');
 	config.target = 'web';
+	config.plugins = config.plugins.concat([
+		new webpack.optimize.UglifyJsPlugin({
+			comments: false,
+			compress: {
+				warnings: false
+			}
+		})
+	]);
 	return gulp.src('ts/run.tsx')
-		.pipe(webpack(config))
+		.pipe(webpackStream(config))
 		.pipe(gulp.dest('dist/'));
 });
 

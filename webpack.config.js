@@ -19,5 +19,6 @@ module.exports = {
 		fs: 'empty',
 		net: 'empty'
 	},
-	target: 'electron'
+	target: 'electron',
+	plugins: []
 }
