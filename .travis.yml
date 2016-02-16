@@ -1,0 +1,9 @@
+language: node_js
+node_js:
+  - "5.6"
+before_script:
+  - npm install -g typings gulp webpack
+  # `npm install` is run automatically
+  - typings install
+script:
+  - gulp compile:web
