@@ -68,7 +68,7 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 		}
 
 		parts.push(<GameWrapper key="game" state={this.state.gameState} interaction={this.props.interaction}
-								cards={this.props.cards} swapPlayers={this.state.swapPlayers} cardOracle={this.props.cardOracle.getCardMap()}/>);
+								cards={this.props.cards} swapPlayers={this.state.swapPlayers} cardOracle={this.props.cardOracle && this.props.cardOracle.getCardMap()}/>);
 
 		if (this.props.scrubber) {
 			parts.push(<Scrubber key="scrubber" scrubber={this.props.scrubber}

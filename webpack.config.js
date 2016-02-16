@@ -2,7 +2,9 @@ module.exports = {
 	entry: __dirname + '/ts/run.tsx',
 	output: {
 		path: __dirname + '/dist',
-		filename: 'bundle.js'
+		filename: 'bundle.js',
+		library: 'Joust',
+		libraryTarget: 'var'
 	},
 	resolve: {
 		extensions: ['', '.webpack.js', '.web.js', '.ts', '.tsx', '.js']

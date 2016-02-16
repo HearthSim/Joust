@@ -3,14 +3,9 @@
 /// <reference path="../node_modules/immutable/dist/immutable.d.ts"/>
 
 import Application from './components/Joust';
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import GameWidget from "./components/GameWidget";
 
-var renderTo = function (id:string) {
-	var joust = ReactDOM.render(
-		<Application/>,
-		document.getElementById(id)
-	);
+module.exports = {
+	Application: Application,
+	GameWidget: GameWidget
 };
-
-renderTo('container');
