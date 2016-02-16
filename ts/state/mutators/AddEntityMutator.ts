@@ -10,7 +10,6 @@ class AddEntityMutator extends BaseMutator implements GameStateMutator {
 	}
 
 	public applyTo(state:GameState):GameState {
-		var newEntity = this.entity;
 		if (!this.entity) {
 			console.error('Cannot add null entity');
 			return state;

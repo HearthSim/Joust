@@ -68,7 +68,7 @@ class HearthstoneJSON extends EventEmitter {
 				var data = JSON.parse(json);
 				console.debug("Received card data (" + data.length + " cards)");
 				if (typeof data === "object") {
-					var cards = this.parse(data);
+					this.parse(data);
 
 					if (typeof(Storage) !== "undefined") {
 						localStorage.setItem("rawCards", json);
