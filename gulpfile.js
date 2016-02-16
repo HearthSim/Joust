@@ -20,7 +20,7 @@ gulp.task('compile:scripts', function () {
 		.pipe(gulp.dest('dist/'));
 });
 
-gulp.task('compile:web', ['compile:scripts:web', 'compile:styles', 'html']);
+gulp.task('compile:web', ['compile:scripts:web', 'compile:styles', 'html', 'fonts', 'images']);
 
 gulp.task('compile:scripts:web', function () {
 	var config = require('./webpack.config.js');
