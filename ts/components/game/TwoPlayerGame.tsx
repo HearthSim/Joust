@@ -1,18 +1,16 @@
 import * as React from "react";
 import * as Immutable from "immutable";
 
-import {EntityProps, OptionCallbackProps, CardDataProps} from "../../interfaces";
+import {EntityProps, OptionCallbackProps, CardDataProps, CardOracleProps, AssetDirectoryProps} from "../../interfaces";
 import Entity from '../../Entity';
 import Player from './Player';
 import Option from '../../Option';
 import PlayerEntity from '../../Player';
 import EndTurnButton from './EndTurnButton';
-
 import {DragDropContext} from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
-import {CardOracleProps} from "../../interfaces";
 
-interface TwoPlayerGameProps extends EntityProps, CardDataProps, CardOracleProps, OptionCallbackProps, React.Props<any> {
+interface TwoPlayerGameProps extends EntityProps, CardDataProps, CardOracleProps, OptionCallbackProps, AssetDirectoryProps, React.Props<any> {
 	player1: PlayerEntity;
 	player2: PlayerEntity;
 	entities: Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Entity>>>;
@@ -38,6 +36,7 @@ class TwoPlayerGame extends React.Component<TwoPlayerGameProps, {}> {
 						optionCallback={this.props.optionCallback}
 						cardOracle={this.props.cardOracle}
 						cards={this.props.cards}
+						assetDirectory={this.props.assetDirectory}
 				/>
 				<EndTurnButton option={this.props.endTurnOption}
 							   optionCallback={this.props.optionCallback} onlyOption={options.count() === 0}/>
@@ -47,6 +46,7 @@ class TwoPlayerGame extends React.Component<TwoPlayerGameProps, {}> {
 						optionCallback={this.props.optionCallback}
 						cardOracle={this.props.cardOracle}
 						cards={this.props.cards}
+						assetDirectory={this.props.assetDirectory}
 				/>
 			</div>
 		);

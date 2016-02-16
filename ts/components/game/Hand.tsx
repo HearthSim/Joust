@@ -39,7 +39,7 @@ class Hand extends EntityList {
 		}
 
 		return (<Card entity={entity} option={option} style={style} optionCallback={this.props.optionCallback}
-					  cards={this.props.cards} isHidden={hidden}/>);
+					  assetDirectory={this.props.assetDirectory} cards={this.props.cards} isHidden={hidden}/>);
 	}
 }
 

@@ -10,7 +10,7 @@ class InPlayCardArt extends React.Component<any, {}> {
 			height: this.props.containerHeight + 'px'
 		};
 
-		var imgDir = "./images/";
+		var imgDir = this.props.assetDirectory || "./images/";
 		var taunter = null;
 		var legendary = null;
 		var portrait = imgDir + "portrait.jpg";

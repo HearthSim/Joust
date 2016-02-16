@@ -31,7 +31,7 @@ class Minion extends EntityInPlay<EntityInPlayProps, {}> {
 
 		return (
 			<div>
-				<InPlayCardArt taunt={entity.isTaunter()} legendary={entity.isLegendary()} cardId={entity.getCardId()}/>
+				<InPlayCardArt taunt={entity.isTaunter()} legendary={entity.isLegendary()} cardId={entity.getCardId()} assetDirectory={this.props.assetDirectory}/>
 				<div className="stats">
 					<Attack attack={entity.getAtk()} default={defaultAttack}/>
 					<Health health={entity.getHealth()} damage={entity.getDamage()} default={defaultHealth}/>

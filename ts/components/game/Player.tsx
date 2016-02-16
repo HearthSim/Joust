@@ -14,10 +14,9 @@ import Weapon from './Weapon';
 import Secrets from './Secrets';
 
 import {Zone, CardType} from '../../enums'
-import {OptionCallbackProps, CardDataProps} from "../../interfaces";
-import {CardOracleProps} from "../../interfaces";
+import {OptionCallbackProps, CardDataProps, CardOracleProps, AssetDirectoryProps} from "../../interfaces";
 
-interface PlayerProps extends OptionCallbackProps, CardDataProps, CardOracleProps, React.Props<any> {
+interface PlayerProps extends OptionCallbackProps, CardDataProps, CardOracleProps, AssetDirectoryProps, React.Props<any> {
 	player: PlayerEntity;
 	entities: Immutable.Map<number, Immutable.Map<number, Entity>>;
 	options: Immutable.Map<number, Immutable.Map<number, Option>>;
@@ -58,7 +57,9 @@ class Player extends React.Component<PlayerProps, {}> {
 		var field = <Field entities={playEntities.filter(filterByCardType(CardType.MINION)) || emptyEntities}
 						   options={playOptions || emptyOptions}
 						   optionCallback={this.props.optionCallback}
-						   cards={this.props.cards}/>;
+						   cards={this.props.cards}
+						   assetDirectory={this.props.assetDirectory}
+		/>;
 		var deck = <Deck entities={this.props.entities.get(Zone.DECK) || emptyEntities}
 						 options={this.props.options.get(Zone.DECK) || emptyOptions}
 						 cards={this.props.cards}
@@ -69,6 +70,7 @@ class Player extends React.Component<PlayerProps, {}> {
 						 cards={this.props.cards}
 						 cardOracle={this.props.cardOracle}
 						 isTop={this.props.isTop}
+						 assetDirectory={this.props.assetDirectory}
 		/>;
 		var name = this.props.player.getName() ? <div className="name">{this.props.player.getName()}</div> : null;
 

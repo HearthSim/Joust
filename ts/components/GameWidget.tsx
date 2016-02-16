@@ -1,5 +1,5 @@
 import * as React from "react";
-import {JoustClient, CardDataProps} from "../interfaces";
+import {JoustClient, CardDataProps, AssetDirectoryProps} from "../interfaces";
 import Scrubber from "./Scrubber";
 import GameState from "../state/GameState";
 import GameWrapper from "./GameWrapper";
@@ -8,7 +8,7 @@ import GameStateScrubber from "../state/GameStateScrubber";
 import GameStateSink from "../state/GameStateSink";
 import {CardOracle} from "../interfaces";
 
-interface GameWidgetProps extends CardDataProps, React.Props<any> {
+interface GameWidgetProps extends CardDataProps, AssetDirectoryProps, React.Props<any> {
 	sink:GameStateSink;
 	interaction?:InteractiveBackend;
 	scrubber?:GameStateScrubber;
@@ -67,7 +67,7 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 			parts.push(<a key="exit" href="#" onClick={this.onClickExit.bind(this)}>Exit Game</a>);
 		}
 
-		parts.push(<GameWrapper key="game" state={this.state.gameState} interaction={this.props.interaction}
+		parts.push(<GameWrapper key="game" state={this.state.gameState} interaction={this.props.interaction} assetDirectory={this.props.assetDirectory}
 								cards={this.props.cards} swapPlayers={this.state.swapPlayers} cardOracle={this.props.cardOracle && this.props.cardOracle.getCardMap()}/>);
 
 		if (this.props.scrubber) {
