@@ -88,7 +88,10 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 				{playpause}
 				<button onClick={this.rewind.bind(this)} disabled={!this.state.canRewind} title="Rewind">⏮</button>
 				<span className="scrubber-time">{time}</span>
-				<Timeline duration={this.props.scrubber.getDuration()} at={this.props.scrubber.getCurrentTime()} />
+				<Timeline duration={this.props.scrubber.getDuration()}
+						  at={this.props.scrubber.getCurrentTime()}
+						  seek={this.props.scrubber.seek.bind(this.props.scrubber)}
+				/>
 				<select onChange={this.changeSpeed.bind(this)} value={''+this.state.speed}
 						disabled={!this.state.canInteract} title="Playback speed">
 					{speeds}

@@ -3,6 +3,7 @@ import * as React from "react";
 interface TimelineProps extends React.Props<any> {
 	at: number;
 	duration: number;
+	seek:(time:number) => void;
 }
 
 interface TimelineState {
@@ -39,6 +40,7 @@ class Timeline extends React.Component<TimelineProps, TimelineState> {
 			// any button other than left click
 			return;
 		}
+		e.preventDefault();
 		this.setState({isDragging: true});
 	}
 
@@ -54,8 +56,13 @@ class Timeline extends React.Component<TimelineProps, TimelineState> {
 			return;
 		}
 
+		var width = rect.right - rect.left;
 		this.lastOffset = offset;
-		//console.log(offset);
+
+		offset = offset - rect.left;
+
+		var seek = this.props.duration / width * offset;
+		this.props.seek(seek);
 	}
 
 	protected onMouseUp(e):void {
