@@ -7,7 +7,7 @@ class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 
 	protected history:GameStateHistory;
 
-	constructor(opts?:Stream.DuplexOptions) {
+	constructor(history?:GameStateHistory, opts?:Stream.DuplexOptions) {
 		opts = opts || {};
 		opts.objectMode = true;
 		opts.allowHalfOpen = true;
@@ -16,7 +16,7 @@ class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 		this.initialTime = null;
 		this.currentTime = 0;
 		this.speed = 1;
-		this.history = new GameStateHistory();
+		this.history = history || new GameStateHistory();
 		this.lastState = null;
 		this.endTime = null;
 	}
@@ -145,6 +145,14 @@ class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 
 	public canPlay():boolean {
 		return !this.hasEnded() && this.canInteract();
+	}
+
+	public getHistory():GameStateHistory {
+		return this.history;
+	}
+
+	public getDuration():number {
+		return Math.max(this.endTime - this.initialTime, 0);
 	}
 }
 

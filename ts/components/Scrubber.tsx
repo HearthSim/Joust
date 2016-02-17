@@ -1,5 +1,6 @@
 import * as React from "react";
 import {StreamScrubber} from "../interfaces";
+import Timeline from "./Timeline";
 
 interface ScrubberProps extends React.Props<any> {
 	scrubber:StreamScrubber;
@@ -87,8 +88,7 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 				{playpause}
 				<button onClick={this.rewind.bind(this)} disabled={!this.state.canRewind} title="Rewind">⏮</button>
 				<span className="scrubber-time">{time}</span>
-				<div className="scrubber-history">
-				</div>
+				<Timeline duration={this.props.scrubber.getDuration()} at={this.props.scrubber.getCurrentTime()} />
 				<select onChange={this.changeSpeed.bind(this)} value={''+this.state.speed}
 						disabled={!this.state.canInteract} title="Playback speed">
 					{speeds}

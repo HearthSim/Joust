@@ -7,6 +7,7 @@ import {EventEmitter} from 'events';
 import * as Stream from "stream";
 import GameStateSink from "./state/GameStateSink";
 import GameStateScrubber from "./state/GameStateScrubber";
+import GameStateHistory from "./state/GameStateHistory";
 
 export interface DropTargetProps {
 	connectDropTarget?(jsx);
@@ -72,6 +73,8 @@ export interface StreamScrubber extends EventEmitter {
 	getCurrentTime():number;
 	getSpeed():number;
 	canPlay():boolean;
+	getHistory():GameStateHistory;
+	getDuration():number;
 }
 
 export interface CardData {

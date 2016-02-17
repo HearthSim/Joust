@@ -8,21 +8,6 @@
   src: url("./fonts/FranklinGothic.ttf");
 }
 
-html, body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-}
-
-html {
-  box-sizing: border-box;
-}
-
-*, *:before, *:after {
-  box-sizing: inherit;
-}
-
 #container {
   width: 100%;
   height: 100%;
@@ -641,6 +626,15 @@ html {
   height: 100%;
   width: 100%;
   overflow: hidden;
+}
+
+.game-widget {
+  box-sizing: border-box;
+  justify-content: space-between;
+
+  *, *:before, *:after {
+	box-sizing: inherit;
+  }
 }
 
 .joust {
