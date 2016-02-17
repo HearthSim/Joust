@@ -64,6 +64,7 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 
 	protected onAttainFullscreen() {
 		this.setState({isFullscreen: true});
+		this.triggerResize();
 	}
 
 	protected onClickMinimize() {
@@ -72,6 +73,20 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 
 	protected onReleaseFullscreen() {
 		this.setState({isFullscreen: false});
+		this.triggerResize();
+	}
+
+	/**
+	 * Trigger a window.resize event.
+	 * This fixes react-dimensions not picking up fullscreen/minimize events.
+	 */
+	protected triggerResize() {
+		try {
+			var event = document.createEvent('UIEvents');
+			event.initUIEvent('resize', true, false, window, 0);
+			window.dispatchEvent(event);
+		} catch (e) {
+		}
 	}
 
 	public render():JSX.Element {
@@ -99,7 +114,7 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 		}
 
 		var style = {};
-		if(!this.state.isFullscreen) {
+		if (!this.state.isFullscreen) {
 			if (this.props.width) {
 				style['width'] = this.props.width;
 			}
