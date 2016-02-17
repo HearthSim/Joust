@@ -1,13 +1,11 @@
 import GameState from '../GameState';
 import GameStateMutator from '../GameStateMutator';
 import Entity from '../../Entity';
-import BaseMutator from "./BaseMutator";
 import ReplaceEntityMutator from "./ReplaceEntityMutator";
 
-class ShowEntityMutator extends BaseMutator implements GameStateMutator {
+class ShowEntityMutator implements GameStateMutator {
 
 	constructor(public entityId:number, public cardId:string, public tags:Immutable.Map<string, number>) {
-		super();
 	}
 
 	public applyTo(state:GameState):GameState {
@@ -21,7 +19,6 @@ class ShowEntityMutator extends BaseMutator implements GameStateMutator {
 		newEntity = newEntity.setTags(this.tags);
 
 		var mutator = new ReplaceEntityMutator(newEntity);
-		mutator.time = this.time;
 
 		return state.apply(mutator);
 	}

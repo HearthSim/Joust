@@ -13,6 +13,7 @@ import {GameTag} from "../enums";
 import ShowEntityMutator from "../state/mutators/ShowEntityMutator";
 import SetTimeMutator from "../state/mutators/SetTimeMutator";
 import {CardOracle} from "../interfaces";
+import IncrementTimeMutator from "../state/mutators/IncrementTimeMutator";
 
 class HSReplayDecoder extends Stream.Transform implements CardOracle {
 
@@ -92,21 +93,9 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 					console.warn('Replay does not contain Hearthstone build number');
 				}
 				break;
-		}
-
-		if (node.attributes.ts && this.currentGame === this.targetGame) {
-			let timestamp = this.parseTimestamp(node.attributes.ts);
-			if (timestamp) {
-				if (this.clearOptionsOnTimestamp) {
-					let clearMutator = new ClearOptionsMutator();
-					clearMutator.time = timestamp;
-					this.push(clearMutator);
-					this.clearOptionsOnTimestamp = false;
-				}
-				else {
-					this.push(new SetTimeMutator(timestamp));
-				}
-			}
+			case 'Action':
+				this.push(new IncrementTimeMutator());
+				break;
 		}
 
 		this.nodeStack.push(node);

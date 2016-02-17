@@ -2,11 +2,9 @@ import * as Immutable from "immutable";
 import GameState from '../GameState';
 import GameStateMutator from '../GameStateMutator';
 import Entity from '../../Entity';
-import BaseMutator from "./BaseMutator";
 
-class AddEntityMutator extends BaseMutator implements GameStateMutator {
+class AddEntityMutator implements GameStateMutator {
 	constructor(public entity:Entity) {
-		super();
 	}
 
 	public applyTo(state:GameState):GameState {
@@ -33,7 +31,7 @@ class AddEntityMutator extends BaseMutator implements GameStateMutator {
 		entityTree = entityTree.setIn([this.entity.getController(), this.entity.getZone(), id], this.entity);
 
 		// we always mutate the GameState when we add an entity
-		return new GameState(entities, entityTree, state.getOptions(), state.getOptionTree(), this.time || state.getTime());
+		return new GameState(entities, entityTree, state.getOptions(), state.getOptionTree(), state.getTime());
 	}
 }
 

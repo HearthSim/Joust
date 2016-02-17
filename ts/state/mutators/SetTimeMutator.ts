@@ -1,14 +1,12 @@
-import BaseMutator from "./BaseMutator";
 import GameState from "../GameState";
+import GameStateMutator from "../GameStateMutator";
 
-class SetTimeMutator extends BaseMutator {
-	constructor(time:number) {
-		super();
-		this.time = time;
+class SetTimeMutator implements GameStateMutator {
+	constructor(public time:number) {
 	}
 
 	public applyTo(state:GameState):GameState {
-		return new GameState(state.getEntities(), state.getEntityTree(), state.getOptions(), state.getOptionTree(), this.time || state.getTime())
+		return new GameState(state.getEntities(), state.getEntityTree(), state.getOptions(), state.getOptionTree(), this.time);
 	}
 }
 

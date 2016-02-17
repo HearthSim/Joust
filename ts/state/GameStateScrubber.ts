@@ -86,7 +86,7 @@ class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 			let now = new Date().getTime();
 			let elapsed = (now - this.lastUpdate) * this.speed;
 			this.lastUpdate = now;
-			this.currentTime += elapsed;
+			this.currentTime += elapsed / 1000;
 
 			if (this.hasEnded()) {
 				this.currentTime = this.endTime - this.initialTime;

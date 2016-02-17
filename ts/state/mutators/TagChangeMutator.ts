@@ -2,15 +2,13 @@ import GameState from '../GameState';
 import GameStateMutator from '../GameStateMutator';
 import Entity from '../../Entity';
 import ReplaceEntityMutator from './ReplaceEntityMutator';
-import BaseMutator from "./BaseMutator";
 
-class TagChangeMutator extends BaseMutator implements GameStateMutator {
+class TagChangeMutator implements GameStateMutator {
 	public id;
 	public tag;
 	public value;
 
 	constructor(id:number, tag:number, value:number) {
-		super();
 		this.id = +id;
 		this.tag = +tag;
 		this.value = +value;
@@ -35,7 +33,6 @@ class TagChangeMutator extends BaseMutator implements GameStateMutator {
 		}
 
 		var mutator = new ReplaceEntityMutator(newEntity);
-		mutator.time = this.time;
 
 		return state.apply(mutator);
 	}

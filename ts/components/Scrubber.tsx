@@ -64,17 +64,11 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 		this.removeListeners(this.props);
 	}
 
-	private pad(i:number, length:number) {
-		return Array(length - (i + '').length + 1).join('0') + i;
-	}
-
 	public render():JSX.Element {
 		var playpause = this.state.playing ?
 			<button onClick={this.pause.bind(this)} disabled={!this.state.canInteract} title="Pause">⏸</button> :
 			<button onClick={this.play.bind(this)} disabled={!this.state.canPlay} title="Play">▶</button>;
 
-		var seconds = Math.round(this.props.scrubber.getCurrentTime() / 1000);
-		var time = this.pad(Math.floor(seconds / 60), 2) + ':' + this.pad((seconds % 60), 2);
 		var speedValues = [1, 2, 5, 10, 25];
 		var speeds = speedValues.map(function (val) {
 			return <option key={val} value={''+val}>{val}&times;</option>;
@@ -87,7 +81,6 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 			<div className="scrubber">
 				{playpause}
 				<button onClick={this.rewind.bind(this)} disabled={!this.state.canRewind} title="Rewind">⏮</button>
-				<span className="scrubber-time">{time}</span>
 				<Timeline duration={this.props.scrubber.getDuration()}
 						  at={this.props.scrubber.getCurrentTime()}
 						  seek={this.props.scrubber.seek.bind(this.props.scrubber)}

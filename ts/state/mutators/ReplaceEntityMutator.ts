@@ -1,11 +1,9 @@
 import GameState from '../GameState';
 import GameStateMutator from '../GameStateMutator';
 import Entity from '../../Entity';
-import BaseMutator from "./BaseMutator";
 
-class ReplaceEntityMutator extends BaseMutator implements GameStateMutator {
+class ReplaceEntityMutator implements GameStateMutator {
 	constructor(public entity:Entity) {
-		super();
 	}
 
 	public applyTo(state:GameState):GameState {
@@ -37,7 +35,7 @@ class ReplaceEntityMutator extends BaseMutator implements GameStateMutator {
 				.setIn([newEntity.getController(), newEntity.getZone(), id], newEntity);
 		});
 
-		return new GameState(entities, entityTree, state.getOptions(), state.getOptionTree(), this.time || state.getTime());
+		return new GameState(entities, entityTree, state.getOptions(), state.getOptionTree(), state.getTime());
 	}
 }
 
