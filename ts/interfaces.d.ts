@@ -5,6 +5,8 @@ import GameStateMutator from "./state/GameStateMutator";
 import GameState from "./state/GameState";
 import {EventEmitter} from 'events';
 import * as Stream from "stream";
+import GameStateSink from "./state/GameStateSink";
+import GameStateScrubber from "./state/GameStateScrubber";
 
 export interface DropTargetProps {
 	connectDropTarget?(jsx);
@@ -118,4 +120,15 @@ export interface CardOracle {
 
 export interface AssetDirectoryProps {
 	assetDirectory?:string;
+}
+
+export interface GameWidgetProps extends CardDataProps, AssetDirectoryProps, React.Props<any> {
+	sink:GameStateSink;
+	interaction?:InteractiveBackend;
+	scrubber?:GameStateScrubber;
+	getImageURL?:(cardId:string) => string;
+	exitGame?:() => void;
+	cardOracle: CardOracle;
+	width?:any;
+	height?:any;
 }

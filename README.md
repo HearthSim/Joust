@@ -1,4 +1,5 @@
-# Joust [![Build Status](https://travis-ci.org/HearthSim/joust.svg?branch=master)](https://travis-ci.org/HearthSim/joust)
+# Joust
+[![Build Status](https://travis-ci.org/HearthSim/joust.svg?branch=master)](https://travis-ci.org/HearthSim/joust)
 
 ## Requirements
 
@@ -6,32 +7,32 @@
 - `npm install -g electron-prebuilt typings gulp webpack`
 
 
-## Install
-
-Install dependencies:
+## Compiling
 
 ```
 npm install
 ```
 
-Install additional TypeScript typings:
-
 ```
 typings install
 ```
 
-Compile and package:
-
 ```
-gulp compile
+gulp compile:web
 ```
 
 
-## Run
+## Embedding
 
+```html
+<div id="container"></div>
+<script type="text/javascript" src="bundle.js"></script>
+<script type="text/javascript">
+	Joust.viewer('container').height(500).width(500).assets('images/').fromUrl('http://example.org/brawl.hsreplay');
+</script>
 ```
-electron .
-```
+
+Don't forget to include the stylesheet and the assets.
 
 
 ## Development
@@ -47,14 +48,3 @@ Watch HTML/LESS:
 ```
 gulp watch
 ```
-
-
-## Deployment
-
-To package for web browsers:
-
-```
-gulp compile:web
-```
-
-Point browsers to `dist/index.html`.

@@ -1,24 +1,12 @@
 import * as React from "react";
-import {JoustClient, CardDataProps, AssetDirectoryProps} from "../interfaces";
+import {GameWidgetProps, JoustClient, CardDataProps, AssetDirectoryProps, CardOracle} from "../interfaces";
 import Scrubber from "./Scrubber";
 import GameState from "../state/GameState";
 import GameWrapper from "./GameWrapper";
 import {InteractiveBackend} from "../interfaces";
 import GameStateScrubber from "../state/GameStateScrubber";
 import GameStateSink from "../state/GameStateSink";
-import {CardOracle} from "../interfaces";
 import Fullscreen from "fullscreen";
-
-interface GameWidgetProps extends CardDataProps, AssetDirectoryProps, React.Props<any> {
-	sink:GameStateSink;
-	interaction?:InteractiveBackend;
-	scrubber?:GameStateScrubber;
-	getImageURL?:(cardId:string) => string;
-	exitGame?:() => void;
-	cardOracle: CardOracle;
-	width?:any;
-	height?:any;
-}
 
 interface GameWidgetState {
 	gameState?:GameState;
