@@ -12,7 +12,7 @@ class InHandCardArt extends React.Component<any, {}> {
 		};
 
 		var hidden = this.props.cardHidden;
-		var imgDir = this.props.assetDirectory || "./images/";
+		var imgDir = (this.props.assetDirectory || "./assets/") + "images/";
 		var legendary = null;
 		var baseClass = "inhand-base";
 		var portraitClass = "inhand-minion";

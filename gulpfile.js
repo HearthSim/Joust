@@ -13,7 +13,7 @@ var webpackStream = require('webpack-stream');
 
 gulp.task('default', ['watch']);
 
-gulp.task('compile', ['compile:scripts', 'compile:styles', 'html', 'fonts', 'images']);
+gulp.task('compile', ['compile:scripts', 'compile:styles', 'html', 'assets']);
 
 gulp.task('compile:scripts', function () {
 	return gulp.src('ts/run.tsx')
@@ -21,7 +21,7 @@ gulp.task('compile:scripts', function () {
 		.pipe(gulp.dest('dist/'));
 });
 
-gulp.task('compile:web', ['compile:scripts:web', 'compile:styles', 'html', 'fonts', 'images']);
+gulp.task('compile:web', ['compile:scripts:web', 'compile:styles', 'html', 'assets']);
 
 gulp.task('compile:scripts:web', function () {
 	var config = require('./webpack.config.js');
@@ -53,17 +53,12 @@ gulp.task('html', function () {
 		.pipe(gulp.dest('dist/'));
 });
 
-gulp.task('fonts', function () {
-	return gulp.src('fonts/*.ttf')
-		.pipe(gulp.dest('dist/fonts/'));
+gulp.task('assets', function () {
+	return gulp.src('assets/**/*.*')
+		.pipe(gulp.dest('dist/assets/'));
 });
 
-gulp.task('images', function () {
-	return gulp.src(['images/*.png', 'images/*.jpg'])
-		.pipe(gulp.dest('dist/images/'));
-});
-
-gulp.task('watch', ['watch:styles', 'watch:html'], function () {
+gulp.task('watch', ['watch:styles', 'watch:html', 'watch:assets'], function () {
 	gutil.log(gutil.colors.yellow("Warning: only watching HTML/LESS files"));
 	gutil.log(gutil.colors.yellow("Use 'webpack -d --watch' to watch TypeScript"));
 });
@@ -78,6 +73,10 @@ gulp.task('watch:styles', ['compile:styles'], function () {
 
 gulp.task('watch:html', ['html'], function () {
 	return gulp.watch(['html/**/*.html'], ['html']);
+});
+
+gulp.task('watch:assets', ['assets'], function () {
+	return gulp.watch(['assets/**/*.*'], ['assets']);
 });
 
 gulp.task('enums', function () {
