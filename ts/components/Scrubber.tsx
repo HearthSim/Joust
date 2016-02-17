@@ -1,11 +1,13 @@
 import * as React from "react";
 import {StreamScrubber} from "../interfaces";
-import Fullscreen from "fullscreen";
 
 interface ScrubberProps extends React.Props<any> {
 	scrubber:StreamScrubber;
 	swapPlayers?:() => void;
-	fullscreen?:Fullscreen;
+	isFullscreen?:boolean;
+	isFullscreenAvailable?:boolean;
+	onClickFullscreen?:() => void;
+	onClickMinimize?:() => void;
 }
 
 interface ScrubberState {
@@ -14,7 +16,6 @@ interface ScrubberState {
 	canRewind?:boolean;
 	canPlay?:boolean;
 	speed?:number;
-	isFullscreen?:boolean;
 }
 
 class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
@@ -27,17 +28,12 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 			canRewind: false,
 			canPlay: false,
 			speed: 1,
-			isFullscreen: false
 		};
-		this.attainFullscreenCb = this.onAttainFullscreen.bind(this);
-		this.releaseFullscreenCb = this.onReleaseFullscreen.bind(this);
 		this.updateStateCb = this.updateState.bind(this);
 		this.registerListeners(this.props);
 	}
 
 	private updateStateCb;
-	private attainFullscreenCb;
-	private releaseFullscreenCb;
 
 	public componentWillUpdate(nextProps:ScrubberProps, nextState:ScrubberState) {
 		this.removeListeners(this.props);
@@ -45,18 +41,10 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 	}
 
 	private registerListeners(props:ScrubberProps) {
-		if (props.fullscreen) {
-			props.fullscreen.on('attain', this.attainFullscreenCb);
-			props.fullscreen.on('release', this.releaseFullscreenCb);
-		}
 		props.scrubber.on('update', this.updateStateCb);
 	}
 
 	private removeListeners(props:ScrubberProps) {
-		if (props.fullscreen) {
-			props.fullscreen.removeListener('attain', this.attainFullscreenCb);
-			props.fullscreen.removeListener('release', this.releaseFullscreenCb);
-		}
 		props.scrubber.removeListener('update', this.updateStateCb);
 	}
 
@@ -90,9 +78,10 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 		var speeds = speedValues.map(function (val) {
 			return <option key={val} value={''+val}>{val}&times;</option>;
 		}.bind(this));
-		var fullscreen = this.state.isFullscreen ?
-			<button onClick={this.onClickMinimize.bind(this)} title="Minimize">↙</button> :
-			<button onClick={this.onClickFullscreen.bind(this)} title="Fullscreen">↗</button>;
+		var fullscreen = this.props.isFullscreen ?
+			<button onClick={this.props.onClickMinimize} title="Minimize">↙</button> :
+			<button onClick={this.props.onClickFullscreen} disabled={!this.props.isFullscreenAvailable}
+					title="Fullscreen">↗</button>;
 		return (
 			<div className="scrubber">
 				{playpause}
@@ -126,22 +115,6 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 	public changeSpeed(e):void {
 		var speed = Math.max(+e.target.value, 0);
 		this.props.scrubber.setSpeed(speed);
-	}
-
-	protected onClickFullscreen() {
-		this.props.fullscreen.request();
-	}
-
-	protected onAttainFullscreen() {
-		this.setState({isFullscreen: true});
-	}
-
-	protected onClickMinimize() {
-		this.props.fullscreen.release();
-	}
-
-	protected onReleaseFullscreen() {
-		this.setState({isFullscreen: false});
 	}
 }
 

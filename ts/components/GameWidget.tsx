@@ -23,26 +23,29 @@ interface GameWidgetProps extends CardDataProps, AssetDirectoryProps, React.Prop
 interface GameWidgetState {
 	gameState?:GameState;
 	swapPlayers?:boolean;
-	element?:HTMLDivElement;
+	isFullscreen?:boolean;
 }
 
 class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
-	private cb = null;
-	private element = null;
+	private cb;
+	private ref:HTMLDivElement;
+	private fullscreen:Fullscreen;
 
 	constructor(props:GameWidgetProps) {
 		super(props);
 		this.state = {
 			gameState: null,
 			swapPlayers: false,
-			element: null
+			isFullscreen: false
 		};
 	}
 
 	public componentDidMount() {
 		this.cb = this.setGameState.bind(this);
 		this.props.sink.on('gamestate', this.cb.bind(this));
-		this.setState({element: this.element});
+		this.fullscreen = new Fullscreen(this.ref);
+		this.fullscreen.on('attain', this.onAttainFullscreen.bind(this));
+		this.fullscreen.on('release', this.onReleaseFullscreen.bind(this));
 	}
 
 	protected setGameState(gameState:GameState):void {
@@ -51,6 +54,9 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 
 	protected componentWillUnmount() {
 		this.props.sink.removeListener('gamestate', this.cb);
+		console.log('unmount');
+		this.fullscreen.removeAllListeners('attain');
+		this.fullscreen.removeAllListeners('release');
 	}
 
 	protected onClickExit(e):void {
@@ -62,6 +68,22 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 
 	protected swapPlayers():void {
 		this.setState({swapPlayers: !this.state.swapPlayers});
+	}
+
+	protected onClickFullscreen() {
+		this.fullscreen.request();
+	}
+
+	protected onAttainFullscreen() {
+		this.setState({isFullscreen: true});
+	}
+
+	protected onClickMinimize() {
+		this.fullscreen.release();
+	}
+
+	protected onReleaseFullscreen() {
+		this.setState({isFullscreen: false});
 	}
 
 	public render():JSX.Element {
@@ -81,20 +103,25 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 		if (this.props.scrubber) {
 			parts.push(<Scrubber key="scrubber" scrubber={this.props.scrubber}
 								 swapPlayers={this.swapPlayers.bind(this)}
-								 fullscreen={this.state.element && new Fullscreen(this.state.element)}
+								 isFullscreen={this.state.isFullscreen}
+								 isFullscreenAvailable={Fullscreen.available()}
+								 onClickFullscreen={this.onClickFullscreen.bind(this)}
+								 onClickMinimize={this.onClickMinimize.bind(this)}
 			/>);
 		}
 
 		var style = {};
-		if (this.props.width) {
-			style['width'] = this.props.width;
-		}
-		if (this.props.height) {
-			style['height'] = this.props.height;
+		if(!this.state.isFullscreen) {
+			if (this.props.width) {
+				style['width'] = this.props.width;
+			}
+			if (this.props.height) {
+				style['height'] = this.props.height;
+			}
 		}
 
 		return (
-			<div className="joust-widget game-widget" ref={(ref) => this.element = ref} style={style}>
+			<div className="joust-widget game-widget" ref={(ref) => this.ref = ref} style={style}>
 				{parts}
 			</div>
 		);

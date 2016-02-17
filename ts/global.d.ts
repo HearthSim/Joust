@@ -39,13 +39,17 @@ declare module "http" {
 declare module "fullscreen" {
 	import {EventEmitter} from "events";
 
-	class fs extends EventEmitter {
+	class fullscreen extends EventEmitter {
 		constructor(any:any);
-		available():boolean;
+
 		request():void;
+
 		release():void;
+
 		dispose():void;
+
+		static available():boolean;
 	}
 
-	export default fs;
+	export default fullscreen;
 }
