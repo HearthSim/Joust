@@ -11,6 +11,7 @@ import HSReplayDecoder from "./protocol/HSReplayDecoder";
 import GameStateScrubber from "./state/GameStateScrubber";
 import * as http from "http";
 import * as stream from "stream"
+import * as URL from "url";
 
 var React = require('react');
 var ReactDOM = require('react-dom');
@@ -52,7 +53,9 @@ class Viewer {
 		var decoder = new HSReplayDecoder();
 		var sink = new GameStateSink();
 
-		var request = http.get(url);
+		var opts = URL.parse(url) as any;
+		opts.withCredentials = false;
+		var request = http.get(opts);
 		request.on('response', function (response:stream.Readable) {
 			response // sink is returned by the last .pipe()
 				.pipe(decoder) // json -> mutators
