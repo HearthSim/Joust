@@ -35,3 +35,17 @@ declare module "http" {
 		withCredentials: boolean;
 	}
 }
+
+declare module "fullscreen" {
+	import {EventEmitter} from "events";
+
+	class fs extends EventEmitter {
+		constructor(any:any);
+		available():boolean;
+		request():void;
+		release():void;
+		dispose():void;
+	}
+
+	export default fs;
+}
