@@ -200,7 +200,7 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 				let option = new Option(
 					+node.attributes.index,
 					+node.attributes.type,
-					this.resolveEntityId(node.attributes.entity) || null,
+					(node.attributes.entity && this.resolveEntityId(node.attributes.entity)) || null,
 					[] // todo: parse targets
 				);
 				parent.attributes.options = parent.attributes.options.set(+node.attributes.index, option);
