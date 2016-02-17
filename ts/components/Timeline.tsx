@@ -42,6 +42,7 @@ class Timeline extends React.Component<TimelineProps, TimelineState> {
 		}
 		e.preventDefault();
 		this.setState({isDragging: true});
+		this.seek(e);
 	}
 
 	protected onMouseMove(e):void {
@@ -49,6 +50,10 @@ class Timeline extends React.Component<TimelineProps, TimelineState> {
 			return;
 		}
 
+		this.seek(e);
+	}
+
+	protected seek(e):void {
 		var rect = this.ref.getBoundingClientRect();
 		var offset = Math.min(Math.max(rect.left, e.clientX), rect.right);
 
