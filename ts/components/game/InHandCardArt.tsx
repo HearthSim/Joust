@@ -20,9 +20,10 @@ class InHandCardArt extends React.Component<any, {}> {
 		var portrait = imgDir + "portrait.jpg";
 
 		// when card art is available
-		// if (this.props.cardId) {
-		// 	portrait = cardArtBaseUrl + this.props.cardId + ".jpg";
-		// }
+		var cardArtBaseUrl = "http://cardart-andburn.rhcloud.com/";
+		if (this.props.cardId) {
+			portrait = cardArtBaseUrl + this.props.cardId + ".jpg";
+		}
 		if (hidden) {
 			portrait = null;
 			base = imgDir + "cardback.png";
