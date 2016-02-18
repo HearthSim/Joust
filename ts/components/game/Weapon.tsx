@@ -2,6 +2,7 @@ import * as React from "react";
 import {EntityProps} from "../../interfaces";
 import Attack from './stats/Attack';
 import Durability from './stats/Durability';
+import WeaponArt from './WeaponArt';
 
 interface WeaponProps extends EntityProps, React.Props<any> {
 
@@ -25,7 +26,7 @@ class Weapon extends React.Component<WeaponProps, {}> {
 
 			return (
 				<div className="weapon">
-					<h1>{title}</h1>
+					<WeaponArt cardId={entity.getCardId()} exhausted={this.props.entity.isExhausted()}></WeaponArt>
 					<div className="stats">
 						<Attack attack={entity.getAtk()} default={defaultAttack}/>
 						<Durability durability={entity.getDurability()} damage={entity.getDamage()}

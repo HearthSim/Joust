@@ -24,9 +24,10 @@ class InPlayCardArt extends React.Component<any, {}> {
 		}
 
 		// when card art is available
-		// if (this.props.cardId) {
-		// 	portrait = cardArtBaseUrl + this.props.cardId + ".jpg";
-		// }
+		var cardArtBaseUrl = "http://cardart-andburn.rhcloud.com/";
+		if (this.props.cardId) {
+			portrait = cardArtBaseUrl + this.props.cardId + ".jpg";
+		}
 
 		return (
 			<div className="visuals" style={style}>
