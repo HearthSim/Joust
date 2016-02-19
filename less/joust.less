@@ -622,6 +622,8 @@
 
 /* CLEANUP */
 
+@scrubber-height: 35px;
+
 .joust-widget {
   display: flex;
   flex-direction: column;
@@ -646,17 +648,17 @@
 }
 
 .joust-scrubber {
-  height: 30px;
+  height: @scrubber-height;
   display: flex;
   flex-direction: row;
 
   button {
-	width: 30px;
+	width: @scrubber-height;
   }
 
   button, select {
 	color: white;
-	height: 30px;
+	height: @scrubber-height;
 	background-color: gray;
 	border: none;
 	margin: 0 1px 0 0;
