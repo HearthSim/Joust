@@ -55,3 +55,5 @@ gulp watch
 The contents of this repository is licensed under the APGL, which can be found in the LICENSE file, with the following exceptions:
 
 - The Belwe and Franklin Gothic are not licensed under APGL.
+- The Font Awesome fonts at `assets/fonts/` are licensed under the SIL OFL 1.1.
+- The Font Awesome LESS code at `less/font-awesome/` is licensed under the MIT license.

@@ -1,3 +1,5 @@
+@import "font-awesome/font-awesome.less";
+
 @font-face {
   font-family: "Belwe Bd BT";
   src: url("./assets/fonts/Belwe.ttf");
@@ -631,6 +633,7 @@
 .game-widget {
   box-sizing: border-box;
   justify-content: space-between;
+  background-color: white;
 
   *, *:before, *:after {
 	box-sizing: inherit;
@@ -642,25 +645,30 @@
   width: 100%;
 }
 
-.game {
-  height: 100%;
-  width: 100%;
-}
-
-.scrubber {
-  width: 100%;
+.joust-scrubber {
   height: 30px;
   display: flex;
   flex-direction: row;
+
+  button {
+	width: 30px;
+  }
+
+  button, select {
+	color: white;
+	height: 30px;
+	background-color: gray;
+	border: none;
+	margin: 0 1px 0 0;
+
+	&:last-child {
+	  margin-right: 0;
+	}
+  }
 }
 
-.scrubber-history {
+.joust-scrubber-timeline {
   flex: 1;
-  border: white solid 1px;
   background-color: gray;
-}
-
-.scrubber-time {
-  font-family: monospace;
-  margin: auto 5px;
+  margin-right: 1px;
 }

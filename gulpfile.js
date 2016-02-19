@@ -40,7 +40,7 @@ gulp.task('compile:scripts:web', function () {
 });
 
 gulp.task('compile:styles', function () {
-	return gulp.src('less/**/*.less')
+	return gulp.src('less/joust.less')
 		.pipe(sourcemaps.init())
 		.pipe(less({'strictMath': true}))
 		.pipe(autoprefixer({browsers: ['last 2 versions']}))

@@ -76,7 +76,7 @@ class Timeline extends React.Component<TimelineProps, TimelineState> {
 
 	public render():JSX.Element {
 		return (
-			<div className="scrubber-history" ref={(ref) => this.ref = ref} style={{cursor: 'pointer'}}
+			<div className="joust-scrubber-timeline" ref={(ref) => this.ref = ref} style={{cursor: 'pointer'}}
 				 onMouseDown={this.onMouseDown.bind(this)}>
 			</div>
 		);

@@ -67,18 +67,28 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 
 	public render():JSX.Element {
 		var playpause = this.state.playing ?
-			<button onClick={this.pause.bind(this)} disabled={!this.state.canInteract} title="Pause">⏸</button> :
-			<button onClick={this.play.bind(this)} disabled={!this.state.canPlay} title="Play">▶</button>;
+			<button onClick={this.pause.bind(this)} disabled={!this.state.canInteract} title="Pause">
+				<i className="joust-fa joust-fa-pause"></i>
+			</button> :
+			<button onClick={this.play.bind(this)} disabled={!this.state.canPlay} title="Play">
+				<i className="joust-fa joust-fa-play"></i>
+			</button>;
 
 
 		var fullscreen = this.props.isFullscreen ?
-			<button onClick={this.props.onClickMinimize} title="Minimize">↙</button> :
+			<button onClick={this.props.onClickMinimize} title="Minimize">
+				<i className="joust-fa joust-fa-compress"></i>
+			</button> :
 			<button onClick={this.props.onClickFullscreen} disabled={!this.props.isFullscreenAvailable}
-					title="Fullscreen">↗</button>;
+					title="Fullscreen">
+				<i className="joust-fa joust-fa-expand"></i>
+			</button>;
 		return (
-			<div className="scrubber">
+			<div className="joust-scrubber">
 				{playpause}
-				<button onClick={this.rewind.bind(this)} disabled={!this.state.canRewind} title="Rewind">⏮</button>
+				<button onClick={this.rewind.bind(this)} disabled={!this.state.canRewind} title="Rewind">
+					<i className="joust-fa joust-fa-fast-backward"></i>
+				</button>
 				<Timeline duration={this.props.scrubber.getDuration()}
 						  at={this.props.scrubber.getCurrentTime()}
 						  seek={this.props.scrubber.seek.bind(this.props.scrubber)}
@@ -88,7 +98,8 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 							   selectSpeed={this.selectSpeed.bind(this)}
 							   disabled={!this.state.canInteract}
 				/>
-				<button onClick={this.props.swapPlayers} disabled={!this.state.canInteract} title="Swap players">⇅
+				<button onClick={this.props.swapPlayers} disabled={!this.state.canInteract} title="Swap players">
+					<i className="joust-fa joust-fa-unsorted"></i>
 				</button>
 				{fullscreen}
 			</div>
