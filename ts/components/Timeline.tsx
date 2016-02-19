@@ -75,7 +75,7 @@ class Timeline extends React.Component<TimelineProps, TimelineState> {
 	}
 
 	public render():JSX.Element {
-		var width = 100 / this.props.duration * this.props.at;
+		var width = this.props.duration > 0 ? 100 / this.props.duration * this.props.at : 0;
 		return (
 			<div className="joust-scrubber-timeline" ref={(ref) => this.ref = ref} style={{cursor: 'pointer'}}
 				 onMouseDown={this.onMouseDown.bind(this)}>
