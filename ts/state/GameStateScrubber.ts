@@ -121,6 +121,7 @@ class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 
 	public setSpeed(speed:number):void {
 		this.speed = speed;
+		this.update();
 	}
 
 	public getSpeed():number {
