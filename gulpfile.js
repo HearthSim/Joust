@@ -1,5 +1,6 @@
 var gulp = require('gulp');
 var gutil = require('gulp-util');
+var plumber = require('gulp-plumber');
 
 var sourcemaps = require('gulp-sourcemaps');
 var less = require('gulp-less');
@@ -41,6 +42,10 @@ gulp.task('compile:scripts:web', function () {
 
 gulp.task('compile:styles', function () {
 	return gulp.src('less/joust.less')
+		.pipe(plumber(function(err) {
+			gutil.log(gutil.colors.red(err));
+			this.emit("end", new gutil.PluginError(err));
+		}))
 		.pipe(sourcemaps.init())
 		.pipe(less({'strictMath': true}))
 		.pipe(autoprefixer({browsers: ['last 2 versions']}))
