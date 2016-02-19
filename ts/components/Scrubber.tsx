@@ -1,6 +1,7 @@
 import * as React from "react";
 import {StreamScrubber} from "../interfaces";
 import Timeline from "./Timeline";
+import SpeedSelector from "./SpeedSelector";
 
 interface ScrubberProps extends React.Props<any> {
 	scrubber:StreamScrubber;
@@ -69,10 +70,7 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 			<button onClick={this.pause.bind(this)} disabled={!this.state.canInteract} title="Pause">⏸</button> :
 			<button onClick={this.play.bind(this)} disabled={!this.state.canPlay} title="Play">▶</button>;
 
-		var speedValues = [1, 2, 5, 10, 25];
-		var speeds = speedValues.map(function (val) {
-			return <option key={val} value={''+val}>{val}&times;</option>;
-		}.bind(this));
+
 		var fullscreen = this.props.isFullscreen ?
 			<button onClick={this.props.onClickMinimize} title="Minimize">↙</button> :
 			<button onClick={this.props.onClickFullscreen} disabled={!this.props.isFullscreenAvailable}
@@ -85,10 +83,11 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 						  at={this.props.scrubber.getCurrentTime()}
 						  seek={this.props.scrubber.seek.bind(this.props.scrubber)}
 				/>
-				<select onChange={this.changeSpeed.bind(this)} value={''+this.state.speed}
-						disabled={!this.state.canInteract} title="Playback speed">
-					{speeds}
-				</select>
+				<SpeedSelector speed={this.state.speed}
+							   speeds={[1, 2, 5, 10, 25]}
+							   selectSpeed={this.selectSpeed.bind(this)}
+							   disabled={!this.state.canInteract}
+				/>
 				<button onClick={this.props.swapPlayers} disabled={!this.state.canInteract} title="Swap players">⇅
 				</button>
 				{fullscreen}
@@ -108,8 +107,8 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 		this.props.scrubber.rewind();
 	}
 
-	public changeSpeed(e):void {
-		var speed = Math.max(+e.target.value, 0);
+	public selectSpeed(speed:number):void {
+		var speed = Math.max(speed, 0);
 		this.props.scrubber.setSpeed(speed);
 	}
 }
