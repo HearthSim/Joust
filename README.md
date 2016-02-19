@@ -48,3 +48,10 @@ Watch HTML/LESS:
 ```
 gulp watch
 ```
+
+
+## Licenses
+
+The contents of this repository is licensed under the APGL, which can be found in the LICENSE file, with the following exceptions:
+
+- The Belwe and Franklin Gothic are not licensed under APGL.
