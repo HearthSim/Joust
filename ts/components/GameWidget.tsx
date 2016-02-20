@@ -12,6 +12,7 @@ interface GameWidgetState {
 	gameState?:GameState;
 	swapPlayers?:boolean;
 	isFullscreen?:boolean;
+	isFullscreenAvailable?:boolean;
 	cardOracle?:Immutable.Map<number, string>;
 }
 
@@ -27,6 +28,7 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 			gameState: null,
 			swapPlayers: false,
 			isFullscreen: false,
+			isFullscreenAvailable: Fullscreen.available(),
 			cardOracle: null
 		};
 	}
@@ -117,7 +119,7 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 			parts.push(<Scrubber key="scrubber" scrubber={this.props.scrubber}
 								 swapPlayers={this.swapPlayers.bind(this)}
 								 isFullscreen={this.state.isFullscreen}
-								 isFullscreenAvailable={Fullscreen.available()}
+								 isFullscreenAvailable={this.state.isFullscreenAvailable}
 								 onClickFullscreen={this.onClickFullscreen.bind(this)}
 								 onClickMinimize={this.onClickMinimize.bind(this)}
 			/>);
