@@ -475,23 +475,24 @@
   height: 100%;
 
   div.visuals {
-	position: relative;
-	img {
-	  position: absolute;
-	}
-	.inplay-base, .inplay-legendary, .inplay-taunt {
-	  height: 100%;
-	}
-	.inplay-portrait {
-	  width: 85%;
-	  top: 10%;;
-	  left: 7%;
-	  clip-path: url(#inplay-minion-clip);
-	}
-	.inplay-legendary {
-	  position: absolute;
-	  height: 100%;
-	}
+  	position: relative;
+  	img {
+  	  position: absolute;
+  	}
+  	.inplay-base, .inplay-legendary, .inplay-taunt, .inplay-shield,
+    .icon-deathrattle, .icon-trigger, .icon-inspire, .icon-poisonous {
+  	  height: 100%;
+  	}
+  	.inplay-portrait {
+  	  width: 85%;
+  	  top: 10%;;
+  	  left: 7%;
+  	  clip-path: url(#inplay-minion-clip);
+  	}
+  	.inplay-legendary {
+  	  position: absolute;
+  	  height: 100%;
+  	}
   }
 
   > div {
