@@ -10,7 +10,7 @@ class WeaponArt extends React.Component<any, {}> {
 		var style = {
 			width: divWidth + 'px',
 			height: divWidth + 'px',
-			'margin-top': topMargin + 'px'
+			marginTop: topMargin + 'px'
 		};
 
 		var imgDir = (this.props.assetDirectory || "./assets/") + "images/";
