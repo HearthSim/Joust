@@ -17,7 +17,7 @@ class SpeedSelector extends React.Component<SpeedSelectorProps, {}> {
 
 	public render():JSX.Element {
 		var speeds = this.props.speeds.map(function (val) {
-			return <option key={val} value={''+val}>{val}&times;</option>;
+			return <option key={val} value={''+val}><span>{val}&times;</span></option>;
 		}.bind(this));
 
 		return (
