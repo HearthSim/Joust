@@ -92,7 +92,7 @@ class Card extends React.Component<CardProps, {}> {
 		}
 
 		if (this.props.isHidden) {
-			classNames.push('hidden');
+			classNames.push('hidden-card');
 		}
 
 		if (this.props.dragging) {
