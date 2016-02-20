@@ -22,7 +22,8 @@ class Card extends React.Component<CardProps, {}> {
 
 	public render():JSX.Element {
 		var entity = this.props.entity;
-		if (entity.getCardId() === null) {
+		var canBeRevealed = this.props.cards && this.props.cards.has(entity.getCardId());
+		if (entity.getCardId() === null || (this.props.isHidden && !canBeRevealed)) {
 			return <div className="card">
 				<InHandCardArt assetDirectory={this.props.assetDirectory} cardHidden={true}/>
 			</div>;
@@ -47,7 +48,7 @@ class Card extends React.Component<CardProps, {}> {
 		var defaultHealth = null;
 		var defaultDurability = null;
 		var cardType = entity.getCardType();
-		if (this.props.cards && this.props.cards.has(entity.getCardId())) {
+		if (canBeRevealed) {
 			var data = this.props.cards && this.props.cards.get(entity.getCardId());
 			title = data.name;
 			description = data.text;
