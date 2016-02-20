@@ -43,7 +43,8 @@ class EntityList extends React.Component<EntityListProps, {}> {
 		return (
 			this.props.entities !== nextProps.entities ||
 			this.props.options !== nextProps.options ||
-			this.props.optionCallback !== nextProps.optionCallback
+			this.props.optionCallback !== nextProps.optionCallback ||
+			this.props.cardOracle !== nextProps.cardOracle
 		);
 	}
 }

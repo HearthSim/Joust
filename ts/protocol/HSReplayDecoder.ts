@@ -235,7 +235,12 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 		}
 		id = +id;
 		cardId = '' + cardId;
-		this.cardIds = this.cardIds.set(id, cardId);
+		let newCardIds = this.cardIds.set(id, cardId);
+		if(newCardIds === this.cardIds) {
+			return;
+		}
+		this.cardIds = newCardIds;
+		this.emit('cards', this.cardIds);
 	}
 
 

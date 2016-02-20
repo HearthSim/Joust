@@ -12,10 +12,12 @@ interface GameWidgetState {
 	gameState?:GameState;
 	swapPlayers?:boolean;
 	isFullscreen?:boolean;
+	cardOracle?:Immutable.Map<number, string>;
 }
 
 class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 	private cb;
+	private cardOracleCb;
 	private ref:HTMLDivElement;
 	private fullscreen:Fullscreen;
 
@@ -24,7 +26,8 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 		this.state = {
 			gameState: null,
 			swapPlayers: false,
-			isFullscreen: false
+			isFullscreen: false,
+			cardOracle: null
 		};
 	}
 
@@ -34,6 +37,8 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 		this.fullscreen = new Fullscreen(this.ref);
 		this.fullscreen.on('attain', this.onAttainFullscreen.bind(this));
 		this.fullscreen.on('release', this.onReleaseFullscreen.bind(this));
+		this.cardOracleCb = this.updateCardOracle.bind(this);
+		this.props.cardOracle.on('cards', this.cardOracleCb);
 	}
 
 	protected setGameState(gameState:GameState):void {
@@ -45,6 +50,7 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 		console.log('unmount');
 		this.fullscreen.removeAllListeners('attain');
 		this.fullscreen.removeAllListeners('release');
+		this.props.cardOracle.removeListener('cards', this.cardOracleCb);
 	}
 
 	protected onClickExit(e):void {
@@ -76,6 +82,10 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 		this.triggerResize();
 	}
 
+	protected updateCardOracle(cards: Immutable.Map<number, string>) {
+		this.setState({cardOracle: cards});
+	}
+
 	/**
 	 * Trigger a window.resize event.
 	 * This fixes react-dimensions not picking up fullscreen/minimize events.
@@ -100,7 +110,7 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 		parts.push(<GameWrapper key="game" state={this.state.gameState} interaction={this.props.interaction}
 								assetDirectory={this.props.assetDirectory}
 								cards={this.props.cards} swapPlayers={this.state.swapPlayers}
-								cardOracle={this.props.cardOracle && this.props.cardOracle.getCardMap()}
+								cardOracle={this.state.cardOracle}
 		/>);
 
 		if (this.props.scrubber) {
@@ -128,6 +138,15 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 				{parts}
 			</div>
 		);
+	}
+
+	public shouldComponentUpdate(nextProps:GameWidgetProps, nextState:GameWidgetState) {
+		if(this.state.cardOracle !== nextState.cardOracle) {
+			if(this.props.scrubber && this.props.scrubber.isPlaying()) {
+				return false;
+			}
+		}
+		return true;
 	}
 }
 

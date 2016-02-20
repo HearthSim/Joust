@@ -153,7 +153,8 @@ class Player extends React.Component<PlayerProps, {}> {
 			this.props.player !== nextProps.player ||
 			this.props.entities !== nextProps.entities ||
 			this.props.options !== nextProps.options ||
-			this.props.optionCallback !== nextProps.optionCallback
+			this.props.optionCallback !== nextProps.optionCallback ||
+			this.props.cardOracle !== nextProps.cardOracle
 		);
 	}
 }

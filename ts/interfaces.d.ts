@@ -67,6 +67,7 @@ export interface StreamScrubber extends EventEmitter {
 	setSpeed(speed:number):void;
 	seek(time:number):void;
 	isPlaying():boolean;
+	isPaused():boolean;
 	canInteract():boolean;
 	canRewind():boolean;
 	rewind():void;
@@ -117,7 +118,7 @@ export interface CardOracleProps {
 	cardOracle?: Immutable.Map<number, string>;
 }
 
-export interface CardOracle {
+export interface CardOracle extends EventEmitter {
 	getCardMap(): Immutable.Map<number, string>;
 }
 
@@ -128,7 +129,7 @@ export interface AssetDirectoryProps {
 export interface GameWidgetProps extends CardDataProps, AssetDirectoryProps, React.Props<any> {
 	sink:GameStateSink;
 	interaction?:InteractiveBackend;
-	scrubber?:GameStateScrubber;
+	scrubber?:StreamScrubber;
 	getImageURL?:(cardId:string) => string;
 	exitGame?:() => void;
 	cardOracle: CardOracle;
