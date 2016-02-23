@@ -6,7 +6,7 @@ import Entity from "../../Entity";
 import Secrets from './Secrets';
 import Attack from './stats/Attack'
 import Health from './stats/Health'
-import HeroArt from './HeroArt'
+import HeroArt from './visuals/HeroArt'
 import * as _ from 'lodash';
 
 interface HeroProps extends EntityInPlayProps {
@@ -33,7 +33,7 @@ class Hero extends EntityInPlay<HeroProps, {}> {
 		return (
 			<div>
 				<Secrets entities={this.props.secrets} cards={this.props.cards}/>
-				<HeroArt cardId={this.props.entity.getCardId()}/>
+				<HeroArt entity={this.props.entity}/>
 
 				<div className="stats">
 					{attack}
