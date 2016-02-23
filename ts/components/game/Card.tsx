@@ -6,7 +6,7 @@ import Attack from './stats/Attack';
 import Health from './stats/Health';
 import Cost from './stats/Cost';
 
-import InHandCardArt from './InHandCardArt';
+import InHandCardArt from './visuals/InHandCardArt';
 
 import {DragSource} from 'react-dnd';
 import {CardType} from "../../enums";
@@ -24,9 +24,11 @@ class Card extends React.Component<CardProps, {}> {
 		var entity = this.props.entity;
 		var canBeRevealed = this.props.cards && this.props.cards.has(entity.getCardId());
 		if (entity.getCardId() === null || (this.props.isHidden && !canBeRevealed)) {
-			return <div className="card">
-				<InHandCardArt assetDirectory={this.props.assetDirectory} cardHidden={true}/>
-			</div>;
+			return (
+				<div className="card">
+					<InHandCardArt hidden={true} entity={this.props.entity} cardType={0}/>
+				</div>
+			);
 		}
 
 		var draggable = this.props.option && this.props.optionCallback;
@@ -103,10 +105,7 @@ class Card extends React.Component<CardProps, {}> {
 		var connectDragSource = this.props.connectDragSource;
 		var jsx = (
 			<div className={classNames.join(' ')} style={this.props.style}>
-				<InHandCardArt cardId={entity.getCardId()} cardType={cardType}
-							   legendary={entity.isLegendary()}
-							   assetDirectory={this.props.assetDirectory}
-				/>
+				<InHandCardArt entity={entity} hidden={false} cardType={cardType}/>
 				<Cost cost={!this.props.isHidden ? entity.getCost() : defaultCost} default={defaultCost}/>
 				<h1>{title}</h1>
 				<div className="description">

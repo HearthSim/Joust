@@ -2,7 +2,7 @@ import * as React from "react";
 import EntityInPlay from "./EntityInPlay";
 import {EntityInPlayProps} from "../../interfaces";
 import {GameTag} from "../../enums";
-import InPlayCardArt from './InPlayCardArt';
+import InPlayCardArt from './visuals/InPlayCardArt';
 
 import Attack from './stats/Attack';
 import Health from './stats/Health';
@@ -32,12 +32,7 @@ class Minion extends EntityInPlay<EntityInPlayProps, {}> {
 
 		return (
 			<div>
-				<InPlayCardArt
-					taunt={entity.isTaunter()}
-					legendary={entity.isLegendary()}
-					entity={entity}
-					cardId={entity.getCardId()}
-					assetDirectory={this.props.assetDirectory}/>
+				<InPlayCardArt entity={entity}/>
 				<div className="stats">
 					<Attack attack={entity.getAtk()} default={defaultAttack}/>
 					<Health health={entity.getHealth()} damage={entity.getDamage()} default={defaultHealth}/>
