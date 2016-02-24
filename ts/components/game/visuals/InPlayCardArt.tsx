@@ -37,6 +37,13 @@ class InPlayCardArt extends React.Component<InPlayCardArtProps, {}> {
 			});
 		}
 
+		if (entity.isFrozen()) {
+			images.push({
+				image: "inplay_minion_frozen.png",
+				classes: ["inplay-frozen"]
+			});
+		}
+
 		if (entity.getTag(GameTag.INSPIRE) > 0) {
 			images.push({
 				image: "icon_inspire.png",
