@@ -34,9 +34,8 @@ class Hero extends EntityInPlay<HeroProps, {}> {
 		var armor = entity.getArmor() ? <Armor armor={entity.getArmor()}/> : null;
 		return (
 			<div>
-				<Secrets entities={this.props.secrets} cards={this.props.cards}/>
 				<HeroArt entity={this.props.entity}/>
-
+				<Secrets entities={this.props.secrets} cards={this.props.cards}/>
 				<div className="stats">
 					{attack}
 					<Health health={entity.getHealth()} damage={entity.getDamage()}/>
