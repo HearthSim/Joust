@@ -262,7 +262,7 @@
   }
 }
 
-.cost, .atk, .health, .durability {
+.cost, .atk, .health, .durability, .armor {
   position: absolute;
   display: block;
   width: 20%;
@@ -540,16 +540,20 @@
 
   .stats {
 	  .atk {
-		left: 4%;
-		top: 82%;
-		font-size: 1em;
+  		left: 4%;
+  		top: 78%;
+  		font-size: 1.2em;
 	  }
-
 	  .health {
-		left: 74%;
-		top: 81%;
-		font-size: 1em;
+  		left: 74%;
+  		top: 79%;
+  		font-size: 1.2em;
 	  }
+    .armor {
+      left: 74%;
+  		top: 54%;
+  		font-size: 1.2em;
+    }
 	}
 
 	.secrets {
@@ -568,7 +572,7 @@
     img {
       position: absolute;
     }
-    .hero-frame {
+    .hero-frame, .hero-attack, .hero-armor {
       height: 100%;
     }
     .hero-portrait {
