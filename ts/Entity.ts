@@ -41,6 +41,10 @@ class Entity {
 		return this.getTag(GameTag.ATK);
 	}
 
+	public getArmor():number {
+		return this.getTag(GameTag.ARMOR);
+	}
+
 	public getCost():number {
 		return this.getTag(GameTag.COST);
 	}
