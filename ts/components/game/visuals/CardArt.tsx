@@ -3,7 +3,7 @@ import Dimensions from "react-dimensions";
 
 interface CardArtItem {
 	image: string;
-	isArt: boolean;
+	isArt?: boolean;
 	classes: Array<String>;
 }
 
@@ -14,11 +14,11 @@ interface CardArtProps {
 	margin: boolean;
 	containerWidth: number;
 	containerHeight: number;
+	baseArtUrl?: string;
 }
 
 class CardArt extends React.Component<CardArtProps, {}> {
 
-	private static baseArtUrl:string = "http://cardart-andburn.rhcloud.com/";
 	private static baseArtExt:string = ".jpg";
 	private static imageDirectory:string = "./assets/images/";
 
@@ -35,20 +35,23 @@ class CardArt extends React.Component<CardArtProps, {}> {
 		return style;
 	}
 
-	private createImageItem(item:CardArtItem, index:number) {
+	private createImageItem(item:CardArtItem, index:number):JSX.Element {
 		if (item.image === null)
 			return;
 
-		var dir = CardArt.imageDirectory;
-		var ext = "";
+		var imgSrc = null;
 		if (item.isArt) {
-			dir = CardArt.baseArtUrl;
-			ext = CardArt.baseArtExt;
+			if (this.props.baseArtUrl && this.props.baseArtUrl.length > 0)
+				imgSrc = this.props.baseArtUrl + item.image + CardArt.baseArtExt;
+			else
+				imgSrc = CardArt.imageDirectory + "portrait.jpg";
+		} else {
+			imgSrc = CardArt.imageDirectory + item.image;
 		}
 
 		return (
 			<img key={index}
-				src={dir + item.image + ext}
+				src={imgSrc}
 				className={item.classes.join(' ')}
 				draggable={false}
 			/>
@@ -59,7 +62,7 @@ class CardArt extends React.Component<CardArtProps, {}> {
 		var style = this.createStyle();
 		return (
 			<div className='visuals' style={style}>
-				{ this.props.layers.map(this.createImageItem) }
+				{ this.props.layers.map(this.createImageItem.bind(this)) }
 			</div>
 		);
 	}
