@@ -53,3 +53,9 @@ declare module "fullscreen" {
 
 	export default fullscreen;
 }
+
+declare module "react-dimensions" {
+	function Dimensions():any;
+
+	export default Dimensions;
+}
