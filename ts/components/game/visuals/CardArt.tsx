@@ -1,5 +1,5 @@
 import * as React from "react";
-var Dimensions = require("react-dimensions");
+import Dimensions from "react-dimensions";
 
 interface CardArtItem {
 	image: string;
