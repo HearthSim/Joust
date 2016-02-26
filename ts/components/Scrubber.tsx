@@ -31,26 +31,23 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 			canPlay: false,
 			speed: 1,
 		};
-		this.updateStateCb = this.updateState.bind(this);
 		this.registerListeners(this.props);
 	}
 
-	private updateStateCb;
-
-	public componentWillUpdate(nextProps:ScrubberProps, nextState:ScrubberState) {
+	public componentWillUpdate(nextProps:ScrubberProps, nextState:ScrubberState):void {
 		this.removeListeners(this.props);
 		this.registerListeners(nextProps);
 	}
 
-	private registerListeners(props:ScrubberProps) {
-		props.scrubber.on('update', this.updateStateCb);
+	private registerListeners(props:ScrubberProps):void {
+		props.scrubber.on('update', this.updateState);
 	}
 
-	private removeListeners(props:ScrubberProps) {
-		props.scrubber.removeListener('update', this.updateStateCb);
+	private removeListeners(props:ScrubberProps):void {
+		props.scrubber.removeListener('update', this.updateState);
 	}
 
-	protected updateState():void {
+	protected updateState = ():void => {
 		var scrubber = this.props.scrubber;
 		this.setState({
 			playing: scrubber.isPlaying(),
@@ -61,7 +58,7 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 		});
 	}
 
-	public componentWillUnmount() {
+	public componentWillUnmount():void {
 		this.removeListeners(this.props);
 	}
 
@@ -95,7 +92,7 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 				/>
 				<SpeedSelector speed={this.state.speed}
 							   speeds={[1, 2, 5, 10, 25]}
-							   selectSpeed={this.selectSpeed.bind(this)}
+							   selectSpeed={this.selectSpeed}
 							   disabled={!this.state.canInteract}
 				/>
 				<button onClick={this.props.swapPlayers} disabled={!this.state.canInteract} title="Swap players">
@@ -106,19 +103,19 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 		);
 	}
 
-	public play():void {
+	protected play = ():void => {
 		this.props.scrubber.play();
 	}
 
-	public pause():void {
+	protected pause = ():void => {
 		this.props.scrubber.pause();
 	}
 
-	public rewind():void {
+	protected rewind = ():void => {
 		this.props.scrubber.rewind();
 	}
 
-	public selectSpeed(speed:number):void {
+	protected selectSpeed = (speed:number):void => {
 		var speed = Math.max(speed, 0);
 		this.props.scrubber.setSpeed(speed);
 	}
