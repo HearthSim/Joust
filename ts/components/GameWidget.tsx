@@ -40,7 +40,9 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 		this.fullscreen.on('attain', this.onAttainFullscreen.bind(this));
 		this.fullscreen.on('release', this.onReleaseFullscreen.bind(this));
 		this.cardOracleCb = this.updateCardOracle.bind(this);
-		this.props.cardOracle.on('cards', this.cardOracleCb);
+		if(this.props.cardOracle) {
+			this.props.cardOracle.on('cards', this.cardOracleCb);
+		}
 	}
 
 	protected setGameState(gameState:GameState):void {
