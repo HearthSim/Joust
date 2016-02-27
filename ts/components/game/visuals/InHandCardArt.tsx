@@ -2,10 +2,10 @@ import * as React from "react";
 import {CardType} from "../../../enums";
 import Entity from '../../../Entity';
 import CardArt from "./CardArt";
+import {EntityProps} from "../../../interfaces";
 
-interface InHandCardArtProps {
+interface InHandCardArtProps extends EntityProps {
 	hidden: boolean;
-	entity: Entity;
 	cardType: number;
 }
 
@@ -57,7 +57,7 @@ class InHandCardArt extends React.Component<InHandCardArtProps, {}> {
 		}
 
 		return (
-			<CardArt layers={images} scale={0.71} square={false} margin={false} />
+			<CardArt layers={images} scale={0.71} square={false} margin={false} assetDirectory={this.props.assetDirectory} />
 		);
 	}
 }

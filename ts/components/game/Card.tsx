@@ -26,7 +26,7 @@ class Card extends React.Component<CardProps, {}> {
 		if (entity.getCardId() === null || (this.props.isHidden && !canBeRevealed)) {
 			return (
 				<div className="card">
-					<InHandCardArt hidden={true} entity={this.props.entity} cardType={0}/>
+					<InHandCardArt hidden={true} entity={this.props.entity} cardType={0} assetDirectory={this.props.assetDirectory}/>
 				</div>
 			);
 		}
@@ -105,7 +105,7 @@ class Card extends React.Component<CardProps, {}> {
 		var connectDragSource = this.props.connectDragSource;
 		var jsx = (
 			<div className={classNames.join(' ')} style={this.props.style}>
-				<InHandCardArt entity={entity} hidden={false} cardType={cardType}/>
+				<InHandCardArt entity={entity} hidden={false} cardType={cardType} assetDirectory={this.props.assetDirectory}/>
 				<Cost cost={!this.props.isHidden ? entity.getCost() : defaultCost} default={defaultCost}/>
 				<h1>{title}</h1>
 				<div className="description">

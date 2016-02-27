@@ -2,12 +2,9 @@ import * as React from "react";
 import {CardType} from "../../../enums";
 import Entity from '../../../Entity';
 import CardArt from "./CardArt";
+import {EntityProps} from "../../../interfaces";
 
-interface WeaponArtProps {
-	entity: Entity;
-}
-
-class WeaponArt extends React.Component<WeaponArtProps, {}> {
+class WeaponArt extends React.Component<EntityProps, {}> {
 	public render():JSX.Element {
 		var images = [];
 		var entity = this.props.entity;
@@ -29,7 +26,7 @@ class WeaponArt extends React.Component<WeaponArtProps, {}> {
 		});
 
 		return (
-			<CardArt layers={images} scale={0.6} square={true} margin={true} />
+			<CardArt layers={images} scale={0.6} square={true} margin={true} assetDirectory={this.props.assetDirectory} />
 		);
 	}
 }

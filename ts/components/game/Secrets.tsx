@@ -11,7 +11,7 @@ class Secrets extends EntityList {
 	}
 
 	protected renderEntity(entity:Entity) {
-		return (<Secret entity={entity} cards={this.props.cards}/>);
+		return (<Secret entity={entity} cards={this.props.cards} assetDirectory={this.props.assetDirectory}/>);
 	}
 }
 

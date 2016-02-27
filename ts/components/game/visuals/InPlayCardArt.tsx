@@ -2,12 +2,9 @@ import * as React from "react";
 import {CardType, GameTag} from "../../../enums";
 import Entity from '../../../Entity';
 import CardArt from "./CardArt";
+import {EntityProps} from "../../../interfaces";
 
-interface InPlayCardArtProps {
-	entity: Entity;
-}
-
-class InPlayCardArt extends React.Component<InPlayCardArtProps, {}> {
+class InPlayCardArt extends React.Component<EntityProps, {}> {
 	public render():JSX.Element {
 		var images = [];
 		var entity = this.props.entity;
@@ -75,7 +72,7 @@ class InPlayCardArt extends React.Component<InPlayCardArtProps, {}> {
 		}
 
 		return (
-			<CardArt layers={images} scale={0.86} square={false} margin={false} />
+			<CardArt layers={images} scale={0.86} square={false} margin={false} assetDirectory={this.props.assetDirectory} />
 		);
 	}
 }

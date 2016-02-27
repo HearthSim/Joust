@@ -44,14 +44,19 @@ class Player extends React.Component<PlayerProps, {}> {
 						 option={heroEntity ? playOptions.get(heroEntity.getId()) : null}
 						 secrets={this.props.entities.get(Zone.SECRET) || Immutable.Map<number, Entity>()}
 						 optionCallback={this.props.optionCallback}
-						 cards={this.props.cards}/>;
+						 cards={this.props.cards}
+						 assetDirectory={this.props.assetDirectory}
+		/>;
 		var heroPowerEntity = playEntities.filter(filterByCardType(CardType.HERO_POWER)).first();
 		var heroPower = <HeroPower entity={heroPowerEntity}
 								   option={heroPowerEntity ? playOptions.get(heroPowerEntity.getId()) : null}
 								   optionCallback={this.props.optionCallback}
-								   cards={this.props.cards}/>;
+								   cards={this.props.cards}
+								   assetDirectory={this.props.assetDirectory}
+		/>;
 		var weapon = <Weapon entity={playEntities.filter(filterByCardType(CardType.WEAPON)).first()}
 							 cards={this.props.cards}
+							 assetDirectory={this.props.assetDirectory}
 		/>;
 
 		var field = <Field entities={playEntities.filter(filterByCardType(CardType.MINION)) || emptyEntities}
@@ -63,6 +68,7 @@ class Player extends React.Component<PlayerProps, {}> {
 		var deck = <Deck entities={this.props.entities.get(Zone.DECK) || emptyEntities}
 						 options={this.props.options.get(Zone.DECK) || emptyOptions}
 						 cards={this.props.cards}
+						 assetDirectory={this.props.assetDirectory}
 		/>;
 		var hand = <Hand entities={this.props.entities.get(Zone.HAND) || emptyEntities}
 						 options={this.props.options.get(Zone.HAND) || emptyOptions}

@@ -111,7 +111,7 @@ export interface CardData {
 }
 
 export interface CardDataProps {
-	cards:Immutable.Map<string, CardData>;
+	cards?:Immutable.Map<string, CardData>;
 }
 
 export interface CardOracleProps {
@@ -123,7 +123,7 @@ export interface CardOracle extends EventEmitter {
 }
 
 export interface AssetDirectoryProps {
-	assetDirectory?:string;
+	assetDirectory:string;
 }
 
 export interface GameWidgetProps extends CardDataProps, AssetDirectoryProps, React.Props<any> {

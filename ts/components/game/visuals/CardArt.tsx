@@ -1,5 +1,6 @@
 import * as React from "react";
 import Dimensions from "react-dimensions";
+import {AssetDirectoryProps} from "../../../interfaces";
 
 interface CardArtItem {
 	image: string;
@@ -7,7 +8,7 @@ interface CardArtItem {
 	classes: Array<String>;
 }
 
-interface CardArtProps {
+interface CardArtProps extends AssetDirectoryProps {
 	layers: Array<CardArtItem>;
 	scale: number;
 	square: boolean;
@@ -20,7 +21,7 @@ interface CardArtProps {
 class CardArt extends React.Component<CardArtProps, {}> {
 
 	private static baseArtExt:string = ".jpg";
-	private static imageDirectory:string = "./assets/images/";
+	private static imageDirectory:string = "images/";
 
 	private createStyle():any {
 		// keep proportions with scale
@@ -29,7 +30,7 @@ class CardArt extends React.Component<CardArtProps, {}> {
 		if (this.props.square)
 			height = width;
 		var margin = Math.round(this.props.containerHeight * (1 - this.props.scale));
-		var style = { width: width + 'px', height: height + 'px', marginTop: '0px' };
+		var style = {width: width + 'px', height: height + 'px', marginTop: '0px'};
 		if (this.props.margin)
 			style.marginTop = margin + 'px';
 		return style;
@@ -44,16 +45,16 @@ class CardArt extends React.Component<CardArtProps, {}> {
 			if (this.props.baseArtUrl && this.props.baseArtUrl.length > 0)
 				imgSrc = this.props.baseArtUrl + item.image + CardArt.baseArtExt;
 			else
-				imgSrc = CardArt.imageDirectory + "portrait.jpg";
+				imgSrc = this.props.assetDirectory + CardArt.imageDirectory + "portrait.jpg";
 		} else {
-			imgSrc = CardArt.imageDirectory + item.image;
+			imgSrc = this.props.assetDirectory + CardArt.imageDirectory + item.image;
 		}
 
 		return (
 			<img key={index}
-				src={imgSrc}
-				className={item.classes.join(' ')}
-				draggable={false}
+				 src={imgSrc}
+				 className={item.classes.join(' ')}
+				 draggable={false}
 			/>
 		);
 	}

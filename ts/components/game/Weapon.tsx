@@ -26,7 +26,7 @@ class Weapon extends React.Component<WeaponProps, {}> {
 
 			return (
 				<div className="weapon">
-					<WeaponArt entity={this.props.entity}/>
+					<WeaponArt entity={this.props.entity} assetDirectory={this.props.assetDirectory}/>
 					<div className="stats">
 						<Attack attack={entity.getAtk()} default={defaultAttack}/>
 						<Durability durability={entity.getDurability()} damage={entity.getDamage()}

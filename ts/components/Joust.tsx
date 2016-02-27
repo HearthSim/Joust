@@ -58,6 +58,7 @@ class Joust extends React.Component<{}, JoustState> {
 								scrubber={this.state.scrubber}
 								exitGame={this.exitGame.bind(this)}
 								cardOracle={this.state.oracle}
+								assetDirectory={'./assets/'}
 					/>;
 				break;
 		}
