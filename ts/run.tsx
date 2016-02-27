@@ -16,6 +16,37 @@ import * as URL from "url";
 var React = require('react');
 var ReactDOM = require('react-dom');
 
+var injectSVG = () => {
+		var svg = document.createElement('svg');
+		svg.setAttribute('width', "0");
+		svg.setAttribute('height', "0");
+		svg.innerHTML = '\
+			<svg width="0" height="0">\
+				<clipPath id="inhand-minion-clip" clipPathUnits="objectBoundingBox">\
+					<ellipse cx="0.5" cy="0.5" rx="0.36" ry="0.47" />\
+				</clipPath>\
+				<clipPath id="inhand-weapon-clip" clipPathUnits="objectBoundingBox">\
+					<circle cx="0.5" cy="0.5" r="0.5" />\
+				</clipPath>\
+				<clipPath id="inhand-spell-clip" clipPathUnits="objectBoundingBox">\
+					<rect x="0" y="0.08" width="100" height="0.88" />\
+				</clipPath>\
+				<clipPath id="inplay-minion-clip" clipPathUnits="objectBoundingBox">\
+					<ellipse cx="0.51" cy="0.5" rx="0.35" ry="0.46" />\
+				</clipPath>\
+				<clipPath id="hero-power-clip" clipPathUnits="objectBoundingBox">\
+					<circle cx="0.5" cy="0.5" r="0.6" />\
+				</clipPath>\
+				<clipPath id="hero-weapon-clip" clipPathUnits="objectBoundingBox">\
+					<circle cx="0.5" cy="0.5" r="0.5" />\
+				</clipPath>\
+				<clipPath id="hero-clip" clipPathUnits="objectBoundingBox">\
+					<polygon points="0 1, 0 0.4, 0.2 0.1, 0.3 0.03, 0.5 0, 0.7 0.03, 0.8 0.1, 1 0.4, 1 1" />\
+				</clipPath>\
+			</svg>';
+		document.body.insertBefore(svg, document.body.firstChild);
+}
+
 class Viewer {
 
 	protected target;
@@ -72,6 +103,7 @@ class Viewer {
 	}
 
 	protected render():void {
+		injectSVG();
 		ReactDOM.render(
 			React.createElement(GameWidget, this.opts),
 			(typeof this.target !== 'string' ? this.target : document.getElementById(this.target))
@@ -81,6 +113,7 @@ class Viewer {
 
 module.exports = {
 	renderApplication: (target:string) => {
+		injectSVG();
 		ReactDOM.render(
 			React.createElement(Application),
 			document.getElementById(target)
