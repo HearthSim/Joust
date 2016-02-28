@@ -8,6 +8,7 @@ import * as Stream from "stream";
 import GameStateSink from "./state/GameStateSink";
 import GameStateScrubber from "./state/GameStateScrubber";
 import GameStateHistory from "./state/GameStateHistory";
+import Player from "./Player";
 
 export interface DropTargetProps {
 	connectDropTarget?(jsx);
@@ -22,13 +23,17 @@ export interface EntityInPlayProps extends EntityProps, OptionProps, DragSourceP
 	isTarget:boolean;
 }
 
-export interface EntityListProps extends OptionCallbackProps, DropTargetProps, CardDataProps, CardOracleProps, AssetDirectoryProps, React.Props<any> {
+export interface EntityListProps extends OptionCallbackProps, ControllerProps, DropTargetProps, CardDataProps, CardOracleProps, AssetDirectoryProps, React.Props<any> {
 	entities: Immutable.Iterable<number, Entity>;
 	options?: Immutable.Iterable<number, Option>;
 	isTop?: boolean;
 }
 
-export interface EntityProps extends CardDataProps, AssetDirectoryProps {
+export interface ControllerProps {
+	controller?: Player;
+}
+
+export interface EntityProps extends CardDataProps, ControllerProps, AssetDirectoryProps {
 	entity: Entity;
 }
 

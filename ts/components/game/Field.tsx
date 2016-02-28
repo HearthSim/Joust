@@ -34,7 +34,13 @@ class Field extends EntityList {
 	}
 
 	protected renderEntity(entity:Entity, option:Option) {
-		return (<Minion entity={entity} option={option} optionCallback={this.props.optionCallback} assetDirectory={this.props.assetDirectory} cards={this.props.cards}/>);
+		return (<Minion entity={entity}
+						option={option}
+						optionCallback={this.props.optionCallback}
+						assetDirectory={this.props.assetDirectory}
+						cards={this.props.cards}
+						controller={this.props.controller}
+		/>);
 	}
 }
 

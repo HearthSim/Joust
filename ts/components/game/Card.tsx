@@ -10,6 +10,8 @@ import InHandCardArt from './visuals/InHandCardArt';
 
 import {DragSource} from 'react-dnd';
 import {CardType} from "../../enums";
+import {GameTag} from "../../enums";
+import Entity from "../../Entity";
 
 interface CardProps extends EntityProps, OptionProps, CardDataProps, React.Props<any> {
 	style?:any;
@@ -26,7 +28,8 @@ class Card extends React.Component<CardProps, {}> {
 		if (entity.getCardId() === null || (this.props.isHidden && !canBeRevealed)) {
 			return (
 				<div className="card">
-					<InHandCardArt hidden={true} entity={this.props.entity} cardType={0} assetDirectory={this.props.assetDirectory}/>
+					<InHandCardArt hidden={true} entity={this.props.entity} cardType={0}
+								   assetDirectory={this.props.assetDirectory}/>
 				</div>
 			);
 		}
@@ -53,7 +56,7 @@ class Card extends React.Component<CardProps, {}> {
 		if (canBeRevealed) {
 			var data = this.props.cards && this.props.cards.get(entity.getCardId());
 			title = data.name;
-			description = data.text;
+			description = this.parseDescription(data.text);
 			defaultAttack = data.attack;
 			defaultCost = data.cost;
 			defaultHealth = data.health;
@@ -105,7 +108,8 @@ class Card extends React.Component<CardProps, {}> {
 		var connectDragSource = this.props.connectDragSource;
 		var jsx = (
 			<div className={classNames.join(' ')} style={this.props.style}>
-				<InHandCardArt entity={entity} hidden={false} cardType={cardType} assetDirectory={this.props.assetDirectory}/>
+				<InHandCardArt entity={entity} hidden={false} cardType={cardType}
+							   assetDirectory={this.props.assetDirectory}/>
 				<Cost cost={!this.props.isHidden ? entity.getCost() : defaultCost} default={defaultCost}/>
 				<h1>{title}</h1>
 				<div className="description">
@@ -116,6 +120,50 @@ class Card extends React.Component<CardProps, {}> {
 		);
 
 		return (draggable ? connectDragSource(jsx) : jsx);
+	}
+
+	protected parseDescription(description:string):string {
+		if (!description) {
+			return '';
+		}
+
+		let modifier = (bonus:number, double:number) => {
+			return (match:string, part1:string) => {
+				let number = +part1;
+				if (+bonus !== 0 || +double !== 0) {
+					number += bonus;
+					number *= Math.pow(2, double);
+					return '*' + number + '*'
+				}
+				return '' + number;
+			};
+		};
+
+		let damageBonus = 0;
+		let damageDoubling = 0;
+		let healingDoubling = 0;
+
+		if (this.props.controller) {
+			switch (this.props.entity.getCardType()) {
+				case CardType.SPELL:
+					damageBonus = this.props.controller.getTag(GameTag.CURRENT_SPELLPOWER);
+					if (this.props.entity.getTag(GameTag.RECEIVES_DOUBLE_SPELLDAMAGE_BONUS) > 0) {
+						damageBonus *= 2;
+					}
+					damageDoubling = this.props.controller.getTag(GameTag.SPELLPOWER_DOUBLE);
+					healingDoubling = this.props.controller.getTag(GameTag.HEALING_DOUBLE);
+					break;
+				case CardType.HERO_POWER:
+					damageBonus = this.props.controller.getTag(GameTag.CURRENT_HEROPOWER_DAMAGE_BONUS);
+					damageDoubling = this.props.controller.getTag(GameTag.HERO_POWER_DOUBLE);
+					healingDoubling = this.props.controller.getTag(GameTag.HERO_POWER_DOUBLE);
+					break;
+			}
+		}
+
+		description = description.replace(/\$(\d+)/g, modifier(damageBonus, damageDoubling));
+		description = description.replace(/#(\d+)/g, modifier(0, healingDoubling));
+		return description;
 	}
 }
 

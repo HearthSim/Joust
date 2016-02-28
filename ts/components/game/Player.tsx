@@ -46,6 +46,7 @@ class Player extends React.Component<PlayerProps, {}> {
 						 optionCallback={this.props.optionCallback}
 						 cards={this.props.cards}
 						 assetDirectory={this.props.assetDirectory}
+						 controller={this.props.player}
 		/>;
 		var heroPowerEntity = playEntities.filter(filterByCardType(CardType.HERO_POWER)).first();
 		var heroPower = <HeroPower entity={heroPowerEntity}
@@ -53,10 +54,12 @@ class Player extends React.Component<PlayerProps, {}> {
 								   optionCallback={this.props.optionCallback}
 								   cards={this.props.cards}
 								   assetDirectory={this.props.assetDirectory}
+								   controller={this.props.player}
 		/>;
 		var weapon = <Weapon entity={playEntities.filter(filterByCardType(CardType.WEAPON)).first()}
 							 cards={this.props.cards}
 							 assetDirectory={this.props.assetDirectory}
+							 controller={this.props.player}
 		/>;
 
 		var field = <Field entities={playEntities.filter(filterByCardType(CardType.MINION)) || emptyEntities}
@@ -64,11 +67,13 @@ class Player extends React.Component<PlayerProps, {}> {
 						   optionCallback={this.props.optionCallback}
 						   cards={this.props.cards}
 						   assetDirectory={this.props.assetDirectory}
+						   controller={this.props.player}
 		/>;
 		var deck = <Deck entities={this.props.entities.get(Zone.DECK) || emptyEntities}
 						 options={this.props.options.get(Zone.DECK) || emptyOptions}
 						 cards={this.props.cards}
 						 assetDirectory={this.props.assetDirectory}
+						 controller={this.props.player}
 		/>;
 		var hand = <Hand entities={this.props.entities.get(Zone.HAND) || emptyEntities}
 						 options={this.props.options.get(Zone.HAND) || emptyOptions}
@@ -77,6 +82,7 @@ class Player extends React.Component<PlayerProps, {}> {
 						 cardOracle={this.props.cardOracle}
 						 isTop={this.props.isTop}
 						 assetDirectory={this.props.assetDirectory}
+						 controller={this.props.player}
 		/>;
 		var name = this.props.player.getName() ? <div className="name">{this.props.player.getName()}</div> : null;
 
