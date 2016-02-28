@@ -105,6 +105,10 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 				break;
 			case 'Action':
 				this.push(new IncrementTimeMutator());
+				if(this.clearOptionsOnTimestamp) {
+					this.clearOptionsOnTimestamp = false;
+					this.push(new ClearOptionsMutator());
+				}
 				break;
 		}
 
