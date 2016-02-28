@@ -6,6 +6,10 @@ class IncrementTimeMutator implements GameStateMutator {
 	}
 
 	public applyTo(state:GameState):GameState {
+		if (this.time === 0) {
+			return state;
+		}
+
 		var time = state.getTime();
 		if (time === null) {
 			time = 0;
