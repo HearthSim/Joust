@@ -17,6 +17,10 @@ class Entity {
 		return this.cardId;
 	}
 
+	public isRevealed():boolean {
+		return !!this.cardId;
+	}
+
 	public getResourcesUsed():number {
 		return this.getTag(GameTag.RESOURCES_USED);
 	}

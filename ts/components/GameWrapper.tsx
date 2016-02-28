@@ -7,6 +7,7 @@ import Entity from "../Entity";
 import Option from "../Option";
 import PlayerEntity from "../Player";
 import {InteractiveBackend, CardOracleProps, AssetDirectoryProps} from "../interfaces";
+import {Zone} from "../enums";
 
 interface GameWrapperProps extends CardDataProps, CardOracleProps, AssetDirectoryProps, React.Props<any> {
 	state:GameState;
@@ -19,6 +20,9 @@ interface GameWrapperProps extends CardDataProps, CardOracleProps, AssetDirector
  * It extracts the game entities.
  */
 class GameWrapper extends React.Component<GameWrapperProps, {}> {
+
+	private hasCheckedForSwap = false;
+	private swapPlayers = false;
 
 	public render():JSX.Element {
 		var gameState = this.props.state;
@@ -43,6 +47,21 @@ class GameWrapper extends React.Component<GameWrapperProps, {}> {
 
 		// find the players
 		var players = allEntities.filter(GameWrapper.filterByCardType(CardType.PLAYER)) as Immutable.Iterable<number, PlayerEntity>;
+		if (players.count() == 0) {
+			return <p className="message">Waiting for players&hellip;</p>;
+		}
+
+		// check if we need to swap the players
+		if (!this.hasCheckedForSwap) {
+			let player = players.first();
+			let cards = _.toArray(entityTree.get(player.getPlayerId()).get(Zone.HAND).toJS()) as Entity[];
+			if (cards.length > 0) {
+				this.hasCheckedForSwap = true;
+				if (cards[0].isRevealed()) {
+					this.swapPlayers = true;
+				}
+			}
+		}
 
 		// find an end turn option
 		var endTurnOption = gameState.getOptions().filter(function (option:Option):boolean {
@@ -52,9 +71,9 @@ class GameWrapper extends React.Component<GameWrapperProps, {}> {
 		var playerCount = players.count();
 		switch (playerCount) {
 			case 2:
-				var player1 = players.first();
-				var player2 = players.last();
-				if (this.props.swapPlayers) {
+				let player1 = players.first();
+				let player2 = players.last();
+				if (this.swapPlayers !== this.props.swapPlayers) { // XOR
 					[player1, player2] = [player2, player1];
 				}
 				return <TwoPlayerGame
