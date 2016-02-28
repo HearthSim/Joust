@@ -91,6 +91,9 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 					console.warn('Replay does not contain HSReplay version');
 				}
 				this.build = node.attributes.build;
+				if(typeof this.build !== 'undefined') {
+					this.build = +this.build;
+				}
 				if (!this.build) {
 					console.warn('Replay does not contain Hearthstone build number');
 				}
