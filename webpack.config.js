@@ -20,5 +20,9 @@ module.exports = {
 		net: 'empty'
 	},
 	target: 'electron',
-	plugins: []
+	plugins: [],
+	externals: {
+		"react": "React",
+		"react-dom": "ReactDOM"
+	}
 }

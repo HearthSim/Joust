@@ -26,6 +26,8 @@ gulp compile:web
 
 ```html
 <div id="container"></div>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react-dom.min.js"></script>
 <script type="text/javascript" src="bundle.js"></script>
 <script type="text/javascript">
 	Joust.viewer('container').height(500).width(500).assets('images/').fromUrl('http://example.org/brawl.hsreplay');
