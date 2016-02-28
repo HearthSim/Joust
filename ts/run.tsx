@@ -91,17 +91,18 @@ class Viewer {
 	}
 
 	public fromUrl(url:string):void {
-		var scrubber = new GameStateScrubber();
 		var decoder = new HSReplayDecoder();
+		var tracker = new GameStateTracker();
+		var scrubber = new GameStateScrubber();
 		var sink = new GameStateSink();
 
 		var opts = URL.parse(url) as any;
 		opts.withCredentials = false;
 		var request = http.get(opts);
 		request.on('response', function (response:stream.Readable) {
-			response // sink is returned by the last .pipe()
+			response
 				.pipe(decoder) // json -> mutators
-				.pipe(new GameStateTracker()) // mutators -> latest gamestate
+				.pipe(tracker) // mutators -> latest gamestate
 				.pipe(scrubber) // gamestate -> gamestate emit on scrub past
 				.pipe(sink); // gamestate
 		});
