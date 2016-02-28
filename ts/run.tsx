@@ -106,7 +106,7 @@ class Viewer {
 				.pipe(sink); // gamestate
 		});
 		decoder.once('data', () => {
-			if(this.queryCardMetadata) {
+			if(typeof decoder.build === 'number' && this.queryCardMetadata) {
 				this.queryCardMetadata(decoder.build, this.ref.setCards.bind(this.ref));
 			}
 		});
