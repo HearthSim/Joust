@@ -19,7 +19,7 @@ import {QueryCardMetadata} from "./interfaces";
 var React = require('react');
 var ReactDOM = require('react-dom');
 
-var injectSVG = () => {
+var injectSVG = (element:HTMLElement) => {
 	var svg = document.createElement('svg');
 	svg.setAttribute('width', "0");
 	svg.setAttribute('height', "0");
@@ -47,7 +47,7 @@ var injectSVG = () => {
 					<polygon points="0 1, 0 0.4, 0.2 0.1, 0.3 0.03, 0.5 0, 0.7 0.03, 0.8 0.1, 1 0.4, 1 1" />\
 				</clipPath>\
 			</svg>';
-	document.body.insertBefore(svg, document.body.firstChild);
+	element.parentNode.insertBefore(svg, element);
 }
 
 class Viewer {
@@ -119,20 +119,22 @@ class Viewer {
 	}
 
 	protected render():void {
-		injectSVG();
+		let element = (typeof this.target !== 'string' ? this.target : document.getElementById(this.target));
+		injectSVG(element);
 		this.ref = ReactDOM.render(
 			React.createElement(GameWidget, this.opts),
-			(typeof this.target !== 'string' ? this.target : document.getElementById(this.target))
+			element
 		);
 	}
 }
 
 module.exports = {
 	renderApplication: (target:string) => {
-		injectSVG();
+		let element = document.getElementById(target);
+		injectSVG(element);
 		ReactDOM.render(
 			React.createElement(Application),
-			document.getElementById(target)
+			element
 		);
 	},
 
