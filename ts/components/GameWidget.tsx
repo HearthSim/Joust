@@ -54,7 +54,6 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 
 	protected componentWillUnmount() {
 		this.props.sink.removeListener('gamestate', this.cb);
-		console.log('unmount');
 		this.fullscreen.removeAllListeners('attain');
 		this.fullscreen.removeAllListeners('release');
 		this.props.cardOracle.removeListener('cards', this.cardOracleCb);

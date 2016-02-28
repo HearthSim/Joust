@@ -84,13 +84,13 @@ class Joust extends React.Component<{}, JoustState> {
 
 	public onMountGameWidget(widget:GameWidget) {
 		this.gameWidget = widget;
-		if(this.state.cards) {
+		if (widget && this.state.cards) {
 			this.gameWidget.setCards(this.state.cards);
 		}
 	}
 
 	public componentDidUpdate(prevProps:any, prevState:JoustState):void {
-		if(!_.isEqual(prevState.cards, this.state.cards) && this.gameWidget) {
+		if (!_.isEqual(prevState.cards, this.state.cards) && this.gameWidget) {
 			this.gameWidget.setCards(this.state.cards);
 		}
 	}
