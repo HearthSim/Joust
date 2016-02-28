@@ -7,6 +7,8 @@ import {InteractiveBackend} from "../interfaces";
 import GameStateScrubber from "../state/GameStateScrubber";
 import GameStateSink from "../state/GameStateSink";
 import Fullscreen from "fullscreen";
+import {CardData} from "../interfaces";
+import * as Immutable from "immutable";
 
 interface GameWidgetState {
 	gameState?:GameState;
@@ -14,6 +16,7 @@ interface GameWidgetState {
 	isFullscreen?:boolean;
 	isFullscreenAvailable?:boolean;
 	cardOracle?:Immutable.Map<number, string>;
+	cards?:Immutable.Map<string, CardData>;
 }
 
 class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
@@ -40,7 +43,7 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 		this.fullscreen.on('attain', this.onAttainFullscreen.bind(this));
 		this.fullscreen.on('release', this.onReleaseFullscreen.bind(this));
 		this.cardOracleCb = this.updateCardOracle.bind(this);
-		if(this.props.cardOracle) {
+		if (this.props.cardOracle) {
 			this.props.cardOracle.on('cards', this.cardOracleCb);
 		}
 	}
@@ -86,8 +89,26 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 		this.triggerResize();
 	}
 
-	protected updateCardOracle(cards: Immutable.Map<number, string>) {
+	protected updateCardOracle(cards:Immutable.Map<number, string>) {
 		this.setState({cardOracle: cards});
+	}
+
+	public setCards(cards:CardData[]) {
+		var cardMap = null;
+		if(cards) {
+			if(!cards.length) {
+				console.error('Got invalid card data to metadata callback (expected card data array)');
+				return;
+			}
+			cardMap = Immutable.Map<string, CardData>();
+
+			cardMap = cardMap.withMutations(function (map) {
+				cards.forEach(function (card:CardData) {
+					map = map.set(card.id, card);
+				});
+			});
+		}
+		this.setState({cards: cardMap});
 	}
 
 	/**
@@ -113,7 +134,7 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 
 		parts.push(<GameWrapper key="game" state={this.state.gameState} interaction={this.props.interaction}
 								assetDirectory={this.props.assetDirectory}
-								cards={this.props.cards} swapPlayers={this.state.swapPlayers}
+								cards={this.state.cards} swapPlayers={this.state.swapPlayers}
 								cardOracle={this.state.cardOracle}
 		/>);
 
@@ -145,8 +166,8 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 	}
 
 	public shouldComponentUpdate(nextProps:GameWidgetProps, nextState:GameWidgetState) {
-		if(this.state.cardOracle !== nextState.cardOracle) {
-			if(this.props.scrubber && this.props.scrubber.isPlaying()) {
+		if (this.state.cardOracle !== nextState.cardOracle) {
+			if (this.props.scrubber && this.props.scrubber.isPlaying()) {
 				return false;
 			}
 		}

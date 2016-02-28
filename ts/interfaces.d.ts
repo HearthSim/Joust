@@ -126,7 +126,11 @@ export interface AssetDirectoryProps {
 	assetDirectory:string;
 }
 
-export interface GameWidgetProps extends CardDataProps, AssetDirectoryProps, React.Props<any> {
+export interface QueryCardMetadata {
+	(build:number, cb:(card:CardData[]) => void): void;
+}
+
+export interface GameWidgetProps extends AssetDirectoryProps, React.Props<any> {
 	sink:GameStateSink;
 	interaction?:InteractiveBackend;
 	scrubber?:StreamScrubber;

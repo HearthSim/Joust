@@ -84,18 +84,9 @@ class HearthstoneJSON extends EventEmitter {
 		}.bind(this));
 	}
 
-	protected parse(raw):Immutable.Map<string, CardData> {
-		var cards = Immutable.Map<string, CardData>();
-
-		cards = cards.withMutations(function (map) {
-			raw.forEach(function (card:CardData) {
-				map = map.set(card.id, card);
-			});
-		});
-
-		this.emit("cards", cards);
-
-		return cards;
+	protected parse(raw):CardData[] {
+		this.emit("cards", raw);
+		return raw;
 	}
 }
 

@@ -7,6 +7,7 @@ import {InteractiveBackend} from "../interfaces";
 import GameStateSink from "../state/GameStateSink";
 import GameStateScrubber from "../state/GameStateScrubber";
 import {CardOracle} from "../interfaces";
+import {CardData} from "../interfaces";
 
 const enum Widget {
 	SETUP,
@@ -15,7 +16,7 @@ const enum Widget {
 
 interface JoustState {
 	currentWidget?:Widget;
-	cards?:any;
+	cards?:CardData[];
 	sink?:GameStateSink;
 	scrubber?:GameStateScrubber;
 	interaction?:InteractiveBackend;
@@ -23,6 +24,8 @@ interface JoustState {
 }
 
 class Joust extends React.Component<{}, JoustState> {
+
+	private gameWidget:GameWidget;
 
 	constructor() {
 		super();
@@ -38,7 +41,7 @@ class Joust extends React.Component<{}, JoustState> {
 
 	public componentDidMount() {
 		var jsonClient = new HearthstoneJSON("https://api.hearthstonejson.com/v1/latest/enUS/cards.json");
-		jsonClient.on("cards", function (cards:Immutable.Map<string, any>) {
+		jsonClient.on("cards", function (cards:CardData[]) {
 			this.setState({cards: cards});
 		}.bind(this));
 		jsonClient.load();
@@ -53,12 +56,13 @@ class Joust extends React.Component<{}, JoustState> {
 				break;
 			case Widget.GAME:
 				widget =
-					<GameWidget cards={this.state.cards} sink={this.state.sink}
+					<GameWidget sink={this.state.sink}
 								interaction={this.state.interaction}
 								scrubber={this.state.scrubber}
 								exitGame={this.exitGame.bind(this)}
 								cardOracle={this.state.oracle}
 								assetDirectory={'./assets/'}
+								ref={this.onMountGameWidget.bind(this)}
 					/>;
 				break;
 		}
@@ -76,6 +80,19 @@ class Joust extends React.Component<{}, JoustState> {
 				</footer>
 			</div>
 		);
+	}
+
+	public onMountGameWidget(widget:GameWidget) {
+		this.gameWidget = widget;
+		if(this.state.cards) {
+			this.gameWidget.setCards(this.state.cards);
+		}
+	}
+
+	public componentDidUpdate(prevProps:any, prevState:JoustState):void {
+		if(!_.isEqual(prevState.cards, this.state.cards) && this.gameWidget) {
+			this.gameWidget.setCards(this.state.cards);
+		}
 	}
 
 	protected onSetup(sink:GameStateSink, interaction?:InteractiveBackend, scrubber?:GameStateScrubber, oracle?:CardOracle):void {

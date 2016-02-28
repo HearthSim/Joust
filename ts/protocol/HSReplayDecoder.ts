@@ -25,6 +25,8 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 	private cardIds:Immutable.Map<number, string>;
 	private clearOptionsOnTimestamp:boolean;
 	private playerMap:Immutable.Map<string, number>;
+	public version:string;
+	public build:number;
 
 	constructor(opts?:Stream.TransformOptions) {
 		opts = opts || {};
@@ -76,20 +78,20 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 				node.attributes.options = Immutable.Map<string, Option>();
 				break;
 			case 'HSReplay':
-				var version = node.attributes.version;
-				if (version) {
-					if (version != '1.0') {
-						console.warn('Unsupported HSReplay version', version, '(expected 1.0)');
+				this.version = node.attributes.version;
+				if (this.version) {
+					if (this.version != '1.0') {
+						console.warn('Unsupported HSReplay version', this.version, '(expected 1.0)');
 					}
 					else {
-						console.debug('Found valid HSReplay version', version);
+						console.debug('Found valid HSReplay version', this.version);
 					}
 				}
 				else {
 					console.warn('Replay does not contain HSReplay version');
 				}
-				var build = node.attributes.build;
-				if (!build) {
+				this.build = node.attributes.build;
+				if (!this.build) {
 					console.warn('Replay does not contain Hearthstone build number');
 				}
 				break;

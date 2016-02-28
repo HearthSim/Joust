@@ -12,15 +12,18 @@ import GameStateScrubber from "./state/GameStateScrubber";
 import * as http from "http";
 import * as stream from "stream"
 import * as URL from "url";
+import Joust from "./components/Joust";
+import {CardData} from "./interfaces";
+import {QueryCardMetadata} from "./interfaces";
 
 var React = require('react');
 var ReactDOM = require('react-dom');
 
 var injectSVG = () => {
-		var svg = document.createElement('svg');
-		svg.setAttribute('width', "0");
-		svg.setAttribute('height', "0");
-		svg.innerHTML = '\
+	var svg = document.createElement('svg');
+	svg.setAttribute('width', "0");
+	svg.setAttribute('height', "0");
+	svg.innerHTML = '\
 			<svg width="0" height="0">\
 				<clipPath id="inhand-minion-clip" clipPathUnits="objectBoundingBox">\
 					<ellipse cx="0.5" cy="0.5" rx="0.36" ry="0.47" />\
@@ -44,17 +47,20 @@ var injectSVG = () => {
 					<polygon points="0 1, 0 0.4, 0.2 0.1, 0.3 0.03, 0.5 0, 0.7 0.03, 0.8 0.1, 1 0.4, 1 1" />\
 				</clipPath>\
 			</svg>';
-		document.body.insertBefore(svg, document.body.firstChild);
+	document.body.insertBefore(svg, document.body.firstChild);
 }
 
 class Viewer {
 
 	protected target;
 	protected opts:GameWidgetProps;
+	protected queryCardMetadata:QueryCardMetadata;
+	protected ref:GameWidget;
 
 	constructor(target:any) {
 		this.target = target;
 		this.opts = {} as any;
+		this.opts.assetDirectory = 'assets/';
 	}
 
 	public width(width:number):Viewer {
@@ -69,6 +75,11 @@ class Viewer {
 
 	public assets(assets:string):Viewer {
 		this.opts.assetDirectory = assets;
+		return this;
+	}
+
+	public metadata(query:QueryCardMetadata):Viewer {
+		this.queryCardMetadata = query;
 		return this;
 	}
 
@@ -94,6 +105,11 @@ class Viewer {
 				.pipe(scrubber) // gamestate -> gamestate emit on scrub past
 				.pipe(sink); // gamestate
 		});
+		decoder.once('data', () => {
+			if(this.queryCardMetadata) {
+				this.queryCardMetadata(decoder.build, this.ref.setCards.bind(this.ref));
+			}
+		});
 
 		this.opts.sink = sink;
 		this.opts.scrubber = scrubber;
@@ -104,7 +120,7 @@ class Viewer {
 
 	protected render():void {
 		injectSVG();
-		ReactDOM.render(
+		this.ref = ReactDOM.render(
 			React.createElement(GameWidget, this.opts),
 			(typeof this.target !== 'string' ? this.target : document.getElementById(this.target))
 		);
