@@ -1,9 +1,11 @@
 import * as React from "react";
 
 import {OptionProps} from "../../interfaces";
+import Player from "../../Player";
 
 interface EndTurnButtonProps extends OptionProps, React.Props<any> {
 	onlyOption?:boolean;
+	currentPlayer:Player;
 }
 
 class EndTurnButton extends React.Component<EndTurnButtonProps, {}> {

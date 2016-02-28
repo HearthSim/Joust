@@ -9,6 +9,7 @@ import PlayerEntity from '../../Player';
 import EndTurnButton from './EndTurnButton';
 import {DragDropContext} from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
+import {GameTag} from "../../enums";
 
 interface TwoPlayerGameProps extends EntityProps, CardDataProps, CardOracleProps, OptionCallbackProps, AssetDirectoryProps, React.Props<any> {
 	player1: PlayerEntity;
@@ -25,6 +26,7 @@ class TwoPlayerGame extends React.Component<TwoPlayerGameProps, {}> {
 		var options = this.props.options;
 		var player1 = this.props.player1 as PlayerEntity;
 		var player2 = this.props.player2 as PlayerEntity;
+		var currentPlayer = player1.getTag(GameTag.CURRENT_PLAYER) ? player1 : player2;
 
 		var emptyEntities = Immutable.Map<number, Immutable.Map<number, Entity>>();
 		var emptyOptions = Immutable.Map<number, Immutable.Map<number, Option>>();
@@ -39,7 +41,9 @@ class TwoPlayerGame extends React.Component<TwoPlayerGameProps, {}> {
 						assetDirectory={this.props.assetDirectory}
 				/>
 				<EndTurnButton option={this.props.endTurnOption}
-							   optionCallback={this.props.optionCallback} onlyOption={options.count() === 0}/>
+							   optionCallback={this.props.optionCallback} onlyOption={options.count() === 0}
+							   currentPlayer={currentPlayer}
+				/>
 				<Player player={player2 as PlayerEntity} isTop={false}
 						entities={entities.get(player2.getPlayerId()) || emptyEntities}
 						options={options.get(player2.getPlayerId()) || emptyOptions}
