@@ -32,7 +32,7 @@ class Minion extends EntityInPlay<EntityInPlayProps, {}> {
 
 		return (
 			<div>
-				<InPlayCardArt entity={entity} assetDirectory={this.props.assetDirectory}/>
+				<InPlayCardArt entity={entity} assetDirectory={this.props.assetDirectory} controller={this.props.controller}/>
 				<div className="stats">
 					<Attack attack={entity.getAtk()} default={defaultAttack}/>
 					<Health health={entity.getHealth()} damage={entity.getDamage()} default={defaultHealth}/>

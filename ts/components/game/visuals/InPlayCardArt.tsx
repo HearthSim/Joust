@@ -8,6 +8,7 @@ class InPlayCardArt extends React.Component<EntityProps, {}> {
 	public render():JSX.Element {
 		var images = [];
 		var entity = this.props.entity;
+		var controller = this.props.controller;
 
 		if (entity.isTaunter()) {
 			images.push({
@@ -63,8 +64,9 @@ class InPlayCardArt extends React.Component<EntityProps, {}> {
 			});
 		}
 
-		if (entity.getTag(GameTag.NUM_TURNS_IN_PLAY) == 0
-				&& entity.getTag(GameTag.CHARGE) <= 0) {
+		if (entity.getTag(GameTag.NUM_TURNS_IN_PLAY) == 0 &&
+			entity.getTag(GameTag.CHARGE) <= 0 &&
+			(!controller || controller.getTag(GameTag.CURRENT_PLAYER))) {
 			images.push({
 				image: "effect_sleep.png",
 				classes: ["effect-sleep"]
@@ -72,7 +74,8 @@ class InPlayCardArt extends React.Component<EntityProps, {}> {
 		}
 
 		return (
-			<CardArt layers={images} scale={0.86} square={false} margin={false} assetDirectory={this.props.assetDirectory} />
+			<CardArt layers={images} scale={0.86} square={false} margin={false}
+					 assetDirectory={this.props.assetDirectory}/>
 		);
 	}
 }
