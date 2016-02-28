@@ -55,9 +55,7 @@ class GameWrapper extends React.Component<GameWrapperProps, {}> {
 				var player1 = players.first();
 				var player2 = players.last();
 				if (this.props.swapPlayers) {
-					let swap = player1;
-					player1 = player2;
-					player2 = swap;
+					[player1, player2] = [player2, player1];
 				}
 				return <TwoPlayerGame
 					entity={game}
