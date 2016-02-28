@@ -61,7 +61,8 @@ class TwoPlayerGame extends React.Component<TwoPlayerGameProps, {}> {
 			this.props.options !== nextProps.options ||
 			this.props.endTurnOption !== nextProps.endTurnOption ||
 			this.props.optionCallback !== nextProps.optionCallback ||
-			this.props.cardOracle !== nextProps.cardOracle
+			this.props.cardOracle !== nextProps.cardOracle ||
+			this.props.cards !== nextProps.cards
 		);
 	}
 }
