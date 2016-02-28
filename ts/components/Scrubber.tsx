@@ -10,6 +10,10 @@ interface ScrubberProps extends React.Props<any> {
 	isFullscreenAvailable?:boolean;
 	onClickFullscreen?:() => void;
 	onClickMinimize?:() => void;
+	isRevealingCards?:boolean;
+	canRevealCards?:boolean;
+	onClickHideCards?:() => void;
+	onClickRevealCards?:() => void;
 }
 
 interface ScrubberState {
@@ -80,6 +84,15 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 					title="Fullscreen">
 				<i className="joust-fa joust-fa-expand"></i>
 			</button>;
+
+		var reveal = this.props.isRevealingCards ?
+			<button onClick={this.props.onClickHideCards} title="Hide cards">
+				<i className="joust-fa joust-fa-eye-slash"></i>
+			</button> :
+			<button onClick={this.props.onClickRevealCards} title="Reveal cards" disabled={!this.props.canRevealCards}>
+				<i className="joust-fa joust-fa-eye"></i>
+			</button>;
+
 		return (
 			<div className="joust-scrubber">
 				{playpause}
@@ -95,6 +108,7 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 							   selectSpeed={this.selectSpeed}
 							   disabled={!this.state.canInteract}
 				/>
+				{reveal}
 				<button onClick={this.props.swapPlayers} disabled={!this.state.canInteract} title="Swap players">
 					<i className="joust-fa joust-fa-unsorted"></i>
 				</button>

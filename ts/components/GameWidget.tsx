@@ -17,6 +17,7 @@ interface GameWidgetState {
 	isFullscreenAvailable?:boolean;
 	cardOracle?:Immutable.Map<number, string>;
 	cards?:Immutable.Map<string, CardData>;
+	isRevealingCards?:boolean;
 }
 
 class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
@@ -32,6 +33,7 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 			swapPlayers: false,
 			isFullscreen: false,
 			isFullscreenAvailable: Fullscreen.available(),
+			isRevealingCards: true,
 			cardOracle: null
 		};
 	}
@@ -66,21 +68,9 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 		}
 	}
 
-	protected swapPlayers():void {
-		this.setState({swapPlayers: !this.state.swapPlayers});
-	}
-
-	protected onClickFullscreen() {
-		this.fullscreen.request();
-	}
-
 	protected onAttainFullscreen() {
 		this.setState({isFullscreen: true});
 		this.triggerResize();
-	}
-
-	protected onClickMinimize() {
-		this.fullscreen.release();
 	}
 
 	protected onReleaseFullscreen() {
@@ -94,8 +84,8 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 
 	public setCards(cards:CardData[]) {
 		var cardMap = null;
-		if(cards) {
-			if(!cards.length) {
+		if (cards) {
+			if (!cards.length) {
 				console.error('Got invalid card data to metadata callback (expected card data array)');
 				return;
 			}
@@ -134,16 +124,20 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 		parts.push(<GameWrapper key="game" state={this.state.gameState} interaction={this.props.interaction}
 								assetDirectory={this.props.assetDirectory}
 								cards={this.state.cards} swapPlayers={this.state.swapPlayers}
-								cardOracle={this.state.cardOracle}
+								cardOracle={this.state.isRevealingCards && this.state.cardOracle}
 		/>);
 
 		if (this.props.scrubber) {
 			parts.push(<Scrubber key="scrubber" scrubber={this.props.scrubber}
-								 swapPlayers={this.swapPlayers.bind(this)}
+								 swapPlayers={() => this.setState({swapPlayers: !this.state.swapPlayers})}
 								 isFullscreen={this.state.isFullscreen}
 								 isFullscreenAvailable={this.state.isFullscreenAvailable}
-								 onClickFullscreen={this.onClickFullscreen.bind(this)}
-								 onClickMinimize={this.onClickMinimize.bind(this)}
+								 onClickFullscreen={() => this.fullscreen.request()}
+								 onClickMinimize={() => this.fullscreen.release()}
+								 isRevealingCards={this.state.isRevealingCards}
+								 canRevealCards={!!this.state.cardOracle}
+								 onClickHideCards={() => this.setState({isRevealingCards: false})}
+								 onClickRevealCards={() => this.setState({isRevealingCards: true})}
 			/>);
 		}
 
