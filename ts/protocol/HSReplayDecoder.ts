@@ -18,7 +18,7 @@ import IncrementTimeMutator from "../state/mutators/IncrementTimeMutator";
 class HSReplayDecoder extends Stream.Transform implements CardOracle {
 
 	private sax:Sax.SAXStream;
-	private targetGame:number;
+	private gameId:number;
 	private currentGame:number;
 	private nodeStack;
 	private timeOffset:number;
@@ -33,8 +33,8 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 		opts.objectMode = true;
 		super(opts);
 
-		this.currentGame = -1;
-		this.targetGame = 0;
+		this.gameId = null;
+		this.currentGame = null;
 		this.nodeStack = [];
 		this.timeOffset = null;
 		this.cardIds = Immutable.Map<number, string>();
@@ -60,13 +60,18 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 	}
 
 	private onOpenTag(node) {
-		if (this.currentGame > this.targetGame) {
+		if (this.gameId !== null && this.gameId !== this.currentGame) {
+			this.nodeStack.push(node);
 			return;
 		}
 
 		switch (node.name) {
 			case 'Game':
-				this.currentGame++;
+				let gameId = node.attributes.id;
+				if (gameId) {
+					this.gameId = gameId;
+					this.currentGame = gameId;
+				}
 				break;
 			case 'GameEntity':
 			case 'Player':
@@ -91,7 +96,7 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 					console.warn('Replay does not contain HSReplay version');
 				}
 				this.build = node.attributes.build;
-				if(typeof this.build !== 'undefined') {
+				if (typeof this.build !== 'undefined') {
 					this.build = +this.build;
 				}
 				if (!this.build) {
@@ -107,11 +112,6 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 	}
 
 	private onCloseTag(name) {
-		//console.debug(Array(this.nodeStack.length).join('\t') + '</' + name + '>');
-
-		if (this.currentGame > this.targetGame) {
-			return;
-		}
 
 		var node = this.nodeStack.pop();
 
@@ -121,12 +121,18 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 			return;
 		}
 
-		if (this.currentGame !== this.targetGame) {
+		if (this.gameId && this.gameId !== this.currentGame) {
 			return;
 		}
 
 		var mutator = null;
 		switch (name) {
+			case 'Game':
+				if (this.currentGame === null) {
+					// force termination
+					this.gameId = 1;
+				}
+				break;
 			case 'GameEntity':
 			case 'FullEntity':
 			{
@@ -145,6 +151,17 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 			{
 				let id = +node.attributes.id;
 				let name = '' + node.attributes.name;
+				if (!name && this.playerMap.includes(id)) {
+					// this should only be happening in resumed replays
+					this.playerMap.forEach((v:number, k:string):boolean => {
+						// find the old player name
+						if (v === id) {
+							console.warn('Transferring player name "' + k + '" to entity #' + v);
+							name = k;
+							return false;
+						}
+					});
+				}
 				this.playerMap = this.playerMap.set(name, id);
 				let player = new Player(
 					id,
@@ -241,7 +258,7 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 		id = +id;
 		cardId = '' + cardId;
 		let newCardIds = this.cardIds.set(id, cardId);
-		if(newCardIds === this.cardIds) {
+		if (newCardIds === this.cardIds) {
 			return;
 		}
 		this.cardIds = newCardIds;
