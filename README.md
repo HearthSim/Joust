@@ -54,8 +54,14 @@ gulp watch
 
 ## Licenses
 
-The contents of this repository is licensed under the APGL, which can be found in the LICENSE file, with the following exceptions:
+Joust is licensed under the AGPLv3 for **non-commercial uses exclusively**.
+The full text of the license can be found in the LICENSE file.
 
-- The Belwe and Franklin Gothic are not licensed under APGL.
-- The Font Awesome fonts at `assets/fonts/` are licensed under the SIL OFL 1.1.
-- The Font Awesome LESS code at `less/font-awesome/` is licensed under the MIT license.
+Joust is not licensed for commercial use. Commercial exceptions can be granted
+on a case by case basis.
+
+### Third party software
+
+- The Belwe and Franklin Gothic fonts are under their own, respective licenses.
+- The Font Awesome font is licensed under the SIL OFL 1.1.
+- The Font Awesome style code is licensed under the MIT license.
