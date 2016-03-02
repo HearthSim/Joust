@@ -2,10 +2,12 @@ import GameState from "./GameState";
 import * as Stream from "stream";
 import {StreamScrubber} from "../interfaces";
 import GameStateHistory from "./GameStateHistory";
+import {StreamScrubberInhibitor} from "../interfaces";
 
 class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 
 	protected history:GameStateHistory;
+	protected inhibitor:StreamScrubberInhibitor;
 
 	constructor(history?:GameStateHistory, opts?:Stream.DuplexOptions) {
 		opts = opts || {};
@@ -88,12 +90,15 @@ class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 			let now = new Date().getTime();
 			let elapsed = (now - this.lastUpdate) * this.speed;
 			this.lastUpdate = now;
-			this.currentTime += elapsed / 1000;
 
-			if (this.hasEnded()) {
-				this.currentTime = this.endTime - this.initialTime;
-				this.pause();
-				return;
+			if (!this.isInhibited()) {
+				this.currentTime += elapsed / 1000;
+
+				if (this.hasEnded()) {
+					this.currentTime = this.endTime - this.initialTime;
+					this.pause();
+					return;
+				}
 			}
 		}
 
@@ -160,6 +165,14 @@ class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 
 	public getDuration():number {
 		return Math.max(this.endTime - this.initialTime, 0);
+	}
+
+	public setInhibitor(inhibitor:StreamScrubberInhibitor):void {
+		this.inhibitor = inhibitor;
+	}
+
+	protected isInhibited() {
+		return this.inhibitor && this.inhibitor.isInhibiting();
 	}
 }
 

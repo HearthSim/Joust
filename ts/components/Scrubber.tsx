@@ -102,6 +102,7 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 				<Timeline duration={this.props.scrubber.getDuration()}
 						  at={this.props.scrubber.getCurrentTime()}
 						  seek={this.props.scrubber.seek.bind(this.props.scrubber)}
+						  ref={(inhibitor) => this.props.scrubber.setInhibitor(inhibitor)}
 				/>
 				<SpeedSelector speed={this.state.speed}
 							   speeds={[1, 2, 5, 10, 25]}

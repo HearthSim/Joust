@@ -1,4 +1,7 @@
 import * as React from "react";
+import GameStateHistory from "../state/GameStateHistory";
+import GameStateScrubber from "../state/GameStateScrubber";
+import {StreamScrubberInhibitor} from "../interfaces";
 
 interface TimelineProps extends React.Props<any> {
 	at: number;
@@ -10,11 +13,10 @@ interface TimelineState {
 	isDragging?: boolean;
 }
 
-class Timeline extends React.Component<TimelineProps, TimelineState> {
+class Timeline extends React.Component<TimelineProps, TimelineState> implements StreamScrubberInhibitor {
 	private ref:HTMLDivElement;
 	private mouseMove:(e) => void;
 	private mouseUp:(e) => void;
-	private lastOffset:number;
 
 	constructor(props:TimelineProps) {
 		super(props);
@@ -57,13 +59,7 @@ class Timeline extends React.Component<TimelineProps, TimelineState> {
 		var rect = this.ref.getBoundingClientRect();
 		var offset = Math.min(Math.max(rect.left, e.clientX), rect.right);
 
-		if (this.lastOffset === offset) {
-			return;
-		}
-
 		var width = rect.right - rect.left;
-		this.lastOffset = offset;
-
 		offset = offset - rect.left;
 
 		var seek = this.props.duration / width * offset;
@@ -86,6 +82,10 @@ class Timeline extends React.Component<TimelineProps, TimelineState> {
 				<div className="joust-scrubber-progress" style={style}></div>
 			</div>
 		);
+	}
+
+	public isInhibiting():boolean {
+		return this.state.isDragging;
 	}
 }
 

@@ -81,6 +81,7 @@ export interface StreamScrubber extends EventEmitter {
 	canPlay():boolean;
 	getHistory():GameStateHistory;
 	getDuration():number;
+	setInhibitor(inhibitor:StreamScrubberInhibitor):void;
 }
 
 export interface CardData {
@@ -144,4 +145,8 @@ export interface GameWidgetProps extends AssetDirectoryProps, React.Props<any> {
 	cardOracle: CardOracle;
 	width?:any;
 	height?:any;
+}
+
+export interface StreamScrubberInhibitor {
+	isInhibiting: () => boolean;
 }
