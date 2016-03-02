@@ -44,6 +44,9 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 		this.sax = Sax.createStream(true, {});
 		this.sax.on('opentag', this.onOpenTag.bind(this));
 		this.sax.on('closetag', this.onCloseTag.bind(this));
+		this.once('end', () => {
+			this.sax.end()
+		});
 	}
 
 	_transform(chunk:any, encoding:string, callback:Function):void {
@@ -105,7 +108,7 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 				break;
 			case 'Action':
 				this.push(new IncrementTimeMutator());
-				if(this.clearOptionsOnTimestamp) {
+				if (this.clearOptionsOnTimestamp) {
 					this.clearOptionsOnTimestamp = false;
 					this.push(new ClearOptionsMutator());
 				}
