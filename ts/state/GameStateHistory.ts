@@ -41,12 +41,18 @@ class GameStateHistory {
 			return;
 		}
 
-		while (time > this.pointer.state.getTime() && this.pointer.next) {
+		while (this.pointer.state.getTime() < time && this.pointer.next) {
 			// we want to move towards the head
+
+			if (this.pointer.next.state.getTime() > time) {
+				// do not pass the last state before time
+				break;
+			}
+
 			this.pointer = this.pointer.next;
 		}
 
-		while (time < this.pointer.state.getTime() && this.pointer.prev) {
+		while (this.pointer.state.getTime() > time && this.pointer.prev) {
 			// we want to move towards the tail
 			this.pointer = this.pointer.prev;
 		}
