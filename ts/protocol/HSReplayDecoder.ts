@@ -88,22 +88,22 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 			case 'HSReplay':
 				this.version = node.attributes.version;
 				if (this.version) {
-					if (this.version != '1.0') {
-						console.warn('Unsupported HSReplay version', this.version, '(expected 1.0)');
+					if (this.version != '1.0' && this.version != '1.1') {
+						console.warn('HSReplay version', this.version, 'is possibly unsupported (expected 1.0 or 1.1)');
 					}
 					else {
-						console.debug('Found valid HSReplay version', this.version);
+						console.debug('HSReplay at version', this.version);
 					}
 				}
 				else {
-					console.warn('Replay does not contain HSReplay version');
+					console.warn('No HSReplay version found');
 				}
 				this.build = node.attributes.build;
 				if (typeof this.build !== 'undefined') {
 					this.build = +this.build;
 				}
 				if (!this.build) {
-					console.warn('Replay does not contain Hearthstone build number');
+					console.warn('No Hearthstone build number found');
 				}
 				break;
 			case 'Action':
@@ -163,7 +163,7 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 					this.playerMap.forEach((v:number, k:string):boolean => {
 						// find the old player name
 						if (v === id) {
-							console.warn('Transferring player name "' + k + '" to entity #' + v);
+							console.warn('Transferring player name', '"' + k + '"', 'to entity #' + v);
 							name = k;
 							return false;
 						}
@@ -250,7 +250,11 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 
 		var str = '' + id;
 		if (this.playerMap.has(str)) {
-			return +this.playerMap.get(str);
+			if (!this.version || +this.version > 1.0) {
+				console.warn('Using a player name as entity reference in HSReplay is deprecated');
+			}
+			id = this.playerMap.get(str);
+			console.debug('Resolved', '"' + str + '"', 'as entity', '#' + id);
 		}
 		else {
 			console.warn('Could not resolve invalid entity id "' + id + '"');
