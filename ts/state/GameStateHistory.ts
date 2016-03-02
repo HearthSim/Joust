@@ -1,4 +1,7 @@
 import GameState from "./GameState";
+import Entity from "../Entity";
+import {GameTag} from "../enums";
+import {Step} from "../enums";
 
 interface ListElement {
 	state: GameState;
@@ -58,6 +61,32 @@ class GameStateHistory {
 		}
 
 		return this.pointer.state;
+	}
+
+	public getNextTurn(time:number):number {
+		if (!this.pointer) {
+			return;
+		}
+
+		let fromGame = (state:GameState):Entity => {
+			return state.getEntity(1);
+		};
+
+		// move pointer to timestamp
+		let oldState = this.getLatest(time);
+		let oldTurn = fromGame(oldState).getTag(GameTag.TURN);
+
+		// seek the end of the old turn
+		while (fromGame(this.pointer.state).getTag(GameTag.TURN) === oldTurn && this.pointer.next) {
+			this.pointer = this.pointer.next;
+		}
+
+		// seek the beginning of the new turn
+		while (fromGame(this.pointer.state).getTag(GameTag.STEP) !== Step.MAIN_ACTION && this.pointer.next) {
+			this.pointer = this.pointer.next;
+		}
+
+		return this.pointer.state.getTime();
 	}
 }
 
