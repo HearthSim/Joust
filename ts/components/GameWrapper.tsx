@@ -27,7 +27,7 @@ class GameWrapper extends React.Component<GameWrapperProps, {}> {
 	public render():JSX.Element {
 		var gameState = this.props.state;
 		if (!gameState) {
-			return <p className="message">Waiting for game state&hellip;</p>;
+			return <p className="joust-message">Waiting for game state&hellip;</p>;
 		}
 
 		var entityTree = gameState.getEntityTree();
@@ -36,19 +36,19 @@ class GameWrapper extends React.Component<GameWrapperProps, {}> {
 		// check if any entites are present
 		var allEntities = gameState.getEntities();
 		if (!allEntities) {
-			return <p className="message">Waiting for entities&hellip;</p>;
+			return <p className="joust-message">Waiting for entities&hellip;</p>;
 		}
 
 		// find the game entity
 		var game = allEntities.filter(GameWrapper.filterByCardType(CardType.GAME)).first();
 		if (!game) {
-			return <p className="message">Waiting for game&hellip;</p>;
+			return <p className="joust-message">Waiting for game&hellip;</p>;
 		}
 
 		// find the players
 		var players = allEntities.filter(GameWrapper.filterByCardType(CardType.PLAYER)) as Immutable.Iterable<number, PlayerEntity>;
 		if (players.count() == 0) {
-			return <p className="message">Waiting for players&hellip;</p>;
+			return <p className="joust-message">Waiting for players&hellip;</p>;
 		}
 
 		// check if we need to swap the players
