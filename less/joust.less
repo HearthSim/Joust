@@ -731,16 +731,45 @@
 }
 
 .joust-scrubber-timeline {
+	position: relative;
 	flex: 1;
 	background-color: gray;
 	margin-right: 1px;
 	height: 100%;
+	width: 100%;
 }
 
 .joust-scrubber-progress {
+	position: absolute;
+	top: 0;
+	left: 0;
 	height: 100%;
-	border-right: solid 1px white;
-	background-color: #555;
+	z-index: 1;
+	background-color: #ccc;
+	mix-blend-mode: saturation;
+
+	&.inverse {
+		left: auto;
+		right: 0;
+	}
+}
+
+.joust-scrubber-turn {
+	display: inline-block;
+	z-index: 0;
+	height: 100%;
+
+	&.mulligan {
+		background-color: lightgreen;
+	}
+
+	&.primary {
+		background-color: lighten(dodgerblue, 15);
+	}
+
+	&.secondary {
+		background-color: lighten(crimson, 20);
+	}
 }
 
 .hidden-card {

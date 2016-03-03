@@ -2,11 +2,14 @@ import * as React from "react";
 import GameStateHistory from "../state/GameStateHistory";
 import GameStateScrubber from "../state/GameStateScrubber";
 import {StreamScrubberInhibitor} from "../interfaces";
+import GameState from "../state/GameState";
+import Turn from "./Turn";
 
 interface TimelineProps extends React.Props<any> {
 	at: number;
 	duration: number;
 	seek:(time:number) => void;
+	turnMap?: Immutable.Map<number, GameState>;
 }
 
 interface TimelineState {
@@ -71,15 +74,37 @@ class Timeline extends React.Component<TimelineProps, TimelineState> implements 
 	}
 
 	public render():JSX.Element {
-		var width = this.props.duration > 0 ? 100 / this.props.duration * this.props.at : 0;
-		var style = {width: width + '%'};
-		if ((width % 100) === 0) {
-			style['borderRight'] = 'none';
-		}
+		let mulligan = this.props.turnMap.has(1) ?
+			<Turn key={0}
+				  mulligan={true}
+				  duration={this.props.turnMap.get(1).getTime()}
+				  totalDuration={this.props.duration}
+			/> : null;
+
+		let turns = this.props.turnMap.map((current:GameState, turn:number, map:Immutable.Map<number, GameState>):JSX.Element => {
+			let duration = 0;
+			if (map.has(turn + 1)) {
+				let next = map.get(turn + 1);
+				duration = next.getTime() - current.getTime();
+			}
+			else {
+				duration = this.props.duration - current.getTime();
+			}
+
+			return <Turn key={turn} state={current} duration={duration} totalDuration={this.props.duration}/>;
+		});
+
+		let width = 100 - 100 / this.props.duration * this.props.at;
+
 		return (
-			<div className="joust-scrubber-timeline" ref={(ref) => this.ref = ref} style={{cursor: 'pointer'}}
-				 onMouseDown={this.onMouseDown.bind(this)}>
-				<div className="joust-scrubber-progress" style={style}></div>
+			<div className="joust-scrubber-timeline"
+				 ref={(ref) => this.ref = ref}
+				 style={{cursor: 'pointer'}}
+				 onMouseDown={this.onMouseDown.bind(this)}
+			>
+				{mulligan}
+				{turns}
+				<div className="joust-scrubber-progress inverse" style={{width: width + '%'}}></div>
 			</div>
 		);
 	}
