@@ -20,6 +20,8 @@ class Timeline extends React.Component<TimelineProps, TimelineState> implements 
 	private ref:HTMLDivElement;
 	private mouseMove:(e) => void;
 	private mouseUp:(e) => void;
+	private touchMove:(e) => void;
+	private touchEnd:(e) => void;
 
 	constructor(props:TimelineProps) {
 		super(props);
@@ -28,16 +30,23 @@ class Timeline extends React.Component<TimelineProps, TimelineState> implements 
 		};
 		this.mouseMove = this.onMouseMove.bind(this);
 		this.mouseUp = this.onMouseUp.bind(this);
+		this.touchMove = this.onTouchMove.bind(this);
 	}
 
 	public componentDidMount():void {
 		document.addEventListener('mousemove', this.mouseMove);
 		document.addEventListener('mouseup', this.mouseUp);
+		document.addEventListener('touchmove', this.touchMove);
+		document.addEventListener('touchend', this.mouseUp);
+		document.addEventListener('touchcancel', this.mouseUp);
 	}
 
 	public componentWillUnmount():void {
 		document.removeEventListener('mousemove', this.mouseMove);
 		document.removeEventListener('mouseup', this.mouseUp);
+		document.removeEventListener('touchmove', this.touchMove);
+		document.removeEventListener('touchend', this.mouseUp);
+		document.removeEventListener('touchcancel', this.mouseUp);
 	}
 
 	protected onMouseDown(e):void {
@@ -47,7 +56,7 @@ class Timeline extends React.Component<TimelineProps, TimelineState> implements 
 		}
 		e.preventDefault();
 		this.setState({isDragging: true});
-		this.seek(e);
+		this.seek(e.clientX);
 	}
 
 	protected onMouseMove(e):void {
@@ -55,12 +64,40 @@ class Timeline extends React.Component<TimelineProps, TimelineState> implements 
 			return;
 		}
 
-		this.seek(e);
+		this.seek(e.clientX);
 	}
 
-	protected seek(e):void {
+	protected onMouseUp(e):void {
+		this.setState({isDragging: false});
+	}
+
+	protected onTouchStart(e):void {
+		if (!e.touches[0]) {
+			return;
+		}
+		e.preventDefault();
+		let touch = e.touches[0];
+		this.setState({isDragging: true});
+		this.seek(touch.clientX);
+	}
+
+	protected onTouchMove(e):void {
+		if (!this.state.isDragging) {
+			return;
+		}
+
+		if (!e.touches[0]) {
+			return;
+		}
+
+		e.preventDefault();
+		let touch = e.touches[0];
+		this.seek(touch.clientX);
+	}
+
+	protected seek(x:number):void {
 		var rect = this.ref.getBoundingClientRect();
-		var offset = Math.min(Math.max(rect.left, e.clientX), rect.right);
+		var offset = Math.min(Math.max(rect.left, x), rect.right);
 
 		var width = rect.right - rect.left;
 		offset = offset - rect.left;
@@ -69,9 +106,6 @@ class Timeline extends React.Component<TimelineProps, TimelineState> implements 
 		this.props.seek(seek);
 	}
 
-	protected onMouseUp(e):void {
-		this.setState({isDragging: false});
-	}
 
 	public render():JSX.Element {
 		let mulligan = this.props.turnMap.has(1) ?
@@ -101,6 +135,7 @@ class Timeline extends React.Component<TimelineProps, TimelineState> implements 
 				 ref={(ref) => this.ref = ref}
 				 style={{cursor: 'pointer'}}
 				 onMouseDown={this.onMouseDown.bind(this)}
+				 onTouchStart={this.onTouchStart.bind(this)}
 			>
 				{mulligan}
 				{turns}
