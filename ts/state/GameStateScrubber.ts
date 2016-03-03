@@ -113,6 +113,9 @@ class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 
 
 	public seek(time:number):void {
+		if (time === this.currentTime) {
+			return;
+		}
 		this.currentTime = time;
 		this.update();
 	}
