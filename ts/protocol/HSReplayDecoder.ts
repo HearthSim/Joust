@@ -88,11 +88,14 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 			case 'HSReplay':
 				this.version = node.attributes.version;
 				if (this.version) {
-					if (this.version != '1.0' && this.version != '1.1') {
-						console.warn('HSReplay version', this.version, 'is possibly unsupported (expected 1.0 or 1.1)');
+					if (this.version == '1.1') {
+						console.debug('HSReplay at version', this.version);
+					}
+					else if (this.version == '1.0') {
+						console.warn('HSReplay version', this.version, 'is obsolete');
 					}
 					else {
-						console.debug('HSReplay at version', this.version);
+						console.warn('HSReplay version', this.version, 'is possibly unsupported');
 					}
 				}
 				else {
@@ -249,15 +252,19 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 		}
 
 		var str = '' + id;
+
+		if (str === 'UNKNOWN HUMAN PLAYER') {
+			console.warn('Cannot resolve entity for ' + str);
+			return;
+		}
+
+		console.warn('HSReplay: Using player names as entity reference is deprecated');
+
 		if (this.playerMap.has(str)) {
-			if (!this.version || +this.version > 1.0) {
-				console.warn('Using a player name as entity reference in HSReplay is deprecated');
-			}
 			id = this.playerMap.get(str);
-			console.debug('Resolved', '"' + str + '"', 'as entity', '#' + id);
 		}
 		else {
-			console.warn('Could not resolve invalid entity id "' + id + '"');
+			console.warn('Could not resolve entity id "' + id + '"');
 		}
 		return +id;
 	}
