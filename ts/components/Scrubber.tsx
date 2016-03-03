@@ -106,7 +106,7 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 						  ref={(inhibitor) => this.props.scrubber.setInhibitor(inhibitor)}
 				/>
 				<SpeedSelector speed={this.state.speed}
-							   speeds={[1, 2, 5, 10, 25]}
+							   speeds={[1, 1.5, 2, 4, 8, 16]}
 							   selectSpeed={this.selectSpeed}
 							   disabled={!this.state.canInteract}
 				/>
