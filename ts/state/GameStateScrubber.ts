@@ -3,6 +3,7 @@ import * as Stream from "stream";
 import {StreamScrubber} from "../interfaces";
 import GameStateHistory from "./GameStateHistory";
 import {StreamScrubberInhibitor} from "../interfaces";
+import {GameTag} from "../enums";
 
 class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 
@@ -78,6 +79,15 @@ class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 		this.update();
 	}
 
+	public toggle():void {
+		if (this.isPlaying()) {
+			this.pause();
+		}
+		else {
+			this.play();
+		}
+	}
+
 	protected speed:number;
 	protected lastState:GameState;
 
@@ -130,6 +140,11 @@ class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 
 	public rewind():void {
 		this.currentTime = 0;
+		this.update();
+	}
+
+	public fastForward():void {
+		this.currentTime = this.endTime - this.initialTime;
 		this.pause();
 	}
 
@@ -176,6 +191,32 @@ class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 
 	protected isInhibited() {
 		return this.inhibitor && this.inhibitor.isInhibiting();
+	}
+
+	public nextTurn():void {
+		let nextTurn = this.endTime - this.initialTime;
+		let currentTurn = this.lastState.getEntity(1).getTag(GameTag.TURN);
+		if (this.currentTime < this.history.turnMap.first().getTime()) {
+			currentTurn--;
+		}
+		if (this.history.turnMap.has(currentTurn + 1)) {
+			nextTurn = this.history.turnMap.get(currentTurn + 1).getTime();
+		}
+		this.currentTime = nextTurn;
+		this.update();
+	}
+
+	public previousTurn():void {
+		let previousTurn = 0;
+		let currentTurn = this.lastState.getEntity(1).getTag(GameTag.TURN);
+		if (this.currentTime > this.history.turnMap.last().getTime()) {
+			currentTurn++;
+		}
+		if (this.history.turnMap.has(currentTurn - 1)) {
+			previousTurn = this.history.turnMap.get(currentTurn - 1).getTime();
+		}
+		this.currentTime = previousTurn;
+		this.update();
 	}
 }
 

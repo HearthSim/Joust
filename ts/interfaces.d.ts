@@ -69,6 +69,7 @@ export interface InteractiveBackend {
 export interface StreamScrubber extends EventEmitter {
 	play():void;
 	pause():void;
+	toggle():void;
 	setSpeed(speed:number):void;
 	seek(time:number):void;
 	isPlaying():boolean;
@@ -76,12 +77,16 @@ export interface StreamScrubber extends EventEmitter {
 	canInteract():boolean;
 	canRewind():boolean;
 	rewind():void;
+	fastForward():void;
 	getCurrentTime():number;
 	getSpeed():number;
 	canPlay():boolean;
 	getHistory():GameStateHistory;
 	getDuration():number;
 	setInhibitor(inhibitor:StreamScrubberInhibitor):void;
+	nextTurn():void;
+	previousTurn():void;
+	hasEnded():boolean;
 }
 
 export interface CardData {

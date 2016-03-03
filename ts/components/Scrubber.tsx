@@ -35,6 +35,7 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 			canPlay: false,
 			speed: 1,
 		};
+		this.onKeyDown = this.onKeyDown.bind(this);
 		this.registerListeners(this.props);
 	}
 
@@ -45,10 +46,59 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 
 	private registerListeners(props:ScrubberProps):void {
 		props.scrubber.on('update', this.updateState);
+		document.addEventListener('keydown', this.onKeyDown);
 	}
 
 	private removeListeners(props:ScrubberProps):void {
 		props.scrubber.removeListener('update', this.updateState);
+		document.removeEventListener('keydown', this.onKeyDown);
+	}
+
+	private onKeyDown(e:KeyboardEvent):void {
+		if (!this.state.canInteract) {
+			return;
+		}
+		switch (e.keyCode) {
+			case 32: // spacebar
+			case 75: // k
+				e.preventDefault();
+				this.props.scrubber.toggle();
+				break;
+			case 37: // left arrow
+			case 74: // j<
+				e.preventDefault();
+				this.props.scrubber.previousTurn();
+				break;
+			case 39: // right arrow
+			case 76: // l
+				e.preventDefault();
+				this.props.scrubber.nextTurn();
+				break;
+			case 36: // home
+				e.preventDefault();
+				this.props.scrubber.rewind();
+				break;
+			case 35: // end
+				e.preventDefault();
+				this.props.scrubber.fastForward();
+				break;
+			case 88: // x
+				e.preventDefault();
+				if (!this.props.canRevealCards) {
+					return;
+				}
+				if (this.props.isRevealingCards) {
+					this.props.onClickHideCards && this.props.onClickHideCards();
+				}
+				else {
+					this.props.onClickRevealCards && this.props.onClickRevealCards();
+				}
+				break;
+			case 67: // c
+				e.preventDefault();
+				this.props.swapPlayers();
+				break;
+		}
 	}
 
 	protected updateState = ():void => {
@@ -128,7 +178,14 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 	}
 
 	protected rewind = ():void => {
+		let play = false;
+		if (this.props.scrubber.hasEnded()) {
+			play = true;
+		}
 		this.props.scrubber.rewind();
+		if (play) {
+			this.props.scrubber.play();
+		}
 	}
 
 	protected selectSpeed = (speed:number):void => {
