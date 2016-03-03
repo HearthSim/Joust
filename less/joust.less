@@ -405,18 +405,33 @@
 	}
 }
 
+.tooltip {
+	display: inline;
+	position: relative;
+
+	&:hover:after{
+		position: absolute;
+		background: #5c5c5c;
+		color: #fff;
+		border: 2px solid #ceccce;
+		border-radius: 8px;
+		padding: 10px;
+		font-size: 0.8em;
+		font-family: sans-serif;
+		text-align: center;
+		content: attr(data-title);
+		right: 80%;
+		top: 30%;
+	}
+}
+
 .deck {
-	width: 20px;
 	height: 100%;
 	box-sizing: border-box;
 	float: right;
-	background-color: beige;
 
-	border: black solid 1px;
-	border-radius: 5px;
-
-	&.fatigue {
-		background-color: darkorange;
+	img {
+		height: 100%;
 	}
 }
 
