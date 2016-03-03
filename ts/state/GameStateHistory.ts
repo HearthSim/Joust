@@ -2,6 +2,7 @@ import GameState from "./GameState";
 import Entity from "../Entity";
 import {GameTag} from "../enums";
 import {Step} from "../enums";
+import * as Immutable from "immutable";
 
 interface ListElement {
 	state: GameState;
@@ -13,6 +14,7 @@ class GameStateHistory {
 	public tail:ListElement = null; // earliest
 	public head:ListElement = null; // latest
 	public pointer:ListElement = null;
+	public turnMap:Immutable.Map<number, GameState> = Immutable.Map<number, GameState>();
 
 	public push(gameState:GameState):void {
 		var time = gameState.getTime();
@@ -36,6 +38,12 @@ class GameStateHistory {
 		}
 		else {
 			console.error('Replay contains out-of-order timestamps');
+		}
+
+		let game = gameState.getEntity(1);
+		let turn = +game.getTag(GameTag.TURN);
+		if (!this.turnMap.has(turn) && game.getTag(GameTag.STEP) === Step.MAIN_ACTION) {
+			this.turnMap = this.turnMap.set(turn, gameState);
 		}
 	}
 
