@@ -4,7 +4,7 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "karma start --single-run --no-auto-watch karma.conf.js"
   },
   "author": "Benedict Etzel <developer@beheh.de>",
   "license": "AGPL-3.0",
@@ -33,6 +33,12 @@
     "gulp-plumber": "^1.1.0",
     "gulp-sourcemaps": "^1.6.0",
     "gulp-util": "^3.0.7",
+    "jasmine": "^2.4.1",
+    "karma": "^0.13.21",
+    "karma-jasmine": "^0.3.7",
+    "karma-phantomjs-launcher": "^1.0.0",
+    "karma-webpack": "^1.7.0",
+    "phantomjs-prebuilt": "^2.1.4",
     "through2": "^2.0.0",
     "ts-loader": "^0.8.0",
     "typescript": "^1.8.0",
