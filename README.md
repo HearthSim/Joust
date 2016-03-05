@@ -3,7 +3,7 @@
 
 ## Requirements
 
-- Node.js ~v5.6.0
+- Node.js ~v5.7.0
 - `npm install -g electron-prebuilt typings gulp webpack`
 
 
