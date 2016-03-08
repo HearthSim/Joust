@@ -86,6 +86,7 @@ export interface StreamScrubber extends EventEmitter {
 	setInhibitor(inhibitor:StreamScrubberInhibitor):void;
 	nextTurn():void;
 	previousTurn():void;
+	skipBack():void;
 	hasEnded():boolean;
 }
 

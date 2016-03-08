@@ -218,6 +218,19 @@ class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 		this.currentTime = previousTurn;
 		this.update();
 	}
+
+	public skipBack():void {
+		let currentTurn = this.lastState.getEntity(1).getTag(GameTag.TURN);
+		let turnStart = this.history.turnMap.get(currentTurn).getTime();
+		let timeElapsed = this.currentTime - turnStart;
+		if (timeElapsed > 1.5 * this.speed) {
+			this.currentTime = turnStart;
+			this.update();
+		}
+		else {
+			this.previousTurn();
+		}
+	}
 }
 
 export default GameStateScrubber;

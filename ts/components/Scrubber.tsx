@@ -67,7 +67,7 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 			case 37: // left arrow
 			case 74: // j<
 				e.preventDefault();
-				this.props.scrubber.previousTurn();
+				this.props.scrubber.skipBack();
 				break;
 			case 39: // right arrow
 			case 76: // l
