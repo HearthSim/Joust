@@ -180,7 +180,6 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 					node.attributes.tags,
 					+node.attributes.playerID,
 					name,
-					undefined,
 					rank,
 					legendRank
 				);

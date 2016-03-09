@@ -101,7 +101,6 @@ class KettleDecoder extends Stream.Transform {
 					+packet.EntityID,
 					Immutable.Map<string, number>(tags),
 					+packet.PlayerID || +packet.EntityID, // default to EntityID until Kettle is changed
-					packet.CardID || null,
 					'PlayerName'
 				);
 				mutator = new AddEntityMutator(player);

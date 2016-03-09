@@ -6,8 +6,8 @@ class Player extends Entity {
 	protected rank:number;
 	protected legendRank:number;
 
-	constructor(id:number, tags:Immutable.Map<string, number>, playerId:number, name:string, cardId?:string, rank?:number, legendRank?:number) {
-		super(id, tags, cardId);
+	constructor(id:number, tags:Immutable.Map<string, number>, playerId:number, name:string, rank?:number, legendRank?:number) {
+		super(id, tags);
 		this.playerId = playerId;
 		this.name = name;
 		this.rank = rank;
@@ -31,7 +31,7 @@ class Player extends Entity {
 	}
 
 	protected factory(tags, cardId):Player {
-		return new Player(this.id, tags, this.playerId, this.name, cardId, this.rank, this.legendRank);
+		return new Player(this.id, tags, this.playerId, this.name, this.rank, this.legendRank);
 	}
 }
 
