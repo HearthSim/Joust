@@ -91,7 +91,7 @@ export interface StreamScrubber extends EventEmitter {
 }
 
 export interface CardData {
-	id:string;
+	id?:string;
 
 	// enums
 	rarity?:string;

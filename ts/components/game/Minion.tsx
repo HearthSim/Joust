@@ -9,6 +9,7 @@ import Health from './stats/Health';
 
 import {DragSource, DropTarget} from 'react-dnd';
 import * as _ from 'lodash';
+import {CardData} from "../../interfaces";
 
 class Minion extends EntityInPlay<EntityInPlayProps, {}> {
 
@@ -17,28 +18,25 @@ class Minion extends EntityInPlay<EntityInPlayProps, {}> {
 	}
 
 	public jsx() {
-		var entity = this.props.entity;
+		let entity = this.props.entity;
+		let cardId = entity.getCardId();
 
-		var title = entity.getCardId();
-		var defaultAttack = null;
-		var defaultHealth = null;
-
-		if (this.props.cards && this.props.cards.has(entity.getCardId())) {
-			var data = this.props.cards.get(entity.getCardId());
-			title = data.name;
-			defaultAttack = data.attack;
-			defaultHealth = data.health;
+		let data:CardData = {};
+		if (this.props.cards && this.props.cards.has(cardId)) {
+			data = this.props.cards.get(cardId);
 		}
 
-		return (
-			<div>
-				<InPlayCardArt entity={entity} assetDirectory={this.props.assetDirectory} cards={this.props.cards} textureDirectory={this.props.textureDirectory} controller={this.props.controller}/>
-				<div className="stats">
-					<Attack attack={entity.getAtk()} default={defaultAttack}/>
-					<Health health={entity.getHealth()} damage={entity.getDamage()} default={defaultHealth}/>
-				</div>
+		return [
+			<InPlayCardArt entity={entity} controller={this.props.controller}
+						   cards={this.props.cards}
+						   assetDirectory={this.props.assetDirectory}
+						   textureDirectory={this.props.textureDirectory}
+			/>,
+			<div className="stats">
+				<Attack attack={entity.getAtk()} default={data.attack}/>
+				<Health health={entity.getHealth()} damage={entity.getDamage()} default={data.health}/>
 			</div>
-		);
+		];
 	}
 }
 
