@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as Immutable from "immutable";
 
-import {EntityProps, OptionCallbackProps, CardDataProps, CardOracleProps, AssetDirectoryProps} from "../../interfaces";
+import {EntityProps, OptionCallbackProps, CardDataProps, CardOracleProps, AssetDirectoryProps, TextureDirectoryProps} from "../../interfaces";
 import Entity from '../../Entity';
 import Player from './Player';
 import Option from '../../Option';
@@ -39,6 +39,7 @@ class TwoPlayerGame extends React.Component<TwoPlayerGameProps, {}> {
 						cardOracle={this.props.cardOracle}
 						cards={this.props.cards}
 						assetDirectory={this.props.assetDirectory}
+						textureDirectory={this.props.textureDirectory}
 				/>
 				<EndTurnButton option={this.props.endTurnOption}
 							   optionCallback={this.props.optionCallback} onlyOption={options.count() === 0}
@@ -51,6 +52,7 @@ class TwoPlayerGame extends React.Component<TwoPlayerGameProps, {}> {
 						cardOracle={this.props.cardOracle}
 						cards={this.props.cards}
 						assetDirectory={this.props.assetDirectory}
+						textureDirectory={this.props.textureDirectory}
 				/>
 			</div>
 		);

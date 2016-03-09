@@ -46,6 +46,7 @@ class Hand extends EntityList {
 					  cards={this.props.cards}
 					  isHidden={hidden}
 					  controller={this.props.controller}
+					  textureDirectory={this.props.textureDirectory}
 		/>);
 	}
 }

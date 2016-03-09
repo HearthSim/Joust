@@ -24,7 +24,7 @@ class HeroPower extends EntityInPlay<EntityInPlayProps, {}> {
 
 		return (
 			<div>
-				<HeroPowerArt entity={this.props.entity} assetDirectory={this.props.assetDirectory}/>
+				<HeroPowerArt entity={this.props.entity} cards={this.props.cards} assetDirectory={this.props.assetDirectory} textureDirectory={this.props.textureDirectory}/>
 				<Cost cost={this.props.entity.getCost()} default={defaultCost}/>
 			</div>
 		);

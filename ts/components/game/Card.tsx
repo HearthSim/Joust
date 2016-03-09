@@ -29,7 +29,9 @@ class Card extends React.Component<CardProps, {}> {
 			return (
 				<div className="card">
 					<InHandCardArt hidden={true} entity={this.props.entity} cardType={0}
-								   assetDirectory={this.props.assetDirectory}/>
+								   assetDirectory={this.props.assetDirectory}
+								   textureDirectory={this.props.textureDirectory}
+					/>
 				</div>
 			);
 		}
@@ -109,7 +111,10 @@ class Card extends React.Component<CardProps, {}> {
 		var jsx = (
 			<div className={classNames.join(' ')} style={this.props.style}>
 				<InHandCardArt entity={entity} hidden={false} cardType={cardType}
-							   assetDirectory={this.props.assetDirectory}/>
+							   cards={this.props.cards}
+							   assetDirectory={this.props.assetDirectory}
+							   textureDirectory={this.props.textureDirectory}
+				/>
 				<Cost cost={!this.props.isHidden ? entity.getCost() : defaultCost} default={defaultCost}/>
 				<h1>{title}</h1>
 				<div className="description">

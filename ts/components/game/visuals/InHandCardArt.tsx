@@ -3,6 +3,7 @@ import {CardType} from "../../../enums";
 import Entity from '../../../Entity';
 import CardArt from "./CardArt";
 import {EntityProps} from "../../../interfaces";
+import InPlayCardArt from "./InPlayCardArt";
 
 interface InHandCardArtProps extends EntityProps {
 	hidden: boolean;
@@ -38,7 +39,7 @@ class InHandCardArt extends React.Component<InHandCardArtProps, {}> {
 			}
 
 			images.push({
-				image: entity.getCardId(),
+				image: InPlayCardArt.extractTexture(entity.getCardId(), this.props.cards),
 				isArt: true,
 				classes: [portraitClass]
 			});
@@ -57,7 +58,7 @@ class InHandCardArt extends React.Component<InHandCardArtProps, {}> {
 		}
 
 		return (
-			<CardArt layers={images} scale={0.71} square={false} margin={false} assetDirectory={this.props.assetDirectory} />
+			<CardArt layers={images} scale={0.71} square={false} margin={false} assetDirectory={this.props.assetDirectory} textureDirectory={this.props.textureDirectory} />
 		);
 	}
 }

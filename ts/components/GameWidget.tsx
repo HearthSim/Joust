@@ -122,7 +122,7 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 		}
 
 		parts.push(<GameWrapper key="game" state={this.state.gameState} interaction={this.props.interaction}
-								assetDirectory={this.props.assetDirectory}
+								assetDirectory={this.props.assetDirectory} textureDirectory={this.props.textureDirectory}
 								cards={this.state.cards} swapPlayers={this.state.swapPlayers}
 								cardOracle={this.state.isRevealingCards && this.state.cardOracle}
 		/>);

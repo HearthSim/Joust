@@ -1,6 +1,7 @@
 import * as React from "react";
 import Dimensions from "react-dimensions";
-import {AssetDirectoryProps} from "../../../interfaces";
+import * as Immutable from "immutable";
+import {AssetDirectoryProps, TextureDirectoryProps, CardData} from "../../../interfaces";
 
 interface CardArtItem {
 	image: string;
@@ -8,44 +9,48 @@ interface CardArtItem {
 	classes: Array<String>;
 }
 
-interface CardArtProps extends AssetDirectoryProps {
+interface CardArtProps extends AssetDirectoryProps, TextureDirectoryProps {
 	layers: Array<CardArtItem>;
 	scale: number;
 	square: boolean;
 	margin: boolean;
 	containerWidth: number;
 	containerHeight: number;
-	baseArtUrl?: string;
 }
 
 class CardArt extends React.Component<CardArtProps, {}> {
 
-	private static baseArtExt:string = ".jpg";
+	private static baseArtExt:string = ".png";
 	private static imageDirectory:string = "images/";
 
 	private createStyle():any {
 		// keep proportions with scale
 		var width = Math.round(this.props.containerHeight * this.props.scale);
 		var height = Math.round(this.props.containerHeight);
-		if (this.props.square)
+		if (this.props.square) {
 			height = width;
+		}
 		var margin = Math.round(this.props.containerHeight * (1 - this.props.scale));
 		var style = {width: width + 'px', height: height + 'px', marginTop: '0px'};
-		if (this.props.margin)
+		if (this.props.margin) {
 			style.marginTop = margin + 'px';
+		}
 		return style;
 	}
 
 	private createImageItem(item:CardArtItem, index:number):JSX.Element {
-		if (item.image === null)
+		if (item.image === null && !item.isArt) {
 			return;
+		}
 
 		var imgSrc = null;
 		if (item.isArt) {
-			if (this.props.baseArtUrl && this.props.baseArtUrl.length > 0)
-				imgSrc = this.props.baseArtUrl + item.image + CardArt.baseArtExt;
-			else
+			if (item.image !== null && this.props.textureDirectory && this.props.textureDirectory.length > 0) {
+				imgSrc = this.props.textureDirectory + item.image + CardArt.baseArtExt;
+			}
+			else {
 				imgSrc = this.props.assetDirectory + CardArt.imageDirectory + "portrait.jpg";
+			}
 		} else {
 			imgSrc = this.props.assetDirectory + CardArt.imageDirectory + item.image;
 		}

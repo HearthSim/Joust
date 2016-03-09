@@ -2,9 +2,21 @@ import * as React from "react";
 import {CardType, GameTag} from "../../../enums";
 import Entity from '../../../Entity';
 import CardArt from "./CardArt";
-import {EntityProps} from "../../../interfaces";
+import {EntityProps, CardData} from "../../../interfaces";
 
 class InPlayCardArt extends React.Component<EntityProps, {}> {
+	public static extractTexture(cardId:string, data:Immutable.Map<string, CardData>):string {
+		let texture = null;
+		if (!data) {
+			return null;
+		}
+		if (data.has(cardId)) {
+			texture = data.get(cardId).texture || null;
+		}
+
+		return texture;
+	}
+
 	public render():JSX.Element {
 		var images = [];
 		var entity = this.props.entity;
@@ -18,7 +30,7 @@ class InPlayCardArt extends React.Component<EntityProps, {}> {
 		}
 
 		images.push({
-			image: entity.getCardId(),
+			image: InPlayCardArt.extractTexture(entity.getCardId(), this.props.cards),
 			isArt: true,
 			classes: ["inplay-portrait"]
 		});

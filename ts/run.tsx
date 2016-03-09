@@ -47,6 +47,11 @@ class Viewer {
 		return this;
 	}
 
+	public textures(textures:string):Viewer {
+		this.opts.textureDirectory = textures;
+		return this;
+	}
+
 	public metadata(query:QueryCardMetadata):Viewer {
 		this.queryCardMetadata = query;
 		return this;
