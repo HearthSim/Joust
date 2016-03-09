@@ -94,6 +94,9 @@ class Viewer {
 	}
 
 	protected render():void {
+		if (this.opts.textureDirectory) {
+			console.debug('Loading textures from', '"' + this.opts.textureDirectory + '"');
+		}
 		this.ref = ReactDOM.render(
 			React.createElement(GameWidget, this.opts),
 			typeof this.target !== 'string' ? this.target : document.getElementById(this.target)
