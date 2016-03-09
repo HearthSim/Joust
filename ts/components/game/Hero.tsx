@@ -22,27 +22,23 @@ class Hero extends EntityInPlay<HeroProps, {}> {
 	protected jsx() {
 		var entity = this.props.entity;
 
-		var title = this.props.entity.getCardId();
-		if (this.props.cards && this.props.cards.has(this.props.entity.getCardId())) {
-			var data = this.props.cards.get(this.props.entity.getCardId());
-			var title = '' + data.name;
-		}
-
-		var classNames = this.props.option ? 'hero playable' : 'hero';
-		var health = null;
-		var attack = entity.getAtk() ? <Attack attack={entity.getAtk()}/> : null;
-		var armor = entity.getArmor() ? <Armor armor={entity.getArmor()}/> : null;
-		return (
-			<div>
-				<HeroArt entity={this.props.entity} cards={this.props.cards} assetDirectory={this.props.assetDirectory} textureDirectory={this.props.textureDirectory}/>
-				<Secrets entities={this.props.secrets} cards={this.props.cards} assetDirectory={this.props.assetDirectory} textureDirectory={this.props.textureDirectory}/>
-				<div className="stats">
-					{attack}
-					<Health health={entity.getHealth()} damage={entity.getDamage()}/>
-					{armor}
-				</div>
+		return [
+			<HeroArt entity={entity}
+					 cards={this.props.cards}
+					 assetDirectory={this.props.assetDirectory}
+					 textureDirectory={this.props.textureDirectory}
+			/>,
+			<Secrets entities={this.props.secrets}
+					 cards={this.props.cards}
+					 assetDirectory={this.props.assetDirectory}
+					 textureDirectory={this.props.textureDirectory}
+			/>,
+			<div className="stats">
+				{entity.getAtk() ? <Attack attack={entity.getAtk()}/> : null}
+				<Health health={entity.getHealth()} damage={entity.getDamage()}/>
+				{entity.getArmor() ? <Armor armor={entity.getArmor()}/> : null}
 			</div>
-		);
+		];
 	}
 }
 
