@@ -12,6 +12,7 @@ import HeroPower from './HeroPower';
 import Field from './Field';
 import Weapon from './Weapon';
 import Secrets from './Secrets';
+import Rank from './Rank';
 
 import {Zone, CardType} from '../../enums'
 import {OptionCallbackProps, CardDataProps, CardOracleProps, AssetDirectoryProps, TextureDirectoryProps} from "../../interfaces";
@@ -92,6 +93,11 @@ class Player extends React.Component<PlayerProps, {}> {
 		/>;
 		var name = this.props.player.getName() ? <div className="name">{this.props.player.getName()}</div> : null;
 
+		var rank = <Rank rank={this.props.player.getRank()}
+						 legendRank={this.props.player.getLegendRank()}
+						 assetDirectory={this.props.assetDirectory}
+		/>;
+
 		var crystals = [];
 		for (let i = 0; i < this.props.player.getResources(); i++) {
 			var crystalClassNames = ['crystal'];
@@ -119,7 +125,8 @@ class Player extends React.Component<PlayerProps, {}> {
 				<div className={classNames}>
 					{hand}
 					<div className="equipment">
-						<div>
+						<div className="player-info">
+							{rank}
 							{name}
 						</div>
 						<div></div>
@@ -144,7 +151,8 @@ class Player extends React.Component<PlayerProps, {}> {
 				<div className={classNames}>
 					{field}
 					<div className="equipment">
-						<div>
+						<div className="player-info">
+							{rank}
 							{name}
 						</div>
 						<div></div>

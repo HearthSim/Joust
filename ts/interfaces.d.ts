@@ -161,3 +161,8 @@ export interface GameWidgetProps extends AssetDirectoryProps, TextureDirectoryPr
 export interface StreamScrubberInhibitor {
 	isInhibiting: () => boolean;
 }
+
+export interface RankProps extends AssetDirectoryProps, React.Props<any> {
+	rank?:number;
+	legendRank?:number;
+}
