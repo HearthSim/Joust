@@ -3,6 +3,7 @@ import {CardType} from "../../../enums";
 import Entity from '../../../Entity';
 import CardArt from "./CardArt";
 import {EntityProps} from "../../../interfaces";
+import InPlayCardArt from "./InPlayCardArt";
 
 class WeaponArt extends React.Component<EntityProps, {}> {
 	public render():JSX.Element {
@@ -10,7 +11,7 @@ class WeaponArt extends React.Component<EntityProps, {}> {
 		var entity = this.props.entity;
 
 		images.push({
-			image: entity.getCardId(),
+			image: InPlayCardArt.extractTexture(entity.getCardId(), this.props.cards),
 			isArt: true,
 			classes: ["hero-weapon-portrait"]
 		});
