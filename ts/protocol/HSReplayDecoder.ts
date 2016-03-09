@@ -160,6 +160,8 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 			case 'Player':
 			{
 				let id = +node.attributes.id;
+				let rank = +node.attributes.rank;
+				let legendRank = +node.attributes.legendRank;
 				let name = '' + node.attributes.name;
 				if (!name && this.playerMap.includes(id)) {
 					// this should only be happening in resumed replays
@@ -177,7 +179,10 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 					id,
 					node.attributes.tags,
 					+node.attributes.playerID,
-					name
+					name,
+					undefined,
+					rank,
+					legendRank
 				);
 				mutator = new AddEntityMutator(player);
 				break;
