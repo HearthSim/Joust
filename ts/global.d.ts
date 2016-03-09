@@ -1,3 +1,12 @@
+/**
+ * Global defintions and extensions
+ *
+ * This file contains module definitions for definition-less modules
+ * we're using in TypeScript. Some definitions extend existing ones,
+ * where there is either a parameter missing or an incorrect typing.
+ *
+ */
+
 declare module "filereader-stream" {
 	function internal(file?:string, options?:any):any;
 
