@@ -33,7 +33,7 @@ class Hand extends EntityList {
 
 		var hidden = false;
 		if (!entity.getCardId() && this.props.cardOracle && this.props.cardOracle.has(+entity.getId())) {
-			let cardId = this.props.cardOracle.get(entity.getId());
+			let cardId = this.props.cardOracle.get(entity.getId()).cardId;
 			entity = new Entity(entity.getId(), entity.getTags(), cardId);
 			hidden = true;
 		}

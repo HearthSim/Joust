@@ -128,11 +128,16 @@ export interface CardDataProps {
 }
 
 export interface CardOracleProps {
-	cardOracle?: Immutable.Map<number, string>;
+	cardOracle?: Immutable.Map<number, RevealedCardData>;
 }
 
 export interface CardOracle extends EventEmitter {
-	getCardMap(): Immutable.Map<number, string>;
+	getCardMap(): Immutable.Map<number, RevealedCardData>;
+}
+
+export interface RevealedCardData {
+	cardId?: string;
+	creator?: number;
 }
 
 export interface AssetDirectoryProps {

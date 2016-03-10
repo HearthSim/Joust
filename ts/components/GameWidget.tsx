@@ -1,5 +1,5 @@
 import * as React from "react";
-import {GameWidgetProps, JoustClient, CardDataProps, AssetDirectoryProps, CardOracle} from "../interfaces";
+import {GameWidgetProps, JoustClient, CardDataProps, AssetDirectoryProps, CardOracle, RevealedCardData} from "../interfaces";
 import Scrubber from "./Scrubber";
 import GameState from "../state/GameState";
 import GameWrapper from "./GameWrapper";
@@ -15,7 +15,7 @@ interface GameWidgetState {
 	swapPlayers?:boolean;
 	isFullscreen?:boolean;
 	isFullscreenAvailable?:boolean;
-	cardOracle?:Immutable.Map<number, string>;
+	cardOracle?:Immutable.Map<number, RevealedCardData>;
 	cards?:Immutable.Map<string, CardData>;
 	isRevealingCards?:boolean;
 }
@@ -78,7 +78,7 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 		this.triggerResize();
 	}
 
-	protected updateCardOracle(cards:Immutable.Map<number, string>) {
+	protected updateCardOracle(cards:Immutable.Map<number, RevealedCardData>) {
 		this.setState({cardOracle: cards});
 	}
 

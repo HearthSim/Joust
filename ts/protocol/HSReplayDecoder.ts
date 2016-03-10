@@ -12,7 +12,7 @@ import Player from "../Player";
 import {GameTag} from "../enums";
 import ShowEntityMutator from "../state/mutators/ShowEntityMutator";
 import SetTimeMutator from "../state/mutators/SetTimeMutator";
-import {CardOracle} from "../interfaces";
+import {CardOracle, RevealedCardData} from "../interfaces";
 import IncrementTimeMutator from "../state/mutators/IncrementTimeMutator";
 
 class HSReplayDecoder extends Stream.Transform implements CardOracle {
@@ -22,7 +22,7 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 	private currentGame:number;
 	private nodeStack;
 	private timeOffset:number;
-	private cardIds:Immutable.Map<number, string>;
+	private cardIds:Immutable.Map<number, RevealedCardData>;
 	private clearOptionsOnTimestamp:boolean;
 	private playerMap:Immutable.Map<string, number>;
 	public version:string;
@@ -37,7 +37,7 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 		this.currentGame = null;
 		this.nodeStack = [];
 		this.timeOffset = null;
-		this.cardIds = Immutable.Map<number, string>();
+		this.cardIds = Immutable.Map<number, RevealedCardData>();
 		this.clearOptionsOnTimestamp = false;
 		this.playerMap = Immutable.Map<string, number>();
 
@@ -204,6 +204,10 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 			case 'Tag':
 			{
 				let parent = this.nodeStack.pop();
+				if (+node.attributes.tag == GameTag.DISPLAYED_CREATOR) {
+					let parentId = this.resolveEntityId(parent.attributes.entity);
+					this.revealCreator(parentId, +node.attributes.value);
+				}
 				parent.attributes.tags = parent.attributes.tags.set('' + node.attributes.tag, +node.attributes.value);
 				this.nodeStack.push(parent);
 				break;
@@ -270,12 +274,29 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 	}
 
 	protected revealEntity(id:number, cardId:string) {
-		if (!cardId || !id) {
-			return;
+		if (id && cardId) {
+			this.setRevealedCardData(+id, '' + cardId);
 		}
-		id = +id;
-		cardId = '' + cardId;
-		let newCardIds = this.cardIds.set(id, cardId);
+	}
+
+	private revealCreator(parentId:number, creator:number):void {
+		if (parentId && creator) {
+			this.setRevealedCardData(parentId, undefined, creator);
+		}
+	}
+
+	private setRevealedCardData(id:number, cardId?:string, creator?:number){
+		let revealed = this.cardIds.get(id);
+		if (!revealed) {
+			revealed = <RevealedCardData>{};
+		}
+		if (cardId) {
+			revealed.cardId = cardId;
+		}
+		if (creator) {
+			revealed.creator = creator;
+		}
+		let newCardIds = this.cardIds.set(id, revealed);
 		if (newCardIds === this.cardIds) {
 			return;
 		}
