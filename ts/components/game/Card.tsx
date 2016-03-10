@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import {EntityProps, OptionProps, CardDataProps} from "../../interfaces";
+import {EntityProps, OptionProps, CardDataProps, CardOracleProps} from "../../interfaces";
 
 import Attack from './stats/Attack';
 import Health from './stats/Health';
@@ -13,7 +13,7 @@ import {CardType} from "../../enums";
 import {GameTag} from "../../enums";
 import Entity from "../../Entity";
 
-interface CardProps extends EntityProps, OptionProps, CardDataProps, React.Props<any> {
+interface CardProps extends EntityProps, OptionProps, CardDataProps, CardOracleProps, React.Props<any> {
 	style?:any;
 	connectDragSource?(react:React.ReactElement<CardProps>);
 	dragging?:boolean;
@@ -54,6 +54,7 @@ class Card extends React.Component<CardProps, {}> {
 		var defaultCost = null;
 		var defaultHealth = null;
 		var defaultDurability = null;
+		var creatorCardId = null;
 		var cardType = entity.getCardType();
 		if (canBeRevealed) {
 			var data = this.props.cards && this.props.cards.get(entity.getCardId());
@@ -63,6 +64,15 @@ class Card extends React.Component<CardProps, {}> {
 			defaultCost = data.cost;
 			defaultHealth = data.health;
 			defaultDurability = data.durability;
+			let creatorId = entity.getTag(GameTag.DISPLAYED_CREATOR);
+			if (this.props.cardOracle){
+				if (!creatorId) {
+					creatorId = this.props.cardOracle.get(entity.getId()).creator;
+				}
+				if (creatorId) {
+					creatorCardId = this.props.cardOracle.get(creatorId).cardId;
+				}
+			}
 			if (this.props.isHidden) {
 				switch (data.type) {
 					case 'MINION':
@@ -121,6 +131,9 @@ class Card extends React.Component<CardProps, {}> {
 					<p style={textStyle} dangerouslySetInnerHTML={{__html: description}}></p>
 				</div>
 				{stats}
+				<div className="created-by">
+					{creatorCardId && this.props.cards ? 'Created by ' + this.props.cards.get(creatorCardId).name : null}
+				</div>
 			</div>
 		);
 

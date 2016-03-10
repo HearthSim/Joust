@@ -98,6 +98,10 @@
 			.card.revealed {
 				z-index: 1;
 				transform: scale(1.5) translate(0px, -13%);
+				.created-by {
+					visibility: visible;
+					top: -10%;
+				}
 			}
 		}
 	}
@@ -160,6 +164,9 @@
 
 .player.top .hand .card.revealed:hover {
 	transform: scale(1.5) translate(0px, 13%);
+	.created-by {
+		top: 96%;
+	}
 }
 
 .card {
@@ -242,6 +249,22 @@
 		top: 8%;
 		left: 4%;
 		font-size: 1.4em;
+	}
+
+	.created-by {
+		visibility: hidden;
+		position: absolute;
+		top: 96%;
+		left:15%;
+		width:70%;
+		font-size: 0.5em;
+		text-align: center;
+		font-family: "Belwe Bd BT";
+		color: white;
+		text-shadow: -1px -1px 0 #000,
+			1px -1px 0 #000,
+		-1px 1px 0 #000,
+		1px 1px 0 #000;
 	}
 
 	.atk {
