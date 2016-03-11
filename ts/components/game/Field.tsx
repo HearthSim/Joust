@@ -38,6 +38,7 @@ class Field extends EntityList {
 						option={option}
 						optionCallback={this.props.optionCallback}
 						assetDirectory={this.props.assetDirectory}
+						textureDirectory={this.props.textureDirectory}
 						cards={this.props.cards}
 						controller={this.props.controller}
 		/>);

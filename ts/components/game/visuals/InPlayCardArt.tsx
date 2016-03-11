@@ -87,7 +87,9 @@ class InPlayCardArt extends React.Component<EntityProps, {}> {
 
 		return (
 			<CardArt layers={images} scale={0.86} square={false} margin={false}
-					 assetDirectory={this.props.assetDirectory}/>
+					 assetDirectory={this.props.assetDirectory}
+					 textureDirectory={this.props.textureDirectory}
+			/>
 		);
 	}
 }

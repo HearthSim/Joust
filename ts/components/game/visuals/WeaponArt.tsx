@@ -27,7 +27,10 @@ class WeaponArt extends React.Component<EntityProps, {}> {
 		});
 
 		return (
-			<CardArt layers={images} scale={0.6} square={true} margin={true} assetDirectory={this.props.assetDirectory} />
+			<CardArt layers={images} scale={0.6} square={true} margin={true}
+					 assetDirectory={this.props.assetDirectory}
+					 textureDirectory={this.props.textureDirectory}
+			/>
 		);
 	}
 }
