@@ -15,6 +15,12 @@ import SetTimeMutator from "../state/mutators/SetTimeMutator";
 import {CardOracle} from "../interfaces";
 import IncrementTimeMutator from "../state/mutators/IncrementTimeMutator";
 
+interface PlayerDetails {
+	id: number;
+	rank?: number;
+	legendRank?: number;
+}
+
 class HSReplayDecoder extends Stream.Transform implements CardOracle {
 
 	private sax:Sax.SAXStream;
@@ -24,7 +30,7 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 	private timeOffset:number;
 	private cardIds:Immutable.Map<number, string>;
 	private clearOptionsOnTimestamp:boolean;
-	private playerMap:Immutable.Map<string, number>;
+	private playerMap:Immutable.Map<string, PlayerDetails>;
 	public version:string;
 	public build:number;
 
@@ -39,7 +45,7 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 		this.timeOffset = null;
 		this.cardIds = Immutable.Map<number, string>();
 		this.clearOptionsOnTimestamp = false;
-		this.playerMap = Immutable.Map<string, number>();
+		this.playerMap = Immutable.Map<string, PlayerDetails>();
 
 		this.sax = Sax.createStream(true, {});
 		this.sax.on('opentag', this.onOpenTag.bind(this));
@@ -163,18 +169,20 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 				let rank = +node.attributes.rank;
 				let legendRank = +node.attributes.legendRank;
 				let name = '' + node.attributes.name;
-				if (!name && this.playerMap.includes(id)) {
+				if (!name) {
 					// this should only be happening in resumed replays
-					this.playerMap.forEach((v:number, k:string):boolean => {
+					this.playerMap.forEach((v:PlayerDetails, k:string) => {
 						// find the old player name
-						if (v === id) {
+						if (v.id === id) {
 							console.warn('Transferring player name', '"' + k + '"', 'to entity #' + v);
 							name = k;
+							rank = v.rank;
+							legendRank = v.legendRank;
 							return false;
 						}
 					});
 				}
-				this.playerMap = this.playerMap.set(name, id);
+				this.playerMap = this.playerMap.set(name, <PlayerDetails>{id:id, rank: rank, legendRank: legendRank});
 				let player = new Player(
 					id,
 					node.attributes.tags,
@@ -265,7 +273,7 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 		console.warn('HSReplay: Using player names as entity reference is deprecated');
 
 		if (this.playerMap.has(str)) {
-			id = this.playerMap.get(str);
+			id = this.playerMap.get(str).id;
 		}
 		else {
 			console.warn('Could not resolve entity id "' + id + '"');
