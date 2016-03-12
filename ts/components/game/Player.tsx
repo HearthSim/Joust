@@ -14,7 +14,7 @@ import Weapon from './Weapon';
 import Secrets from './Secrets';
 import Rank from './Rank';
 
-import {Zone, CardType} from '../../enums'
+import {Zone, CardType, GameTag} from '../../enums'
 import {OptionCallbackProps, CardDataProps, CardOracleProps, AssetDirectoryProps, TextureDirectoryProps} from "../../interfaces";
 
 interface PlayerProps extends OptionCallbackProps, CardDataProps, CardOracleProps, AssetDirectoryProps, TextureDirectoryProps, React.Props<any> {
@@ -100,18 +100,26 @@ class Player extends React.Component<PlayerProps, {}> {
 		/>;
 
 		var crystals = [];
-		for (let i = 0; i < this.props.player.getResources(); i++) {
+		let resources = this.props.player.getTag(GameTag.RESOURCES) + this.props.player.getTag(GameTag.TEMP_RESOURCES);
+		let available = resources - this.props.player.getTag(GameTag.RESOURCES_USED);
+		for (let i = 0; i < this.props.player.getTag(GameTag.MAXRESOURCES); i++) {
 			var crystalClassNames = ['crystal'];
-			if (i < (this.props.player.getResources() - this.props.player.getResourcesUsed())) {
+			if (i < available) {
 				crystalClassNames.push('full');
 			}
-			else {
-				crystalClassNames.push('empty');
+			else if (i < resources){
+				if (i >= resources - this.props.player.getTag(GameTag.OVERLOAD_LOCKED))	{
+					crystalClassNames.push('locked');
+				}
+				else {
+					crystalClassNames.push('empty');
+				}
 			}
-			crystals.push(<div key={i} className={crystalClassNames.join(' ')}></div>);
+			else {
+				crystalClassNames.push('hidden');
+			}
+			crystals.push(<img src={this.props.assetDirectory + 'images/mana_crystal.png'} key={i} className={crystalClassNames.join(' ')}></img>);
 		}
-		var resources = this.props.player.getResources();
-		var available = resources - this.props.player.getResourcesUsed();
 		var tray = (
 			<div className="tray">
 				<span>{available}/{resources}</span>
