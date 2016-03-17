@@ -54,11 +54,13 @@ gulp watch
 
 ## Licenses
 
-Joust is licensed under the AGPLv3 for **non-commercial uses exclusively**.
-The full text of the license can be found in the LICENSE file.
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">
+	<img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" />
+</a>
 
-Joust is not licensed for commercial use. Commercial exceptions can be granted
-on a case by case basis.
+Joust is licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
+The full text of the license is available in the LICENSE file.
+Commercial exceptions to the license can be granted on a case by case basis.
 
 ### Third party assets
 
