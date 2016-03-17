@@ -60,8 +60,9 @@ The full text of the license can be found in the LICENSE file.
 Joust is not licensed for commercial use. Commercial exceptions can be granted
 on a case by case basis.
 
-### Third party software
+### Third party assets
 
 - The Belwe and Franklin Gothic fonts are under their own, respective licenses.
 - The Font Awesome font is licensed under the SIL OFL 1.1.
 - The Font Awesome style code is licensed under the MIT license.
+- Some Hearthstone textures are copyright © Blizzard Entertainment
