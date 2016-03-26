@@ -7,10 +7,10 @@ import {GameTag} from "../enums";
 
 class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 
-	protected history:GameStateHistory;
-	protected inhibitor:StreamScrubberInhibitor;
+	protected history: GameStateHistory;
+	protected inhibitor: StreamScrubberInhibitor;
 
-	constructor(history?:GameStateHistory, opts?:Stream.DuplexOptions) {
+	constructor(history?: GameStateHistory, opts?: Stream.DuplexOptions) {
 		opts = opts || {};
 		opts.objectMode = true;
 		opts.allowHalfOpen = true;
@@ -24,11 +24,11 @@ class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 		this.endTime = null;
 	}
 
-	protected initialTime:number;
-	protected currentTime:number;
-	protected endTime:number;
+	protected initialTime: number;
+	protected currentTime: number;
+	protected endTime: number;
 
-	_write(gameState:any, encoding:string, callback:Function):void {
+	_write(gameState: any, encoding: string, callback: Function): void {
 
 		// setup initial time if unknown
 		var time = gameState.getTime();
@@ -37,7 +37,7 @@ class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 			// add to our history
 			this.history.push(gameState);
 		}
-		else if (time) {
+		else if (time !== null) {
 			this.play();
 			this.initialTime = time;
 		}
@@ -56,21 +56,21 @@ class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 		callback();
 	}
 
-	_read():void {
+	_read(): void {
 		return;
 	}
 
-	protected lastUpdate:number;
+	protected lastUpdate: number;
 	protected interval;
 
-	public play():void {
+	public play(): void {
 		this.lastUpdate = new Date().getTime();
 		this.interval = setInterval(this.update.bind(this), 100);
 		this.emit('play');
 		this.update();
 	}
 
-	public pause():void {
+	public pause(): void {
 		if (this.interval !== null) {
 			clearInterval(this.interval);
 			this.interval = null;
@@ -79,7 +79,7 @@ class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 		this.update();
 	}
 
-	public toggle():void {
+	public toggle(): void {
 		if (this.isPlaying()) {
 			this.pause();
 		}
@@ -88,11 +88,11 @@ class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 		}
 	}
 
-	protected speed:number;
-	protected lastState:GameState;
+	protected speed: number;
+	protected lastState: GameState;
 
-	protected update():void {
-		if (!this.initialTime) {
+	protected update(): void {
+		if (this.initialTime === null) {
 			return;
 		}
 
@@ -122,7 +122,7 @@ class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 	}
 
 
-	public seek(time:number):void {
+	public seek(time: number): void {
 		if (time === this.currentTime) {
 			return;
 		}
@@ -130,62 +130,62 @@ class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 		this.update();
 	}
 
-	public isPlaying():boolean {
+	public isPlaying(): boolean {
 		return this.interval !== null;
 	}
 
-	public isPaused():boolean {
+	public isPaused(): boolean {
 		return !this.isPlaying();
 	}
 
-	public rewind():void {
+	public rewind(): void {
 		this.currentTime = 0;
 		this.update();
 	}
 
-	public fastForward():void {
+	public fastForward(): void {
 		this.currentTime = this.endTime - this.initialTime;
 		this.pause();
 	}
 
-	public setSpeed(speed:number):void {
+	public setSpeed(speed: number): void {
 		this.speed = speed;
 		this.update();
 	}
 
-	public getSpeed():number {
+	public getSpeed(): number {
 		return this.speed;
 	}
 
-	public canInteract():boolean {
+	public canInteract(): boolean {
 		return this.initialTime !== null;
 	}
 
-	public canRewind():boolean {
+	public canRewind(): boolean {
 		return this.currentTime > 0 || this.isPlaying();
 	}
 
-	public getCurrentTime():number {
+	public getCurrentTime(): number {
 		return this.currentTime;
 	}
 
-	public hasEnded():boolean {
+	public hasEnded(): boolean {
 		return this.currentTime + this.initialTime >= this.endTime;
 	}
 
-	public canPlay():boolean {
+	public canPlay(): boolean {
 		return !this.hasEnded() && this.canInteract();
 	}
 
-	public getHistory():GameStateHistory {
+	public getHistory(): GameStateHistory {
 		return this.history;
 	}
 
-	public getDuration():number {
+	public getDuration(): number {
 		return Math.max(this.endTime - this.initialTime, 0);
 	}
 
-	public setInhibitor(inhibitor:StreamScrubberInhibitor):void {
+	public setInhibitor(inhibitor: StreamScrubberInhibitor): void {
 		this.inhibitor = inhibitor;
 	}
 
@@ -193,7 +193,7 @@ class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 		return this.inhibitor && this.inhibitor.isInhibiting();
 	}
 
-	public nextTurn():void {
+	public nextTurn(): void {
 		let nextTurn = this.endTime - this.initialTime;
 		let currentTurn = this.lastState.getEntity(1).getTag(GameTag.TURN);
 		if (this.currentTime < this.history.turnMap.first().getTime()) {
@@ -206,7 +206,7 @@ class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 		this.update();
 	}
 
-	public previousTurn():void {
+	public previousTurn(): void {
 		let previousTurn = 0;
 		let currentTurn = this.lastState.getEntity(1).getTag(GameTag.TURN);
 		if (this.currentTime > this.history.turnMap.last().getTime()) {
@@ -219,7 +219,7 @@ class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 		this.update();
 	}
 
-	public skipBack():void {
+	public skipBack(): void {
 		let currentTurn = this.lastState.getEntity(1).getTag(GameTag.TURN);
 		let turnStart = this.history.turnMap.get(currentTurn).getTime();
 		let timeElapsed = this.currentTime - turnStart;

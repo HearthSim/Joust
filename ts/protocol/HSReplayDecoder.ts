@@ -23,18 +23,18 @@ interface PlayerDetails {
 
 class HSReplayDecoder extends Stream.Transform implements CardOracle {
 
-	private sax:Sax.SAXStream;
-	private gameId:number;
-	private currentGame:number;
+	private sax: Sax.SAXStream;
+	private gameId: number;
+	private currentGame: number;
 	private nodeStack;
-	private timeOffset:number;
-	private cardIds:Immutable.Map<number, string>;
-	private clearOptionsOnTimestamp:boolean;
-	private playerMap:Immutable.Map<string, PlayerDetails>;
-	public version:string;
-	public build:number;
+	private timeOffset: number;
+	private cardIds: Immutable.Map<number, string>;
+	private clearOptionsOnTimestamp: boolean;
+	private playerMap: Immutable.Map<string, PlayerDetails>;
+	public version: string;
+	public build: number;
 
-	constructor(opts?:Stream.TransformOptions) {
+	constructor(opts?: Stream.TransformOptions) {
 		opts = opts || {};
 		opts.objectMode = true;
 		super(opts);
@@ -55,12 +55,12 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 		});
 	}
 
-	_transform(chunk:any, encoding:string, callback:Function):void {
+	_transform(chunk: any, encoding: string, callback: Function): void {
 		this.sax.write(chunk);
 		callback();
 	}
 
-	protected parseTimestamp(timestamp:string):number {
+	protected parseTimestamp(timestamp: string): number {
 		if (timestamp.match(/^\d{2}:\d{2}:\d{2}/)) {
 			// prepend a date
 			timestamp = '1970-01-01T' + timestamp;
@@ -151,61 +151,61 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 				break;
 			case 'GameEntity':
 			case 'FullEntity':
-			{
-				let id = this.resolveEntityId(node.attributes.id);
-				let cardId = node.attributes.cardID || null;
-				this.revealEntity(id, cardId);
-				let entity = new Entity(
-					id,
-					node.attributes.tags,
-					cardId || null
-				);
-				mutator = new AddEntityMutator(entity);
-				break;
-			}
-			case 'Player':
-			{
-				let id = +node.attributes.id;
-				let rank = +node.attributes.rank;
-				let legendRank = +node.attributes.legendRank;
-				let name = '' + node.attributes.name;
-				if (!name) {
-					// this should only be happening in resumed replays
-					this.playerMap.forEach((v:PlayerDetails, k:string) => {
-						// find the old player name
-						if (v.id === id) {
-							console.warn('Transferring player name', '"' + k + '"', 'to entity #' + v);
-							name = k;
-							rank = v.rank;
-							legendRank = v.legendRank;
-							return false;
-						}
-					});
+				{
+					let id = this.resolveEntityId(node.attributes.id);
+					let cardId = node.attributes.cardID || null;
+					this.revealEntity(id, cardId);
+					let entity = new Entity(
+						id,
+						node.attributes.tags,
+						cardId || null
+					);
+					mutator = new AddEntityMutator(entity);
+					break;
 				}
-				this.playerMap = this.playerMap.set(name, <PlayerDetails>{id:id, rank: rank, legendRank: legendRank});
-				let player = new Player(
-					id,
-					node.attributes.tags,
-					+node.attributes.playerID,
-					name,
-					rank,
-					legendRank
-				);
-				mutator = new AddEntityMutator(player);
-				break;
-			}
+			case 'Player':
+				{
+					let id = +node.attributes.id;
+					let rank = +node.attributes.rank;
+					let legendRank = +node.attributes.legendRank;
+					let name = '' + node.attributes.name;
+					if (!name) {
+						// this should only be happening in resumed replays
+						this.playerMap.forEach((v: PlayerDetails, k: string) => {
+							// find the old player name
+							if (v.id === id) {
+								console.warn('Transferring player name', '"' + k + '"', 'to entity #' + v);
+								name = k;
+								rank = v.rank;
+								legendRank = v.legendRank;
+								return false;
+							}
+						});
+					}
+					this.playerMap = this.playerMap.set(name, <PlayerDetails>{ id: id, rank: rank, legendRank: legendRank });
+					let player = new Player(
+						id,
+						node.attributes.tags,
+						+node.attributes.playerID,
+						name,
+						rank,
+						legendRank
+					);
+					mutator = new AddEntityMutator(player);
+					break;
+				}
 			case 'ShowEntity':
-			{
-				let id = this.resolveEntityId(node.attributes.entity);
-				let cardId = node.attributes.cardID || null;
-				this.revealEntity(id, cardId);
-				mutator = new ShowEntityMutator(
-					id,
-					cardId,
-					node.attributes.tags
-				);
-				break;
-			}
+				{
+					let id = this.resolveEntityId(node.attributes.entity);
+					let cardId = node.attributes.cardID || null;
+					this.revealEntity(id, cardId);
+					mutator = new ShowEntityMutator(
+						id,
+						cardId,
+						node.attributes.tags
+					);
+					break;
+				}
 			case 'HideEntity':
 				mutator = new TagChangeMutator(
 					this.resolveEntityId(node.attributes.entity),
@@ -214,12 +214,12 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 				);
 				break;
 			case 'Tag':
-			{
-				let parent = this.nodeStack.pop();
-				parent.attributes.tags = parent.attributes.tags.set('' + node.attributes.tag, +node.attributes.value);
-				this.nodeStack.push(parent);
-				break;
-			}
+				{
+					let parent = this.nodeStack.pop();
+					parent.attributes.tags = parent.attributes.tags.set('' + node.attributes.tag, +node.attributes.value);
+					this.nodeStack.push(parent);
+					break;
+				}
 			case 'TagChange':
 				mutator = new TagChangeMutator(
 					this.resolveEntityId(node.attributes.entity),
@@ -228,18 +228,18 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 				);
 				break;
 			case 'Option':
-			{
-				let parent = this.nodeStack.pop();
-				let option = new Option(
-					+node.attributes.index,
-					+node.attributes.type,
-					(node.attributes.entity && this.resolveEntityId(node.attributes.entity)) || null,
-					[] // todo: parse targets
-				);
-				parent.attributes.options = parent.attributes.options.set(+node.attributes.index, option);
-				this.nodeStack.push(parent);
-				break;
-			}
+				{
+					let parent = this.nodeStack.pop();
+					let option = new Option(
+						+node.attributes.index,
+						+node.attributes.type,
+						(node.attributes.entity && this.resolveEntityId(node.attributes.entity)) || null,
+						[] // todo: parse targets
+					);
+					parent.attributes.options = parent.attributes.options.set(+node.attributes.index, option);
+					this.nodeStack.push(parent);
+					break;
+				}
 			case 'Options':
 				mutator = new SetOptionsMutator(node.attributes.options);
 				break;
@@ -258,7 +258,7 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 		}
 	}
 
-	protected resolveEntityId(id:number|string):number {
+	protected resolveEntityId(id: number | string): number {
 		if (!isNaN(+id)) {
 			return +id;
 		}
@@ -281,7 +281,7 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 		return +id;
 	}
 
-	protected revealEntity(id:number, cardId:string) {
+	protected revealEntity(id: number, cardId: string) {
 		if (!cardId || !id) {
 			return;
 		}

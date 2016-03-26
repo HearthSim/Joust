@@ -21,10 +21,10 @@ describe("IncrementTimeMutator", () => {
 		expect(mutator.time).toEqual(expected);
 	});
 
-	it("should set the time of a new gamestate to the time increment", () => {
+	it("should set the time of a new gamestate to 0", () => {
 		let state = new GameState();
 		let mutator = new IncrementTimeMutator(42);
-		let expected = mutator.time;
+		let expected = 0;
 		expect(mutator.applyTo(state).getTime()).toEqual(expected);
 	});
 
@@ -33,7 +33,7 @@ describe("IncrementTimeMutator", () => {
 
 		let mutator1 = new IncrementTimeMutator();
 		let mutator2 = new IncrementTimeMutator(3);
-		let expected = mutator1.time;
+		let expected = 0;
 
 		state = state.apply(mutator1);
 		expect(state.getTime()).toEqual(expected);

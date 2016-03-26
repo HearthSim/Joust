@@ -5,11 +5,11 @@ import * as Immutable from "immutable";
 
 class GameState {
 
-	constructor(protected entities?:Immutable.Map<number, Entity>,
-				protected entityTree?:Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Entity>>>,
-				protected options?:Immutable.Map<number, Option>,
-				protected optionTree?:Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Option>>>,
-				protected time?:number) {
+	constructor(protected entities?: Immutable.Map<number, Entity>,
+		protected entityTree?: Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Entity>>>,
+		protected options?: Immutable.Map<number, Option>,
+		protected optionTree?: Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Option>>>,
+		protected time?: number) {
 		if (!this.entities) {
 			this.entities = Immutable.Map<number, Entity>();
 		}
@@ -22,40 +22,40 @@ class GameState {
 		if (!this.optionTree) {
 			this.optionTree = Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Option>>>();
 		}
-		if(!this.time) {
+		if (typeof (this.time) === 'undefined') {
 			this.time = null;
 		}
 	}
 
-	public getEntity(id:number) {
+	public getEntity(id: number) {
 		return this.entities.get(id);
 	}
 
-	public getEntities():Immutable.Map<number, Entity> {
+	public getEntities(): Immutable.Map<number, Entity> {
 		return this.entities;
 	}
 
-	public getEntityTree():Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Entity>>> {
+	public getEntityTree(): Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Entity>>> {
 		return this.entityTree;
 	}
 
-	public getPlayerCount():number {
+	public getPlayerCount(): number {
 		return this.entityTree.count();
 	}
 
-	public getOptions():Immutable.Map<number, Option> {
+	public getOptions(): Immutable.Map<number, Option> {
 		return this.options;
 	}
 
-	public getOptionTree():Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Option>>> {
+	public getOptionTree(): Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Option>>> {
 		return this.optionTree;
 	}
 
-	public getTime():number {
+	public getTime(): number {
 		return this.time;
 	}
 
-	public apply(mutator:GameStateMutator):GameState {
+	public apply(mutator: GameStateMutator): GameState {
 		return mutator.applyTo(this);
 	}
 }
