@@ -97,6 +97,10 @@ class Entity {
 		return this.getTag(GameTag.ZONE_POSITION);
 	}
 
+	public getDisplayedCreator():number {
+		return this.getTag(GameTag.DISPLAYED_CREATOR);
+	}
+
 	public isPoweredUp():boolean {
 		return this.getTag(GameTag.POWERED_UP) > 0;
 	}
