@@ -11,12 +11,12 @@ interface ListElement {
 }
 
 class GameStateHistory {
-	public tail:ListElement = null; // earliest
-	public head:ListElement = null; // latest
-	public pointer:ListElement = null;
-	public turnMap:Immutable.Map<number, GameState> = Immutable.Map<number, GameState>();
+	public tail: ListElement = null; // earliest
+	public head: ListElement = null; // latest
+	public pointer: ListElement = null;
+	public turnMap: Immutable.Map<number, GameState> = Immutable.Map<number, GameState>();
 
-	public push(gameState:GameState):void {
+	public push(gameState: GameState): void {
 		var time = gameState.getTime();
 		if (!time) {
 			// we cannot handle timeless game states
@@ -24,7 +24,7 @@ class GameStateHistory {
 		}
 
 		if (!this.tail && !this.head) {
-			let element = {state: gameState};
+			let element = { state: gameState };
 			this.tail = element;
 			this.head = element;
 			this.pointer = element;
@@ -32,7 +32,7 @@ class GameStateHistory {
 		}
 
 		if (time >= this.head.state.getTime()) {
-			let element = {state: gameState, prev: this.head};
+			let element = { state: gameState, prev: this.head };
 			this.head.next = element;
 			this.head = element;
 		}
@@ -41,13 +41,16 @@ class GameStateHistory {
 		}
 
 		let game = gameState.getEntity(1);
-		let turn = +game.getTag(GameTag.TURN);
-		if (!this.turnMap.has(turn) && game.getTag(GameTag.STEP) === Step.MAIN_ACTION) {
-			this.turnMap = this.turnMap.set(turn, gameState);
+		if (game) {
+			let turn = +game.getTag(GameTag.TURN);
+			if (!this.turnMap.has(turn) && game.getTag(GameTag.STEP) === Step.MAIN_ACTION) {
+				console.debug('Mapping turn ' + turn + ' at ts ' + time);
+				this.turnMap = this.turnMap.set(turn, gameState);
+			}
 		}
 	}
 
-	public getLatest(time:number):GameState {
+	public getLatest(time: number): GameState {
 		if (!this.pointer) {
 			return;
 		}
