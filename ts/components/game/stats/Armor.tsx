@@ -5,7 +5,7 @@ interface ArmorProps extends React.Props<any> {
 }
 
 class Armor extends React.Component<ArmorProps, {}> {
-	public render():JSX.Element {
+	public render(): JSX.Element {
 		return <div className="armor">{this.props.armor}</div>;
 	}
 }

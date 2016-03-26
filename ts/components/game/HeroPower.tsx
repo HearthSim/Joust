@@ -11,7 +11,7 @@ class HeroPower extends EntityInPlay<EntityInPlayProps, {}> {
 		super('heroPower');
 	}
 
-	protected playWithClick():boolean {
+	protected playWithClick(): boolean {
 		return true;
 	}
 
@@ -25,7 +25,7 @@ class HeroPower extends EntityInPlay<EntityInPlayProps, {}> {
 		return (
 			<div>
 				<HeroPowerArt entity={this.props.entity} cards={this.props.cards} assetDirectory={this.props.assetDirectory} textureDirectory={this.props.textureDirectory}/>
-				<Cost cost={this.props.entity.getCost()} default={defaultCost}/>
+				<Cost cost={this.props.entity.getCost() } default={defaultCost}/>
 			</div>
 		);
 	}

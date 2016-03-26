@@ -4,10 +4,10 @@ import GameStateMutator from '../GameStateMutator';
 import Entity from '../../Entity';
 
 class AddEntityMutator implements GameStateMutator {
-	constructor(public entity:Entity) {
+	constructor(public entity: Entity) {
 	}
 
-	public applyTo(state:GameState):GameState {
+	public applyTo(state: GameState): GameState {
 		if (!this.entity) {
 			console.error('Cannot add null entity');
 			return state;

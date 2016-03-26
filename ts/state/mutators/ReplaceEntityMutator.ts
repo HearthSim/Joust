@@ -3,10 +3,10 @@ import GameStateMutator from '../GameStateMutator';
 import Entity from '../../Entity';
 
 class ReplaceEntityMutator implements GameStateMutator {
-	constructor(public entity:Entity) {
+	constructor(public entity: Entity) {
 	}
 
-	public applyTo(state:GameState):GameState {
+	public applyTo(state: GameState): GameState {
 		var newEntity = this.entity;
 		if (!newEntity) {
 			console.error('Cannot replace null entity');
@@ -30,7 +30,7 @@ class ReplaceEntityMutator implements GameStateMutator {
 		entities = entities.set(id, newEntity);
 
 		var entityTree = state.getEntityTree();
-		entityTree = entityTree.withMutations(function (map) {
+		entityTree = entityTree.withMutations(function(map) {
 			map.deleteIn([oldEntity.getController(), oldEntity.getZone(), id])
 				.setIn([newEntity.getController(), newEntity.getZone(), id], newEntity);
 		});

@@ -10,7 +10,7 @@ interface WeaponProps extends EntityProps, React.Props<any> {
 
 class Weapon extends React.Component<WeaponProps, {}> {
 
-	public render():JSX.Element {
+	public render(): JSX.Element {
 		if (this.props.entity) {
 			var entity = this.props.entity;
 
@@ -28,9 +28,9 @@ class Weapon extends React.Component<WeaponProps, {}> {
 				<div className="weapon">
 					<WeaponArt entity={this.props.entity} cards={this.props.cards} assetDirectory={this.props.assetDirectory} textureDirectory={this.props.textureDirectory}/>
 					<div className="stats">
-						<Attack attack={entity.getAtk()} default={defaultAttack}/>
-						<Durability durability={entity.getDurability()} damage={entity.getDamage()}
-									default={defaultDurability}/>
+						<Attack attack={entity.getAtk() } default={defaultAttack}/>
+						<Durability durability={entity.getDurability() } damage={entity.getDamage() }
+							default={defaultDurability}/>
 					</div>
 				</div>
 			);

@@ -1,12 +1,12 @@
 import * as React from "react";
-import {CardType,GameTag} from "../../../enums";
+import {CardType, GameTag} from "../../../enums";
 import Entity from '../../../Entity';
 import CardArt from "./CardArt";
 import {EntityProps} from "../../../interfaces";
 import InPlayCardArt from "./InPlayCardArt";
 
 class HeroArt extends React.Component<EntityProps, {}> {
-	public render():JSX.Element {
+	public render(): JSX.Element {
 		var images = [];
 		var entity = this.props.entity;
 
@@ -37,9 +37,9 @@ class HeroArt extends React.Component<EntityProps, {}> {
 
 		return (
 			<CardArt layers={images} scale={1} square={true} margin={false}
-					 assetDirectory={this.props.assetDirectory}
-					 textureDirectory={this.props.textureDirectory}
-			/>
+				assetDirectory={this.props.assetDirectory}
+				textureDirectory={this.props.textureDirectory}
+				/>
 		);
 	}
 }

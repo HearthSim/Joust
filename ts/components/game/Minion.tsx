@@ -21,20 +21,20 @@ class Minion extends EntityInPlay<EntityInPlayProps, {}> {
 		let entity = this.props.entity;
 		let cardId = entity.getCardId();
 
-		let data:CardData = {};
+		let data: CardData = {};
 		if (this.props.cards && this.props.cards.has(cardId)) {
 			data = this.props.cards.get(cardId);
 		}
 
 		return [
 			<InPlayCardArt entity={entity} controller={this.props.controller}
-						   cards={this.props.cards}
-						   assetDirectory={this.props.assetDirectory}
-						   textureDirectory={this.props.textureDirectory}
-			/>,
+				cards={this.props.cards}
+				assetDirectory={this.props.assetDirectory}
+				textureDirectory={this.props.textureDirectory}
+				/>,
 			<div className="stats">
-				<Attack attack={entity.getAtk()} default={data.attack}/>
-				<Health health={entity.getHealth()} damage={entity.getDamage()} default={data.health}/>
+				<Attack attack={entity.getAtk() } default={data.attack}/>
+				<Health health={entity.getHealth() } damage={entity.getDamage() } default={data.health}/>
 			</div>
 		];
 	}

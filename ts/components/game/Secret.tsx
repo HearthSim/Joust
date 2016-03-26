@@ -8,7 +8,7 @@ interface SecretProps extends EntityProps, React.Props<any> {
 
 class Secret extends React.Component<SecretProps, {}> {
 
-	public render():JSX.Element {
+	public render(): JSX.Element {
 		var entity = this.props.entity;
 		var classNames = ["secret"];
 		switch (this.props.entity.getClass()) {
@@ -26,7 +26,7 @@ class Secret extends React.Component<SecretProps, {}> {
 			classNames.push("exhausted");
 		}
 		return (
-			<div className={classNames.join(' ')}>?</div>
+			<div className={classNames.join(' ') }>?</div>
 		);
 	}
 }

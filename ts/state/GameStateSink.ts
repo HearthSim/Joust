@@ -5,12 +5,12 @@ import {EventEmitter} from "events";
 
 class GameStateSink extends Stream.Writable {
 	constructor() {
-		var opts:Stream.WritableOptions = {};
+		var opts: Stream.WritableOptions = {};
 		opts.objectMode = true;
 		super(opts);
 	}
 
-	_write(chunk:any, encoding:string, callback:Function) {
+	_write(chunk: any, encoding: string, callback: Function) {
 		this.emit('gamestate', chunk);
 		callback();
 	}

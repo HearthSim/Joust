@@ -11,52 +11,52 @@ import {DropTarget} from 'react-dnd';
 
 class Field extends EntityList {
 
-	protected className():string {
+	protected className(): string {
 		return 'field';
 	}
 
-	public render():JSX.Element {
+	public render(): JSX.Element {
 		var elements = [];
 		if (this.props.entities) {
-			var entities = this.props.entities.toList().sortBy(function (entity) {
+			var entities = this.props.entities.toList().sortBy(function(entity) {
 				return entity.getZonePosition();
 			});
-			entities.forEach(function (entity) {
+			entities.forEach(function(entity) {
 				elements.push(<li
-					key={entity.getId()}>{this.renderEntity(entity, this.props.options.get(entity.getId()))}</li>);
+					key={entity.getId() }>{this.renderEntity(entity, this.props.options.get(entity.getId())) }</li>);
 			}.bind(this));
 		}
 		return this.props.connectDropTarget(
-			<ul className={this.className()}>
+			<ul className={this.className() }>
 				{elements}
 			</ul>
 		);
 	}
 
-	protected renderEntity(entity:Entity, option:Option) {
+	protected renderEntity(entity: Entity, option: Option) {
 		return (<Minion entity={entity}
-						option={option}
-						optionCallback={this.props.optionCallback}
-						assetDirectory={this.props.assetDirectory}
-						textureDirectory={this.props.textureDirectory}
-						cards={this.props.cards}
-						controller={this.props.controller}
-		/>);
+			option={option}
+			optionCallback={this.props.optionCallback}
+			assetDirectory={this.props.assetDirectory}
+			textureDirectory={this.props.textureDirectory}
+			cards={this.props.cards}
+			controller={this.props.controller}
+			/>);
 	}
 }
 
 export default DropTarget('card',
 	{
-		canDrop: function (props:EntityListProps, monitor) {
+		canDrop: function(props: EntityListProps, monitor) {
 			var item = monitor.getItem();
 			return !item.option.hasTargets();
 		},
-		drop: function (props:EntityListProps, monitor, component) {
+		drop: function(props: EntityListProps, monitor, component) {
 			var item = monitor.getItem();
 			item.action(item.option, undefined, 0);
 		}
 	},
-	function (connect, monitor) {
+	function(connect, monitor) {
 		return {
 			connectDropTarget: connect.dropTarget(),
 			isOver: monitor.isOver()

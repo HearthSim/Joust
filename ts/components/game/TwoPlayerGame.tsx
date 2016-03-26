@@ -21,7 +21,7 @@ interface TwoPlayerGameProps extends EntityProps, CardDataProps, CardOracleProps
 
 class TwoPlayerGame extends React.Component<TwoPlayerGameProps, {}> {
 
-	public render():JSX.Element {
+	public render(): JSX.Element {
 		var entities = this.props.entities;
 		var options = this.props.options;
 		var player1 = this.props.player1 as PlayerEntity;
@@ -33,32 +33,32 @@ class TwoPlayerGame extends React.Component<TwoPlayerGameProps, {}> {
 		return (
 			<div className="game">
 				<Player player={player1 as PlayerEntity} isTop={true}
-						entities={entities.get(player1.getPlayerId()) || emptyEntities}
-						options={options.get(player1.getPlayerId()) || emptyOptions}
-						optionCallback={this.props.optionCallback}
-						cardOracle={this.props.cardOracle}
-						cards={this.props.cards}
-						assetDirectory={this.props.assetDirectory}
-						textureDirectory={this.props.textureDirectory}
-				/>
+					entities={entities.get(player1.getPlayerId()) || emptyEntities}
+					options={options.get(player1.getPlayerId()) || emptyOptions}
+					optionCallback={this.props.optionCallback}
+					cardOracle={this.props.cardOracle}
+					cards={this.props.cards}
+					assetDirectory={this.props.assetDirectory}
+					textureDirectory={this.props.textureDirectory}
+					/>
 				<EndTurnButton option={this.props.endTurnOption}
-							   optionCallback={this.props.optionCallback} onlyOption={options.count() === 0}
-							   currentPlayer={currentPlayer}
-				/>
+					optionCallback={this.props.optionCallback} onlyOption={options.count() === 0}
+					currentPlayer={currentPlayer}
+					/>
 				<Player player={player2 as PlayerEntity} isTop={false}
-						entities={entities.get(player2.getPlayerId()) || emptyEntities}
-						options={options.get(player2.getPlayerId()) || emptyOptions}
-						optionCallback={this.props.optionCallback}
-						cardOracle={this.props.cardOracle}
-						cards={this.props.cards}
-						assetDirectory={this.props.assetDirectory}
-						textureDirectory={this.props.textureDirectory}
-				/>
+					entities={entities.get(player2.getPlayerId()) || emptyEntities}
+					options={options.get(player2.getPlayerId()) || emptyOptions}
+					optionCallback={this.props.optionCallback}
+					cardOracle={this.props.cardOracle}
+					cards={this.props.cards}
+					assetDirectory={this.props.assetDirectory}
+					textureDirectory={this.props.textureDirectory}
+					/>
 			</div>
 		);
 	}
 
-	public shouldComponentUpdate(nextProps:TwoPlayerGameProps, nextState) {
+	public shouldComponentUpdate(nextProps: TwoPlayerGameProps, nextState) {
 		return (
 			this.props.entity !== nextProps.entity ||
 			this.props.player1 !== nextProps.player1 ||

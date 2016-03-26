@@ -6,11 +6,11 @@ import Secret from './Secret';
 
 class Secrets extends EntityList {
 
-	protected className():string {
+	protected className(): string {
 		return 'secrets';
 	}
 
-	protected renderEntity(entity:Entity) {
+	protected renderEntity(entity: Entity) {
 		return (<Secret entity={entity} cards={this.props.cards} assetDirectory={this.props.assetDirectory} textureDirectory={this.props.textureDirectory}/>);
 	}
 }

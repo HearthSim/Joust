@@ -5,10 +5,10 @@ import ReplaceEntityMutator from "./ReplaceEntityMutator";
 
 class ShowEntityMutator implements GameStateMutator {
 
-	constructor(public entityId:number, public cardId:string, public tags:Immutable.Map<string, number>) {
+	constructor(public entityId: number, public cardId: string, public tags: Immutable.Map<string, number>) {
 	}
 
-	public applyTo(state:GameState):GameState {
+	public applyTo(state: GameState): GameState {
 		var oldEntity = state.getEntity(this.entityId);
 		if (!oldEntity) {
 			console.error('Cannot show non-existent entity #' + this.entityId);

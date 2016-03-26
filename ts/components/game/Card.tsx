@@ -14,24 +14,24 @@ import {GameTag} from "../../enums";
 import Entity from "../../Entity";
 
 interface CardProps extends EntityProps, OptionProps, CardDataProps, React.Props<any> {
-	style?:any;
-	connectDragSource?(react:React.ReactElement<CardProps>);
-	dragging?:boolean;
-	isHidden?:boolean;
+	style?: any;
+	connectDragSource?(react: React.ReactElement<CardProps>);
+	dragging?: boolean;
+	isHidden?: boolean;
 }
 
 class Card extends React.Component<CardProps, {}> {
 
-	public render():JSX.Element {
+	public render(): JSX.Element {
 		var entity = this.props.entity;
 		var canBeRevealed = this.props.cards && this.props.cards.has(entity.getCardId());
 		if (entity.getCardId() === null || (this.props.isHidden && !canBeRevealed)) {
 			return (
 				<div className="card">
 					<InHandCardArt hidden={true} entity={this.props.entity} cardType={0}
-								   assetDirectory={this.props.assetDirectory}
-								   textureDirectory={this.props.textureDirectory}
-					/>
+						assetDirectory={this.props.assetDirectory}
+						textureDirectory={this.props.textureDirectory}
+						/>
 				</div>
 			);
 		}
@@ -79,24 +79,24 @@ class Card extends React.Component<CardProps, {}> {
 		}
 
 		var stats = null;
-		var textStyle = {color: "black"};
+		var textStyle = { color: "black" };
 
 		switch (cardType) {
 			case CardType.MINION:
 				var attack = <Attack attack={!this.props.isHidden ? entity.getAtk() : defaultAttack}
-									 default={defaultAttack}/>;
+					default={defaultAttack}/>;
 				var health = <Health health={!this.props.isHidden ? entity.getHealth() : defaultHealth}
-									 damage={entity.getDamage()}
-									 default={defaultHealth}/>;
+					damage={entity.getDamage() }
+					default={defaultHealth}/>;
 				stats = <div className="stats">{attack}{health}</div>;
 				break;
 			case CardType.WEAPON:
 				var attack = <Attack attack={!this.props.isHidden ? entity.getAtk() : defaultAttack}
-									 default={defaultAttack}/>;
+					default={defaultAttack}/>;
 				var durability = <div
 					className="durability">{!this.props.isHidden ? entity.getDurability() : defaultDurability}</div>;
 				stats = <div className="stats">{attack}{durability}</div>;
-				textStyle = {color: "white"};
+				textStyle = { color: "white" };
 		}
 
 		if (this.props.isHidden) {
@@ -109,16 +109,16 @@ class Card extends React.Component<CardProps, {}> {
 
 		var connectDragSource = this.props.connectDragSource;
 		var jsx = (
-			<div className={classNames.join(' ')} style={this.props.style}>
+			<div className={classNames.join(' ') } style={this.props.style}>
 				<InHandCardArt entity={entity} hidden={false} cardType={cardType}
-							   cards={this.props.cards}
-							   assetDirectory={this.props.assetDirectory}
-							   textureDirectory={this.props.textureDirectory}
-				/>
+					cards={this.props.cards}
+					assetDirectory={this.props.assetDirectory}
+					textureDirectory={this.props.textureDirectory}
+					/>
 				<Cost cost={!this.props.isHidden ? entity.getCost() : defaultCost} default={defaultCost}/>
 				<h1>{title}</h1>
 				<div className="description">
-					<p style={textStyle} dangerouslySetInnerHTML={{__html: description}}></p>
+					<p style={textStyle} dangerouslySetInnerHTML={{ __html: description }}></p>
 				</div>
 				{stats}
 			</div>
@@ -127,13 +127,13 @@ class Card extends React.Component<CardProps, {}> {
 		return (draggable ? connectDragSource(jsx) : jsx);
 	}
 
-	protected parseDescription(description:string):string {
+	protected parseDescription(description: string): string {
 		if (!description) {
 			return '';
 		}
 
-		let modifier = (bonus:number, double:number) => {
-			return (match:string, part1:string) => {
+		let modifier = (bonus: number, double: number) => {
+			return (match: string, part1: string) => {
 				let number = +part1;
 				if (+bonus !== 0 || +double !== 0) {
 					number += bonus;
@@ -173,14 +173,14 @@ class Card extends React.Component<CardProps, {}> {
 }
 
 export default DragSource('card', {
-		beginDrag: function (props:CardProps) {
-			return {
-				option: props.option,
-				action: props.optionCallback
-			};
-		}
-	},
-	function (connect, monitor) {
+	beginDrag: function(props: CardProps) {
+		return {
+			option: props.option,
+			action: props.optionCallback
+		};
+	}
+},
+	function(connect, monitor) {
 		return {
 			connectDragSource: connect.dragSource(),
 			dragging: monitor.isDragging()

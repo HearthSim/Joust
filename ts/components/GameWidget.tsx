@@ -11,22 +11,22 @@ import {CardData} from "../interfaces";
 import * as Immutable from "immutable";
 
 interface GameWidgetState {
-	gameState?:GameState;
-	swapPlayers?:boolean;
-	isFullscreen?:boolean;
-	isFullscreenAvailable?:boolean;
-	cardOracle?:Immutable.Map<number, string>;
-	cards?:Immutable.Map<string, CardData>;
-	isRevealingCards?:boolean;
+	gameState?: GameState;
+	swapPlayers?: boolean;
+	isFullscreen?: boolean;
+	isFullscreenAvailable?: boolean;
+	cardOracle?: Immutable.Map<number, string>;
+	cards?: Immutable.Map<string, CardData>;
+	isRevealingCards?: boolean;
 }
 
 class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 	private cb;
 	private cardOracleCb;
-	private ref:HTMLDivElement;
-	private fullscreen:Fullscreen;
+	private ref: HTMLDivElement;
+	private fullscreen: Fullscreen;
 
-	constructor(props:GameWidgetProps) {
+	constructor(props: GameWidgetProps) {
 		super(props);
 		this.state = {
 			gameState: null,
@@ -50,8 +50,8 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 		}
 	}
 
-	protected setGameState(gameState:GameState):void {
-		this.setState({gameState: gameState});
+	protected setGameState(gameState: GameState): void {
+		this.setState({ gameState: gameState });
 	}
 
 	protected componentWillUnmount() {
@@ -61,7 +61,7 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 		this.props.cardOracle.removeListener('cards', this.cardOracleCb);
 	}
 
-	protected onClickExit(e):void {
+	protected onClickExit(e): void {
 		e.preventDefault();
 		if (this.props.exitGame) {
 			this.props.exitGame();
@@ -69,20 +69,20 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 	}
 
 	protected onAttainFullscreen() {
-		this.setState({isFullscreen: true});
+		this.setState({ isFullscreen: true });
 		this.triggerResize();
 	}
 
 	protected onReleaseFullscreen() {
-		this.setState({isFullscreen: false});
+		this.setState({ isFullscreen: false });
 		this.triggerResize();
 	}
 
-	protected updateCardOracle(cards:Immutable.Map<number, string>) {
-		this.setState({cardOracle: cards});
+	protected updateCardOracle(cards: Immutable.Map<number, string>) {
+		this.setState({ cardOracle: cards });
 	}
 
-	public setCards(cards:CardData[]) {
+	public setCards(cards: CardData[]) {
 		var cardMap = null;
 		if (cards) {
 			if (!cards.length) {
@@ -91,13 +91,13 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 			}
 			cardMap = Immutable.Map<string, CardData>();
 
-			cardMap = cardMap.withMutations(function (map) {
-				cards.forEach(function (card:CardData) {
+			cardMap = cardMap.withMutations(function(map) {
+				cards.forEach(function(card: CardData) {
 					map = map.set(card.id, card);
 				});
 			});
 		}
-		this.setState({cards: cardMap});
+		this.setState({ cards: cardMap });
 	}
 
 	/**
@@ -113,32 +113,32 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 		}
 	}
 
-	public render():JSX.Element {
+	public render(): JSX.Element {
 
 		var parts = [];
 
 		if (this.props.exitGame) {
-			parts.push(<a key="exit" href="#" onClick={this.onClickExit.bind(this)}>Exit Game</a>);
+			parts.push(<a key="exit" href="#" onClick={this.onClickExit.bind(this) }>Exit Game</a>);
 		}
 
 		parts.push(<GameWrapper key="game" state={this.state.gameState} interaction={this.props.interaction}
-								assetDirectory={this.props.assetDirectory} textureDirectory={this.props.textureDirectory}
-								cards={this.state.cards} swapPlayers={this.state.swapPlayers}
-								cardOracle={this.state.isRevealingCards && this.state.cardOracle}
-		/>);
+			assetDirectory={this.props.assetDirectory} textureDirectory={this.props.textureDirectory}
+			cards={this.state.cards} swapPlayers={this.state.swapPlayers}
+			cardOracle={this.state.isRevealingCards && this.state.cardOracle}
+			/>);
 
 		if (this.props.scrubber) {
 			parts.push(<Scrubber key="scrubber" scrubber={this.props.scrubber}
-								 swapPlayers={() => this.setState({swapPlayers: !this.state.swapPlayers})}
-								 isFullscreen={this.state.isFullscreen}
-								 isFullscreenAvailable={this.state.isFullscreenAvailable}
-								 onClickFullscreen={() => this.fullscreen.request()}
-								 onClickMinimize={() => this.fullscreen.release()}
-								 isRevealingCards={this.state.isRevealingCards}
-								 canRevealCards={!!this.state.cardOracle}
-								 onClickHideCards={() => this.setState({isRevealingCards: false})}
-								 onClickRevealCards={() => this.setState({isRevealingCards: true})}
-			/>);
+				swapPlayers={() => this.setState({ swapPlayers: !this.state.swapPlayers }) }
+				isFullscreen={this.state.isFullscreen}
+				isFullscreenAvailable={this.state.isFullscreenAvailable}
+				onClickFullscreen={() => this.fullscreen.request() }
+				onClickMinimize={() => this.fullscreen.release() }
+				isRevealingCards={this.state.isRevealingCards}
+				canRevealCards={!!this.state.cardOracle}
+				onClickHideCards={() => this.setState({ isRevealingCards: false }) }
+				onClickRevealCards={() => this.setState({ isRevealingCards: true }) }
+				/>);
 		}
 
 		var style = {};
@@ -158,7 +158,7 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 		);
 	}
 
-	public shouldComponentUpdate(nextProps:GameWidgetProps, nextState:GameWidgetState) {
+	public shouldComponentUpdate(nextProps: GameWidgetProps, nextState: GameWidgetState) {
 		if (this.state.cardOracle !== nextState.cardOracle) {
 			if (this.props.scrubber && this.props.scrubber.isPlaying()) {
 				return false;

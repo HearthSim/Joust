@@ -1,7 +1,7 @@
 import GameState from './GameState';
 
 interface ApplyTo {
-	(state:GameState) : GameState;
+	(state: GameState): GameState;
 }
 
 interface GameStateMutator {

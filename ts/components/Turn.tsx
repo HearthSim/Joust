@@ -10,7 +10,7 @@ interface TurnProps extends React.Props<any> {
 }
 
 class Turn extends React.Component<TurnProps, {}> {
-	public render():JSX.Element {
+	public render(): JSX.Element {
 		if (!this.props.totalDuration) {
 			return null;
 		}
@@ -18,7 +18,7 @@ class Turn extends React.Component<TurnProps, {}> {
 		let classNames = ['joust-scrubber-turn'];
 
 		let width = 100 / this.props.totalDuration * this.props.duration;
-		let style = {width: width + '%'};
+		let style = { width: width + '%' };
 
 		if (this.props.state) {
 			classNames.push(this.props.state.getEntity(1).getTag(GameTag.TURN) % 2 ? 'primary' : 'secondary');
@@ -26,7 +26,7 @@ class Turn extends React.Component<TurnProps, {}> {
 			classNames.push('mulligan');
 		}
 
-		return <div className={classNames.join(' ')} style={style}></div>;
+		return <div className={classNames.join(' ') } style={style}></div>;
 	}
 }
 

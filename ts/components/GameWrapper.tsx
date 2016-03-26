@@ -10,9 +10,9 @@ import {InteractiveBackend, CardOracleProps, AssetDirectoryProps, TextureDirecto
 import {Zone} from "../enums";
 
 interface GameWrapperProps extends CardDataProps, CardOracleProps, AssetDirectoryProps, TextureDirectoryProps, React.Props<any> {
-	state:GameState;
-	interaction?:InteractiveBackend;
-	swapPlayers?:boolean;
+	state: GameState;
+	interaction?: InteractiveBackend;
+	swapPlayers?: boolean;
 }
 
 /**
@@ -24,10 +24,10 @@ class GameWrapper extends React.Component<GameWrapperProps, {}> {
 	private hasCheckedForSwap = false;
 	private swapPlayers = false;
 
-	public render():JSX.Element {
+	public render(): JSX.Element {
 		var gameState = this.props.state;
 		if (!gameState) {
-			return <p className="joust-message">Waiting for game state&hellip;</p>;
+			return <p className="joust-message">Waiting for game state&hellip; </p>;
 		}
 
 		var entityTree = gameState.getEntityTree();
@@ -36,19 +36,19 @@ class GameWrapper extends React.Component<GameWrapperProps, {}> {
 		// check if any entites are present
 		var allEntities = gameState.getEntities();
 		if (!allEntities) {
-			return <p className="joust-message">Waiting for entities&hellip;</p>;
+			return <p className="joust-message">Waiting for entities&hellip; </p>;
 		}
 
 		// find the game entity
 		var game = allEntities.filter(GameWrapper.filterByCardType(CardType.GAME)).first();
 		if (!game) {
-			return <p className="joust-message">Waiting for game&hellip;</p>;
+			return <p className="joust-message">Waiting for game&hellip; </p>;
 		}
 
 		// find the players
 		var players = allEntities.filter(GameWrapper.filterByCardType(CardType.PLAYER)) as Immutable.Iterable<number, PlayerEntity>;
 		if (players.count() == 0) {
-			return <p className="joust-message">Waiting for players&hellip;</p>;
+			return <p className="joust-message">Waiting for players&hellip; </p>;
 		}
 
 		// check if we need to swap the players
@@ -64,7 +64,7 @@ class GameWrapper extends React.Component<GameWrapperProps, {}> {
 		}
 
 		// find an end turn option
-		var endTurnOption = gameState.getOptions().filter(function (option:Option):boolean {
+		var endTurnOption = gameState.getOptions().filter(function(option: Option): boolean {
 			return !!option && option.getType() === OptionType.END_TURN;
 		}).first();
 
@@ -83,19 +83,19 @@ class GameWrapper extends React.Component<GameWrapperProps, {}> {
 					entities={entityTree}
 					options={optionTree}
 					endTurnOption={endTurnOption}
-					optionCallback={this.props.interaction && this.props.interaction.sendOption.bind(this.props.interaction)}
+					optionCallback={this.props.interaction && this.props.interaction.sendOption.bind(this.props.interaction) }
 					cards={this.props.cards}
 					cardOracle={this.props.cardOracle}
 					assetDirectory={this.props.assetDirectory}
 					textureDirectory={this.props.textureDirectory}
-				/>;
+					/>;
 			default:
 				return <div>Unsupported player count ({playerCount}).</div>
 		}
 	}
 
-	public static filterByCardType(cardType:CardType):(entity:Entity)=>boolean {
-		return function (entity:Entity):boolean {
+	public static filterByCardType(cardType: CardType): (entity: Entity) => boolean {
+		return function(entity: Entity): boolean {
 			return !!entity && entity.getCardType() === cardType;
 		};
 	};

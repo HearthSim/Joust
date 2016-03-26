@@ -3,7 +3,7 @@ import EntityList from './EntityList';
 
 class Deck extends EntityList {
 
-	public render():JSX.Element {
+	public render(): JSX.Element {
 		var tooltip = null;
 		var classNames = ['deck'];
 		switch (this.props.entities.size) {
@@ -18,7 +18,7 @@ class Deck extends EntityList {
 				tooltip = this.props.entities.size + ' cards remaining';
 				break;
 		}
-		return <div className={classNames.join(' ')} title={tooltip}></div>;
+		return <div className={classNames.join(' ') } title={tooltip}></div>;
 	}
 }
 

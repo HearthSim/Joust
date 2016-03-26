@@ -20,10 +20,10 @@ interface CardArtProps extends AssetDirectoryProps, TextureDirectoryProps {
 
 class CardArt extends React.Component<CardArtProps, {}> {
 
-	private static baseArtExt:string = ".png";
-	private static imageDirectory:string = "images/";
+	private static baseArtExt: string = ".png";
+	private static imageDirectory: string = "images/";
 
-	private createStyle():any {
+	private createStyle(): any {
 		// keep proportions with scale
 		var width = Math.round(this.props.containerHeight * this.props.scale);
 		var height = Math.round(this.props.containerHeight);
@@ -31,14 +31,14 @@ class CardArt extends React.Component<CardArtProps, {}> {
 			height = width;
 		}
 		var margin = Math.round(this.props.containerHeight * (1 - this.props.scale));
-		var style = {width: width + 'px', height: height + 'px', marginTop: '0px'};
+		var style = { width: width + 'px', height: height + 'px', marginTop: '0px' };
 		if (this.props.margin) {
 			style.marginTop = margin + 'px';
 		}
 		return style;
 	}
 
-	private createImageItem(item:CardArtItem, index:number):JSX.Element {
+	private createImageItem(item: CardArtItem, index: number): JSX.Element {
 		if (item.image === null && !item.isArt) {
 			return;
 		}
@@ -57,14 +57,14 @@ class CardArt extends React.Component<CardArtProps, {}> {
 
 		return (
 			<img key={index}
-				 src={imgSrc}
-				 className={item.classes.join(' ')}
-				 draggable={false}
-			/>
+				src={imgSrc}
+				className={item.classes.join(' ') }
+				draggable={false}
+				/>
 		);
 	}
 
-	public render():JSX.Element {
+	public render(): JSX.Element {
 		var style = this.createStyle();
 		return (
 			<div className='visuals' style={style}>

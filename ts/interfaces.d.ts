@@ -20,7 +20,7 @@ export interface DragSourceProps {
 }
 
 export interface EntityInPlayProps extends EntityProps, OptionProps, DragSourceProps, DropTargetProps, React.Props<any> {
-	isTarget:boolean;
+	isTarget: boolean;
 }
 
 export interface EntityListProps extends OptionCallbackProps, ControllerProps, DropTargetProps, CardDataProps, CardOracleProps, AssetDirectoryProps, TextureDirectoryProps, React.Props<any> {
@@ -38,7 +38,7 @@ export interface EntityProps extends CardDataProps, ControllerProps, AssetDirect
 }
 
 export interface OptionCallbackProps {
-	optionCallback?(option:Option, target?:number, position?:number) : void;
+	optionCallback?(option: Option, target?: number, position?: number): void;
 }
 
 export interface OptionProps extends OptionCallbackProps {
@@ -46,85 +46,85 @@ export interface OptionProps extends OptionCallbackProps {
 }
 
 export interface JoustClient {
-	isInteractive():boolean;
+	isInteractive(): boolean;
 }
 
 export interface ActionHandler {
-	sendOption(option:Option):void;
+	sendOption(option: Option): void;
 }
 
 export interface KettleClient extends EventEmitter {
-	connect():void;
-	disconnect():void;
-	write(buffer:Buffer):void;
+	connect(): void;
+	disconnect(): void;
+	write(buffer: Buffer): void;
 }
 
 export interface InteractiveBackend {
-	startGame():void;
-	sendOption(option:Option, target?:number, position?:number):void;
-	chooseEntitites(entities:Entity[]):void;
-	exitGame():void;
+	startGame(): void;
+	sendOption(option: Option, target?: number, position?: number): void;
+	chooseEntitites(entities: Entity[]): void;
+	exitGame(): void;
 }
 
 export interface StreamScrubber extends EventEmitter {
-	play():void;
-	pause():void;
-	toggle():void;
-	setSpeed(speed:number):void;
-	seek(time:number):void;
-	isPlaying():boolean;
-	isPaused():boolean;
-	canInteract():boolean;
-	canRewind():boolean;
-	rewind():void;
-	fastForward():void;
-	getCurrentTime():number;
-	getSpeed():number;
-	canPlay():boolean;
-	getHistory():GameStateHistory;
-	getDuration():number;
-	setInhibitor(inhibitor:StreamScrubberInhibitor):void;
-	nextTurn():void;
-	previousTurn():void;
-	skipBack():void;
-	hasEnded():boolean;
+	play(): void;
+	pause(): void;
+	toggle(): void;
+	setSpeed(speed: number): void;
+	seek(time: number): void;
+	isPlaying(): boolean;
+	isPaused(): boolean;
+	canInteract(): boolean;
+	canRewind(): boolean;
+	rewind(): void;
+	fastForward(): void;
+	getCurrentTime(): number;
+	getSpeed(): number;
+	canPlay(): boolean;
+	getHistory(): GameStateHistory;
+	getDuration(): number;
+	setInhibitor(inhibitor: StreamScrubberInhibitor): void;
+	nextTurn(): void;
+	previousTurn(): void;
+	skipBack(): void;
+	hasEnded(): boolean;
 }
 
 export interface CardData {
-	id?:string;
+	id?: string;
 
 	// enums
-	rarity?:string;
-	faction?:string;
-	set?:string;
-	playerClass?:string;
-	type?:string;
-	race?:string;
+	rarity?: string;
+	faction?: string;
+	set?: string;
+	playerClass?: string;
+	type?: string;
+	race?: string;
 
 	// localized
-	name?:string;
-	text?:string;
-	flavor?:string;
-	howToEarn?:string;
-	howToEarnGolden?:string;
-	targetingArrowText?:string;
-	textInPlay?:string;
+	name?: string;
+	text?: string;
+	flavor?: string;
+	howToEarn?: string;
+	howToEarnGolden?: string;
+	targetingArrowText?: string;
+	textInPlay?: string;
 
 	// additional
-	collectible?:boolean;
-	cost?:number;
-	attack?:number;
-	health?:number;
-	durability?:number;
-	dust?:number[];
+	collectible?: boolean;
+	cost?: number;
+	attack?: number;
+	health?: number;
+	durability?: number;
+	dust?: number[];
 
-	mechanics?:string[]; // enum
-	artist?:string;
-	texture?:string;
+	mechanics?: string[]; // enum
+	artist?: string;
+	texture?: string;
 }
 
 export interface CardDataProps {
-	cards?:Immutable.Map<string, CardData>;
+	cards?: Immutable.Map<string, CardData>;
 }
 
 export interface CardOracleProps {
@@ -136,26 +136,26 @@ export interface CardOracle extends EventEmitter {
 }
 
 export interface AssetDirectoryProps {
-	assetDirectory:string;
+	assetDirectory: string;
 }
 
 export interface TextureDirectoryProps {
-	textureDirectory:string;
+	textureDirectory: string;
 }
 
 export interface QueryCardMetadata {
-	(build:number, cb:(card:CardData[]) => void): void;
+	(build: number, cb: (card: CardData[]) => void): void;
 }
 
 export interface GameWidgetProps extends AssetDirectoryProps, TextureDirectoryProps, React.Props<any> {
-	sink:GameStateSink;
-	interaction?:InteractiveBackend;
-	scrubber?:StreamScrubber;
-	getImageURL?:(cardId:string) => string;
-	exitGame?:() => void;
+	sink: GameStateSink;
+	interaction?: InteractiveBackend;
+	scrubber?: StreamScrubber;
+	getImageURL?: (cardId: string) => string;
+	exitGame?: () => void;
 	cardOracle: CardOracle;
-	width?:any;
-	height?:any;
+	width?: any;
+	height?: any;
 }
 
 export interface StreamScrubberInhibitor {
@@ -163,6 +163,6 @@ export interface StreamScrubberInhibitor {
 }
 
 export interface RankProps extends AssetDirectoryProps, TextureDirectoryProps, React.Props<any> {
-	rank?:number;
-	legendRank?:number;
+	rank?: number;
+	legendRank?: number;
 }

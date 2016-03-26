@@ -11,7 +11,7 @@ interface InHandCardArtProps extends EntityProps {
 }
 
 class InHandCardArt extends React.Component<InHandCardArtProps, {}> {
-	public render():JSX.Element {
+	public render(): JSX.Element {
 		var images = [];
 		var entity = this.props.entity;
 		var portraitClass = null;

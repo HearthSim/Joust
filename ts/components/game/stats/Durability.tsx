@@ -7,7 +7,7 @@ interface DurabilityProps extends React.Props<any> {
 }
 
 class Durability extends React.Component<DurabilityProps, {}> {
-	public render():JSX.Element {
+	public render(): JSX.Element {
 		var classNames = ['durability'];
 		if (this.props.damage > 0) {
 			classNames.push('negative');
@@ -15,7 +15,7 @@ class Durability extends React.Component<DurabilityProps, {}> {
 		else if (this.props.default !== null && this.props.durability > this.props.default) {
 			classNames.push('positive');
 		}
-		return <div className={classNames.join(' ')}>{this.props.durability - this.props.damage}</div>;
+		return <div className={classNames.join(' ') }>{this.props.durability - this.props.damage}</div>;
 	}
 }
 

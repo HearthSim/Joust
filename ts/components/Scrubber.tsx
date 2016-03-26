@@ -4,29 +4,29 @@ import Timeline from "./Timeline";
 import SpeedSelector from "./SpeedSelector";
 
 interface ScrubberProps extends React.Props<any> {
-	scrubber:StreamScrubber;
-	swapPlayers?:() => void;
-	isFullscreen?:boolean;
-	isFullscreenAvailable?:boolean;
-	onClickFullscreen?:() => void;
-	onClickMinimize?:() => void;
-	isRevealingCards?:boolean;
-	canRevealCards?:boolean;
-	onClickHideCards?:() => void;
-	onClickRevealCards?:() => void;
+	scrubber: StreamScrubber;
+	swapPlayers?: () => void;
+	isFullscreen?: boolean;
+	isFullscreenAvailable?: boolean;
+	onClickFullscreen?: () => void;
+	onClickMinimize?: () => void;
+	isRevealingCards?: boolean;
+	canRevealCards?: boolean;
+	onClickHideCards?: () => void;
+	onClickRevealCards?: () => void;
 }
 
 interface ScrubberState {
-	playing?:boolean;
-	canInteract?:boolean;
-	canRewind?:boolean;
-	canPlay?:boolean;
-	speed?:number;
+	playing?: boolean;
+	canInteract?: boolean;
+	canRewind?: boolean;
+	canPlay?: boolean;
+	speed?: number;
 }
 
 class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 
-	constructor(props:ScrubberProps) {
+	constructor(props: ScrubberProps) {
 		super(props);
 		this.state = {
 			playing: false,
@@ -39,22 +39,22 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 		this.registerListeners(this.props);
 	}
 
-	public componentWillUpdate(nextProps:ScrubberProps, nextState:ScrubberState):void {
+	public componentWillUpdate(nextProps: ScrubberProps, nextState: ScrubberState): void {
 		this.removeListeners(this.props);
 		this.registerListeners(nextProps);
 	}
 
-	private registerListeners(props:ScrubberProps):void {
+	private registerListeners(props: ScrubberProps): void {
 		props.scrubber.on('update', this.updateState);
 		document.addEventListener('keydown', this.onKeyDown);
 	}
 
-	private removeListeners(props:ScrubberProps):void {
+	private removeListeners(props: ScrubberProps): void {
 		props.scrubber.removeListener('update', this.updateState);
 		document.removeEventListener('keydown', this.onKeyDown);
 	}
 
-	private onKeyDown(e:KeyboardEvent):void {
+	private onKeyDown(e: KeyboardEvent): void {
 		if (!this.state.canInteract) {
 			return;
 		}
@@ -101,7 +101,7 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 		}
 	}
 
-	protected updateState = ():void => {
+	protected updateState = (): void => {
 		var scrubber = this.props.scrubber;
 		this.setState({
 			playing: scrubber.isPlaying(),
@@ -112,16 +112,16 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 		});
 	}
 
-	public componentWillUnmount():void {
+	public componentWillUnmount(): void {
 		this.removeListeners(this.props);
 	}
 
-	public render():JSX.Element {
+	public render(): JSX.Element {
 		var playpause = this.state.playing ?
-			<button onClick={this.pause.bind(this)} disabled={!this.state.canInteract} title="Pause">
+			<button onClick={this.pause.bind(this) } disabled={!this.state.canInteract} title="Pause">
 				<i className="joust-fa joust-fa-pause"></i>
 			</button> :
-			<button onClick={this.play.bind(this)} disabled={!this.state.canPlay} title="Play">
+			<button onClick={this.play.bind(this) } disabled={!this.state.canPlay} title="Play">
 				<i className="joust-fa joust-fa-play"></i>
 			</button>;
 
@@ -131,7 +131,7 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 				<i className="joust-fa joust-fa-compress"></i>
 			</button> :
 			<button onClick={this.props.onClickFullscreen} disabled={!this.props.isFullscreenAvailable}
-					title="Fullscreen">
+				title="Fullscreen">
 				<i className="joust-fa joust-fa-expand"></i>
 			</button>;
 
@@ -146,20 +146,20 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 		return (
 			<div className="joust-scrubber">
 				{playpause}
-				<button onClick={this.rewind.bind(this)} disabled={!this.state.canRewind} title="Rewind">
+				<button onClick={this.rewind.bind(this) } disabled={!this.state.canRewind} title="Rewind">
 					<i className="joust-fa joust-fa-fast-backward"></i>
 				</button>
-				<Timeline duration={this.props.scrubber.getDuration()}
-						  at={this.props.scrubber.getCurrentTime()}
-						  seek={this.props.scrubber.seek.bind(this.props.scrubber)}
-						  turnMap={this.props.scrubber.getHistory().turnMap}
-						  ref={(inhibitor) => this.props.scrubber.setInhibitor(inhibitor)}
-				/>
+				<Timeline duration={this.props.scrubber.getDuration() }
+					at={this.props.scrubber.getCurrentTime() }
+					seek={this.props.scrubber.seek.bind(this.props.scrubber) }
+					turnMap={this.props.scrubber.getHistory().turnMap}
+					ref={(inhibitor) => this.props.scrubber.setInhibitor(inhibitor) }
+					/>
 				<SpeedSelector speed={this.state.speed}
-							   speeds={[1, 1.5, 2, 4, 8, 16]}
-							   selectSpeed={this.selectSpeed}
-							   disabled={!this.state.canInteract}
-				/>
+					speeds={[1, 1.5, 2, 4, 8, 16]}
+					selectSpeed={this.selectSpeed}
+					disabled={!this.state.canInteract}
+					/>
 				{reveal}
 				<button onClick={this.props.swapPlayers} disabled={!this.state.canInteract} title="Swap players">
 					<i className="joust-fa joust-fa-unsorted"></i>
@@ -169,15 +169,15 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 		);
 	}
 
-	protected play = ():void => {
+	protected play = (): void => {
 		this.props.scrubber.play();
 	}
 
-	protected pause = ():void => {
+	protected pause = (): void => {
 		this.props.scrubber.pause();
 	}
 
-	protected rewind = ():void => {
+	protected rewind = (): void => {
 		let play = false;
 		if (this.props.scrubber.hasEnded()) {
 			play = true;
@@ -188,7 +188,7 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 		}
 	}
 
-	protected selectSpeed = (speed:number):void => {
+	protected selectSpeed = (speed: number): void => {
 		var speed = Math.max(speed, 0);
 		this.props.scrubber.setSpeed(speed);
 	}

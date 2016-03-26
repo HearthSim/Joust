@@ -2,7 +2,7 @@ import {JoustClient} from "../interfaces";
 
 class HSReplayClient implements JoustClient {
 
-	isInteractive():boolean {
+	isInteractive(): boolean {
 		return false;
 	}
 

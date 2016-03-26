@@ -10,11 +10,11 @@ import * as Immutable from "immutable"
 
 class KettleDecoder extends Stream.Transform {
 
-	private buffer:Immutable.List<number>;
+	private buffer: Immutable.List<number>;
 	private ready;
 	private draining;
 
-	constructor(opts?:Stream.TransformOptions) {
+	constructor(opts?: Stream.TransformOptions) {
 		opts = opts || {};
 		opts.objectMode = true;
 		super(opts);
@@ -23,9 +23,9 @@ class KettleDecoder extends Stream.Transform {
 		this.draining = false;
 	}
 
-	_write(chunk:number[], encoding:string, callback:Function):void {
+	_write(chunk: number[], encoding: string, callback: Function): void {
 		// fill the buffer with any incoming message
-		this.buffer = this.buffer.withMutations(function (list) {
+		this.buffer = this.buffer.withMutations(function(list) {
 			for (let i = 0; i < chunk.length; i++) { // this will call buffer.values() and iterate
 				let byte = chunk[i];
 				list = list.push(byte);
@@ -68,7 +68,7 @@ class KettleDecoder extends Stream.Transform {
 		this.draining = false;
 	}
 
-	_read(size:number):void {
+	_read(size: number): void {
 		this.ready = true;
 		this.drainBuffer();
 	}
@@ -76,13 +76,13 @@ class KettleDecoder extends Stream.Transform {
 	private handlePacket(packet) {
 		var type = packet.Type;
 		packet = packet[type];
-		console.debug(type+ ':', packet);
+		console.debug(type + ':', packet);
 		var mutator = null;
 		switch (type) {
 			case 'GameEntity':
 			case 'FullEntity':
 				var tags = {};
-				Object.keys(packet.Tags).forEach(function (key) {
+				Object.keys(packet.Tags).forEach(function(key) {
 					tags['' + key] = packet.Tags[key];
 				});
 				var entity = new Entity(
@@ -94,7 +94,7 @@ class KettleDecoder extends Stream.Transform {
 				break;
 			case 'Player':
 				var tags = {};
-				Object.keys(packet.Tags).forEach(function (key) {
+				Object.keys(packet.Tags).forEach(function(key) {
 					tags['' + key] = packet.Tags[key];
 				});
 				var player = new Player(
@@ -114,8 +114,8 @@ class KettleDecoder extends Stream.Transform {
 				break;
 			case 'Options':
 				var options = Immutable.Map<number, Option>();
-				options = options.withMutations(function (map) {
-					packet.forEach(function (optionObject:any, index:number) {
+				options = options.withMutations(function(map) {
+					packet.forEach(function(optionObject: any, index: number) {
 						var option = new Option(
 							index,
 							optionObject.Type,

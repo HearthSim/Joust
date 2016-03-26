@@ -8,13 +8,13 @@ class TagChangeMutator implements GameStateMutator {
 	public tag;
 	public value;
 
-	constructor(id:number, tag:number, value:number) {
+	constructor(id: number, tag: number, value: number) {
 		this.id = +id;
 		this.tag = +tag;
 		this.value = +value;
 	}
 
-	public applyTo(state:GameState):GameState {
+	public applyTo(state: GameState): GameState {
 		var oldEntity = state.getEntity(this.id);
 		if (!oldEntity) {
 			console.error('Cannot change tag on non-existent entity #' + this.id);

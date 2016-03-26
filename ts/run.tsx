@@ -22,49 +22,49 @@ var ReactDOM = require('react-dom');
 class Viewer {
 
 	protected target;
-	protected opts:GameWidgetProps;
-	protected queryCardMetadata:QueryCardMetadata;
-	protected ref:GameWidget;
+	protected opts: GameWidgetProps;
+	protected queryCardMetadata: QueryCardMetadata;
+	protected ref: GameWidget;
 
-	constructor(target:any) {
+	constructor(target: any) {
 		this.target = target;
 		this.opts = {} as any;
 		this.opts.assetDirectory = 'assets/';
 	}
 
-	public width(width:number):Viewer {
+	public width(width: number): Viewer {
 		this.opts.width = width;
 		return this;
 	}
 
-	public height(height:number):Viewer {
+	public height(height: number): Viewer {
 		this.opts.height = height;
 		return this;
 	}
 
-	public assets(assets:string):Viewer {
+	public assets(assets: string): Viewer {
 		this.opts.assetDirectory = assets;
 		return this;
 	}
 
-	public textures(textures:string):Viewer {
+	public textures(textures: string): Viewer {
 		this.opts.textureDirectory = textures;
 		return this;
 	}
 
-	public metadata(query:QueryCardMetadata):Viewer {
+	public metadata(query: QueryCardMetadata): Viewer {
 		this.queryCardMetadata = query;
 		return this;
 	}
 
-	public setOptions(opts:any):Viewer {
+	public setOptions(opts: any): Viewer {
 		for (var prop in opts) {
 			this.opts[prop] = opts[prop];
 		}
 		return this;
 	}
 
-	public fromUrl(url:string):void {
+	public fromUrl(url: string): void {
 		var decoder = new HSReplayDecoder();
 		var tracker = new GameStateTracker();
 		var scrubber = new GameStateScrubber();
@@ -73,7 +73,7 @@ class Viewer {
 		var opts = URL.parse(url) as any;
 		opts.withCredentials = false;
 		var request = http.get(opts);
-		request.on('response', function (response:stream.Readable) {
+		request.on('response', function(response: stream.Readable) {
 			response
 				.pipe(decoder) // json -> mutators
 				.pipe(tracker) // mutators -> latest gamestate
@@ -93,7 +93,7 @@ class Viewer {
 		this.render();
 	}
 
-	protected render():void {
+	protected render(): void {
 		if (this.opts.textureDirectory) {
 			console.debug('Loading textures from', '"' + this.opts.textureDirectory + '"');
 		}
@@ -105,14 +105,14 @@ class Viewer {
 }
 
 module.exports = {
-	renderApplication: (target:string) => {
+	renderApplication: (target: string) => {
 		ReactDOM.render(
 			React.createElement(Application),
 			document.getElementById(target)
 		);
 	},
 
-	renderHSReplay: (target:string, url:string, opts?) => {
+	renderHSReplay: (target: string, url: string, opts?) => {
 		new Viewer(target).setOptions(opts).fromUrl(url);
 	},
 

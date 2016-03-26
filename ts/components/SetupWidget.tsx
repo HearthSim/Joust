@@ -12,21 +12,21 @@ import GameStateSink from "../state/GameStateSink";
 import {CardOracle} from "../interfaces";
 
 interface SetupWidgetProps extends React.Props<any> {
-	defaultHostname:string;
-	defaultPort:number;
-	onSetup:(sink:GameStateSink, interaction?:InteractiveBackend, scrubber?:GameStateScrubber, oracle?:CardOracle) => void;
+	defaultHostname: string;
+	defaultPort: number;
+	onSetup: (sink: GameStateSink, interaction?: InteractiveBackend, scrubber?: GameStateScrubber, oracle?: CardOracle) => void;
 }
 
 interface SetupWidgetState {
-	working?:boolean;
-	hostname?:string;
-	port?:number;
-	websocket?:boolean;
-	secureWebsocket?:boolean;
+	working?: boolean;
+	hostname?: string;
+	port?: number;
+	websocket?: boolean;
+	secureWebsocket?: boolean;
 }
 
 class SetupWidget extends React.Component<SetupWidgetProps, SetupWidgetState> {
-	constructor(props:SetupWidgetProps) {
+	constructor(props: SetupWidgetProps) {
 		super(props);
 		this.state = {
 			working: false,
@@ -37,26 +37,26 @@ class SetupWidget extends React.Component<SetupWidgetProps, SetupWidgetState> {
 		}
 	}
 
-	public render():JSX.Element {
+	public render(): JSX.Element {
 		return (
 			<div className="setup-widget widget">
 				<section>
 					<h2>HSReplay</h2>
 					<input type="file" accept="application/vnd.hearthsim-hsreplay+xml,application/xml"
-						   onChange={this.onSelectFile.bind(this)} disabled={this.state.working}/>
+						onChange={this.onSelectFile.bind(this) } disabled={this.state.working}/>
 				</section>
 				<section>
 					<h2>Kettle</h2>
-					<form onSubmit={this.onSubmitKettle.bind(this)}>
+					<form onSubmit={this.onSubmitKettle.bind(this) }>
 						<input type="text" placeholder={this.props.defaultHostname}
-							   onChange={this.onChangeHostname.bind(this)} disabled={this.state.working}/>
-						<input type="number" placeholder={''+this.props.defaultPort}
-							   onChange={this.onChangePort.bind(this)}
-							   disabled={this.state.working}/>
+							onChange={this.onChangeHostname.bind(this) } disabled={this.state.working}/>
+						<input type="number" placeholder={'' + this.props.defaultPort}
+							onChange={this.onChangePort.bind(this) }
+							disabled={this.state.working}/>
 						<input type="checkbox" checked={this.state.websocket}
-							   onChange={this.onChangeWebsocket.bind(this)}/>
+							onChange={this.onChangeWebsocket.bind(this) }/>
 						<input type="checkbox" checked={this.state.secureWebsocket}
-							   onChange={this.onChangeSecureWebsocket.bind(this)}/>
+							onChange={this.onChangeSecureWebsocket.bind(this) }/>
 						<button type="submit" disabled={this.state.working}>Connect</button>
 					</form>
 				</section>
@@ -64,33 +64,33 @@ class SetupWidget extends React.Component<SetupWidgetProps, SetupWidgetState> {
 		);
 	}
 
-	protected onChangeHostname(e):void {
-		this.setState({hostname: e.target.value});
+	protected onChangeHostname(e): void {
+		this.setState({ hostname: e.target.value });
 	}
 
-	protected onChangePort(e):void {
-		this.setState({port: e.target.value});
+	protected onChangePort(e): void {
+		this.setState({ port: e.target.value });
 	}
 
-	protected onChangeWebsocket(e):void {
-		this.setState({websocket: e.target.checked});
+	protected onChangeWebsocket(e): void {
+		this.setState({ websocket: e.target.checked });
 	}
 
-	protected onChangeSecureWebsocket(e):void {
-		this.setState({secureWebsocket: e.target.checked});
+	protected onChangeSecureWebsocket(e): void {
+		this.setState({ secureWebsocket: e.target.checked });
 	}
 
 
-	protected onSelectFile(e):void {
+	protected onSelectFile(e): void {
 		var file = e.target.files[0];
 		if (!file || this.state.working) {
 			return;
 		}
-		this.setState({working: true});
+		this.setState({ working: true });
 		this.loadFile(file);
 	}
 
-	protected loadFile(file:any):void {
+	protected loadFile(file: any): void {
 		var filestream = FileReaderStream(file);
 
 		/* HSReplay -> Joust */
@@ -107,12 +107,12 @@ class SetupWidget extends React.Component<SetupWidgetProps, SetupWidgetState> {
 		this.props.onSetup(sink, null, scrubber, decoder);
 	}
 
-	protected onSubmitKettle(e):void {
+	protected onSubmitKettle(e): void {
 		e.preventDefault();
 		if (this.state.working) {
 			return;
 		}
-		this.setState({working: true});
+		this.setState({ working: true });
 
 		var hostname = this.state.hostname || this.props.defaultHostname;
 		var port = this.state.port || this.props.defaultPort;
@@ -144,17 +144,17 @@ class SetupWidget extends React.Component<SetupWidgetProps, SetupWidgetState> {
 		interaction
 			.pipe(socket);
 
-		socket.on('connect', function () {
+		socket.on('connect', function() {
 			interaction.startGame();
 			this.props.onSetup(sink, interaction);
 		}.bind(this));
 
-		socket.on('error', function (e) {
+		socket.on('error', function(e) {
 			console.error(e);
 		});
 
-		socket.on('close', function () {
-			this.setState({working: false});
+		socket.on('close', function() {
+			this.setState({ working: false });
 			console.log('Connection closed');
 		}.bind(this));
 	}

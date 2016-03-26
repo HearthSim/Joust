@@ -7,9 +7,9 @@ interface HealthProps extends React.Props<any> {
 }
 
 class Health extends React.Component<HealthProps, {}> {
-	public render():JSX.Element {
+	public render(): JSX.Element {
 		var classNames = ['health'];
-		if(this.props.health !== null) {
+		if (this.props.health !== null) {
 			if (this.props.damage > 0) {
 				classNames.push('negative');
 			}
@@ -17,7 +17,7 @@ class Health extends React.Component<HealthProps, {}> {
 				classNames.push('positive');
 			}
 		}
-		return <div className={classNames.join(' ')}>{this.props.health !== null ? (this.props.health - this.props.damage) : '?'}</div>;
+		return <div className={classNames.join(' ') }>{this.props.health !== null ? (this.props.health - this.props.damage) : '?'}</div>;
 	}
 }
 

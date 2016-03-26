@@ -26,9 +26,9 @@ interface PlayerProps extends OptionCallbackProps, CardDataProps, CardOracleProp
 
 class Player extends React.Component<PlayerProps, {}> {
 
-	public render():JSX.Element {
-		var filterByCardType = function (cardType:number) {
-			return function (entity:Entity):boolean {
+	public render(): JSX.Element {
+		var filterByCardType = function(cardType: number) {
+			return function(entity: Entity): boolean {
 				return !!entity && entity.getCardType() === cardType;
 			};
 		};
@@ -42,62 +42,62 @@ class Player extends React.Component<PlayerProps, {}> {
 		/* Equipment */
 		var heroEntity = playEntities.filter(filterByCardType(CardType.HERO)).first();
 		var hero = <Hero entity={heroEntity}
-						 option={heroEntity ? playOptions.get(heroEntity.getId()) : null}
-						 secrets={this.props.entities.get(Zone.SECRET) || Immutable.Map<number, Entity>()}
-						 optionCallback={this.props.optionCallback}
-						 cards={this.props.cards}
-						 assetDirectory={this.props.assetDirectory}
-						 textureDirectory={this.props.textureDirectory}
-						 controller={this.props.player}
-		/>;
+			option={heroEntity ? playOptions.get(heroEntity.getId()) : null}
+			secrets={this.props.entities.get(Zone.SECRET) || Immutable.Map<number, Entity>() }
+			optionCallback={this.props.optionCallback}
+			cards={this.props.cards}
+			assetDirectory={this.props.assetDirectory}
+			textureDirectory={this.props.textureDirectory}
+			controller={this.props.player}
+			/>;
 		var heroPowerEntity = playEntities.filter(filterByCardType(CardType.HERO_POWER)).first();
 		var heroPower = <HeroPower entity={heroPowerEntity}
-								   option={heroPowerEntity ? playOptions.get(heroPowerEntity.getId()) : null}
-								   optionCallback={this.props.optionCallback}
-								   cards={this.props.cards}
-								   assetDirectory={this.props.assetDirectory}
-								   textureDirectory={this.props.textureDirectory}
-								   controller={this.props.player}
-		/>;
-		var weapon = <Weapon entity={playEntities.filter(filterByCardType(CardType.WEAPON)).first()}
-							 cards={this.props.cards}
-							 assetDirectory={this.props.assetDirectory}
-							 textureDirectory={this.props.textureDirectory}
-							 controller={this.props.player}
-		/>;
+			option={heroPowerEntity ? playOptions.get(heroPowerEntity.getId()) : null}
+			optionCallback={this.props.optionCallback}
+			cards={this.props.cards}
+			assetDirectory={this.props.assetDirectory}
+			textureDirectory={this.props.textureDirectory}
+			controller={this.props.player}
+			/>;
+		var weapon = <Weapon entity={playEntities.filter(filterByCardType(CardType.WEAPON)).first() }
+			cards={this.props.cards}
+			assetDirectory={this.props.assetDirectory}
+			textureDirectory={this.props.textureDirectory}
+			controller={this.props.player}
+			/>;
 
 		var field = <Field entities={playEntities.filter(filterByCardType(CardType.MINION)) || emptyEntities}
-						   options={playOptions || emptyOptions}
-						   optionCallback={this.props.optionCallback}
-						   cards={this.props.cards}
-						   assetDirectory={this.props.assetDirectory}
-						   textureDirectory={this.props.textureDirectory}
-						   controller={this.props.player}
-		/>;
+			options={playOptions || emptyOptions}
+			optionCallback={this.props.optionCallback}
+			cards={this.props.cards}
+			assetDirectory={this.props.assetDirectory}
+			textureDirectory={this.props.textureDirectory}
+			controller={this.props.player}
+			/>;
 		var deck = <Deck entities={this.props.entities.get(Zone.DECK) || emptyEntities}
-						 options={this.props.options.get(Zone.DECK) || emptyOptions}
-						 cards={this.props.cards}
-						 assetDirectory={this.props.assetDirectory}
-						 textureDirectory={this.props.textureDirectory}
-						 controller={this.props.player}
-		/>;
+			options={this.props.options.get(Zone.DECK) || emptyOptions}
+			cards={this.props.cards}
+			assetDirectory={this.props.assetDirectory}
+			textureDirectory={this.props.textureDirectory}
+			controller={this.props.player}
+			/>;
 		var hand = <Hand entities={this.props.entities.get(Zone.HAND) || emptyEntities}
-						 options={this.props.options.get(Zone.HAND) || emptyOptions}
-						 optionCallback={this.props.optionCallback}
-						 cards={this.props.cards}
-						 cardOracle={this.props.cardOracle}
-						 isTop={this.props.isTop}
-						 assetDirectory={this.props.assetDirectory}
-						 textureDirectory={this.props.textureDirectory}
-						 controller={this.props.player}
-		/>;
-		var name = this.props.player.getName() ? <div className="name">{this.props.player.getName()}</div> : null;
+			options={this.props.options.get(Zone.HAND) || emptyOptions}
+			optionCallback={this.props.optionCallback}
+			cards={this.props.cards}
+			cardOracle={this.props.cardOracle}
+			isTop={this.props.isTop}
+			assetDirectory={this.props.assetDirectory}
+			textureDirectory={this.props.textureDirectory}
+			controller={this.props.player}
+			/>;
+		var name = this.props.player.getName() ? <div className="name">{this.props.player.getName() }</div> : null;
 
-		var rank = <Rank rank={this.props.player.getRank()}
-						 legendRank={this.props.player.getLegendRank()}
-						 assetDirectory={this.props.assetDirectory}
-						 textureDirectory={this.props.textureDirectory}
-		/>;
+		var rank = <Rank rank={this.props.player.getRank() }
+			legendRank={this.props.player.getLegendRank() }
+			assetDirectory={this.props.assetDirectory}
+			textureDirectory={this.props.textureDirectory}
+			/>;
 
 		var crystals = [];
 		let resources = this.props.player.getTag(GameTag.RESOURCES) + this.props.player.getTag(GameTag.TEMP_RESOURCES);
@@ -107,8 +107,8 @@ class Player extends React.Component<PlayerProps, {}> {
 			if (i < available) {
 				crystalClassNames.push('full');
 			}
-			else if (i < resources){
-				if (i >= resources - this.props.player.getTag(GameTag.OVERLOAD_LOCKED))	{
+			else if (i < resources) {
+				if (i >= resources - this.props.player.getTag(GameTag.OVERLOAD_LOCKED)) {
 					crystalClassNames.push('locked');
 				}
 				else {
@@ -118,7 +118,7 @@ class Player extends React.Component<PlayerProps, {}> {
 			else {
 				crystalClassNames.push('hidden');
 			}
-			crystals.push(<img src={this.props.assetDirectory + 'images/mana_crystal.png'} key={i} className={crystalClassNames.join(' ')}></img>);
+			crystals.push(<img src={this.props.assetDirectory + 'images/mana_crystal.png'} key={i} className={crystalClassNames.join(' ') }></img>);
 		}
 		var tray = (
 			<div className="tray">
@@ -183,7 +183,7 @@ class Player extends React.Component<PlayerProps, {}> {
 		}
 	}
 
-	public shouldComponentUpdate(nextProps:PlayerProps, nextState) {
+	public shouldComponentUpdate(nextProps: PlayerProps, nextState) {
 		return (
 			this.props.player !== nextProps.player ||
 			this.props.entities !== nextProps.entities ||

@@ -5,7 +5,7 @@ import CardArt from "./CardArt";
 import {EntityProps, CardData} from "../../../interfaces";
 
 class InPlayCardArt extends React.Component<EntityProps, {}> {
-	public static extractTexture(cardId:string, data:Immutable.Map<string, CardData>):string {
+	public static extractTexture(cardId: string, data: Immutable.Map<string, CardData>): string {
 		let texture = null;
 		if (!data) {
 			return null;
@@ -17,7 +17,7 @@ class InPlayCardArt extends React.Component<EntityProps, {}> {
 		return texture;
 	}
 
-	public render():JSX.Element {
+	public render(): JSX.Element {
 		var images = [];
 		var entity = this.props.entity;
 		var controller = this.props.controller;
@@ -87,9 +87,9 @@ class InPlayCardArt extends React.Component<EntityProps, {}> {
 
 		return (
 			<CardArt layers={images} scale={0.86} square={false} margin={false}
-					 assetDirectory={this.props.assetDirectory}
-					 textureDirectory={this.props.textureDirectory}
-			/>
+				assetDirectory={this.props.assetDirectory}
+				textureDirectory={this.props.textureDirectory}
+				/>
 		);
 	}
 }

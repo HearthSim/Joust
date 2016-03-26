@@ -7,10 +7,10 @@ import GameStateTracker from "../state/GameStateTracker";
 
 class KettleEncoder extends Stream.Readable implements InteractiveBackend {
 
-	private tracker:GameStateTracker;
-	private gameStarted:boolean;
+	private tracker: GameStateTracker;
+	private gameStarted: boolean;
 
-	constructor(tracker?:GameStateTracker, opts?:Stream.ReadableOptions) {
+	constructor(tracker?: GameStateTracker, opts?: Stream.ReadableOptions) {
 		opts = opts || {};
 		opts.objectMode = true;
 		super(opts);
@@ -18,8 +18,8 @@ class KettleEncoder extends Stream.Readable implements InteractiveBackend {
 		this.tracker = tracker;
 	}
 
-	public startGame():void {
-		var repeat = function (array:any[], times:number):any[] {
+	public startGame(): void {
+		var repeat = function(array: any[], times: number): any[] {
 			var result = array;
 			for (let i = 0; i < times; i++) {
 				result = result.concat(array)
@@ -46,11 +46,11 @@ class KettleEncoder extends Stream.Readable implements InteractiveBackend {
 		}]);
 	}
 
-	public exitGame():void {
+	public exitGame(): void {
 		this.push(null);
 	}
 
-	public sendOption(option:Option, target?:number, position?:number):void {
+	public sendOption(option: Option, target?: number, position?: number): void {
 		if (this.tracker) {
 			this.tracker.write(new ClearOptionsMutator());
 		}
@@ -58,7 +58,7 @@ class KettleEncoder extends Stream.Readable implements InteractiveBackend {
 		target = target || null;
 		switch (option.getType()) {
 			case 2: // end turn
-				sendOption = {Index: option.getIndex()};
+				sendOption = { Index: option.getIndex() };
 				break;
 			case 3: // power
 				sendOption = {
@@ -77,8 +77,8 @@ class KettleEncoder extends Stream.Readable implements InteractiveBackend {
 		});
 	}
 
-	public chooseEntitites(entities:Entity[]):void {
-		var ids = entities.map(function (entity:Entity) {
+	public chooseEntitites(entities: Entity[]): void {
+		var ids = entities.map(function(entity: Entity) {
 			return entity.getId();
 		});
 		this.queueMessage({
@@ -87,7 +87,7 @@ class KettleEncoder extends Stream.Readable implements InteractiveBackend {
 		})
 	}
 
-	_read(size:number):void {
+	_read(size: number): void {
 		return;
 	}
 
@@ -95,9 +95,9 @@ class KettleEncoder extends Stream.Readable implements InteractiveBackend {
 		var message = JSON.stringify(payload);
 		var length = message.length;
 		// todo: we need to properly encode the length (see onData)
-		var buffer = new Buffer(function (number:number, length:number) {
-				return Array(length - (number + '').length + 1).join('0') + number;
-			}(length, 4) + message, 'utf-8');
+		var buffer = new Buffer(function(number: number, length: number) {
+			return Array(length - (number + '').length + 1).join('0') + number;
+		} (length, 4) + message, 'utf-8');
 
 		this.push(buffer.toString('utf-8'));
 	}

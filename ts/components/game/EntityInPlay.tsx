@@ -5,20 +5,20 @@ import * as _ from 'lodash';
 
 abstract class EntityInPlay<P extends EntityInPlayProps, S> extends React.Component<P, S> {
 
-	private baseClassName:string = '';
+	private baseClassName: string = '';
 
 	protected abstract jsx();
 
-	constructor(baseClassName:string) {
+	constructor(baseClassName: string) {
 		super();
 		this.baseClassName = baseClassName;
 	}
 
-	protected playWithClick():boolean {
+	protected playWithClick(): boolean {
 		return false;
 	}
 
-	protected getClassNames():string[] {
+	protected getClassNames(): string[] {
 		var classNames = ['entity', 'in-play'];
 		classNames.push(this.baseClassName);
 		if (this.props.isTarget) {
@@ -52,9 +52,9 @@ abstract class EntityInPlay<P extends EntityInPlayProps, S> extends React.Compon
 		this.props.optionCallback(this.props.option);
 	}
 
-	public render():JSX.Element {
+	public render(): JSX.Element {
 		if (!this.props.entity) {
-			return <div className={this.getClassNames().concat(['no-entity']).join(' ')}></div>;
+			return <div className={this.getClassNames().concat(['no-entity']).join(' ') }></div>;
 		}
 
 		var playable = !!this.props.option;
@@ -62,11 +62,11 @@ abstract class EntityInPlay<P extends EntityInPlayProps, S> extends React.Compon
 
 		var jsx = null;
 		if (playable && !requiresTarget && this.playWithClick()) {
-			jsx = <div className={this.getClassNames().join(' ')}
-					  onClick={(playable && this.props.optionCallback) ? this.click.bind(this) : null}>{this.jsx()}</div>
+			jsx = <div className={this.getClassNames().join(' ') }
+				onClick={(playable && this.props.optionCallback) ? this.click.bind(this) : null}>{this.jsx() }</div>
 		}
 		else {
-			jsx = <div className={this.getClassNames().join(' ')}>{this.jsx()}</div>;
+			jsx = <div className={this.getClassNames().join(' ') }>{this.jsx() }</div>;
 			if (playable && this.props.optionCallback) {
 				// make draggable
 				jsx = this.props.connectDragSource(jsx);
@@ -81,14 +81,14 @@ abstract class EntityInPlay<P extends EntityInPlayProps, S> extends React.Compon
 
 	public static DragSource() {
 		return DragSource<EntityInPlayProps>('card', {
-				beginDrag: function (props:EntityInPlayProps) {
-					return {
-						option: props.option,
-						action: props.optionCallback
-					};
-				}
-			},
-			function (connect, monitor) {
+			beginDrag: function(props: EntityInPlayProps) {
+				return {
+					option: props.option,
+					action: props.optionCallback
+				};
+			}
+		},
+			function(connect, monitor) {
 				return {
 					connectDragSource: connect.dragSource(),
 					isDragging: monitor.isDragging()
@@ -98,16 +98,16 @@ abstract class EntityInPlay<P extends EntityInPlayProps, S> extends React.Compon
 
 	public static DropTarget() {
 		return DropTarget<EntityInPlayProps>('card', {
-				canDrop: function (props:EntityInPlayProps, monitor) {
-					var item = monitor.getItem();
-					return item.option.isTarget(props.entity.getId());
-				},
-				drop: function (props:EntityInPlayProps, monitor, component) {
-					var item = monitor.getItem();
-					item.action(item.option, props.entity.getId(), 0);
-				}
+			canDrop: function(props: EntityInPlayProps, monitor) {
+				var item = monitor.getItem();
+				return item.option.isTarget(props.entity.getId());
 			},
-			function (connect, monitor) {
+			drop: function(props: EntityInPlayProps, monitor, component) {
+				var item = monitor.getItem();
+				item.action(item.option, props.entity.getId(), 0);
+			}
+		},
+			function(connect, monitor) {
 				return {
 					connectDropTarget: connect.dropTarget(),
 					isTarget: monitor.canDrop(),

@@ -8,7 +8,7 @@
  */
 
 declare module "filereader-stream" {
-	function internal(file?:string, options?:any):any;
+	function internal(file?: string, options?: any): any;
 
 	export default internal;
 }
@@ -26,7 +26,7 @@ declare module "websocket-stream" {
 declare module "react-dnd-html5-backend" {
 	// based on https://github.com/Asana/DefinitelyTyped/commit/a167d13b71f8b7dbea6c82dc18fd698b916a2be3
 	export enum NativeTypes { FILE, URL, TEXT }
-	export function getEmptyImage():any; // Image
+	export function getEmptyImage(): any; // Image
 	export default class HTML5Backend implements __ReactDnd.Backend {
 	}
 }
@@ -44,22 +44,22 @@ declare module "fullscreen" {
 	import {EventEmitter} from "events";
 
 	class fullscreen extends EventEmitter {
-		constructor(any:any);
+		constructor(any: any);
 
-		request():void;
+		request(): void;
 
-		release():void;
+		release(): void;
 
-		dispose():void;
+		dispose(): void;
 
-		static available():boolean;
+		static available(): boolean;
 	}
 
 	export default fullscreen;
 }
 
 declare module "react-dimensions" {
-	function Dimensions():any;
+	function Dimensions(): any;
 
 	export default Dimensions;
 }

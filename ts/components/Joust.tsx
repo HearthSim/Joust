@@ -15,17 +15,17 @@ const enum Widget {
 }
 
 interface JoustState {
-	currentWidget?:Widget;
-	cards?:CardData[];
-	sink?:GameStateSink;
-	scrubber?:GameStateScrubber;
-	interaction?:InteractiveBackend;
-	oracle?:CardOracle;
+	currentWidget?: Widget;
+	cards?: CardData[];
+	sink?: GameStateSink;
+	scrubber?: GameStateScrubber;
+	interaction?: InteractiveBackend;
+	oracle?: CardOracle;
 }
 
 class Joust extends React.Component<{}, JoustState> {
 
-	private gameWidget:GameWidget;
+	private gameWidget: GameWidget;
 
 	constructor() {
 		super();
@@ -41,30 +41,30 @@ class Joust extends React.Component<{}, JoustState> {
 
 	public componentDidMount() {
 		var jsonClient = new HearthstoneJSON("https://api.hearthstonejson.com/v1/latest/enUS/cards.json");
-		jsonClient.on("cards", function (cards:CardData[]) {
-			this.setState({cards: cards});
+		jsonClient.on("cards", function(cards: CardData[]) {
+			this.setState({ cards: cards });
 		}.bind(this));
 		jsonClient.load();
 	}
 
-	public render():JSX.Element {
+	public render(): JSX.Element {
 		var widget = null;
 		switch (this.state.currentWidget) {
 			case Widget.SETUP:
 				widget = <SetupWidget defaultHostname="localhost" defaultPort={9111}
-									  onSetup={this.onSetup.bind(this)}/>;
+					onSetup={this.onSetup.bind(this) }/>;
 				break;
 			case Widget.GAME:
 				widget =
 					<GameWidget sink={this.state.sink}
-								interaction={this.state.interaction}
-								scrubber={this.state.scrubber}
-								exitGame={this.exitGame.bind(this)}
-								cardOracle={this.state.oracle}
-								assetDirectory={'./assets/'}
-								textureDirectory={null}
-								ref={this.onMountGameWidget.bind(this)}
-					/>;
+						interaction={this.state.interaction}
+						scrubber={this.state.scrubber}
+						exitGame={this.exitGame.bind(this) }
+						cardOracle={this.state.oracle}
+						assetDirectory={'./assets/'}
+						textureDirectory={null}
+						ref={this.onMountGameWidget.bind(this) }
+						/>;
 				break;
 		}
 
@@ -74,7 +74,7 @@ class Joust extends React.Component<{}, JoustState> {
 				{widget}
 				<footer>
 					<p>
-						Not affiliated with Blizzard. Get Hearthstone at
+						Not affiliated with Blizzard.Get Hearthstone at
 						<a href="battle.net/hearthstone/">Battle.net</a>
 						.
 					</p>
@@ -83,20 +83,20 @@ class Joust extends React.Component<{}, JoustState> {
 		);
 	}
 
-	public onMountGameWidget(widget:GameWidget) {
+	public onMountGameWidget(widget: GameWidget) {
 		this.gameWidget = widget;
 		if (widget && this.state.cards) {
 			this.gameWidget.setCards(this.state.cards);
 		}
 	}
 
-	public componentDidUpdate(prevProps:any, prevState:JoustState):void {
+	public componentDidUpdate(prevProps: any, prevState: JoustState): void {
 		if (!_.isEqual(prevState.cards, this.state.cards) && this.gameWidget) {
 			this.gameWidget.setCards(this.state.cards);
 		}
 	}
 
-	protected onSetup(sink:GameStateSink, interaction?:InteractiveBackend, scrubber?:GameStateScrubber, oracle?:CardOracle):void {
+	protected onSetup(sink: GameStateSink, interaction?: InteractiveBackend, scrubber?: GameStateScrubber, oracle?: CardOracle): void {
 		this.setState({
 			currentWidget: Widget.GAME,
 			sink: sink,

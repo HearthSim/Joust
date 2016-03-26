@@ -9,17 +9,17 @@ import {CardType} from "../../enums";
 
 class Hand extends EntityList {
 
-	protected className():string {
+	protected className(): string {
 		return 'hand';
 	}
 
-	protected totalEntities:number;
+	protected totalEntities: number;
 
-	protected beforeRender(entities:number) {
+	protected beforeRender(entities: number) {
 		this.totalEntities = entities;
 	}
 
-	protected renderEntity(entity:Entity, option:Option, index?:number) {
+	protected renderEntity(entity: Entity, option: Option, index?: number) {
 
 		var style = {};
 
@@ -39,15 +39,15 @@ class Hand extends EntityList {
 		}
 
 		return (<Card entity={entity}
-					  option={option}
-					  style={style}
-					  optionCallback={this.props.optionCallback}
-					  assetDirectory={this.props.assetDirectory}
-					  cards={this.props.cards}
-					  isHidden={hidden}
-					  controller={this.props.controller}
-					  textureDirectory={this.props.textureDirectory}
-		/>);
+			option={option}
+			style={style}
+			optionCallback={this.props.optionCallback}
+			assetDirectory={this.props.assetDirectory}
+			cards={this.props.cards}
+			isHidden={hidden}
+			controller={this.props.controller}
+			textureDirectory={this.props.textureDirectory}
+			/>);
 	}
 }
 

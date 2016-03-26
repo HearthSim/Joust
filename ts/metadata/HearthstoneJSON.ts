@@ -10,9 +10,9 @@ import {CardData} from "../interfaces";
  */
 class HearthstoneJSON extends EventEmitter {
 
-	protected url:string;
+	protected url: string;
 
-	constructor(url:string) {
+	constructor(url: string) {
 		super();
 		this.url = url;
 	}
@@ -20,14 +20,14 @@ class HearthstoneJSON extends EventEmitter {
 	/**
 	 * Attempts to load the card data, first from localStorage, then from the url.
 	 */
-	public load():void {
+	public load(): void {
 		if (!this.loadFromLocalStorage()) {
 			this.loadFromUrl(this.url);
 		}
 	}
 
-	protected loadFromLocalStorage():boolean {
-		if (typeof(Storage) !== "undefined") {
+	protected loadFromLocalStorage(): boolean {
+		if (typeof (Storage) !== "undefined") {
 			if (typeof localStorage["rawCards"] === "string") {
 				var result = JSON.parse(localStorage["rawCards"]);
 				if (typeof result === "object") {
@@ -44,7 +44,7 @@ class HearthstoneJSON extends EventEmitter {
 		return false;
 	}
 
-	protected loadFromUrl(url:string):void {
+	protected loadFromUrl(url: string): void {
 		console.debug("Loading card data from " + url);
 		var parsed = URL.parse(url);
 		https.get({
@@ -53,24 +53,24 @@ class HearthstoneJSON extends EventEmitter {
 			path: parsed.path,
 			protocol: parsed.protocol,
 			withCredentials: false
-		}, function (response) {
+		}, function(response) {
 			if (response.statusCode != 200) {
 				console.error("Fetching card data failed with status code " + response.statusCode);
 				return false;
 			}
 
 			var json = "";
-			response.on("data", function (data) {
+			response.on("data", function(data) {
 				json += data;
 			});
 
-			response.on("end", function () {
+			response.on("end", function() {
 				var data = JSON.parse(json);
 				console.debug("Received card data (" + data.length + " cards)");
 				if (typeof data === "object") {
 					this.parse(data);
 
-					if (typeof(Storage) !== "undefined") {
+					if (typeof (Storage) !== "undefined") {
 						localStorage.setItem("rawCards", json);
 						console.debug("Card data saved to local storage");
 					}
@@ -84,7 +84,7 @@ class HearthstoneJSON extends EventEmitter {
 		}.bind(this));
 	}
 
-	protected parse(raw):CardData[] {
+	protected parse(raw): CardData[] {
 		this.emit("cards", raw);
 		return raw;
 	}
