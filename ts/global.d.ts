@@ -31,11 +31,6 @@ declare module "react-dnd-html5-backend" {
 	}
 }
 
-declare module "is-node" {
-	var isNode:boolean;
-	export default isNode;
-}
-
 declare module "http" {
 	// overwrite withCredentials which is respected by the browser versions
 	// this is apparently merged by tsc with the node.d.ts definition: ugly, but it works

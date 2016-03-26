@@ -12,7 +12,6 @@
     "filereader-stream": "^1.0.0",
     "fullscreen": "^1.0.2",
     "immutable": "^3.7.6",
-    "is-node": "0.0.0",
     "lodash": "^4.6.1",
     "react": "^0.14.7",
     "react-addons-css-transition-group": "^0.14.7",
