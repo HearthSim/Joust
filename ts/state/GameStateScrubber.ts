@@ -199,8 +199,12 @@ class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 		if (this.currentTime < this.history.turnMap.first().getTime()) {
 			currentTurn--;
 		}
-		if (this.history.turnMap.has(currentTurn + 1)) {
-			nextTurn = this.history.turnMap.get(currentTurn + 1).getTime();
+		let turn = currentTurn + 1;
+		while (!this.history.turnMap.has(turn) && turn < this.history.turnMap.count()) {
+			turn++;
+		}
+		if (this.history.turnMap.has(turn)) {
+			nextTurn = this.history.turnMap.get(turn).getTime();
 		}
 		this.currentTime = nextTurn;
 		this.update();
@@ -212,8 +216,12 @@ class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 		if (this.currentTime > this.history.turnMap.last().getTime()) {
 			currentTurn++;
 		}
-		if (this.history.turnMap.has(currentTurn - 1)) {
-			previousTurn = this.history.turnMap.get(currentTurn - 1).getTime();
+		let turn = currentTurn - 1;
+		while (!this.history.turnMap.has(turn) && turn > 0) {
+			turn--;
+		}
+		if (this.history.turnMap.has(turn)) {
+			previousTurn = this.history.turnMap.get(turn).getTime();
 		}
 		this.currentTime = previousTurn;
 		this.update();

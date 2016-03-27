@@ -117,8 +117,13 @@ class Timeline extends React.Component<TimelineProps, TimelineState> implements 
 
 		let turns = this.props.turnMap.map((current: GameState, turn: number, map: Immutable.Map<number, GameState>): JSX.Element => {
 			let duration = 0;
-			if (map.has(turn + 1)) {
-				let next = map.get(turn + 1);
+			let i = 1;
+			while (!map.has(turn + i) && turn + i < map.count()) {
+				i++;
+			}
+
+			if (map.has(turn + i)) {
+				let next = map.get(turn + i);
 				duration = next.getTime() - current.getTime();
 			}
 			else {
