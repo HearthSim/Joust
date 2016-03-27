@@ -47,7 +47,7 @@ class Card extends React.Component<CardProps, {}> {
 		if (entity.getTag(GameTag.COMBO)) {
 			classNames.push('combo');
 		}
-		if (entity.isPoweredUp()) {
+		if (entity.getTag(GameTag.POWERED_UP)) {
 			classNames.push('powered-up');
 		}
 

@@ -97,10 +97,6 @@ class Entity {
 		return this.getTag(GameTag.ZONE_POSITION);
 	}
 
-	public isPoweredUp(): boolean {
-		return this.getTag(GameTag.POWERED_UP) > 0;
-	}
-
 	public getTag(key: number): number {
 		return this.tags ? (+this.tags.get('' + key) || 0) : 0;
 	}
