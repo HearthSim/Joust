@@ -35,7 +35,7 @@ class ReplaceEntityMutator implements GameStateMutator {
 				.setIn([newEntity.getController(), newEntity.getZone(), id], newEntity);
 		});
 
-		return new GameState(entities, entityTree, state.getOptions(), state.getOptionTree(), state.getTime());
+		return new GameState(entities, entityTree, state.getOptions(), state.getOptionTree(), state.getTime(), state.getChoices());
 	}
 }
 

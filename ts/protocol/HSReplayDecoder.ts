@@ -14,6 +14,10 @@ import ShowEntityMutator from "../state/mutators/ShowEntityMutator";
 import SetTimeMutator from "../state/mutators/SetTimeMutator";
 import {CardOracle} from "../interfaces";
 import IncrementTimeMutator from "../state/mutators/IncrementTimeMutator";
+import Choice from "../Choice";
+import SetChoicesMutator from "../state/mutators/SetChoicesMutator";
+import ClearChoicesMutator from "../state/mutators/ClearChoicesMutator";
+import Choices from "../Choices";
 
 interface PlayerDetails {
 	id: number;
@@ -31,6 +35,7 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 	private cardIds: Immutable.Map<number, string>;
 	private clearOptionsOnTimestamp: boolean;
 	private playerMap: Immutable.Map<string, PlayerDetails>;
+	private choiceMap: Immutable.Map<number, number>;
 	public version: string;
 	public build: number;
 
@@ -46,6 +51,7 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 		this.cardIds = Immutable.Map<number, string>();
 		this.clearOptionsOnTimestamp = false;
 		this.playerMap = Immutable.Map<string, PlayerDetails>();
+		this.choiceMap = Immutable.Map<number, number>();
 
 		this.sax = Sax.createStream(true, {});
 		this.sax.on('opentag', this.onOpenTag.bind(this));
@@ -97,6 +103,11 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 			case 'Options':
 				node.attributes.options = Immutable.Map<number, Option>();
 				break;
+			case 'Choices':
+			case 'ChosenEntities':
+			case 'SendChoices':
+				node.attributes.choices = Immutable.Map<string, Choice>();
+				break;
 			case 'HSReplay':
 				this.version = node.attributes.version;
 				if (this.version) {
@@ -122,11 +133,7 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 				}
 				break;
 			case 'Action':
-				this.push(new IncrementTimeMutator());
-				if (this.clearOptionsOnTimestamp) {
-					this.clearOptionsOnTimestamp = false;
-					this.push(new ClearOptionsMutator());
-				}
+				this.push(new IncrementTimeMutator(0));
 				break;
 		}
 
@@ -257,9 +264,52 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 				mutator = new SetOptionsMutator(node.attributes.options);
 				break;
 			case 'SendOption':
-				// SendOption usually doesn't have a timestamp:
-				// if we ClearOptions here, we won't see any options at all
-				this.clearOptionsOnTimestamp = true;
+				this.push(new IncrementTimeMutator(2));
+				mutator = new ClearOptionsMutator();
+				break;
+			case 'Choice':
+				{
+					let parent = this.nodeStack.pop();
+					let entity = (node.attributes.entity && this.resolveEntityId(node.attributes.entity));
+					let choice = new Choice(
+						+node.attributes.index,
+						entity
+					);
+					parent.attributes.choices = parent.attributes.choices.set(entity, choice);
+					this.nodeStack.push(parent);
+				}
+				break;
+			case 'Choices':
+				{
+					let entity = this.resolveEntityId(node.attributes.entity);
+					let choices = new Choices(node.attributes.choices, +node.attributes.type);
+					mutator = new SetChoicesMutator(
+						entity,
+						choices
+					);
+					// save player entity in choice map
+					this.choiceMap = this.choiceMap.set(+node.attributes.id, entity);
+				}
+				break;
+			case 'ChosenEntities':
+			case 'SendChoices':
+				this.push(new IncrementTimeMutator(2));
+				let entity = null;
+				if (node.attributes.entity) {
+					entity = node.attributes.entity && this.resolveEntityId(node.attributes.entity);
+				}
+				else if (node.attributes.id) {
+					let id = +node.attributes.id;
+					if (this.choiceMap.has(id)) {
+						entity = this.choiceMap.get(+node.attributes.id);
+					}
+				}
+				if (entity !== null) {
+					mutator = new ClearChoicesMutator(entity);
+				}
+				break;
+			case 'Action':
+				this.push(new IncrementTimeMutator());
 				break;
 			default:
 				//console.warn('Unknown HSReplay tag "' + node.name + '"');
