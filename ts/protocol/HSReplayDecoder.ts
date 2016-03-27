@@ -50,6 +50,9 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 		this.sax = Sax.createStream(true, {});
 		this.sax.on('opentag', this.onOpenTag.bind(this));
 		this.sax.on('closetag', this.onCloseTag.bind(this));
+		this.sax.on('error', (e) => {
+			this.emit('error', e);
+		});
 		this.once('end', () => {
 			this.sax.end()
 		});
