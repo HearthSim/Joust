@@ -14,7 +14,7 @@ class GameStateHistory {
 	public tail: ListElement = null; // earliest
 	public head: ListElement = null; // latest
 	public pointer: ListElement = null;
-	public turnMap: Immutable.Map<number, GameState> = Immutable.Map<number, GameState>();
+	public turnMap: Immutable.Map<number, GameState> = Immutable.OrderedMap<number, GameState>();
 
 	public push(gameState: GameState): void {
 		var time = gameState.getTime();
