@@ -39,7 +39,7 @@ class SetupWidget extends React.Component<SetupWidgetProps, SetupWidgetState> {
 
 	public render(): JSX.Element {
 		return (
-			<div className="setup-widget widget">
+			<div className="setup-widget">
 				<section>
 					<h2>HSReplay</h2>
 					<input type="file" accept="application/vnd.hearthsim-hsreplay+xml,application/xml"
@@ -48,15 +48,15 @@ class SetupWidget extends React.Component<SetupWidgetProps, SetupWidgetState> {
 				<section>
 					<h2>Kettle</h2>
 					<form onSubmit={this.onSubmitKettle.bind(this) }>
-						<input type="text" placeholder={this.props.defaultHostname}
-							onChange={this.onChangeHostname.bind(this) } disabled={this.state.working}/>
-						<input type="number" placeholder={'' + this.props.defaultPort}
+						<label>Host<br /><input type="text" placeholder={this.props.defaultHostname}
+							onChange={this.onChangeHostname.bind(this) } disabled={this.state.working}/></label>
+						<label>Port<br /><input type="number" placeholder={'' + this.props.defaultPort}
 							onChange={this.onChangePort.bind(this) }
-							disabled={this.state.working}/>
-						<input type="checkbox" checked={this.state.websocket}
-							onChange={this.onChangeWebsocket.bind(this) }/>
-						<input type="checkbox" checked={this.state.secureWebsocket}
-							onChange={this.onChangeSecureWebsocket.bind(this) }/>
+							disabled={this.state.working}/></label>
+						<label>Websocket<br /><input type="checkbox" checked={this.state.websocket}
+							onChange={this.onChangeWebsocket.bind(this) }/></label>
+						<label>Secure Websocket<br /><input type="checkbox" checked={this.state.secureWebsocket && this.state.websocket}
+							onChange={this.onChangeSecureWebsocket.bind(this) } disabled={!this.state.websocket}/></label>
 						<button type="submit" disabled={this.state.working}>Connect</button>
 					</form>
 				</section>
