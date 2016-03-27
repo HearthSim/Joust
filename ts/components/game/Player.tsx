@@ -4,21 +4,25 @@ import * as Immutable from "immutable";
 import PlayerEntity from "../../Player";
 import Entity from "../../Entity";
 import Option from "../../Option";
+import Choice from "../../Choice";
+import ChoiceList from "../../Choices";
 import Deck from "./Deck";
 import Hand from "./Hand";
 import Hero from "./Hero";
 import HeroPower from "./HeroPower";
 import Field from "./Field";
 import Weapon from "./Weapon";
+import Choices from "./Choices";
 import Rank from "./Rank";
 
-import {Zone, CardType, GameTag} from "../../enums";
+import {Zone, CardType, GameTag, ChoiceType} from "../../enums"
 import {OptionCallbackProps, CardDataProps, CardOracleProps, AssetDirectoryProps, TextureDirectoryProps} from "../../interfaces";
 
 interface PlayerProps extends OptionCallbackProps, CardDataProps, CardOracleProps, AssetDirectoryProps, TextureDirectoryProps, React.Props<any> {
 	player: PlayerEntity;
 	entities: Immutable.Map<number, Immutable.Map<number, Entity>>;
 	options: Immutable.Map<number, Immutable.Map<number, Option>>;
+	choices: ChoiceList;
 	isTop: boolean;
 }
 
@@ -79,7 +83,7 @@ class Player extends React.Component<PlayerProps, {}> {
 			textureDirectory={this.props.textureDirectory}
 			controller={this.props.player}
 			/>;
-		var hand = <Hand entities={this.props.entities.get(Zone.HAND) || emptyEntities}
+		var hand = <Hand entities={((!this.props.choices || this.props.choices.getType() !== ChoiceType.MULLIGAN) && this.props.entities.get(Zone.HAND)) || emptyEntities}
 			options={this.props.options.get(Zone.HAND) || emptyOptions}
 			optionCallback={this.props.optionCallback}
 			cards={this.props.cards}
@@ -90,6 +94,27 @@ class Player extends React.Component<PlayerProps, {}> {
 			controller={this.props.player}
 			/>;
 		var name = this.props.player.getName() ? <div className="name">{this.props.player.getName() }</div> : null;
+		var choices = null;
+		if(this.props.choices) {
+			let choiceEntities = this.props.choices.getChoices().map((choice:Choice) => {
+				var entity = null;
+				this.props.entities.forEach((entities:Immutable.Map<number, Entity>) => {
+					if (entities.has(choice.getEntity())) {
+						entity = entities.get(choice.getEntity());
+					}
+				});
+				return entity;
+			});
+			choices = <Choices entities={choiceEntities}
+								   cards={this.props.cards}
+								   cardOracle={this.props.cardOracle}
+								   isTop={this.props.isTop}
+								   assetDirectory={this.props.assetDirectory}
+								   textureDirectory={this.props.textureDirectory}
+								   controller={this.props.player}
+								   choices={this.props.choices && this.props.choices.getChoices()}
+			/>;
+		}
 
 		var rank = <Rank rank={this.props.player.getRank() }
 			legendRank={this.props.player.getLegendRank() }
@@ -130,6 +155,7 @@ class Player extends React.Component<PlayerProps, {}> {
 		if (this.props.isTop) {
 			return (
 				<div className={classNames}>
+					{choices}
 					{hand}
 					<div className="equipment">
 						<div className="player-info">
@@ -156,6 +182,7 @@ class Player extends React.Component<PlayerProps, {}> {
 		else {
 			return (
 				<div className={classNames}>
+					{choices}
 					{field}
 					<div className="equipment">
 						<div className="player-info">
@@ -186,6 +213,7 @@ class Player extends React.Component<PlayerProps, {}> {
 			this.props.player !== nextProps.player ||
 			this.props.entities !== nextProps.entities ||
 			this.props.options !== nextProps.options ||
+			this.props.choices !== nextProps.choices ||
 			this.props.optionCallback !== nextProps.optionCallback ||
 			this.props.cardOracle !== nextProps.cardOracle ||
 			this.props.cards !== nextProps.cards

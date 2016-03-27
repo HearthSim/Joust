@@ -10,12 +10,15 @@ import EndTurnButton from "./EndTurnButton";
 import {DragDropContext} from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 import {GameTag} from "../../enums";
+import Choice from "../../Choice";
+import Choices from "../../Choices";
 
 interface TwoPlayerGameProps extends EntityProps, CardDataProps, CardOracleProps, OptionCallbackProps, AssetDirectoryProps, React.Props<any> {
 	player1: PlayerEntity;
 	player2: PlayerEntity;
 	entities: Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Entity>>>;
 	options: Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Option>>>;
+	choices: Immutable.Map<number, Choices>;
 	endTurnOption?: Option;
 }
 
@@ -35,6 +38,7 @@ class TwoPlayerGame extends React.Component<TwoPlayerGameProps, {}> {
 				<Player player={player1 as PlayerEntity} isTop={true}
 					entities={entities.get(player1.getPlayerId()) || emptyEntities}
 					options={options.get(player1.getPlayerId()) || emptyOptions}
+					choices={this.props.choices.get(player1.getId())}
 					optionCallback={this.props.optionCallback}
 					cardOracle={this.props.cardOracle}
 					cards={this.props.cards}
@@ -48,6 +52,7 @@ class TwoPlayerGame extends React.Component<TwoPlayerGameProps, {}> {
 				<Player player={player2 as PlayerEntity} isTop={false}
 					entities={entities.get(player2.getPlayerId()) || emptyEntities}
 					options={options.get(player2.getPlayerId()) || emptyOptions}
+					choices={this.props.choices.get(player2.getId())}
 					optionCallback={this.props.optionCallback}
 					cardOracle={this.props.cardOracle}
 					cards={this.props.cards}
@@ -65,6 +70,7 @@ class TwoPlayerGame extends React.Component<TwoPlayerGameProps, {}> {
 			this.props.player2 !== nextProps.player2 ||
 			this.props.entities !== nextProps.entities ||
 			this.props.options !== nextProps.options ||
+			this.props.choices !== nextProps.choices ||
 			this.props.endTurnOption !== nextProps.endTurnOption ||
 			this.props.optionCallback !== nextProps.optionCallback ||
 			this.props.cardOracle !== nextProps.cardOracle ||

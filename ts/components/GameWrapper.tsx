@@ -82,6 +82,7 @@ class GameWrapper extends React.Component<GameWrapperProps, {}> {
 					player2={player2}
 					entities={entityTree}
 					options={optionTree}
+					choices={gameState.getChoices()}
 					endTurnOption={endTurnOption}
 					optionCallback={this.props.interaction && this.props.interaction.sendOption.bind(this.props.interaction) }
 					cards={this.props.cards}

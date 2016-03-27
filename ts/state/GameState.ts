@@ -2,6 +2,7 @@ import Entity from "../Entity";
 import Option from "../Option";
 import GameStateMutator from "./GameStateMutator";
 import * as Immutable from "immutable";
+import Choices from "../Choices";
 
 class GameState {
 
@@ -9,7 +10,8 @@ class GameState {
 		protected entityTree?: Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Entity>>>,
 		protected options?: Immutable.Map<number, Option>,
 		protected optionTree?: Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Option>>>,
-		protected time?: number) {
+		protected time?: number,
+		protected choices?: Immutable.Map<number, Choices>) {
 		if (!this.entities) {
 			this.entities = Immutable.Map<number, Entity>();
 		}
@@ -24,6 +26,9 @@ class GameState {
 		}
 		if (typeof (this.time) === 'undefined') {
 			this.time = null;
+		}
+		if (!this.choices) {
+			this.choices = Immutable.Map<number, Choices>();
 		}
 	}
 
@@ -53,6 +58,10 @@ class GameState {
 
 	public getTime(): number {
 		return this.time;
+	}
+
+	public getChoices(): Immutable.Map<number, Choices> {
+		return this.choices;
 	}
 
 	public apply(mutator: GameStateMutator): GameState {
