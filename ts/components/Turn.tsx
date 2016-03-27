@@ -20,8 +20,13 @@ class Turn extends React.Component<TurnProps, {}> {
 		let width = 100 / this.props.totalDuration * this.props.duration;
 		let style = { width: width + '%' };
 
+		let turn = 0;
 		if (this.props.state) {
-			classNames.push(this.props.state.getEntity(1).getTag(GameTag.TURN) % 2 ? 'primary' : 'secondary');
+			let game = this.props.state.getEntity(1);
+			if (game) {
+				turn = game.getTag(GameTag.TURN);
+				classNames.push(game.getTag(GameTag.TURN) % 2 ? 'primary' : 'secondary');
+			}
 		} else if (this.props.mulligan) {
 			classNames.push('mulligan');
 		}
