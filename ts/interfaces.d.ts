@@ -62,7 +62,7 @@ export interface KettleClient extends EventEmitter {
 export interface InteractiveBackend {
 	startGame(): void;
 	sendOption(option: Option, target?: number, position?: number): void;
-	chooseEntitites(entities: Entity[]): void;
+	chooseEntities(entities: Entity[]): void;
 	exitGame(): void;
 }
 

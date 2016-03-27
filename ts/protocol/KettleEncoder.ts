@@ -77,7 +77,7 @@ class KettleEncoder extends Stream.Readable implements InteractiveBackend {
 		});
 	}
 
-	public chooseEntitites(entities: Entity[]): void {
+	public chooseEntities(entities: Entity[]): void {
 		var ids = entities.map(function(entity: Entity) {
 			return entity.getId();
 		});
