@@ -18,7 +18,7 @@ class GameStateHistory {
 
 	public push(gameState: GameState): void {
 		var time = gameState.getTime();
-		if (!time) {
+		if (typeof time !== 'number') {
 			// we cannot handle timeless game states
 			return;
 		}

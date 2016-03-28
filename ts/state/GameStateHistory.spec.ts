@@ -4,6 +4,7 @@ import GameState from "./GameState";
 describe("GameStateHistory", () => {
 
 	var history;
+	var stateZero = new GameState(undefined, undefined, undefined, undefined, 0);
 	var stateOne = new GameState(undefined, undefined, undefined, undefined, 1);
 	var stateTwo = new GameState(undefined, undefined, undefined, undefined, 2);
 	var stateFour = new GameState(undefined, undefined, undefined, undefined, 4);
@@ -69,6 +70,19 @@ describe("GameStateHistory", () => {
 			expect(history.getLatest(3)).toBe(stateTwo);
 			expect(history.getLatest(3.9)).toBe(stateTwo);
 			expect(history.getLatest(4)).toBe(stateFour);
+		});
+	});
+
+	describe("with a zero state", () => {
+		beforeEach(() => {
+			history.push(stateZero);
+			history.push(stateOne);
+		});
+
+		it("should fetch the latest element", () => {
+			expect(history.getLatest(0.9)).toBe(stateZero);
+			expect(history.getLatest(1)).toBe(stateOne);
+			expect(history.getLatest(1.1)).toBe(stateOne);
 		});
 	});
 });
