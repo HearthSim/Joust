@@ -6,8 +6,9 @@ import Option from "../../Option";
 import Card from './Card';
 import {GameTag} from "../../enums";
 import {CardType} from "../../enums";
+import {EntityListProps} from "../../interfaces";
 
-class Hand extends EntityList {
+class Hand extends EntityList<EntityListProps> {
 
 	protected className(): string {
 		return 'hand';

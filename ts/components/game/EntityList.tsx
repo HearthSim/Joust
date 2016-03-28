@@ -4,7 +4,7 @@ import {EntityListProps} from "../../interfaces";
 import Entity from "../../Entity";
 import Option from "../../Option";
 
-class EntityList extends React.Component<EntityListProps, {}> {
+class EntityList<T extends EntityListProps> extends React.Component<T, {}> {
 
 	protected renderEntity(entity: Entity, option: Option, index?: number) {
 		var id = entity.getCardId() ? (' (CardID=' + entity.getCardId() + ')') : '';

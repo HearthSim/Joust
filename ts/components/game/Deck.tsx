@@ -1,7 +1,8 @@
 import * as React from "react";
 import EntityList from './EntityList';
+import {EntityListProps} from "../../interfaces";
 
-class Deck extends EntityList {
+class Deck extends EntityList<EntityListProps> {
 
 	public render(): JSX.Element {
 		var tooltip = null;

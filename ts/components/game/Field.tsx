@@ -9,7 +9,7 @@ import {EntityInPlayProps, EntityListProps} from "../../interfaces";
 
 import {DropTarget} from 'react-dnd';
 
-class Field extends EntityList {
+class Field extends EntityList<EntityListProps> {
 
 	protected className(): string {
 		return 'field';
