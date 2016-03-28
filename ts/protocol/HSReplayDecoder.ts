@@ -91,8 +91,11 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 			case 'ShowEntity':
 				node.attributes.tags = Immutable.Map<string, number>();
 				break;
+			case 'Option':
+				node.attributes.targets = [];
+				break;
 			case 'Options':
-				node.attributes.options = Immutable.Map<string, Option>();
+				node.attributes.options = Immutable.Map<number, Option>();
 				break;
 			case 'HSReplay':
 				this.version = node.attributes.version;
@@ -237,12 +240,19 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 						+node.attributes.index,
 						+node.attributes.type,
 						(node.attributes.entity && this.resolveEntityId(node.attributes.entity)) || null,
-						[] // todo: parse targets
+						node.attributes.targets
 					);
 					parent.attributes.options = parent.attributes.options.set(+node.attributes.index, option);
 					this.nodeStack.push(parent);
-					break;
 				}
+				break;
+			case 'Target':
+				{
+					let parent = this.nodeStack.pop();
+					parent.attributes.targets.push(this.resolveEntityId(node.attributes.entity));
+					this.nodeStack.push(parent);
+				}
+				break;
 			case 'Options':
 				mutator = new SetOptionsMutator(node.attributes.options);
 				break;
