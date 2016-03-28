@@ -844,6 +844,11 @@
 	&.secondary {
 		background-color: lighten(crimson, 20);
 	}
+
+	&.primary + &.primary, &.secondary + &.secondary {
+		border-left: gray dashed 1px;
+	}
+
 }
 
 .joust-message {
