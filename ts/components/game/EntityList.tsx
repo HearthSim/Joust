@@ -11,6 +11,10 @@ class EntityList<T extends EntityListProps> extends React.Component<T, {}> {
 		return (<span>Entity #{entity.getId() }{id}</span>);
 	}
 
+	protected sort(entity: Entity): number {
+		return entity.getZonePosition();
+	}
+
 	protected beforeRender(entities: number) { }
 
 	protected className(): string {
@@ -20,9 +24,7 @@ class EntityList<T extends EntityListProps> extends React.Component<T, {}> {
 	public render(): JSX.Element {
 		var elements = [];
 		if (this.props.entities) {
-			var entities = this.props.entities.toList().sortBy(function(entity) {
-				return entity.getZonePosition();
-			});
+			var entities = this.props.entities.toList().sortBy(this.sort.bind(this));
 			this.beforeRender(entities.count());
 			entities.forEach(function(entity, i) {
 				var option = this.props.options ? this.props.options.get(entity.getId()) : null;
