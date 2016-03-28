@@ -177,7 +177,7 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 						this.playerMap.forEach((v: PlayerDetails, k: string) => {
 							// find the old player name
 							if (v.id === id) {
-								console.warn('Transferring player name', '"' + k + '"', 'to entity #' + v);
+								console.warn('Transferring player name', '"' + k + '"', 'to entity #' + v.id);
 								name = k;
 								rank = v.rank;
 								legendRank = v.legendRank;
