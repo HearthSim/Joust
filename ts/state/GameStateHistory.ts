@@ -47,8 +47,11 @@ class GameStateHistory {
 		let game = gameState.getEntity(1);
 		if (game) {
 			let turn = +game.getTag(GameTag.TURN);
-			if (!this.turnMap.has(turn) && game.getTag(GameTag.STEP) === Step.MAIN_START_TRIGGERS) {
-				this.turnMap = this.turnMap.set(turn, gameState);
+			if (!this.turnMap.has(turn)) {
+				let step = game.getTag(GameTag.STEP);
+				if (step !== Step.MAIN_NEXT && step !== Step.MAIN_READY && step !== Step.BEGIN_MULLIGAN) {
+					this.turnMap = this.turnMap.set(turn, gameState);
+				}
 			}
 		}
 	}
