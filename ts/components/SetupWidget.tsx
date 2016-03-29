@@ -26,6 +26,8 @@ interface SetupWidgetState {
 }
 
 class SetupWidget extends React.Component<SetupWidgetProps, SetupWidgetState> {
+	private forceWebsocket: boolean;
+
 	constructor(props: SetupWidgetProps) {
 		super(props);
 		this.state = {
@@ -35,6 +37,7 @@ class SetupWidget extends React.Component<SetupWidgetProps, SetupWidgetState> {
 			websocket: true,
 			secureWebsocket: true
 		}
+		this.forceWebsocket = (typeof Socket === 'undefined');
 	}
 
 	public render(): JSX.Element {
@@ -53,8 +56,8 @@ class SetupWidget extends React.Component<SetupWidgetProps, SetupWidgetState> {
 						<label>Port<br /><input type="number" placeholder={'' + this.props.defaultPort}
 							onChange={this.onChangePort.bind(this) }
 							disabled={this.state.working}/></label>
-						<label>Websocket<br /><input type="checkbox" checked={this.state.websocket}
-							onChange={this.onChangeWebsocket.bind(this) }/></label>
+						<label>Websocket<br /><input type="checkbox" checked={this.state.websocket || this.forceWebsocket}
+							onChange={this.onChangeWebsocket.bind(this) } disabled={this.forceWebsocket}/></label>
 						<label>Secure Websocket<br /><input type="checkbox" checked={this.state.secureWebsocket && this.state.websocket}
 							onChange={this.onChangeSecureWebsocket.bind(this) } disabled={!this.state.websocket}/></label>
 						<button type="submit" disabled={this.state.working}>Connect</button>
