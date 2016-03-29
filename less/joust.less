@@ -401,7 +401,8 @@
 	button {
 		float: right;
 		height: 25px;
-
+		position: relative;
+		z-index: 1000;
 	}
 }
 
@@ -781,6 +782,7 @@
 	height: @scrubber-height;
 	display: flex;
 	flex-direction: row;
+	z-index: 1000;
 
 	button {
 		width: @scrubber-height;
@@ -818,7 +820,7 @@
 	top: 0;
 	left: 0;
 	height: 100%;
-	z-index: 1;
+	z-index: 1002;
 	background-color: #ccc;
 	mix-blend-mode: saturation;
 
@@ -830,7 +832,7 @@
 
 .joust-scrubber-turn {
 	display: inline-block;
-	z-index: 0;
+	z-index: 1001;
 	height: 100%;
 
 	&.mulligan {
