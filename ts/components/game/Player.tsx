@@ -4,14 +4,12 @@ import * as Immutable from "immutable";
 import PlayerEntity from '../../Player';
 import Entity from '../../Entity';
 import Option from '../../Option';
-import EntityList from './EntityList';
 import Deck from './Deck';
 import Hand from './Hand';
 import Hero from './Hero';
 import HeroPower from './HeroPower';
 import Field from './Field';
 import Weapon from './Weapon';
-import Secrets from './Secrets';
 import Rank from './Rank';
 
 import {Zone, CardType, GameTag} from '../../enums'
