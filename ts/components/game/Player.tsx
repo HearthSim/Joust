@@ -1,18 +1,18 @@
 import * as React from "react";
 
 import * as Immutable from "immutable";
-import PlayerEntity from '../../Player';
-import Entity from '../../Entity';
-import Option from '../../Option';
-import Deck from './Deck';
-import Hand from './Hand';
-import Hero from './Hero';
-import HeroPower from './HeroPower';
-import Field from './Field';
-import Weapon from './Weapon';
-import Rank from './Rank';
+import PlayerEntity from "../../Player";
+import Entity from "../../Entity";
+import Option from "../../Option";
+import Deck from "./Deck";
+import Hand from "./Hand";
+import Hero from "./Hero";
+import HeroPower from "./HeroPower";
+import Field from "./Field";
+import Weapon from "./Weapon";
+import Rank from "./Rank";
 
-import {Zone, CardType, GameTag} from '../../enums'
+import {Zone, CardType, GameTag} from "../../enums";
 import {OptionCallbackProps, CardDataProps, CardOracleProps, AssetDirectoryProps, TextureDirectoryProps} from "../../interfaces";
 
 interface PlayerProps extends OptionCallbackProps, CardDataProps, CardOracleProps, AssetDirectoryProps, TextureDirectoryProps, React.Props<any> {

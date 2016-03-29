@@ -1,8 +1,8 @@
 import * as React from "react";
 
-import EntityList from './EntityList';
+import EntityList from "./EntityList";
 import Entity from "../../Entity";
-import Secret from './Secret';
+import Secret from "./Secret";
 import {EntityListProps} from "../../interfaces";
 
 class Secrets extends EntityList<EntityListProps> {

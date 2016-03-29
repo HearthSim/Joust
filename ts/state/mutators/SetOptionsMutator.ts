@@ -1,8 +1,8 @@
 import * as Immutable from "immutable";
 import Entity from "../../Entity";
-import GameState from '../GameState';
-import GameStateMutator from '../GameStateMutator';
-import Option from '../../Option';
+import GameState from "../GameState";
+import GameStateMutator from "../GameStateMutator";
+import Option from "../../Option";
 
 class SetOptionsMutator implements GameStateMutator {
 	constructor(public options: Immutable.Map<number, Option>) {

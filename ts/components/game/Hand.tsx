@@ -1,9 +1,9 @@
 import * as React from "react";
 
-import EntityList from './EntityList';
+import EntityList from "./EntityList";
 import Entity from "../../Entity";
 import Option from "../../Option";
-import Card from './Card';
+import Card from "./Card";
 import {GameTag} from "../../enums";
 import {CardType} from "../../enums";
 import {EntityListProps} from "../../interfaces";

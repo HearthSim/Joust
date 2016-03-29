@@ -2,13 +2,13 @@ import * as React from "react";
 import * as Immutable from "immutable";
 
 import {EntityProps, OptionCallbackProps, CardDataProps, CardOracleProps, AssetDirectoryProps, TextureDirectoryProps} from "../../interfaces";
-import Entity from '../../Entity';
-import Player from './Player';
-import Option from '../../Option';
-import PlayerEntity from '../../Player';
-import EndTurnButton from './EndTurnButton';
-import {DragDropContext} from 'react-dnd';
-import HTML5Backend from 'react-dnd-html5-backend';
+import Entity from "../../Entity";
+import Player from "./Player";
+import Option from "../../Option";
+import PlayerEntity from "../../Player";
+import EndTurnButton from "./EndTurnButton";
+import {DragDropContext} from "react-dnd";
+import HTML5Backend from "react-dnd-html5-backend";
 import {GameTag} from "../../enums";
 
 interface TwoPlayerGameProps extends EntityProps, CardDataProps, CardOracleProps, OptionCallbackProps, AssetDirectoryProps, React.Props<any> {

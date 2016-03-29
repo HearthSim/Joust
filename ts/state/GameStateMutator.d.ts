@@ -1,4 +1,4 @@
-import GameState from './GameState';
+import GameState from "./GameState";
 
 interface ApplyTo {
 	(state: GameState): GameState;

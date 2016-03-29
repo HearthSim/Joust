@@ -1,5 +1,4 @@
-import {GameTag} from './enums';
-import {Rarity} from "./enums";
+import {GameTag, Rarity} from "./enums";
 
 class Entity {
 	constructor(protected id: number, protected tags: Immutable.Map<string, number>, protected cardId?: string) {

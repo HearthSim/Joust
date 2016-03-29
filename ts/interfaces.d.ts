@@ -1,9 +1,9 @@
-import * as React from 'react';
-import Entity from './Entity';
-import Option from './Option';
+import * as React from "react";
+import Entity from "./Entity";
+import Option from "./Option";
 import GameStateMutator from "./state/GameStateMutator";
 import GameState from "./state/GameState";
-import {EventEmitter} from 'events';
+import {EventEmitter} from "events";
 import * as Stream from "stream";
 import GameStateSink from "./state/GameStateSink";
 import GameStateScrubber from "./state/GameStateScrubber";

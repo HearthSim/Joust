@@ -1,7 +1,7 @@
 import * as Immutable from "immutable";
-import GameState from '../GameState';
-import GameStateMutator from '../GameStateMutator';
-import Entity from '../../Entity';
+import GameState from "../GameState";
+import GameStateMutator from "../GameStateMutator";
+import Entity from "../../Entity";
 
 class AddEntityMutator implements GameStateMutator {
 	constructor(public entity: Entity) {

@@ -1,7 +1,7 @@
-import GameState from '../GameState';
-import GameStateMutator from '../GameStateMutator';
-import Entity from '../../Entity';
-import ReplaceEntityMutator from './ReplaceEntityMutator';
+import GameState from "../GameState";
+import GameStateMutator from "../GameStateMutator";
+import Entity from "../../Entity";
+import ReplaceEntityMutator from "./ReplaceEntityMutator";
 
 class TagChangeMutator implements GameStateMutator {
 	public id;

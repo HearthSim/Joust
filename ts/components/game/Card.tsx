@@ -2,13 +2,13 @@ import * as React from "react";
 
 import {EntityProps, OptionProps, CardDataProps} from "../../interfaces";
 
-import Attack from './stats/Attack';
-import Health from './stats/Health';
-import Cost from './stats/Cost';
+import Attack from "./stats/Attack";
+import Health from "./stats/Health";
+import Cost from "./stats/Cost";
 
-import InHandCardArt from './visuals/InHandCardArt';
+import InHandCardArt from "./visuals/InHandCardArt";
 
-import {DragSource} from 'react-dnd';
+import {DragSource} from "react-dnd";
 import {CardType} from "../../enums";
 import {GameTag} from "../../enums";
 import Entity from "../../Entity";

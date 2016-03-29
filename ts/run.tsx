@@ -3,7 +3,7 @@
 /// <reference path="../node_modules/immutable/dist/immutable.d.ts"/>
 
 import {GameWidgetProps} from "./interfaces";
-import Application from './components/Joust';
+import Application from "./components/Joust";
 import GameWidget from "./components/GameWidget";
 import GameStateSink from "./state/GameStateSink";
 import GameStateTracker from "./state/GameStateTracker";

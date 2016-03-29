@@ -1,6 +1,6 @@
-import GameState from '../GameState';
-import GameStateMutator from '../GameStateMutator';
-import Entity from '../../Entity';
+import GameState from "../GameState";
+import GameStateMutator from "../GameStateMutator";
+import Entity from "../../Entity";
 import ReplaceEntityMutator from "./ReplaceEntityMutator";
 
 class ShowEntityMutator implements GameStateMutator {

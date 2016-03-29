@@ -1,6 +1,6 @@
 import * as React from "react";
 import {CardType, GameTag} from "../../../enums";
-import Entity from '../../../Entity';
+import Entity from "../../../Entity";
 import CardArt from "./CardArt";
 import {EntityProps} from "../../../interfaces";
 import InPlayCardArt from "./InPlayCardArt";

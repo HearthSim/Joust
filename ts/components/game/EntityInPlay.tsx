@@ -1,7 +1,7 @@
 import * as React from "react";
-import {DragSource, DropTarget} from 'react-dnd';
-import {EntityInPlayProps} from '../../interfaces';
-import * as _ from 'lodash';
+import {DragSource, DropTarget} from "react-dnd";
+import {EntityInPlayProps} from "../../interfaces";
+import * as _ from "lodash";
 
 abstract class EntityInPlay<P extends EntityInPlayProps, S> extends React.Component<P, S> {
 

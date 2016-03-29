@@ -2,9 +2,9 @@ import * as React from "react";
 
 import {EntityInPlayProps} from "../../interfaces";
 import EntityInPlay from "./EntityInPlay";
-import Cost from './stats/Cost';
-import HeroPowerArt from './visuals/HeroPowerArt';
-import * as _ from 'lodash';
+import Cost from "./stats/Cost";
+import HeroPowerArt from "./visuals/HeroPowerArt";
+import * as _ from "lodash";
 
 class HeroPower extends EntityInPlay<EntityInPlayProps, {}> {
 	constructor() {

@@ -1,13 +1,13 @@
 import * as React from "react";
 import EntityInPlay from "./EntityInPlay";
-import EntityList from './EntityList';
+import EntityList from "./EntityList";
 import Entity from "../../Entity";
 import Option from "../../Option";
-import Minion from './Minion';
+import Minion from "./Minion";
 
 import {EntityInPlayProps, EntityListProps} from "../../interfaces";
 
-import {DropTarget} from 'react-dnd';
+import {DropTarget} from "react-dnd";
 
 class Field extends EntityList<EntityListProps> {
 

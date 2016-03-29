@@ -4,8 +4,8 @@ import Websocket from "websocket-stream";
 import KettleDecoder from "../protocol/KettleDecoder";
 import KettleEncoder from "../protocol/KettleEncoder";
 import {InteractiveBackend} from "../interfaces";
-import {Socket} from 'net';
-import FileReaderStream from 'filereader-stream'
+import {Socket} from "net";
+import FileReaderStream from "filereader-stream";
 import GameStateScrubber from "../state/GameStateScrubber";
 import GameStateTracker from "../state/GameStateTracker";
 import GameStateSink from "../state/GameStateSink";

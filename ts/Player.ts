@@ -1,4 +1,4 @@
-import Entity from './Entity';
+import Entity from "./Entity";
 
 class Player extends Entity {
 	protected name: string;

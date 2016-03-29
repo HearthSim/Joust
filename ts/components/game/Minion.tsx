@@ -2,13 +2,13 @@ import * as React from "react";
 import EntityInPlay from "./EntityInPlay";
 import {EntityInPlayProps} from "../../interfaces";
 import {GameTag} from "../../enums";
-import InPlayCardArt from './visuals/InPlayCardArt';
+import InPlayCardArt from "./visuals/InPlayCardArt";
 
-import Attack from './stats/Attack';
-import Health from './stats/Health';
+import Attack from "./stats/Attack";
+import Health from "./stats/Health";
 
-import {DragSource, DropTarget} from 'react-dnd';
-import * as _ from 'lodash';
+import {DragSource, DropTarget} from "react-dnd";
+import * as _ from "lodash";
 import {CardData} from "../../interfaces";
 
 class Minion extends EntityInPlay<EntityInPlayProps, {}> {

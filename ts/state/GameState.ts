@@ -1,6 +1,6 @@
-import Entity from '../Entity';
-import Option from '../Option';
-import GameStateMutator from './GameStateMutator';
+import Entity from "../Entity";
+import Option from "../Option";
+import GameStateMutator from "./GameStateMutator";
 import * as Immutable from "immutable";
 
 class GameState {

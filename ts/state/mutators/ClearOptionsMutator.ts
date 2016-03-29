@@ -1,6 +1,6 @@
-import GameState from '../GameState';
-import GameStateMutator from '../GameStateMutator';
-import Option from '../../Option';
+import GameState from "../GameState";
+import GameStateMutator from "../GameStateMutator";
+import Option from "../../Option";
 
 class ClearOptionsMutator implements GameStateMutator {
 	public applyTo(state: GameState): GameState {

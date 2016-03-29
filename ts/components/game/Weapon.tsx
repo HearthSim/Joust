@@ -1,8 +1,8 @@
 import * as React from "react";
 import {EntityProps} from "../../interfaces";
-import Attack from './stats/Attack';
-import Durability from './stats/Durability';
-import WeaponArt from './visuals/WeaponArt';
+import Attack from "./stats/Attack";
+import Durability from "./stats/Durability";
+import WeaponArt from "./visuals/WeaponArt";
 
 interface WeaponProps extends EntityProps, React.Props<any> {
 
