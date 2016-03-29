@@ -27,12 +27,14 @@ class Minion extends EntityInPlay<EntityInPlayProps, {}> {
 		}
 
 		return [
-			<InPlayCardArt entity={entity} controller={this.props.controller}
+			<InPlayCardArt key="art"
+				entity={entity}
+				controller={this.props.controller}
 				cards={this.props.cards}
 				assetDirectory={this.props.assetDirectory}
 				textureDirectory={this.props.textureDirectory}
 				/>,
-			<div className="stats">
+			<div key="stats" className="stats">
 				<Attack attack={entity.getAtk() } default={data.attack}/>
 				<Health health={entity.getHealth() } damage={entity.getDamage() } default={data.health}/>
 			</div>

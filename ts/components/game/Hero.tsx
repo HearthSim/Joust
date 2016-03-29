@@ -23,17 +23,19 @@ class Hero extends EntityInPlay<HeroProps, {}> {
 		var entity = this.props.entity;
 
 		return [
-			<HeroArt entity={entity}
+			<HeroArt key="art"
+				entity={entity}
 				cards={this.props.cards}
 				assetDirectory={this.props.assetDirectory}
 				textureDirectory={this.props.textureDirectory}
 				/>,
-			<Secrets entities={this.props.secrets}
+			<Secrets key="secrets"
+				entities={this.props.secrets}
 				cards={this.props.cards}
 				assetDirectory={this.props.assetDirectory}
 				textureDirectory={this.props.textureDirectory}
 				/>,
-			<div className="stats">
+			<div key="stats" className="stats">
 				{entity.getAtk() ? <Attack attack={entity.getAtk() }/> : null}
 				<Health health={entity.getHealth() } damage={entity.getDamage() }/>
 				{entity.getArmor() ? <Armor armor={entity.getArmor() }/> : null}
