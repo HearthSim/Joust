@@ -20,7 +20,7 @@ interface CardArtProps extends AssetDirectoryProps, TextureDirectoryProps {
 
 class CardArt extends React.Component<CardArtProps, {}> {
 
-	private static baseArtExt: string = ".png";
+	private static baseArtExt: string = ".jpg";
 	private static imageDirectory: string = "images/";
 
 	private createStyle(): any {
