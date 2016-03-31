@@ -24,6 +24,7 @@ interface PlayerProps extends OptionCallbackProps, CardDataProps, CardOracleProp
 	options: Immutable.Map<number, Immutable.Map<number, Option>>;
 	choices: ChoiceList;
 	isTop: boolean;
+	isCurrent: boolean;
 }
 
 class Player extends React.Component<PlayerProps, {}> {
@@ -150,59 +151,61 @@ class Player extends React.Component<PlayerProps, {}> {
 			</div>
 		);
 
-		var classNames = this.props.isTop ? 'player top' : 'player';
+		let classNames = ['player'];
+
+		if(this.props.isTop) {
+			classNames.push('top');
+		}
+
+		if(this.props.isCurrent) {
+			classNames.push('current');
+		}
 
 		if (this.props.isTop) {
 			return (
-				<div className={classNames}>
+				<div className={classNames.join(' ')}>
 					{choices}
-					{hand}
-					<div className="equipment">
-						<div className="player-info">
-							{rank}
-							{name}
-						</div>
-						<div></div>
-						<div className="middle">
-							{weapon}
-							{hero}
-							{heroPower}
-						</div>
-						<div>
+					<section>
+						{hand}
+						<div className="equipment">
+							<section>
+								{hero}
+								<section>
+									{weapon}
+									{heroPower}
+								</section>
+							</section>
 							{tray}
 						</div>
-						<div>
-							{deck}
-						</div>
-					</div>
-					{field}
+					</section>
+					<section>
+						{field}
+						{deck}
+					</section>
 				</div>
 			);
 		}
 		else {
 			return (
-				<div className={classNames}>
+				<div className={classNames.join(' ')}>
 					{choices}
-					{field}
-					<div className="equipment">
-						<div className="player-info">
-							{rank}
-							{name}
-						</div>
-						<div></div>
-						<div className="middle">
-							{weapon}
-							{hero}
-							{heroPower}
-						</div>
-						<div>
+					<section>
+						{field}
+						{deck}
+					</section>
+					<section>
+						{hand}
+						<div className="equipment">
+							<section>
+								{hero}
+								<section>
+									{weapon}
+									{heroPower}
+								</section>
+							</section>
 							{tray}
 						</div>
-						<div>
-							{deck}
-						</div>
-					</div>
-					{hand}
+					</section>
 				</div>
 			);
 		}
@@ -216,7 +219,8 @@ class Player extends React.Component<PlayerProps, {}> {
 			this.props.choices !== nextProps.choices ||
 			this.props.optionCallback !== nextProps.optionCallback ||
 			this.props.cardOracle !== nextProps.cardOracle ||
-			this.props.cards !== nextProps.cards
+			this.props.cards !== nextProps.cards ||
+			this.props.isCurrent !== nextProps.isCurrent
 		);
 	}
 }

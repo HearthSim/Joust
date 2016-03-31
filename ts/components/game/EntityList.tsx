@@ -32,8 +32,10 @@ abstract class EntityList<T extends EntityListProps> extends React.Component<T, 
 					</li>);
 			}.bind(this));
 		}
+		let classNames = ['entity-list'];
+		classNames.push(this.className());
 		return (
-			<ul className={this.className() }>
+			<ul className={classNames.join(' ') }>
 				{elements}
 			</ul>
 		);

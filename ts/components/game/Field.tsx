@@ -16,20 +16,8 @@ class Field extends EntityList<EntityListProps> {
 	}
 
 	public render(): JSX.Element {
-		var elements = [];
-		if (this.props.entities) {
-			var entities = this.props.entities.toList().sortBy(function(entity) {
-				return entity.getZonePosition();
-			});
-			entities.forEach(function(entity) {
-				elements.push(<li
-					key={entity.getId() }>{this.renderEntity(entity, this.props.options.get(entity.getId())) }</li>);
-			}.bind(this));
-		}
 		return this.props.connectDropTarget(
-			<ul className={this.className() }>
-				{elements}
-			</ul>
+			super.render()
 		);
 	}
 

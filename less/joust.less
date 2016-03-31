@@ -1,3 +1,6 @@
+@import "entities.less";
+@import "layout.less";
+@import "scrubber.less";
 @import "font-awesome/font-awesome.less";
 
 @font-face {
@@ -40,15 +43,12 @@
 			}
 		}
 	}
-
-	.game {
-		height: calc(100%);
-	}
 }
 
 .game {
+	position: relative;
 	overflow: hidden;
-	background-color: beige;
+	background-color: #dbd9ce;
 	width: 100%;
 	height: 100%;
 	font-size: 2vh;
@@ -60,19 +60,12 @@
 	cursor: default;
 }
 
-.player {
-	width: 100%;
-	height: 50%;
-	position: relative;
+.player.current {
+	background-color: #e2e3dd;
+	transition: background 0.8s;
 }
 
-.helper {
-	width: 100%;
-	height: 100%;
-}
-
-.hand {
-	list-style-type: none;
+/*.hand {
 	height: 40%;
 	width: (40% + 2 * 15%);
 
@@ -103,7 +96,7 @@
 		}
 	}
 
-}
+}*/
 
 .entity {
 	transition: box-shadow 0.15s, transform 0.15s;
@@ -164,14 +157,8 @@
 }
 
 .choices {
-	list-style-type: none;
 	margin: 0;
 	padding: 0;
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	align-items: center;
-	flex-wrap: nowrap;
 	position: absolute;
 	height: 100%;
 	width: 100%;
@@ -189,99 +176,6 @@
 			z-index: 0;
 			margin: 0 auto;
 		}
-	}
-}
-
-.card {
-	position: relative;
-	display: flex;
-	flex-direction: column;
-	background-color: transparent;
-	height: 100%;
-	padding: 0;
-	margin-left: -100%;
-
-	h1 {
-		position: absolute;
-		font-size: 0.5em;
-		text-align: center;
-		font-family: "Belwe Bd BT";
-		margin: 0 8%;
-		width: 84%;
-		top: 52%;
-		color: white;
-		text-shadow: -1px -1px 0 #000,
-			1px -1px 0 #000,
-		-1px 1px 0 #000,
-		1px 1px 0 #000;
-	}
-
-	div.visuals {
-		position: relative;
-		img {
-			position: absolute;
-		}
-		.inhand-minion {
-			width: 78%;
-			top: 6%;;
-			left: 11%;
-			clip-path: url(assets/clip-paths.svg#inhand-minion-clip);
-			-webkit-clip-path: ellipse(36% 47% at 50% 50%);
-		}
-		.inhand-spell {
-			width: 70%;
-			top: 11%;;
-			left: 14%;
-			clip-path: url(assets/clip-paths.svg#inhand-spell-clip);
-			-webkit-clip-path: inset(8% 0% 4% 0%);
-		}
-		.inhand-weapon {
-			width: 67%;
-			top: 11%;;
-			left: 17%;
-			clip-path: url(assets/clip-paths.svg#inhand-weapon-clip);
-			-webkit-clip-path: circle(50% at 50% 50%);
-		}
-		.inhand-base, .inhand-legendary {
-			height: 100%;
-		}
-	}
-
-	.description {
-		position: absolute;
-		font-family: "Franklin Gothic Condensed", sans-serif;
-		font-size: 0.5em;
-		margin: 0 16%;
-		text-align: center;
-		line-height: 1em;
-		height: 26%;
-		width: 68%;
-		top: 66%;
-
-		p {
-			width: 100%;
-			position: absolute;
-			margin: 0;
-			padding: 0;
-			top: 50%;
-			transform: translate(0, -50%);
-		}
-	}
-
-	.cost {
-		top: 8%;
-		left: 4%;
-		font-size: 1.4em;
-	}
-
-	.atk {
-		left: 5%;
-		top: 85%;
-	}
-
-	.health, .durability {
-		left: 77%;
-		top: 85%;
 	}
 }
 
@@ -324,290 +218,23 @@
 	height: 100%;
 	display: flex;
 	flex-direction: column;
-	// border: 1px solid black;
-	// margin-bottom: 10px;
-}
-
-.weapon {
-	.atk {
-		top: 75%;
-		left: 10%;
-		font-size: 1em;
-	}
-	.durability {
-		top: 75%;
-		left: 68%;
-		font-size: 1em;
-	}
-	div.visuals {
-		position: relative;
-		img {
-			position: absolute;
-		}
-		.hero-weapon-frame {
-			height: 100%;
-		}
-		.hero-weapon-portrait {
-			height: 73%;
-			top: 13%;
-			left: 14%;
-			clip-path: url(assets/clip-paths.svg#hero-weapon-clip);
-			-webkit-clip-path: circle(50% at 50% 50%);
-		}
-	}
-}
-
-.heroPower {
-	//float: right;
-	> div {
-		height: 100%;
-	}
-
-	div.visuals {
-		position: relative;
-		img {
-			position: absolute;
-		}
-		.hero-power-frame {
-			height: 100%;
-		}
-		.hero-power-portrait {
-			height: 55%;
-			top: 27%;
-			left: 23%;
-			clip-path: url(assets/clip-paths.svg#hero-power-clip);
-			-webkit-clip-path: circle(60% at 50% 50%);
-		}
-	}
-
-	.cost {
-		position: absolute;
-		top: 41%;
-		left: 39%;
-		font-size: 1.1em;
-	}
-
-	&.exhausted {
-		//background-color: #ccc;
-		font-size: 0;
-	}
-}
-
-.secret {
-	display: block;
-	width: 20px;
-	height: 20px;
-	text-align: center;
-	border-radius: 50%;
-	font-weight: bold;
-	line-height: 1em;
-	color: white;
-	background-color: #666;
-	border: black solid 1px;
-	text-shadow: 0px 0px 1px black;
-
-	&:not(.exhausted) {
-		&.hunter {
-			background-color: green;
-		}
-		&.mage {
-			background-color: orchid;
-		}
-		&.paladin {
-			background-color: gold;
-		}
-	}
 }
 
 .endTurnButton {
-	display: flex;
-	align-items: center;
-	justify-content: flex-end;
-	padding-right: 10px;
-	width: 100%;
+	position: absolute;
+	top: 44%;
+	right: 0;
+	width: 10%;
 	height: 0px;
-	float: right;
+	text-align: center;
 
 	button {
-		float: right;
-		height: 25px;
+		margin: 0;
+		padding: 0;
+		font-size: 1em;
 		position: relative;
 		z-index: 1000;
-	}
-}
-
-.deck {
-	width: 20px;
-	height: 100%;
-	box-sizing: border-box;
-	float: right;
-	background-color: beige;
-
-	border: black solid 1px;
-	border-radius: 5px;
-
-	&.fatigue {
-		background-color: darkorange;
-	}
-}
-
-.field {
-	list-style-type: none;
-	width: 100%;
-	height: 30%;
-	margin: 0 auto;
-	padding: 0;
-
-	display: flex;
-	flex-direction: row;
-	flex-wrap: nowrap;
-	flex-basis: 0;
-	justify-content: center;
-	align-items: center;
-
-	> li {
-		flex-shrink: 0;
-		flex-grow: 0;
-		height: 100%;
-
-		> .minion {
-			margin: 0 auto;
-		}
-	}
-}
-
-.field-animation-enter {
-	opacity: 0.01;
-	width: 0;
-	//  transform: translate(0px, -20px);
-
-	&.field-animation-enter-active {
-		opacity: 1;
-		width: 62px;
-		//	transform: translate(0px, 0px);
-		transition-duration: 0.5s;
-		transition-timing-function: ease-out;
-	}
-}
-
-.field-animation-leave {
-	opacity: 1;
-	width: 62px;
-
-	&.field-animation-leave-active {
-		opacity: 0.01;
-		width: 0;
-		transition-duration: 0.5s;
-		transition-timing-function: ease-out;
-	}
-}
-
-.minion {
-	position: relative;
-	display: inline-block;
-	height: 100%;
-
-	div.visuals {
-		position: relative;
-		img {
-			position: absolute;
-		}
-		.inplay-base, .inplay-legendary, .inplay-taunt, .inplay-shield, .inplay-frozen,
-		.icon-deathrattle, .icon-trigger, .icon-inspire, .icon-poisonous,
-		.effect-sleep {
-			height: 100%;
-		}
-		.inplay-portrait {
-			width: 85%;
-			top: 10%;;
-			left: 7%;
-			clip-path: url(assets/clip-paths.svg#inplay-minion-clip);
-			-webkit-clip-path: ellipse(35% 46% at 51% 50%);
-		}
-		.inplay-legendary {
-			position: absolute;
-			height: 100%;
-		}
-	}
-
-	> div {
-
-		display: flex;
-		flex-direction: column;
-		height: 100%;
-
-		&.stats {
-			.atk {
-				left: 19%;
-				top: 62%;
-				font-size: 1em;
-			}
-
-			.health {
-				left: 60%;
-				top: 62%;
-				font-size: 1em;
-			}
-		}
-	}
-}
-
-.hero {
-	height: 100%;
-	position: relative;
-
-	> div {
-		display: flex;
-		flex-direction: column;
-		height: 100%;
-	}
-
-	.stats {
-		.atk {
-			left: 4%;
-			top: 78%;
-			font-size: 1.2em;
-		}
-		.health {
-			left: 74%;
-			top: 79%;
-			font-size: 1.2em;
-		}
-		.armor {
-			left: 74%;
-			top: 54%;
-			font-size: 1.2em;
-		}
-	}
-
-	.secrets {
-		position: absolute;
-		height: 20px;
-		display: flex;
-		flex-direction: row;
-		justify-content: space-around;
-		list-style-type: none;
-		margin: -12% 0 10px 0;
-		padding-left: 0;
-		top: 0;
-	}
-
-	div.visuals {
-		position: relative;
-		img {
-			position: absolute;
-			pointer-events: none;
-		}
-		.hero-frame, .hero-attack, .hero-armor {
-			height: 100%;
-		}
-		.hero-portrait {
-			height: 82%;
-			top: 9%;
-			left: 7%;
-			clip-path: url(assets/clip-paths.svg#hero-clip);
-			-webkit-clip-path: polygon(0% 100%, 0 40%, 20% 10%, 30% 3%, 50% 0%, 70% 3%, 80% 10%, 100% 40%, 100% 100%);
-		}
+		font-family: "Belwe Bd BT";
 	}
 }
 
@@ -615,105 +242,11 @@
 	visibility: hidden;
 }
 
-.equipment {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	align-items: flex-end;
-	padding: 5px 0;
-	height: 30%;
-	width: 100%;
-	margin: 0 auto;
-
-	.player-info {
-		width: auto;
-		height: 2.5em;
-		padding: 0 10px 0 5px;
-		background-color: rgba(0, 0, 0, 0.5);
-		align-self: center;
-		border-radius: 0 20% 20% 0 / 0 50% 50% 0;
-	}
-
-	.name {
-		font-family: "Belwe Bd BT";
-		color: white;
-		font-size: 0.8em;
-		height: 2.5em;
-		padding: 0 20px 0 10px;
-		text-align: left;
-		line-height: 2.5em;
-		align-self: center;
-		text-shadow: -1px -1px 0 #000,
-			1px -1px 0 #000,
-		-1px 1px 0 #000,
-		1px 1px 0 #000;
-	}
-
-	.rank {
-		height: 4.2em;
-		width: 3.1em;
-		position: relative;
-		top: 40%;
-
-		.rank-portrait {
-			position: absolute;
-			height: 80%;
-			width: 113%;
-			top: 7%;
-			left: 0%;
-			clip-path: url(assets/clip-paths.svg#rank-clip);
-			-webkit-clip-path: polygon(50% 0%, 90% 25%, 90% 75%, 50% 100%, 10% 75%, 10% 25%);
-		}
-
-		.rank-frame {
-			position: absolute;
-			height: 100%;
-			top: 5%;
-			left: 5%;
-		}
-
-		.legend-text, .rank-text {
-			position: relative;
-			text-align: center;
-			left: 5%;
-			font-family: "Belwe Bd BT";
-			color: white;
-			text-shadow: -1px -1px 0 #000,
-				1px -1px 0 #000,
-				-1px 1px 0 #000,
-				1px 1px 0 #000;
-		}
-		.legend-text {
-			top: -75%;
-			font-size: 1.3em;
-		}
-		.rank-text {
-			top: -40%;
-			font-size: 1.5em;
-		}
-	}
-
-	.middle {
-		display: flex;
-		flex-direction: row;
-		justify-content: center;
-		align-items: flex-end;
-		flex-grow: 0;
-		width: 40%;
-		height: 100%;
-	}
-
-	> div {
-		display: flex;
-		align-items: flex-end;
-		width: 15%;
-		flex-grow: 0;
-		height: 100%;
-
-		&:last-child {
-			padding-right: 10px;
-			justify-content: flex-end;
-		}
+div.visuals {
+	position: relative;
+	img {
+		position: absolute;
+		pointer-events: none;
 	}
 }
 
@@ -778,10 +311,6 @@
 	}
 }
 
-/* CLEANUP */
-
-@scrubber-height: 35px;
-
 .joust-widget {
 	display: flex;
 	flex-direction: column;
@@ -805,80 +334,6 @@
 	width: 100%;
 }
 
-.joust-scrubber {
-	height: @scrubber-height;
-	display: flex;
-	flex-direction: row;
-	z-index: 1000;
-
-	button {
-		width: @scrubber-height;
-	}
-
-	button, select {
-		color: white;
-		height: @scrubber-height;
-		background-color: gray;
-		border: none;
-		margin: 0 1px 0 0;
-
-		&:last-child {
-			margin-right: 0;
-		}
-
-		&:disabled {
-			color: rgba(255, 255, 255, 0.5);
-			background-color: lighten(gray, 10);
-		}
-	}
-}
-
-.joust-scrubber-timeline {
-	position: relative;
-	flex: 1;
-	background-color: gray;
-	margin-right: 1px;
-	height: 100%;
-	width: 100%;
-}
-
-.joust-scrubber-progress {
-	position: absolute;
-	top: 0;
-	left: 0;
-	height: 100%;
-	z-index: 1002;
-	background-color: #ccc;
-	mix-blend-mode: saturation;
-
-	&.inverse {
-		left: auto;
-		right: 0;
-	}
-}
-
-.joust-scrubber-turn {
-	display: inline-block;
-	z-index: 1001;
-	height: 100%;
-
-	&.mulligan {
-		background-color: lightgreen;
-	}
-
-	&.primary {
-		background-color: lighten(dodgerblue, 15);
-	}
-
-	&.secondary {
-		background-color: lighten(crimson, 20);
-	}
-
-	&.primary + &.primary, &.secondary + &.secondary {
-		border-left: gray dashed 1px;
-	}
-
-}
 
 .joust-message {
 	width: 100%;

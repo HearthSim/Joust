@@ -11,8 +11,15 @@ class Secrets extends EntityList<EntityListProps> {
 		return 'secrets';
 	}
 
-	protected renderEntity(entity: Entity) {
-		return (<Secret entity={entity} cards={this.props.cards} assetDirectory={this.props.assetDirectory} textureDirectory={this.props.textureDirectory}/>);
+	public render(): JSX.Element {
+		if(!this.props.entities || !this.props.entities.count()) {
+			return null;
+		}
+
+		var entities = this.props.entities.toList().sortBy(this.sort.bind(this));
+
+		return <Secret entity={entities.first()} cards={this.props.cards} assetDirectory={this.props.assetDirectory}
+					   textureDirectory={this.props.textureDirectory}/>;
 	}
 }
 

@@ -1,0 +1,144 @@
+.player {
+	width: 100%;
+	height: 50%;
+	position: relative;
+
+	> section {
+		height: 50%;
+
+		> div, > ul {
+			height: 100%;
+			margin: 0;
+			padding: 0;
+			display: inline-block;
+			border: 1px #b5b58d solid;
+			vertical-align: top;
+		}
+	}
+
+	> .choices {
+		display: block;
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 75%;
+		height: 100%;
+	}
+
+	.hand {
+		width: 75%;
+		overflow: hidden;
+
+		> * {
+			flex-shrink: 1;
+			min-width: (100% / 10);
+		}
+	}
+
+	.equipment {
+		width: 25%;
+		padding: 10px;
+		display: inline-flex;
+		flex-direction: column;
+		justify-content: space-between;
+		align-items: center;
+
+		> section {
+			max-width: 100%;
+			height: 80%;
+			display: flex;
+
+			> section {
+				height: 100%;
+				display: flex;
+				flex-direction: column;
+				justify-content: flex-end;
+				align-items: flex-start;
+			}
+		}
+
+		.weapon, .heroPower {
+			height: 50%;
+		}
+	}
+
+	.field {
+		width: 90%;
+		overflow: hidden;
+
+		> * {
+			flex-shrink: 1;
+			max-width: (100% / 7);
+		}
+	}
+
+	.deck {
+		width: 10%;
+
+		> figure {
+			height: 70%;
+			position: relative;
+			padding: 0;
+			margin: 0;
+
+			img {
+				height: 100%;
+			}
+
+			figcaption {
+				font-family: "Belwe Bd BT";
+				text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+				font-size: 1.5em;
+				color: white;
+				position: absolute;
+				top: 10%;
+				width: 100%;
+				text-align: center;
+			}
+		}
+	}
+
+	.hand, .field, .choices, .deck {
+		display: inline-flex;
+		flex: 0 0 0;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		flex-wrap: nowrap;
+		padding: 5px 0;
+	}
+}
+
+.player .deck {
+	align-items: flex-end;
+}
+
+.player.top .deck {
+	align-items: flex-start;
+}
+
+.entity-list {
+	list-style-type: none;
+
+	li {
+		height: 100%;
+		display: inline-block;
+		margin: 0;
+		padding: 0;
+	}
+}
+
+.tray {
+	display: block;
+	width: 80%;
+}
+
+@secret-size: 20%;
+
+.hero .secret {
+	position: absolute;
+	top: -3%;
+	height: @secret-size;
+	width: @secret-size;
+	left: (50% - @secret-size / 2 - 1.5%);
+}

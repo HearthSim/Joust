@@ -26,7 +26,7 @@ class Secret extends React.Component<SecretProps, {}> {
 			classNames.push("exhausted");
 		}
 		return (
-			<div className={classNames.join(' ') }>?</div>
+			<div className={classNames.join(' ') }><span>?</span></div>
 		);
 	}
 }

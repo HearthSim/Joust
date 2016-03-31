@@ -22,12 +22,10 @@ class HeroPower extends EntityInPlay<EntityInPlayProps, {}> {
 			defaultCost = data.cost;
 		}
 
-		return (
-			<div>
-				<HeroPowerArt entity={this.props.entity} cards={this.props.cards} assetDirectory={this.props.assetDirectory} textureDirectory={this.props.textureDirectory}/>
-				<Cost cost={this.props.entity.getCost() } default={defaultCost}/>
-			</div>
-		);
+		return [,
+			<HeroPowerArt key="heroPower" entity={this.props.entity} cards={this.props.cards} assetDirectory={this.props.assetDirectory} textureDirectory={this.props.textureDirectory}/>,
+			<Cost key="cost" cost={this.props.entity.getCost() } default={defaultCost}/>
+		];
 	}
 }
 

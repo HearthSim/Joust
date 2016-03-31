@@ -23,7 +23,13 @@ class Deck extends EntityList<EntityListProps> {
 				tooltip = this.props.entities.size + ' cards remaining';
 				break;
 		}
-		return <div className={classNames.join(' ') } title={tooltip}></div>;
+		return (
+			<div className={classNames.join(' ') } title={tooltip}>
+				<figure>
+					<img src={this.props.assetDirectory + 'images/cardback.png'} />
+					<figcaption>{this.props.entities.size}</figcaption>
+				</figure>
+			</div>);
 	}
 }
 
