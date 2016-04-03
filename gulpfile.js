@@ -12,6 +12,9 @@ var through = require('through2');
 var webpack = require('webpack');
 var webpackStream = require('webpack-stream');
 
+const filter = require('gulp-filter');
+var livereload = require('gulp-livereload');
+
 gulp.task('default', ['watch']);
 
 gulp.task('compile', ['compile:scripts', 'compile:styles', 'html', 'assets']);
@@ -50,7 +53,9 @@ gulp.task('compile:styles', function () {
 		.pipe(less({'strictMath': true}))
 		.pipe(autoprefixer({browsers: ['last 2 versions']}))
 		.pipe(sourcemaps.write('.'))
-		.pipe(gulp.dest('dist/'));
+		.pipe(gulp.dest('dist/'))
+		.pipe(filter(['**/*.css']))
+		.pipe(livereload());
 });
 
 gulp.task('html', function () {
@@ -64,6 +69,7 @@ gulp.task('assets', function () {
 });
 
 gulp.task('watch', ['watch:styles', 'watch:html', 'watch:assets'], function () {
+	livereload.listen();
 	gutil.log(gutil.colors.yellow("Warning: only watching HTML/LESS files"));
 	gutil.log(gutil.colors.yellow("Use 'webpack -d --watch' to watch TypeScript"));
 });
