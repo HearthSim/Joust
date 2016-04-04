@@ -4,9 +4,13 @@ import {EntityListProps} from "../../interfaces";
 
 class Deck extends EntityList<EntityListProps> {
 
+	protected className(): string {
+		return 'deck';
+	}
+
 	public render(): JSX.Element {
 		var tooltip = null;
-		var classNames = ['deck'];
+		var classNames = [this.className()];
 		switch (this.props.entities.size) {
 			case 0:
 				tooltip = 'No cards remaining';
