@@ -64,6 +64,11 @@ class Timeline extends React.Component<TimelineProps, TimelineState> implements 
 			return;
 		}
 
+		if (!e.buttons) {
+			this.setState({ isDragging: false });
+			return;
+		}
+
 		this.seek(e.clientX);
 	}
 
