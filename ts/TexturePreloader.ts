@@ -34,7 +34,8 @@ class TexturePreloader extends Stream.Writable {
 	}
 
 	public consume() {
-		if(this.working >= 10) {
+		// maximum number of parallel request
+		if(this.working >= 1024) {
 			return;
 		}
 
@@ -72,7 +73,7 @@ class TexturePreloader extends Stream.Writable {
 		image.src = texture;
 		this.images[this.images.length] = image;
 
-		// attempt next consumption
+		// attempt next consumption immediately
 		this.consume();
 	}
 }
