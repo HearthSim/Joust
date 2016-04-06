@@ -151,6 +151,25 @@ class Player extends React.Component<PlayerProps, {}> {
 			</div>
 		);
 
+		let tall = <section className="tall">
+			{hand}
+			<div className="equipment">
+				<section>
+					{hero}
+					<section>
+						{weapon}
+						{heroPower}
+					</section>
+				</section>
+				{tray}
+			</div>
+		</section>;
+
+		let short = <section className="short">
+			{field}
+			{deck}
+		</section>;
+
 		let classNames = ['player'];
 
 		if(this.props.isTop) {
@@ -165,23 +184,8 @@ class Player extends React.Component<PlayerProps, {}> {
 			return (
 				<div className={classNames.join(' ')}>
 					{choices}
-					<section>
-						{hand}
-						<div className="equipment">
-							<section>
-								{hero}
-								<section>
-									{weapon}
-									{heroPower}
-								</section>
-							</section>
-							{tray}
-						</div>
-					</section>
-					<section>
-						{field}
-						{deck}
-					</section>
+					{tall}
+					{short}
 				</div>
 			);
 		}
@@ -189,23 +193,8 @@ class Player extends React.Component<PlayerProps, {}> {
 			return (
 				<div className={classNames.join(' ')}>
 					{choices}
-					<section>
-						{field}
-						{deck}
-					</section>
-					<section>
-						{hand}
-						<div className="equipment">
-							<section>
-								{hero}
-								<section>
-									{weapon}
-									{heroPower}
-								</section>
-							</section>
-							{tray}
-						</div>
-					</section>
+					{short}
+					{tall}
 				</div>
 			);
 		}
