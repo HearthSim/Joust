@@ -88,21 +88,27 @@
 			height: 70%;
 			position: relative;
 			padding: 0;
-			margin: 0;
+			margin: -9% 0 0 0;
 
 			img {
 				height: 100%;
 			}
 
 			figcaption {
+				@padding: 7%;
+
 				font-family: "Belwe Bd BT";
 				text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 				font-size: 1.5em;
 				color: white;
 				position: absolute;
-				top: 10%;
+				bottom: @padding;
 				width: 100%;
 				text-align: center;
+
+				.top& {
+					top: @padding;
+				}
 			}
 		}
 	}
