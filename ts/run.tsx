@@ -12,8 +12,6 @@ import GameStateScrubber from "./state/GameStateScrubber";
 import * as http from "http";
 import * as stream from "stream"
 import * as URL from "url";
-import Joust from "./components/Joust";
-import {CardData} from "./interfaces";
 import {QueryCardMetadata} from "./interfaces";
 
 var React = require('react');
@@ -80,9 +78,9 @@ class Viewer {
 				.pipe(scrubber) // gamestate -> gamestate emit on scrub past
 				.pipe(sink); // gamestate
 		});
-		decoder.once('data', () => {
+		decoder.once('build', (build: number) => {
 			if (this.queryCardMetadata) {
-				this.queryCardMetadata(decoder.build, this.ref.setCards.bind(this.ref));
+				this.queryCardMetadata(build, this.ref.setCards.bind(this.ref));
 			}
 		});
 

@@ -131,6 +131,7 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 				if (!this.build) {
 					console.warn('No Hearthstone build number found');
 				}
+				this.emit('build', this.build);
 				break;
 			case 'Action':
 				this.push(new IncrementTimeMutator(0));
