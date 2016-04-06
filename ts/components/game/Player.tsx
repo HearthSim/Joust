@@ -83,6 +83,7 @@ class Player extends React.Component<PlayerProps, {}> {
 			assetDirectory={this.props.assetDirectory}
 			textureDirectory={this.props.textureDirectory}
 			controller={this.props.player}
+			fatigue={this.props.player.getTag(GameTag.FATIGUE) + 1}
 			/>;
 		var hand = <Hand entities={((!this.props.choices || this.props.choices.getType() !== ChoiceType.MULLIGAN) && this.props.entities.get(Zone.HAND)) || emptyEntities}
 			options={this.props.options.get(Zone.HAND) || emptyOptions}

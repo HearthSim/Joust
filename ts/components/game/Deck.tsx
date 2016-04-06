@@ -2,7 +2,11 @@ import * as React from "react";
 import EntityList from "./EntityList";
 import {EntityListProps} from "../../interfaces";
 
-class Deck extends EntityList<EntityListProps> {
+interface DeckProps extends EntityListProps {
+	fatigue: number;
+}
+
+class Deck extends EntityList<DeckProps> {
 
 	protected className(): string {
 		return 'deck';
@@ -13,7 +17,7 @@ class Deck extends EntityList<EntityListProps> {
 		var classNames = [this.className()];
 		switch (this.props.entities.size) {
 			case 0:
-				tooltip = 'No cards remaining';
+				tooltip = this.props.fatigue + ' damage dealt by next card draw';
 				classNames.push('fatigue');
 				break;
 			case 1:
@@ -27,7 +31,7 @@ class Deck extends EntityList<EntityListProps> {
 			<div className={classNames.join(' ') } title={tooltip}>
 				<figure>
 					<img src={this.props.assetDirectory + 'images/cardback.png'} />
-					<figcaption>{this.props.entities.size}</figcaption>
+					<figcaption>{this.props.entities.size || -this.props.fatigue}</figcaption>
 				</figure>
 			</div>);
 	}
