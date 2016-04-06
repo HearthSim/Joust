@@ -144,7 +144,7 @@ export interface TextureDirectoryProps {
 }
 
 export interface QueryCardMetadata {
-	(build: number, cb: (card: CardData[]) => void): void;
+	(build: number, cb: (cards: CardData[]) => void): void;
 }
 
 export interface GameWidgetProps extends AssetDirectoryProps, TextureDirectoryProps, React.Props<any> {
