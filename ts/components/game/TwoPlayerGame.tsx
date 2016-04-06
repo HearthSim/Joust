@@ -46,10 +46,10 @@ class TwoPlayerGame extends React.Component<TwoPlayerGameProps, {}> {
 					assetDirectory={this.props.assetDirectory}
 					textureDirectory={this.props.textureDirectory}
 					/>
-				<EndTurnButton option={this.props.endTurnOption}
+				{this.props.optionCallback && <EndTurnButton option={this.props.endTurnOption}
 					optionCallback={this.props.optionCallback} onlyOption={options.count() === 0}
 					currentPlayer={currentPlayer}
-					/>
+					/>}
 				<Player player={player2 as PlayerEntity} isTop={false}
 					isCurrent={currentPlayer === player2}
 					entities={entities.get(player2.getPlayerId()) || emptyEntities}
