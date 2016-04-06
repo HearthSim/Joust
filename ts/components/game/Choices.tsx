@@ -10,6 +10,7 @@ import {EntityListProps} from "../../interfaces";
 import Choice from "../../Choice";
 
 interface ChoicesProps extends EntityListProps {
+	isMulligan: boolean;
 	choices: Immutable.Map<number, Choice>;
 }
 
@@ -29,6 +30,10 @@ class Choices extends EntityList<ChoicesProps> {
 			let cardId = this.props.cardOracle.get(entity.getId());
 			entity = new Entity(entity.getId(), entity.getTags(), cardId);
 			hidden = true;
+		}
+
+		if(this.props.isMulligan && entity.getCardId() === 'GAME_005') {
+			return null;
 		}
 
 		return (<Card entity={entity}

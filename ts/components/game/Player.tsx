@@ -107,13 +107,14 @@ class Player extends React.Component<PlayerProps, {}> {
 				return entity;
 			});
 			choices = <Choices entities={choiceEntities}
-								   cards={this.props.cards}
-								   cardOracle={this.props.cardOracle}
-								   isTop={this.props.isTop}
-								   assetDirectory={this.props.assetDirectory}
-								   textureDirectory={this.props.textureDirectory}
-								   controller={this.props.player}
-								   choices={this.props.choices && this.props.choices.getChoices()}
+							   cards={this.props.cards}
+							   cardOracle={this.props.cardOracle}
+							   isTop={this.props.isTop}
+							   assetDirectory={this.props.assetDirectory}
+							   textureDirectory={this.props.textureDirectory}
+							   controller={this.props.player}
+							   isMulligan={this.props.choices.getType() === ChoiceType.MULLIGAN}
+							   choices={this.props.choices && this.props.choices.getChoices()}
 			/>;
 		}
 
