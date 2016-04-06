@@ -2,7 +2,7 @@
 /// <reference path="./global.d.ts"/>
 /// <reference path="../node_modules/immutable/dist/immutable.d.ts"/>
 
-import {GameWidgetProps} from "./interfaces";
+import {GameWidgetProps, CardData} from "./interfaces";
 import Application from "./components/Joust";
 import GameWidget from "./components/GameWidget";
 import GameStateSink from "./state/GameStateSink";
@@ -13,6 +13,7 @@ import * as http from "http";
 import * as stream from "stream"
 import * as URL from "url";
 import {QueryCardMetadata} from "./interfaces";
+import TexturePreloader from "./TexturePreloader";
 
 var React = require('react');
 var ReactDOM = require('react-dom');
@@ -67,6 +68,7 @@ class Viewer {
 		var tracker = new GameStateTracker();
 		var scrubber = new GameStateScrubber();
 		var sink = new GameStateSink();
+		var preloader = this.opts.textureDirectory ? new TexturePreloader(this.opts.textureDirectory) : undefined;
 
 		var opts = URL.parse(url) as any;
 		opts.withCredentials = false;
@@ -77,10 +79,19 @@ class Viewer {
 				.pipe(tracker) // mutators -> latest gamestate
 				.pipe(scrubber) // gamestate -> gamestate emit on scrub past
 				.pipe(sink); // gamestate
+			if(preloader) {
+				decoder.pipe(preloader);
+			}
 		});
 		decoder.once('build', (build: number) => {
 			if (this.queryCardMetadata) {
-				this.queryCardMetadata(build, this.ref.setCards.bind(this.ref));
+				this.queryCardMetadata(build, (cards: CardData[]) => {
+					this.ref.setCards(cards);
+					if(preloader) {
+						preloader.cards = this.ref.state.cards;
+						preloader.consume();
+					}
+				});
 			}
 		});
 
