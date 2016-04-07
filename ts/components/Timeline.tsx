@@ -136,7 +136,7 @@ class Timeline extends React.Component<TimelineProps, TimelineState> implements 
 			}
 
 			return <Turn key={turn} state={current} duration={duration} totalDuration={this.props.duration}/>;
-		});
+		}).toArray();
 
 		let width = 100 - 100 / this.props.duration * this.props.at;
 
