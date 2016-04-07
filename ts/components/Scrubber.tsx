@@ -58,6 +58,10 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 		if (!this.state.canInteract) {
 			return;
 		}
+		if(e.shiftKey || e.altKey || e.ctrlKey || e.metaKey) {
+			// do not trigger with modifier
+			return;
+		}
 		switch (e.keyCode) {
 			case 32: // spacebar
 			case 75: // k
@@ -65,7 +69,7 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 				this.props.scrubber.toggle();
 				break;
 			case 37: // left arrow
-			case 74: // j<
+			case 74: // j
 				e.preventDefault();
 				this.props.scrubber.skipBack();
 				break;
