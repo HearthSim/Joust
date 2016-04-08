@@ -85,6 +85,13 @@ class InPlayCardArt extends React.Component<EntityProps, {}> {
 			});
 		}
 
+		if (entity.getTag(GameTag.HEALTH) - entity.getTag(GameTag.DAMAGE) <= 0) {
+			images.push({
+				image: "skull.png",
+				classes: ["skull"]
+			});
+		}
+
 		return (
 			<CardArt layers={images} scale={0.86} square={false} margin={false}
 				assetDirectory={this.props.assetDirectory}
