@@ -1,5 +1,5 @@
 import * as React from "react";
-import {CardClass, CardType, GameTag} from "../../../enums";
+import {CardClass, CardType, GameTag, Zone} from "../../../enums";
 import Entity from "../../../Entity";
 import CardArt from "./CardArt";
 import {EntityProps} from "../../../interfaces";
@@ -59,6 +59,13 @@ class HeroArt extends React.Component<HeroArtProps, {}> {
 			images.push({
 				image: image,
 				classes: ["secret"]
+			});
+		}
+
+		if (entity.getTag(GameTag.HEALTH) - entity.getTag(GameTag.DAMAGE) <= 0 || entity.getTag(GameTag.ZONE) != Zone.PLAY) {
+			images.push({
+				image: "skull.png",
+				classes: ["skull"]
 			});
 		}
 
