@@ -1,11 +1,15 @@
 import * as React from "react";
-import {CardType, GameTag} from "../../../enums";
+import {CardClass, CardType, GameTag} from "../../../enums";
 import Entity from "../../../Entity";
 import CardArt from "./CardArt";
 import {EntityProps} from "../../../interfaces";
 import InPlayCardArt from "./InPlayCardArt";
 
-class HeroArt extends React.Component<EntityProps, {}> {
+interface HeroArtProps extends EntityProps {
+	secrets: Immutable.Map<number, Entity>;
+}
+
+class HeroArt extends React.Component<HeroArtProps, {}> {
 	public render(): JSX.Element {
 		var images = [];
 		var entity = this.props.entity;
@@ -32,6 +36,29 @@ class HeroArt extends React.Component<EntityProps, {}> {
 			images.push({
 				image: "hero_armor.png",
 				classes: ["hero-armor"]
+			});
+		}
+
+		var secretCount = this.props.secrets.count();
+		if (secretCount > 0) {
+			var image = "secret_sheathed.png";
+			var secret = this.props.secrets.first();
+			if (!secret.getTag(GameTag.EXHAUSTED)) {
+				switch (secret.getClass()) {
+					case CardClass.HUNTER:
+						image = "secret_hunter.png";
+						break;
+					case CardClass.MAGE:
+						image = "secret_mage.png";
+						break;
+					case CardClass.PALADIN:
+						image = "secret_paladin.png";
+						break;
+				}
+			}
+			images.push({
+				image: image,
+				classes: ["secret"]
 			});
 		}
 
