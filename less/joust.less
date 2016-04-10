@@ -65,6 +65,12 @@
 	transition: background 0.8s;
 }
 
+.player.inactive {
+	.short, .tall {
+		filter: grayscale(75%) blur(3px);
+	}
+}
+
 .entity {
 	transition: box-shadow 0.15s, transform 0.15s;
 

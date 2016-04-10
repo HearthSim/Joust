@@ -15,7 +15,7 @@ import Weapon from "./Weapon";
 import Choices from "./Choices";
 import Rank from "./Rank";
 
-import {Zone, CardType, GameTag, ChoiceType} from "../../enums"
+import {Zone, CardType, GameTag, ChoiceType, Mulligan} from "../../enums"
 import {OptionCallbackProps, CardDataProps, CardOracleProps, AssetDirectoryProps, TextureDirectoryProps} from "../../interfaces";
 
 interface PlayerProps extends OptionCallbackProps, CardDataProps, CardOracleProps, AssetDirectoryProps, TextureDirectoryProps, React.Props<any> {
@@ -178,7 +178,11 @@ class Player extends React.Component<PlayerProps, {}> {
 			classNames.push('top');
 		}
 
-		if(this.props.isCurrent) {
+		if (this.props.choices) {
+			classNames.push('inactive');
+		}
+
+		if (this.props.isCurrent && this.props.player.getTag(GameTag.MULLIGAN_STATE) == Mulligan.DONE) {
 			classNames.push('current');
 		}
 
