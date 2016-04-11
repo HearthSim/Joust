@@ -15,7 +15,7 @@ import Weapon from "./Weapon";
 import Choices from "./Choices";
 import Rank from "./Rank";
 
-import {Zone, CardType, GameTag, ChoiceType, Mulligan} from "../../enums"
+import {Zone, CardType, GameTag, ChoiceType, Mulligan, PlayState} from "../../enums"
 import {OptionCallbackProps, CardDataProps, CardOracleProps, AssetDirectoryProps, TextureDirectoryProps} from "../../interfaces";
 
 interface PlayerProps extends OptionCallbackProps, CardDataProps, CardOracleProps, AssetDirectoryProps, TextureDirectoryProps, React.Props<any> {
@@ -186,9 +186,21 @@ class Player extends React.Component<PlayerProps, {}> {
 			classNames.push('current');
 		}
 
+		var gameresult = null;
+		switch (this.props.player.getTag(GameTag.PLAYSTATE)) {
+			case PlayState.WON:
+				gameresult = <div className="gameresult">Victory!</div>
+				classNames.push('inactive-colored');
+				break;
+			case PlayState.LOST:
+				classNames.push('inactive');
+				break;
+		}
+
 		if (this.props.isTop) {
 			return (
 				<div className={classNames.join(' ')}>
+					{gameresult}
 					{choices}
 					{tall}
 					{short}
@@ -198,6 +210,7 @@ class Player extends React.Component<PlayerProps, {}> {
 		else {
 			return (
 				<div className={classNames.join(' ')}>
+					{gameresult}
 					{choices}
 					{short}
 					{tall}
