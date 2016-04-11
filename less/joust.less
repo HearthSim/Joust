@@ -71,6 +71,12 @@
 	}
 }
 
+.player.inactive-colored {
+	.short, .tall {
+		filter: blur(3px);
+	}
+}
+
 .entity {
 	transition: box-shadow 0.15s, transform 0.15s;
 
@@ -148,7 +154,7 @@
 	}
 }
 
-.cost, .atk, .health, .durability, .armor, .secret-text {
+.cost, .atk, .health, .durability, .armor, .secret-text, .gameresult {
 	position: absolute;
 	display: block;
 	width: 20%;
@@ -163,6 +169,11 @@
 		1px -1px 0 #000,
 	-1px 1px 0 #000,
 	1px 1px 0 #000;
+}
+
+.gameresult {
+	font-size: 4em;
+	z-index: 100;
 }
 
 .atk, .health, .durability, .cost {
