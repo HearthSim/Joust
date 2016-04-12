@@ -68,18 +68,18 @@ class Viewer {
 		var tracker = new GameStateTracker();
 		var scrubber = new GameStateScrubber();
 		var sink = new GameStateSink();
-		var preloader = this.opts.textureDirectory ? new TexturePreloader(this.opts.textureDirectory) : undefined;
+		var preloader = new TexturePreloader(this.opts.textureDirectory, this.opts.assetDirectory);
 
 		var opts = URL.parse(url) as any;
 		opts.withCredentials = false;
 		var request = http.get(opts);
-		request.on('response', function(response: stream.Readable) {
+		request.on('response', (response: stream.Readable) => {
 			response
 				.pipe(decoder) // json -> mutators
 				.pipe(tracker) // mutators -> latest gamestate
 				.pipe(scrubber) // gamestate -> gamestate emit on scrub past
 				.pipe(sink); // gamestate
-			if(preloader) {
+			if(this.opts.textureDirectory) {
 				decoder.pipe(preloader);
 			}
 		});
@@ -87,7 +87,7 @@ class Viewer {
 			if (this.queryCardMetadata) {
 				this.queryCardMetadata(build, (cards: CardData[]) => {
 					this.ref.setCards(cards);
-					if(preloader) {
+					if(preloader.canPreload()) {
 						preloader.cards = this.ref.state.cards;
 						preloader.consume();
 					}

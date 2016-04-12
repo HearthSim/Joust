@@ -4,11 +4,16 @@ import Entity from "./Entity";
 
 class TexturePreloader extends Stream.Writable {
 	protected fired = {};
-	protected queue = ['GAME_005'];
+	protected textureQueue = ['GAME_005'];
 	protected images = [];
 	private working = 0;
+	protected assetQueue = ['cardback', 'hero_frame', 'hero_power', 'inhand_minion', 'inhand_spell', 'inhand_weapon',
+							'inhand_minion_legendary', 'mana_crystal', 'inplay_minion', 'effect_sleep',
+							'hero_power_exhausted', 'hero_armor', 'hero_attack', 'icon_deathrattle', 'icon_inspire',
+							'icon_poisonous', 'icon_trigger', 'inplay_minion_frozen', 'inplay_minion_legendary',
+							'inplay_minion_taunt', 'inplay_weapon', 'inplay_weapon_dome'];
 
-	constructor(public textureDirectory?: string, public cards?: Immutable.Map<string, CardData>) {
+	constructor(public textureDirectory?: string, public assetDirectory?: string, public cards?: Immutable.Map<string, CardData>) {
 		super({objectMode: true});
 		this.consume();
 	}
@@ -26,7 +31,7 @@ class TexturePreloader extends Stream.Writable {
 		id = id || mutator.cardId;
 
 		if(id) {
-			this.queue.push(id);
+			this.textureQueue.push(id);
 			this.consume();
 		}
 
@@ -39,7 +44,7 @@ class TexturePreloader extends Stream.Writable {
 			return;
 		}
 
-		if(!this.textureDirectory || !this.cards || !this.queue.length) {
+		if((!this.textureDirectory || !this.cards || !this.textureQueue.length) && (!this.assetDirectory || !this.assetQueue.length)) {
 			return;
 		}
 
@@ -50,31 +55,39 @@ class TexturePreloader extends Stream.Writable {
 			this.consume();
 		};
 
-		let cardId = this.queue.shift();
+		let file = this.assetQueue.shift();
+		if (!!this.assetDirectory && file) {
+			file = this.assetDirectory + 'images/' + file + '.png';
+		}
+		else {
+			let cardId = this.textureQueue.shift();
+			if (!this.cards.get(cardId)) {
+				console.warn('No texture for ' + cardId + ' to preload');
+				next();
+				return;
+			}
+			file = this.textureDirectory + this.cards.get(cardId).texture + '.jpg';
+		}
 
-		if(!this.cards.get(cardId)) {
-			console.warn('No texture for ' + cardId + ' to preload');
+		if (this.fired[file]) {
 			next();
 			return;
 		}
 
-		let texture = this.textureDirectory + this.cards.get(cardId).texture + '.jpg';
-
-		if(this.fired[texture]) {
-			next();
-			return;
-		}
-
-		this.fired[texture] = true;
+		this.fired[file] = true;
 
 		let image = new Image;
 		image.onload = next;
 		image.onerror = next;
-		image.src = texture;
+		image.src = file;
 		this.images[this.images.length] = image;
 
 		// attempt next consumption immediately
 		this.consume();
+	}
+
+	public canPreload(): boolean {
+		return !!this.assetDirectory || !!this.textureDirectory;
 	}
 }
 
