@@ -297,11 +297,62 @@ div.visuals {
 	width: 100%;
 }
 
-.joust-message {
-	width: 100%;
-	text-align: center;
-	font-family: sans-serif;
+.loading-screen {
+	position: relative;
+	display: flex;
+	flex-direction: column;
 	margin: auto;
+	color: white;
+	font-family: "Belwe Bd BT";
+	text-shadow: -1px -1px 0 #000,
+		1px -1px 0 #000,
+	-1px 1px 0 #000,
+	1px 1px 0 #000;
+
+	@keyframes rotate {
+		from {
+			-webkit-transform: rotate(0deg);
+		}
+		to {
+			-webkit-transform: rotate(360deg);
+		}
+	}
+
+	.logo {
+		width: 8em;
+		position: relative;
+		margin: 2em auto;
+		animation-name: rotate;
+		animation-duration: 3s;
+		animation-iteration-count:  infinite;
+		animation-timing-function: ease;
+	}
+
+	.info {
+		height: 1em;
+		font-size: 2em;
+		margin: auto;
+		position: relative;
+		display: flex;
+		flex-direction: row;
+
+		.left {
+			text-align: right;
+			width: 8em;
+		}
+		.center {
+			text-align: center;
+			margin-left: 1em;
+			margin-right: 1em;
+		}
+		.right {
+			text-align: left;
+			width: 8em;
+		}
+	}
+	.joust-message {
+		font-size: 1.5em;
+	}
 }
 
 .deck {

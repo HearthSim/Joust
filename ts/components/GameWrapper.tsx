@@ -2,7 +2,7 @@ import * as React from "react";
 import {CardDataProps} from "../interfaces";
 import GameState from "../state/GameState";
 import TwoPlayerGame from "./game/TwoPlayerGame";
-import {CardType, OptionType} from "../enums";
+import {CardType, OptionType, GameTag} from "../enums";
 import Entity from "../Entity";
 import Option from "../Option";
 import PlayerEntity from "../Player";
@@ -25,11 +25,17 @@ class GameWrapper extends React.Component<GameWrapperProps, {}> {
 
 	private hasCheckedForSwap = false;
 	private swapPlayers = false;
+	private lastLog: string;
+	private currentMessage: string;
+	private lastUpdate = 0;
+	private messages = ['Sorting decks...', 'Painting cards...', 'Calculating lethal...', 'Calling customer service...',
+		'SMOrc', 'Verifying the face is the place...', 'Summoning heroes...', 'Nerfing cards...', 'Buffing cards...'];
 
 	public render(): JSX.Element {
 		var gameState = this.props.state;
 		if (!gameState) {
-			return <p className="joust-message">Waiting for game state&hellip; </p>;
+			this.log('Waiting for game state...');
+			return this.getLoadingScreen();
 		}
 
 		var entityTree = gameState.getEntityTree();
@@ -38,27 +44,32 @@ class GameWrapper extends React.Component<GameWrapperProps, {}> {
 		// check if any entites are present
 		var allEntities = gameState.getEntities();
 		if (!allEntities) {
-			return <p className="joust-message">Waiting for entities&hellip; </p>;
+			this.log('Waiting for entities...');
+			return this.getLoadingScreen();
 		}
 
 		// find the game entity
 		var game = allEntities.filter(GameWrapper.filterByCardType(CardType.GAME)).first();
 		if (!game) {
-			return <p className="joust-message">Waiting for game&hellip; </p>;
+			this.log('Waiting for game...');
+			return this.getLoadingScreen();
 		}
 
 		// find the players
 		var players = allEntities.filter(GameWrapper.filterByCardType(CardType.PLAYER)) as Immutable.Iterable<number, PlayerEntity>;
 		if (players.count() == 0) {
-			return <p className="joust-message">Waiting for players&hellip; </p>;
+			this.log('Waiting for players...');
+			return this.getLoadingScreen(players);
 		}
 
 		if (this.props.preloader && !this.props.preloader.assetsReady()) {
-			return <p className="joust-message">Waiting for assets&hellip; </p>;
+			this.log('Waiting for assets...');
+			return this.getLoadingScreen(players);
 		}
 
 		if (this.props.preloader && !this.props.preloader.texturesReady()) {
-			return <p className="joust-message">Waiting for textures&hellip; </p>;
+			this.log('Waiting for textures...');
+			return this.getLoadingScreen(players);
 		}
 
 		// check if we need to swap the players
@@ -110,6 +121,35 @@ class GameWrapper extends React.Component<GameWrapperProps, {}> {
 			return !!entity && entity.getCardType() === cardType;
 		};
 	};
+
+	private getLoadingScreenMessage(): string {
+		var now = new Date().getTime();
+		if (!!this.messages.length && (now - this.lastUpdate) > 3000) {
+			var index = Math.floor(Math.random()*this.messages.length);
+			this.currentMessage = this.messages.splice(index, 1)[0];
+			this.lastUpdate = now;
+		}
+		return this.currentMessage;
+	}
+
+	private getLoadingScreen(players?: Immutable.Iterable<number, PlayerEntity>): JSX.Element {
+		return 	<div className="loading-screen">{players ?
+			<div className="info">
+				<span className="left">{players.first().getName()}</span>
+				<span className="center">VS</span>
+				<span className="right">{players.last().getName()}</span>
+			</div> : <div className="info"/>}
+			<img className="logo" src={this.props.assetDirectory + 'images/logo.png'} />
+			<span className="info joust-message">{this.getLoadingScreenMessage()}</span>
+		</div>;
+	}
+
+	private log(message: string) {
+		if (message != this.lastLog) {
+			console.debug(message);
+			this.lastLog = message;
+		}
+	}
 }
 
 export default GameWrapper;
