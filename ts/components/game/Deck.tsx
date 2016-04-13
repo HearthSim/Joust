@@ -35,6 +35,13 @@ class Deck extends EntityList<DeckProps> {
 				</figure>
 			</div>);
 	}
+
+	public shouldComponentUpdate(nextProps: DeckProps, nextState) {
+		return (
+			this.props.fatigue !== nextProps.fatigue ||
+			super.shouldComponentUpdate(nextProps, nextState)
+		);
+	}
 }
 
 export default Deck;
