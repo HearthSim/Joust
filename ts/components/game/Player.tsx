@@ -44,6 +44,9 @@ class Player extends React.Component<PlayerProps, {}> {
 
 		/* Equipment */
 		var heroEntity = playEntities.filter(filterByCardType(CardType.HERO)).first();
+		if (!heroEntity) {
+			heroEntity = (this.props.entities.get(Zone.GRAVEYARD) || Immutable.Map<number, Entity>()).filter(filterByCardType(CardType.HERO)).first();
+		}
 		var hero = <Hero entity={heroEntity}
 			option={heroEntity ? playOptions.get(heroEntity.getId()) : null}
 			secrets={this.props.entities.get(Zone.SECRET) || Immutable.Map<number, Entity>() }
