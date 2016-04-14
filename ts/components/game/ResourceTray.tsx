@@ -14,6 +14,8 @@ class ResourceTray extends React.Component<ResourceTrayProps, {}> {
 		let resources = this.props.player.getTag(GameTag.RESOURCES) + this.props.player.getTag(GameTag.TEMP_RESOURCES);
 		let available = resources - this.props.player.getTag(GameTag.RESOURCES_USED);
 		let locked = this.props.player.getTag(GameTag.OVERLOAD_LOCKED);
+		var crystalStyle = {};
+		crystalStyle['width'] = 100 / resources +'%';
 		for (let i = 0; i < this.props.player.getTag(GameTag.MAXRESOURCES); i++) {
 			var crystalClassNames = ['crystal'];
 			if (i < available) {
@@ -30,7 +32,7 @@ class ResourceTray extends React.Component<ResourceTrayProps, {}> {
 			else {
 				crystalClassNames.push('hidden');
 			}
-			crystals.push(<img src={this.props.assetDirectory + 'images/mana_crystal.png'} key={i} className={crystalClassNames.join(' ') }/>);
+			crystals.push(<img src={this.props.assetDirectory + 'images/mana_crystal.png'} key={i} className={crystalClassNames.join(' ')} style={crystalStyle}/>);
 		}
 		return	<div className="tray">
 					<span>{available}/{resources}</span>
