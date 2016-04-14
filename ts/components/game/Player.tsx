@@ -14,6 +14,7 @@ import Field from "./Field";
 import Weapon from "./Weapon";
 import Choices from "./Choices";
 import Rank from "./Rank";
+import ResourceTray from "./ResourceTray";
 
 import {Zone, CardType, GameTag, ChoiceType} from "../../enums"
 import {OptionCallbackProps, CardDataProps, CardOracleProps, AssetDirectoryProps, TextureDirectoryProps} from "../../interfaces";
@@ -125,33 +126,7 @@ class Player extends React.Component<PlayerProps, {}> {
 			textureDirectory={this.props.textureDirectory}
 			/>;
 
-		var crystals = [];
-		let resources = this.props.player.getTag(GameTag.RESOURCES) + this.props.player.getTag(GameTag.TEMP_RESOURCES);
-		let available = resources - this.props.player.getTag(GameTag.RESOURCES_USED);
-		for (let i = 0; i < this.props.player.getTag(GameTag.MAXRESOURCES); i++) {
-			var crystalClassNames = ['crystal'];
-			if (i < available) {
-				crystalClassNames.push('full');
-			}
-			else if (i < resources) {
-				if (i >= resources - this.props.player.getTag(GameTag.OVERLOAD_LOCKED)) {
-					crystalClassNames.push('locked');
-				}
-				else {
-					crystalClassNames.push('empty');
-				}
-			}
-			else {
-				crystalClassNames.push('hidden');
-			}
-			crystals.push(<img src={this.props.assetDirectory + 'images/mana_crystal.png'} key={i} className={crystalClassNames.join(' ') }></img>);
-		}
-		var tray = (
-			<div className="tray">
-				<span>{available}/{resources}</span>
-				{crystals}
-			</div>
-		);
+		var tray = <ResourceTray player={this.props.player} assetDirectory={this.props.assetDirectory} />;
 
 		let tall = <section className="tall">
 			{hand}

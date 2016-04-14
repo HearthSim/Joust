@@ -219,57 +219,46 @@ div.visuals {
 	font-family: "Belwe Bd BT";
 	height: 1.4em;
 	padding: 0.1em;
-	background-color: rgba(0, 0, 0, 0.3);
 	align-self: center;
 
 	> span {
-		width: 3.3em;
+		width: 3em;
+		flex-shrink: 0;
 		color: white;
 		font-size: 0.8em;
-		height: 2.5em;
+		height: 100%;
 		text-align: center;
-		line-height: 2.5em;
 		align-self: center;
 		text-shadow: -1px -1px 0 #000,
 			1px -1px 0 #000,
 		-1px 1px 0 #000,
 		1px 1px 0 #000;
 	}
+	.crystals {
+		width: 100% - 3.2em;
+		margin-left: 0.2em;
+		.crystal {
+			height: 1.2em;
+			width: 10%;
+			max-width: 1.2em;
+			opacity: 1;
+			transition: filter 400ms linear, opacity 400ms linear;
 
-	.crystal {
-		position: relative;
-		height: 1.2em;
-		width: 1.2em;
-		opacity: 1;
-		-webkit-transition: -webkit-filter 400ms linear, opacity 400ms linear;
-		-moz-transition: -moz-filter 400ms linear, opacity 400ms linear;
-		-o-transition: -o-filter 400ms linear, opacity 400ms linear;
-		-ms-transition: opacity 400ms linear;
-		transition: filter 400ms linear, opacity 400ms linear;
+			&.full {
+				filter: brightness(100%);
+			}
 
-		&.full {
-			-webkit-filter: brightness(100%);
-			-moz-filter: brightness(100%);
-			-o-filter: brightness(100%);
-			filter: brightness(100%);
-		}
+			&.empty {
+				filter: brightness(50%);
+			}
 
-		&.empty {
-			-webkit-filter: brightness(50%);
-			-moz-filter: brightness(50%);
-			-o-filter: brightness(50%);
-			filter: brightness(50%);
-		}
+			&.hidden {
+				opacity: 0;
+			}
 
-		&.hidden {
-			opacity: 0;
-		}
-
-		&.locked {
-			-webkit-filter: grayscale(100%);
-			-moz-filter: grayscale(100%);
-			-o-filter: grayscale(100%);
-			filter: grayscale(100%);
+			&.locked {
+				filter: grayscale(100%);
+			}
 		}
 	}
 }
