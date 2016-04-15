@@ -18,6 +18,7 @@ interface CardProps extends EntityProps, OptionProps, CardDataProps, React.Props
 	connectDragSource?(react: React.ReactElement<CardProps>);
 	dragging?: boolean;
 	isHidden?: boolean;
+	defaultStats?: boolean;
 }
 
 class Card extends React.Component<CardProps, {}> {
@@ -89,7 +90,7 @@ class Card extends React.Component<CardProps, {}> {
 				var attack = <Attack attack={!this.props.isHidden ? entity.getAtk() : defaultAttack}
 					default={defaultAttack}/>;
 				var health = <Health health={!this.props.isHidden ? entity.getHealth() : defaultHealth}
-					damage={entity.getDamage() }
+					damage={this.props.defaultStats ? 0 : entity.getDamage()}
 					default={defaultHealth}/>;
 				stats = <div className="stats">{attack}{health}</div>;
 				break;
@@ -97,7 +98,7 @@ class Card extends React.Component<CardProps, {}> {
 				var attack = <Attack attack={!this.props.isHidden ? entity.getAtk() : defaultAttack}
 					default={defaultAttack}/>;
 				var durability = <div
-					className="durability">{!this.props.isHidden ? entity.getDurability() : defaultDurability}</div>;
+					className="durability">{!this.props.isHidden && !this.props.defaultStats ? entity.getDurability() : defaultDurability}</div>;
 				stats = <div className="stats">{attack}{durability}</div>;
 				textStyle = { color: "white" };
 		}
