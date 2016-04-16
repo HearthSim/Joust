@@ -174,6 +174,24 @@ class Card extends React.Component<CardProps, {}> {
 		description = description.replace(/#(\d+)/g, modifier(0, healingDoubling));
 		return description;
 	}
+
+	public shouldComponentUpdate(nextProps: CardProps, nextState) {
+		return (
+			this.props.option !== nextProps.option ||
+			this.props.isHidden !== nextProps.isHidden ||
+			this.props.entity.getTag(GameTag.COMBO) !== nextProps.entity.getTag(GameTag.COMBO) ||
+			this.props.entity.getTag(GameTag.POWERED_UP) !== nextProps.entity.getTag(GameTag.POWERED_UP) ||
+			this.props.entity.getTag(GameTag.ATK) !== nextProps.entity.getTag(GameTag.ATK) ||
+			this.props.entity.getTag(GameTag.HEALTH) !== nextProps.entity.getTag(GameTag.HEALTH) ||
+			this.props.entity.getTag(GameTag.DAMAGE) !== nextProps.entity.getTag(GameTag.DAMAGE) ||
+			this.props.entity.getTag(GameTag.COST) !== nextProps.entity.getTag(GameTag.COST) ||
+			this.props.controller.getTag(GameTag.CURRENT_SPELLPOWER) !== nextProps.controller.getTag(GameTag.CURRENT_SPELLPOWER) ||
+			this.props.controller.getTag(GameTag.SPELLPOWER_DOUBLE) !== nextProps.controller.getTag(GameTag.SPELLPOWER_DOUBLE) ||
+			this.props.controller.getTag(GameTag.HEALING_DOUBLE) !== nextProps.controller.getTag(GameTag.HEALING_DOUBLE) ||
+			this.props.controller.getTag(GameTag.CURRENT_HEROPOWER_DAMAGE_BONUS) !== nextProps.controller.getTag(GameTag.CURRENT_HEROPOWER_DAMAGE_BONUS) ||
+			this.props.controller.getTag(GameTag.HERO_POWER_DOUBLE) !== nextProps.controller.getTag(GameTag.HERO_POWER_DOUBLE)
+		);
+	}
 }
 
 export default DragSource('card', {
