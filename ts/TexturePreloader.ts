@@ -7,6 +7,9 @@ class TexturePreloader extends Stream.Writable {
 	protected textureQueue = ['GAME_005'];
 	protected images = [];
 	private working = 0;
+	private assetCount = 0;
+	private textureCount = 0;
+	private heroPowerCount = 0;
 	protected assetQueue = ['cardback', 'hero_frame', 'hero_power', 'inhand_minion', 'inhand_spell', 'inhand_weapon',
 							'inhand_minion_legendary', 'mana_crystal', 'inplay_minion', 'effect_sleep',
 							'hero_power_exhausted', 'hero_armor', 'hero_attack', 'icon_deathrattle', 'icon_inspire',
@@ -55,18 +58,23 @@ class TexturePreloader extends Stream.Writable {
 			this.consume();
 		};
 
+		let isAsset = false;
+		let isHeroPower = false;
 		let file = this.assetQueue.shift();
 		if (!!this.assetDirectory && file) {
 			file = this.assetDirectory + 'images/' + file + '.png';
+			isAsset = true;
 		}
 		else {
 			let cardId = this.textureQueue.shift();
-			if (!this.cards.get(cardId)) {
+			let card = this.cards.get(cardId);
+			if (!card) {
 				console.warn('No texture for ' + cardId + ' to preload');
 				next();
 				return;
 			}
-			file = this.textureDirectory + this.cards.get(cardId).texture + '.jpg';
+			isHeroPower = card.type == 'HERO_POWER'
+			file = this.textureDirectory + card.texture + '.jpg';
 		}
 
 		if (this.fired[file]) {
@@ -76,9 +84,22 @@ class TexturePreloader extends Stream.Writable {
 
 		this.fired[file] = true;
 
+		let updateProgress = (asset: boolean, heroPower: boolean) => {
+			if (asset) {
+				this.assetCount++;
+			}
+			else {
+				this.textureCount++;
+				if (heroPower) {
+					this.heroPowerCount++;
+				}
+			}
+			next();
+		};
+
 		let image = new Image;
-		image.onload = next;
-		image.onerror = next;
+		image.onload =() => updateProgress(isAsset, isHeroPower);
+		image.onerror = () => updateProgress(isAsset, isHeroPower);
 		image.src = file;
 		this.images[this.images.length] = image;
 
@@ -88,6 +109,14 @@ class TexturePreloader extends Stream.Writable {
 
 	public canPreload(): boolean {
 		return !!this.assetDirectory || !!this.textureDirectory;
+	}
+
+	public texturesReady(): boolean {
+		return (this.textureCount > 20 || !this.working) && this.heroPowerCount > 1;
+	}
+
+	public assetsReady(): boolean {
+		return this.assetCount > 10 || !this.working;
 	}
 }
 

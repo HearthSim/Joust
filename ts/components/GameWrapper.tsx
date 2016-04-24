@@ -8,9 +8,11 @@ import Option from "../Option";
 import PlayerEntity from "../Player";
 import {InteractiveBackend, CardOracleProps, AssetDirectoryProps, TextureDirectoryProps} from "../interfaces";
 import {Zone} from "../enums";
+import TexturePreloader from "../TexturePreloader";
 
 interface GameWrapperProps extends CardDataProps, CardOracleProps, AssetDirectoryProps, TextureDirectoryProps, React.Props<any> {
 	state: GameState;
+	preloader?: TexturePreloader;
 	interaction?: InteractiveBackend;
 	swapPlayers?: boolean;
 }
@@ -49,6 +51,14 @@ class GameWrapper extends React.Component<GameWrapperProps, {}> {
 		var players = allEntities.filter(GameWrapper.filterByCardType(CardType.PLAYER)) as Immutable.Iterable<number, PlayerEntity>;
 		if (players.count() == 0) {
 			return <p className="joust-message">Waiting for players&hellip; </p>;
+		}
+
+		if (this.props.preloader && !this.props.preloader.assetsReady()) {
+			return <p className="joust-message">Waiting for assets&hellip; </p>;
+		}
+
+		if (this.props.preloader && !this.props.preloader.texturesReady()) {
+			return <p className="joust-message">Waiting for textures&hellip; </p>;
 		}
 
 		// check if we need to swap the players

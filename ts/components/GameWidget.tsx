@@ -125,6 +125,7 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 			assetDirectory={this.props.assetDirectory} textureDirectory={this.props.textureDirectory}
 			cards={this.state.cards} swapPlayers={this.state.swapPlayers}
 			cardOracle={this.state.isRevealingCards && this.state.cardOracle}
+			preloader={this.props.preloader}
 			/>);
 
 		if (this.props.scrubber) {
