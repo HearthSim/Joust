@@ -162,6 +162,8 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 					// force termination
 					this.gameId = 1;
 				}
+				// force checkpoint
+				this.push(new IncrementTimeMutator(0));
 				break;
 			case 'GameEntity':
 			case 'FullEntity':
