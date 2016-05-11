@@ -157,7 +157,6 @@ class Player extends React.Component<PlayerProps, {}> {
 		);
 
 		let tall = <section className="tall">
-			{hand}
 			<div className="equipment">
 				<section>
 					{hero}
@@ -168,11 +167,12 @@ class Player extends React.Component<PlayerProps, {}> {
 				</section>
 				{tray}
 			</div>
+			{hand}
 		</section>;
 
 		let short = <section className="short">
-			{field}
 			{deck}
+			{field}
 		</section>;
 
 		let classNames = ['player'];
