@@ -7,6 +7,7 @@ interface TurnProps extends React.Props<any> {
 	mulligan?: boolean;
 	totalDuration: number;
 	duration: number;
+	turnNumber?: number;
 }
 
 class Turn extends React.Component<TurnProps, {}> {
@@ -31,7 +32,7 @@ class Turn extends React.Component<TurnProps, {}> {
 			classNames.push('mulligan');
 		}
 
-		return <div className={classNames.join(' ') } style={style}></div>;
+		return <div className={classNames.join(' ') } style={style}>{!this.props.mulligan && (this.props.turnNumber % 2) ? Math.floor(this.props.turnNumber / 2) + 1 : null}</div>;
 	}
 }
 

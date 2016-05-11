@@ -1,4 +1,9 @@
 @scrubber-height: 35px;
+@scrubber-inactive-border-color: gray;
+@scrubber-inactive-border-width: 1px;
+@scrubber-active-border-color: black;
+@scrubber-active-border-width: 2px;
+@scrubber-seeker-width: 2px;
 
 .joust-scrubber {
 	height: @scrubber-height;
@@ -11,11 +16,14 @@
 	}
 
 	button, select {
-		color: white;
+		color: black;
 		height: @scrubber-height;
-		background-color: gray;
+		background-color: white;
 		border: none;
 		margin: 0 1px 0 0;
+		border: solid 1px black;
+		border-radius: 2px;
+		margin: 0 4px;
 
 		&:last-child {
 			margin-right: 0;
@@ -31,10 +39,13 @@
 .joust-scrubber-timeline {
 	position: relative;
 	flex: 1;
-	background-color: gray;
+	background-color: white;
 	margin-right: 1px;
 	height: 100%;
 	width: 100%;
+	border: solid @scrubber-inactive-border-width @scrubber-inactive-border-color;
+	border-top: none;
+	border-bottom: none;
 }
 
 .joust-scrubber-progress {
@@ -43,12 +54,15 @@
 	left: 0;
 	height: 100%;
 	z-index: 1002;
-	background-color: #ccc;
-	mix-blend-mode: saturation;
+	//background-color: #ccc;
+	//mix-blend-mode: saturation;
+	border-right: solid @scrubber-seeker-width black;
 
 	&.inverse {
 		left: auto;
 		right: 0;
+		border-right: none;
+		border-left: solid @scrubber-seeker-width black;
 	}
 }
 
@@ -56,17 +70,28 @@
 	display: inline-block;
 	z-index: 1001;
 	height: 100%;
+	border-top: solid @scrubber-inactive-border-width @scrubber-inactive-border-color;
+	border-bottom: solid @scrubber-inactive-border-width @scrubber-inactive-border-color;
+	vertical-align: top;
+	//border-left: dotted 1px lightgray;
+
+	padding: 2px 4px;
+	font-family: sans-serif;
 
 	&.mulligan {
-		background-color: lightgreen;
+		//background-color: lightgreen;
 	}
 
 	&.primary {
-		background-color: lighten(dodgerblue, 15);
+		border-bottom-color: @scrubber-active-border-color;
+		border-bottom-width: @scrubber-active-border-width;
+		//background-color: lighten(dodgerblue, 15);
 	}
 
 	&.secondary {
-		background-color: lighten(crimson, 20);
+		border-top-color: @scrubber-active-border-color;
+		border-top-width: @scrubber-active-border-width;
+		//background-color: lighten(crimson, 20);
 	}
 
 	&.primary + &.primary, &.secondary + &.secondary {
