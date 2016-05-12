@@ -3,6 +3,7 @@ import EntityInPlay from "./EntityInPlay";
 import {EntityInPlayProps} from "../../interfaces";
 import {GameTag} from "../../enums";
 import InPlayCardArt from "./visuals/InPlayCardArt";
+import Card from "./Card";
 
 import Attack from "./stats/Attack";
 import Health from "./stats/Health";
@@ -37,6 +38,17 @@ class Minion extends EntityInPlay<EntityInPlayProps, {}> {
 			<div key="stats" className="stats">
 				<Attack attack={entity.getAtk() } default={data.attack}/>
 				<Health health={entity.getHealth() } damage={entity.getDamage() } default={data.health}/>
+			</div>,
+			<div className="mouse-over">
+				<Card entity={entity}
+					  option={undefined}
+					  assetDirectory={this.props.assetDirectory}
+					  cards={this.props.cards}
+					  isHidden={false}
+					  controller={this.props.controller}
+					  textureDirectory={this.props.textureDirectory}
+					  defaultStats={true}
+				/>
 			</div>
 		];
 	}
