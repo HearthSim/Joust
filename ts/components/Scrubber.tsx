@@ -148,12 +148,22 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 				<i className="joust-fa joust-fa-eye"></i>
 			</button>;
 
+		var rewind = <button onClick={this.rewind.bind(this) } disabled={!this.state.canRewind} title="Rewind">
+			<i className="joust-fa joust-fa-fast-backward"></i>
+		</button>;
+
+		var swap = <button onClick={this.props.swapPlayers} disabled={!this.state.canInteract} title="Swap players">
+			<i className="joust-fa joust-fa-unsorted"></i>
+		</button>;
+
 		return (
 			<div className="joust-scrubber">
 				{playpause}
-				<button onClick={this.rewind.bind(this) } disabled={!this.state.canRewind} title="Rewind">
-					<i className="joust-fa joust-fa-fast-backward"></i>
-				</button>
+				<SpeedSelector speed={this.state.speed}
+							   speeds={[1, 1.5, 2, 4, 8, 16]}
+							   selectSpeed={this.selectSpeed}
+							   disabled={!this.state.canInteract}
+				/>
 				<Timeline duration={this.props.scrubber.getDuration() }
 					at={this.props.scrubber.getCurrentTime() }
 					seek={this.props.scrubber.seek.bind(this.props.scrubber) }
@@ -161,15 +171,8 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 					swapPlayers={this.props.isSwapped}
 					ref={(inhibitor) => this.props.scrubber.setInhibitor(inhibitor) }
 					/>
-				<SpeedSelector speed={this.state.speed}
-					speeds={[1, 1.5, 2, 4, 8, 16]}
-					selectSpeed={this.selectSpeed}
-					disabled={!this.state.canInteract}
-					/>
+				{swap}
 				{reveal}
-				<button onClick={this.props.swapPlayers} disabled={!this.state.canInteract} title="Swap players">
-					<i className="joust-fa joust-fa-unsorted"></i>
-				</button>
 				{fullscreen}
 			</div>
 		);
