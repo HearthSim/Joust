@@ -152,8 +152,13 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 			}
 		}
 
+		var classes = ['joust-widget', 'game-widget'];
+		if(this.state.isFullscreen) {
+			classes.push('joust-fullscreen');
+		}
+
 		return (
-			<div className="joust-widget game-widget" ref={(ref) => this.ref = ref} style={style}>
+			<div className={classes.join(' ')} ref={(ref) => this.ref = ref} style={style}>
 				{parts}
 			</div>
 		);
