@@ -5,6 +5,7 @@
 @scrubber-active-border-width: 2px;
 @scrubber-seeker-width: 2px;
 @scrubber-margin-top: 5px;
+@scrubber-component-margin: 4px;
 
 .joust-scrubber {
 	height: @scrubber-height;
@@ -21,19 +22,18 @@
 		color: black;
 		height: @scrubber-height;
 		background-color: white;
-		border: none;
-		margin: 0 1px 0 0;
 		border: solid 1px black;
 		border-radius: 2px;
-		margin: 0 4px;
+		margin: 0 @scrubber-component-margin;
 
 		&:last-child {
 			margin-right: 0;
 		}
 
 		&:disabled {
-			color: rgba(255, 255, 255, 0.5);
-			background-color: lighten(gray, 10);
+			color: gray;
+			background-color: #ddd;
+			border-color: gray;
 		}
 	}
 }
@@ -42,7 +42,7 @@
 	position: relative;
 	flex: 1;
 	background-color: white;
-	margin-right: 1px;
+	margin: 0 @scrubber-component-margin;
 	height: 100%;
 	width: 100%;
 	border: solid @scrubber-inactive-border-width @scrubber-inactive-border-color;
