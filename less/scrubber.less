@@ -4,12 +4,14 @@
 @scrubber-active-border-color: black;
 @scrubber-active-border-width: 2px;
 @scrubber-seeker-width: 2px;
+@scrubber-margin-top: 5px;
 
 .joust-scrubber {
 	height: @scrubber-height;
 	display: flex;
 	flex-direction: row;
 	z-index: 1000;
+	margin-top: @scrubber-margin-top;
 
 	button {
 		width: @scrubber-height;

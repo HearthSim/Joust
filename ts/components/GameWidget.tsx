@@ -118,7 +118,7 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 		var parts = [];
 
 		if (this.props.exitGame) {
-			parts.push(<a key="exit" href="#" onClick={this.onClickExit.bind(this) }>Exit Game</a>);
+			parts.push(<div id="joust-quit"><a key="exit" href="#" onClick={this.onClickExit.bind(this) }>Exit Game</a></div>);
 		}
 
 		parts.push(<GameWrapper key="game" state={this.state.gameState} interaction={this.props.interaction}

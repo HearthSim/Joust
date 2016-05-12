@@ -50,7 +50,7 @@
 	overflow: hidden;
 	background-color: #dbd9ce;
 	width: 100%;
-	height: calc(100% - 35px);
+	height: calc(100% - (@scrubber-height + @scrubber-margin-top));
 	font-size: 2vh;
 }
 
@@ -334,4 +334,10 @@ div.visuals {
 			filter: grayscale(100%);
 		}
 	}
+}
+
+#joust-quit {
+	position: absolute;
+	top: 0;
+	right: 0;
 }
