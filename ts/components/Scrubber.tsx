@@ -6,6 +6,7 @@ import SpeedSelector from "./SpeedSelector";
 interface ScrubberProps extends React.Props<any> {
 	scrubber: StreamScrubber;
 	swapPlayers?: () => void;
+	isSwapped?: boolean;
 	isFullscreen?: boolean;
 	isFullscreenAvailable?: boolean;
 	onClickFullscreen?: () => void;
@@ -157,6 +158,7 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 					at={this.props.scrubber.getCurrentTime() }
 					seek={this.props.scrubber.seek.bind(this.props.scrubber) }
 					turnMap={this.props.scrubber.getHistory().turnMap}
+					swapPlayers={this.props.isSwapped}
 					ref={(inhibitor) => this.props.scrubber.setInhibitor(inhibitor) }
 					/>
 				<SpeedSelector speed={this.state.speed}

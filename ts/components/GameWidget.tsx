@@ -130,6 +130,7 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 		if (this.props.scrubber) {
 			parts.push(<Scrubber key="scrubber" scrubber={this.props.scrubber}
 				swapPlayers={() => this.setState({ swapPlayers: !this.state.swapPlayers }) }
+				isSwapped={this.state.swapPlayers}
 				isFullscreen={this.state.isFullscreen}
 				isFullscreenAvailable={this.state.isFullscreenAvailable}
 				onClickFullscreen={() => this.fullscreen.request() }
