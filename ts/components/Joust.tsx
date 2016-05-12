@@ -70,13 +70,10 @@ class Joust extends React.Component<{}, JoustState> {
 
 		return (
 			<div className="joust">
-				<h1>Joust</h1>
 				{widget}
 				<footer>
 					<p>
-						Not affiliated with Blizzard.Get Hearthstone at
-						<a href="battle.net/hearthstone/">Battle.net</a>
-						.
+						Not affiliated with Blizzard. Get Hearthstone at <a href="battle.net/hearthstone/">Battle.net</a>.
 					</p>
 				</footer>
 			</div>
