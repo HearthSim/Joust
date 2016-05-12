@@ -9,6 +9,7 @@ import GameStateSink from "./state/GameStateSink";
 import GameStateScrubber from "./state/GameStateScrubber";
 import GameStateHistory from "./state/GameStateHistory";
 import Player from "./Player";
+import TexturePreloader from "./TexturePreloader";
 
 export interface DropTargetProps {
 	connectDropTarget?(jsx);
@@ -154,6 +155,7 @@ export interface GameWidgetProps extends AssetDirectoryProps, TextureDirectoryPr
 	getImageURL?: (cardId: string) => string;
 	exitGame?: () => void;
 	cardOracle: CardOracle;
+	preloader?: TexturePreloader;
 	width?: any;
 	height?: any;
 }

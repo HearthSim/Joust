@@ -98,6 +98,9 @@ class Viewer {
 		this.opts.sink = sink;
 		this.opts.scrubber = scrubber;
 		this.opts.cardOracle = decoder;
+		if (preloader.canPreload()) {
+			this.opts.preloader = preloader;
+		}
 
 		this.render();
 	}
