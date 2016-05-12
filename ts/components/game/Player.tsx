@@ -192,7 +192,7 @@ class Player extends React.Component<PlayerProps, {}> {
 		var gameresult = null;
 		switch (this.props.player.getTag(GameTag.PLAYSTATE)) {
 			case PlayState.WON:
-				gameresult = <div className="gameresult">Victory!</div>
+				gameresult = <div className="gameresult">{this.props.player.getName()} wins!</div>;
 				classNames.push('inactive-colored');
 				break;
 			case PlayState.LOST:
