@@ -139,7 +139,7 @@ class Timeline extends React.Component<TimelineProps, TimelineState> implements 
 			return <Turn key={turn} state={current} invert={this.props.swapPlayers} duration={duration} totalDuration={this.props.duration} turnNumber={turn} />;
 		}).toArray();
 
-		let width = 100 - 100 / this.props.duration * this.props.at;
+		let width = 100 / this.props.duration * this.props.at;
 
 		return (
 			<div className="joust-scrubber-timeline"
@@ -148,9 +148,9 @@ class Timeline extends React.Component<TimelineProps, TimelineState> implements 
 				onMouseDown={this.onMouseDown.bind(this) }
 				onTouchStart={this.onTouchStart.bind(this) }
 				>
+				<div className="joust-scrubber-progress" style={{ width: width + '%' }}></div>
 				{mulligan}
 				{turns}
-				<div className="joust-scrubber-progress inverse" style={{ width: width + '%' }}></div>
 			</div>
 		);
 	}

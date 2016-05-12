@@ -3,6 +3,11 @@
 @import "scrubber.less";
 @import "font-awesome/font-awesome.less";
 
+@joust-background: #1d3657;
+@joust-background-current-player: #154b69;
+@joust-player-border-color: lighten(@joust-background, 10%);
+@joust-current-player-border-color: lighten(@joust-background-current-player, 30%);
+
 @font-face {
 	font-family: "Belwe Bd BT";
 	src: url("assets/fonts/Belwe.ttf");
@@ -48,7 +53,6 @@
 .game {
 	position: relative;
 	overflow: hidden;
-	background-color: #dbd9ce;
 	width: 100%;
 	height: calc(100% - (@scrubber-height + @scrubber-margin-top));
 	font-size: 2vh;
@@ -61,8 +65,8 @@
 }
 
 .player.current {
-	background-color: #e2e3dd;
-	transition: background 0.8s;
+	background-color: @joust-background-current-player;
+	transition: background 0.8s, border-color 0.8s;
 }
 
 .player.inactive {
@@ -306,7 +310,7 @@ div.visuals {
 .game-widget {
 	box-sizing: border-box;
 	justify-content: space-between;
-	background-color: white;
+	background-color: @joust-background;
 
 	*, *:before, *:after {
 		box-sizing: inherit;
@@ -344,4 +348,20 @@ div.visuals {
 	position: absolute;
 	top: 0;
 	right: 0;
+}
+
+.player {
+	border: solid 2px transparent;
+
+	> section:first-child {
+		border-bottom: solid 1px @joust-player-border-color;
+	}
+
+	&.current {
+		border-color: @joust-current-player-border-color;
+
+		&> section:first-child {
+			border-bottom: solid 1px @joust-current-player-border-color;
+		}
+	}
 }
