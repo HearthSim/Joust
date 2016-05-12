@@ -98,6 +98,7 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 				node.attributes.tags = Immutable.Map<string, number>();
 				break;
 			case 'Option':
+			case 'SubOption':
 				node.attributes.targets = [];
 				break;
 			case 'Options':
