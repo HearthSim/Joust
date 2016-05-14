@@ -211,11 +211,8 @@ class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 	}
 
 	public previousTurn(): void {
-		let previousTurn = 0;
+		let previousTurn = this.initialTime;
 		let currentTurn = this.lastState.getEntity(1).getTag(GameTag.TURN);
-		if (this.currentTime > this.history.turnMap.last().getTime()) {
-			currentTurn++;
-		}
 		let turn = currentTurn - 1;
 		while (!this.history.turnMap.has(turn) && turn > 0) {
 			turn--;
