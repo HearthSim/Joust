@@ -21,9 +21,6 @@ interface GameWrapperProps extends CardDataProps, CardOracleProps, AssetDirector
  */
 class GameWrapper extends React.Component<GameWrapperProps, {}> {
 
-	private hasCheckedForSwap = false;
-	private swapPlayers = false;
-
 	public render(): JSX.Element {
 		var gameState = this.props.state;
 		if (!gameState) {
@@ -51,18 +48,6 @@ class GameWrapper extends React.Component<GameWrapperProps, {}> {
 			return <p className="joust-message">Waiting for players&hellip; </p>;
 		}
 
-		// check if we need to swap the players
-		if (!this.hasCheckedForSwap) {
-			let player = players.first();
-			let cards = _.toArray(entityTree.get(player.getPlayerId()).get(Zone.HAND).toJS()) as Entity[];
-			if (cards.length > 0) {
-				this.hasCheckedForSwap = true;
-				if (cards[0].isRevealed()) {
-					this.swapPlayers = true;
-				}
-			}
-		}
-
 		// find an end turn option
 		var endTurnOption = gameState.getOptions().filter(function(option: Option): boolean {
 			return !!option && option.getType() === OptionType.END_TURN;
@@ -73,7 +58,7 @@ class GameWrapper extends React.Component<GameWrapperProps, {}> {
 			case 2:
 				let player1 = players.first();
 				let player2 = players.last();
-				if (this.swapPlayers !== this.props.swapPlayers) { // XOR
+				if (this.props.swapPlayers) {
 					[player1, player2] = [player2, player1];
 				}
 				return <TwoPlayerGame

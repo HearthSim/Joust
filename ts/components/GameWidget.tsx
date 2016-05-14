@@ -9,6 +9,8 @@ import GameStateSink from "../state/GameStateSink";
 import Fullscreen from "fullscreen";
 import {CardData} from "../interfaces";
 import * as Immutable from "immutable";
+import {Zone} from "../enums";
+import Entity from "../Entity";
 
 interface GameWidgetState {
 	gameState?: GameState;
@@ -25,6 +27,8 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 	private cardOracleCb;
 	private ref: HTMLDivElement;
 	private fullscreen: Fullscreen;
+	private hasCheckedForSwap = false;
+	private swapPlayers = false;
 
 	constructor(props: GameWidgetProps) {
 		super(props);
@@ -113,7 +117,33 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 		}
 	}
 
+	private checkForSwap() {
+		if(!this.state.gameState) {
+			return;
+		}
+		let players = this.state.gameState.getPlayers();
+		if(!players) {
+			return;
+		}
+		let player = players[0];
+		let cards = _.toArray(this.state.gameState.getEntityTree().get(player.getPlayerId()).get(Zone.HAND).toJS()) as Entity[];
+		if (cards.length > 0) {
+			this.hasCheckedForSwap = true;
+			if (cards[0].isRevealed()) {
+				console.log('Swapping');
+				this.swapPlayers = true;
+			}
+			else {
+				console.log('No Swap');
+			}
+		}
+	}
+
 	public render(): JSX.Element {
+
+		if (!this.hasCheckedForSwap) {
+			this.checkForSwap();
+		}
 
 		var parts = [];
 
@@ -121,16 +151,18 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 			parts.push(<div id="joust-quit"><a key="exit" href="#" onClick={this.onClickExit.bind(this) }>Exit Game</a></div>);
 		}
 
+		let isSwapped = this.swapPlayers !== this.state.swapPlayers /* XOR */;
+
 		parts.push(<GameWrapper key="game" state={this.state.gameState} interaction={this.props.interaction}
 			assetDirectory={this.props.assetDirectory} textureDirectory={this.props.textureDirectory}
-			cards={this.state.cards} swapPlayers={this.state.swapPlayers}
+			cards={this.state.cards} swapPlayers={isSwapped}
 			cardOracle={this.state.isRevealingCards && this.state.cardOracle}
 			/>);
 
 		if (this.props.scrubber) {
 			parts.push(<Scrubber key="scrubber" scrubber={this.props.scrubber}
 				swapPlayers={() => this.setState({ swapPlayers: !this.state.swapPlayers }) }
-				isSwapped={this.state.swapPlayers}
+				isSwapped={isSwapped}
 				isFullscreen={this.state.isFullscreen}
 				isFullscreenAvailable={this.state.isFullscreenAvailable}
 				onClickFullscreen={() => this.fullscreen.request() }

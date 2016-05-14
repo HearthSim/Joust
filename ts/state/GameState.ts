@@ -3,6 +3,8 @@ import Option from "../Option";
 import GameStateMutator from "./GameStateMutator";
 import * as Immutable from "immutable";
 import Choices from "../Choices";
+import Player from "../Player";
+import {CardType} from "../enums";
 
 class GameState {
 
@@ -42,6 +44,12 @@ class GameState {
 
 	public getEntityTree(): Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Entity>>> {
 		return this.entityTree;
+	}
+
+	public getPlayers(): Player[] {
+		return this.entities.filter((entity: Entity):boolean => {
+			return !!entity && entity.getCardType() === CardType.PLAYER;
+		}).toArray() as Player[];
 	}
 
 	public getPlayerCount(): number {

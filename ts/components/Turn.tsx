@@ -27,7 +27,7 @@ class Turn extends React.Component<TurnProps, {}> {
 			let game = this.props.state.getEntity(1);
 			if (game) {
 				turn = game.getTag(GameTag.TURN);
-				classNames.push((!!(game.getTag(GameTag.TURN) % 2) == this.props.invert) ? 'top' : 'bottom');
+				classNames.push((!!(game.getTag(GameTag.TURN) % 2) != this.props.invert) ? 'top' : 'bottom');
 			}
 		} else if (this.props.mulligan) {
 			classNames.push('mulligan');
