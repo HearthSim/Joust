@@ -26,9 +26,13 @@ abstract class EntityList<T extends EntityListProps> extends React.Component<T, 
 			this.beforeRender(entities.count());
 			entities.forEach(function(entity, i) {
 				var option = this.props.options ? this.props.options.get(entity.getId()) : null;
+				let rendered = this.renderEntity(entity, option, i);
+				if(!rendered) {
+					return;
+				}
 				elements.push(
 					<li key={entity.getId() }>
-						{this.renderEntity(entity, option, i) }
+						{rendered}
 					</li>);
 			}.bind(this));
 		}
