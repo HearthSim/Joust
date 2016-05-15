@@ -27,6 +27,8 @@ interface ScrubberState {
 
 class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 
+	private static SPEEDS = [1, 1.5, 2, 4, 8, 16];
+
 	constructor(props: ScrubberProps) {
 		super(props);
 		this.state = {
@@ -99,6 +101,24 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 					this.props.onClickRevealCards && this.props.onClickRevealCards();
 				}
 				break;
+			case 87: // w
+				e.preventDefault();
+				{
+					let index = Scrubber.SPEEDS.indexOf(this.state.speed) + 1;
+					if (Scrubber.SPEEDS[index]) {
+						this.selectSpeed(Scrubber.SPEEDS[index]);
+					}
+				}
+				break;
+			case 83: // s
+				e.preventDefault();
+				{
+					let index = Scrubber.SPEEDS.indexOf(this.state.speed) - 1;
+					if (Scrubber.SPEEDS[index]) {
+						this.selectSpeed(Scrubber.SPEEDS[index]);
+					}
+				}
+				break;
 			case 67: // c
 				//e.preventDefault();
 				//this.props.swapPlayers();
@@ -160,7 +180,7 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 			<div className="joust-scrubber">
 				{playpause}
 				<SpeedSelector speed={this.state.speed}
-							   speeds={[1, 1.5, 2, 4, 8, 16]}
+							   speeds={Scrubber.SPEEDS}
 							   selectSpeed={this.selectSpeed}
 							   disabled={!this.state.canInteract}
 				/>
