@@ -38,6 +38,7 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 	private choiceMap: Immutable.Map<number, number>;
 	public version: string;
 	public build: number;
+	public debug: boolean;
 
 	constructor(opts?: Stream.TransformOptions) {
 		opts = opts || {};
@@ -52,6 +53,7 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 		this.clearOptionsOnTimestamp = false;
 		this.playerMap = Immutable.Map<string, PlayerDetails>();
 		this.choiceMap = Immutable.Map<number, number>();
+		this.debug = false;
 
 		this.sax = Sax.createStream(true, {});
 		this.sax.on('opentag', this.onOpenTag.bind(this));

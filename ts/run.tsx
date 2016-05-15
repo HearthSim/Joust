@@ -27,7 +27,9 @@ class Viewer {
 
 	constructor(target: any) {
 		this.target = target;
-		this.opts = {} as any;
+		this.opts = {
+			debug: false
+		} as any;
 		this.opts.assetDirectory = 'assets/';
 	}
 
@@ -63,8 +65,17 @@ class Viewer {
 		return this;
 	}
 
+	public debug(enable?: boolean): Viewer {
+		if(typeof enable === 'undefined' || enable === null) {
+			enable = true;
+		}
+		this.opts['debug'] = enable;
+		return this;
+	}
+
 	public fromUrl(url: string): void {
 		var decoder = new HSReplayDecoder();
+		decoder.debug = this.opts.debug;
 		var tracker = new GameStateTracker();
 		var scrubber = new GameStateScrubber();
 		var sink = new GameStateSink();

@@ -156,6 +156,7 @@ export interface GameWidgetProps extends AssetDirectoryProps, TextureDirectoryPr
 	cardOracle: CardOracle;
 	width?: any;
 	height?: any;
+	debug?: boolean;
 }
 
 export interface StreamScrubberInhibitor {
