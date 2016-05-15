@@ -117,6 +117,9 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 					if (this.version == '1.1') {
 						console.debug('HSReplay at version', this.version);
 					}
+					else if(this.version == '1.2') {
+						console.warn('HSReplay version', this.version, 'is not yet fully supported');
+					}
 					else {
 						console.warn('HSReplay version', this.version, 'is unsupported');
 					}
@@ -134,6 +137,7 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 				this.emit('build', this.build);
 				break;
 			case 'Action':
+			case 'Block':
 				this.push(new IncrementTimeMutator(0));
 				break;
 		}
@@ -312,6 +316,7 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 				}
 				break;
 			case 'Action':
+			case 'Block':
 				this.push(new IncrementTimeMutator());
 				break;
 			default:
