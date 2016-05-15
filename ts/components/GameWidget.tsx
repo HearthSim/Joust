@@ -130,11 +130,7 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 		if (cards.length > 0) {
 			this.hasCheckedForSwap = true;
 			if (cards[0].isRevealed()) {
-				console.log('Swapping');
 				this.swapPlayers = true;
-			}
-			else {
-				console.log('No Swap');
 			}
 		}
 	}
