@@ -9,6 +9,7 @@ import GameStateSink from "./state/GameStateSink";
 import GameStateScrubber from "./state/GameStateScrubber";
 import GameStateHistory from "./state/GameStateHistory";
 import Player from "./Player";
+import GameStateDescriptor from "./state/GameStateDescriptor";
 
 export interface DropTargetProps {
 	connectDropTarget?(jsx);
@@ -166,4 +167,8 @@ export interface StreamScrubberInhibitor {
 export interface RankProps extends AssetDirectoryProps, CardArtDirectory, React.Props<any> {
 	rank?: number;
 	legendRank?: number;
+}
+
+export interface GameStateDescriptorProps {
+	descriptor: GameStateDescriptor;
 }
