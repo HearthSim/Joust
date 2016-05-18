@@ -1,7 +1,7 @@
 import * as React from "react";
 import Dimensions from "react-dimensions";
 import * as Immutable from "immutable";
-import {AssetDirectoryProps, TextureDirectoryProps, CardData} from "../../../interfaces";
+import {AssetDirectoryProps, CardArtDirectory, CardData} from "../../../interfaces";
 
 interface CardArtItem {
 	image: string;
@@ -9,7 +9,7 @@ interface CardArtItem {
 	classes: Array<String>;
 }
 
-interface CardArtProps extends AssetDirectoryProps, TextureDirectoryProps {
+interface CardArtProps extends AssetDirectoryProps, CardArtDirectory {
 	layers: Array<CardArtItem>;
 	scale: number;
 	square: boolean;
@@ -45,8 +45,8 @@ class CardArt extends React.Component<CardArtProps, {}> {
 
 		var imgSrc = null;
 		if (item.isArt) {
-			if (item.image !== null && this.props.textureDirectory && this.props.textureDirectory.length > 0) {
-				imgSrc = this.props.textureDirectory + item.image + CardArt.baseArtExt;
+			if (item.image !== null && this.props.cardArtDirectory && this.props.cardArtDirectory.length > 0) {
+				imgSrc = this.props.cardArtDirectory + item.image + CardArt.baseArtExt;
 			}
 			else {
 				imgSrc = this.props.assetDirectory + CardArt.imageDirectory + "portrait.jpg";

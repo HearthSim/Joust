@@ -5,17 +5,6 @@ import CardArt from "./CardArt";
 import {EntityProps, CardData} from "../../../interfaces";
 
 class InPlayCardArt extends React.Component<EntityProps, {}> {
-	public static extractTexture(cardId: string, data: Immutable.Map<string, CardData>): string {
-		let texture = null;
-		if (!data) {
-			return null;
-		}
-		if (data.has(cardId)) {
-			texture = data.get(cardId).texture || null;
-		}
-
-		return texture;
-	}
 
 	public render(): JSX.Element {
 		var images = [];
@@ -30,7 +19,7 @@ class InPlayCardArt extends React.Component<EntityProps, {}> {
 		}
 
 		images.push({
-			image: InPlayCardArt.extractTexture(entity.getCardId(), this.props.cards),
+			image: entity.getCardId(),
 			isArt: true,
 			classes: ["inplay-portrait"]
 		});
@@ -95,7 +84,7 @@ class InPlayCardArt extends React.Component<EntityProps, {}> {
 		return (
 			<CardArt layers={images} scale={0.86} square={false} margin={false}
 				assetDirectory={this.props.assetDirectory}
-				textureDirectory={this.props.textureDirectory}
+				cardArtDirectory={this.props.cardArtDirectory}
 				/>
 		);
 	}

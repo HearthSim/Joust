@@ -43,7 +43,7 @@ class Choices extends EntityList<ChoicesProps> {
 			cards={this.props.cards}
 			isHidden={hidden}
 			controller={this.props.controller}
-			textureDirectory={this.props.textureDirectory}
+			cardArtDirectory={this.props.cardArtDirectory}
 			/>);
 	}
 }

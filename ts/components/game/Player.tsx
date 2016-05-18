@@ -16,9 +16,9 @@ import Choices from "./Choices";
 import Rank from "./Rank";
 
 import {Zone, CardType, GameTag, ChoiceType, Mulligan, PlayState} from "../../enums"
-import {OptionCallbackProps, CardDataProps, CardOracleProps, AssetDirectoryProps, TextureDirectoryProps} from "../../interfaces";
+import {OptionCallbackProps, CardDataProps, CardOracleProps, AssetDirectoryProps, CardArtDirectory} from "../../interfaces";
 
-interface PlayerProps extends OptionCallbackProps, CardDataProps, CardOracleProps, AssetDirectoryProps, TextureDirectoryProps, React.Props<any> {
+interface PlayerProps extends OptionCallbackProps, CardDataProps, CardOracleProps, AssetDirectoryProps, CardArtDirectory, React.Props<any> {
 	player: PlayerEntity;
 	entities: Immutable.Map<number, Immutable.Map<number, Entity>>;
 	options: Immutable.Map<number, Immutable.Map<number, Option>>;
@@ -53,7 +53,7 @@ class Player extends React.Component<PlayerProps, {}> {
 			optionCallback={this.props.optionCallback}
 			cards={this.props.cards}
 			assetDirectory={this.props.assetDirectory}
-			textureDirectory={this.props.textureDirectory}
+			cardArtDirectory={this.props.cardArtDirectory}
 			controller={this.props.player}
 			/>;
 		var heroPowerEntity = playEntities.filter(filterByCardType(CardType.HERO_POWER)).first();
@@ -62,13 +62,13 @@ class Player extends React.Component<PlayerProps, {}> {
 			optionCallback={this.props.optionCallback}
 			cards={this.props.cards}
 			assetDirectory={this.props.assetDirectory}
-			textureDirectory={this.props.textureDirectory}
+			cardArtDirectory={this.props.cardArtDirectory}
 			controller={this.props.player}
 			/>;
 		var weapon = <Weapon entity={playEntities.filter(filterByCardType(CardType.WEAPON)).first() }
 			cards={this.props.cards}
 			assetDirectory={this.props.assetDirectory}
-			textureDirectory={this.props.textureDirectory}
+			cardArtDirectory={this.props.cardArtDirectory}
 			controller={this.props.player}
 			/>;
 
@@ -77,14 +77,14 @@ class Player extends React.Component<PlayerProps, {}> {
 			optionCallback={this.props.optionCallback}
 			cards={this.props.cards}
 			assetDirectory={this.props.assetDirectory}
-			textureDirectory={this.props.textureDirectory}
+			cardArtDirectory={this.props.cardArtDirectory}
 			controller={this.props.player}
 			/>;
 		var deck = <Deck entities={this.props.entities.get(Zone.DECK) || emptyEntities}
 			options={this.props.options.get(Zone.DECK) || emptyOptions}
 			cards={this.props.cards}
 			assetDirectory={this.props.assetDirectory}
-			textureDirectory={this.props.textureDirectory}
+			cardArtDirectory={this.props.cardArtDirectory}
 			controller={this.props.player}
 			fatigue={this.props.player.getTag(GameTag.FATIGUE) + 1}
 			/>;
@@ -95,7 +95,7 @@ class Player extends React.Component<PlayerProps, {}> {
 			cardOracle={this.props.cardOracle}
 			isTop={this.props.isTop}
 			assetDirectory={this.props.assetDirectory}
-			textureDirectory={this.props.textureDirectory}
+			cardArtDirectory={this.props.cardArtDirectory}
 			controller={this.props.player}
 			/>;
 		var name = this.props.player.getName() ? <div className="name">{this.props.player.getName() }</div> : null;
@@ -120,7 +120,7 @@ class Player extends React.Component<PlayerProps, {}> {
 							   cardOracle={this.props.cardOracle}
 							   isTop={this.props.isTop}
 							   assetDirectory={this.props.assetDirectory}
-							   textureDirectory={this.props.textureDirectory}
+							   cardArtDirectory={this.props.cardArtDirectory}
 							   controller={this.props.player}
 							   isMulligan={this.props.choices.getType() === ChoiceType.MULLIGAN}
 							   choices={this.props.choices && this.props.choices.getChoices()}
@@ -130,7 +130,7 @@ class Player extends React.Component<PlayerProps, {}> {
 		var rank = <Rank rank={this.props.player.getRank() }
 			legendRank={this.props.player.getLegendRank() }
 			assetDirectory={this.props.assetDirectory}
-			textureDirectory={this.props.textureDirectory}
+			cardArtDirectory={this.props.cardArtDirectory}
 			/>;
 
 		var crystals = [];

@@ -32,7 +32,7 @@ class Minion extends EntityInPlay<EntityInPlayProps, {}> {
 				controller={this.props.controller}
 				cards={this.props.cards}
 				assetDirectory={this.props.assetDirectory}
-				textureDirectory={this.props.textureDirectory}
+				cardArtDirectory={this.props.cardArtDirectory}
 				/>,
 			<div key="stats" className="stats">
 				<Attack attack={entity.getAtk() } default={data.attack}/>

@@ -48,8 +48,13 @@ class Viewer {
 		return this;
 	}
 
-	public textures(textures: string): Viewer {
-		this.opts.textureDirectory = textures;
+	public textures(a: any): Viewer {
+		console.warn('Viewer.textures() is deprecated, use .cardArt() instead');
+		return this;
+	}
+
+	public cardArt(url: string): Viewer {
+		this.opts.cardArtDirectory = url;
 		return this;
 	}
 
@@ -79,7 +84,10 @@ class Viewer {
 		var tracker = new GameStateTracker();
 		var scrubber = new GameStateScrubber();
 		var sink = new GameStateSink();
-		var preloader = new TexturePreloader(this.opts.textureDirectory, this.opts.assetDirectory);
+		var preloader = new TexturePreloader(this.opts.cardArtDirectory, this.opts.assetDirectory);
+		if(preloader.canPreload()) {
+			preloader.consume();
+		}
 
 		var opts = URL.parse(url) as any;
 		opts.withCredentials = false;
@@ -90,7 +98,7 @@ class Viewer {
 				.pipe(tracker) // mutators -> latest gamestate
 				.pipe(scrubber) // gamestate -> gamestate emit on scrub past
 				.pipe(sink); // gamestate
-			if(this.opts.textureDirectory) {
+			if(this.opts.cardArtDirectory) {
 				decoder.pipe(preloader);
 			}
 		});
@@ -98,10 +106,6 @@ class Viewer {
 			if (this.queryCardMetadata) {
 				this.queryCardMetadata(build, (cards: CardData[]) => {
 					this.ref.setCards(cards);
-					if(preloader.canPreload()) {
-						preloader.cards = this.ref.state.cards;
-						preloader.consume();
-					}
 				});
 			}
 		});

@@ -25,7 +25,7 @@ class RankArt extends React.Component<RankProps, {}> {
 		return (
 			<CardArt layers={images} scale={1} square={false} margin={false}
 				assetDirectory={this.props.assetDirectory}
-				textureDirectory={this.props.textureDirectory}/>
+				cardArtDirectory={this.props.cardArtDirectory}/>
 		);
 	}
 }

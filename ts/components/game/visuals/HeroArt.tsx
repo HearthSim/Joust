@@ -15,7 +15,7 @@ class HeroArt extends React.Component<HeroArtProps, {}> {
 		var entity = this.props.entity;
 
 		images.push({
-			image: InPlayCardArt.extractTexture(entity.getCardId(), this.props.cards),
+			image: entity.getCardId(),
 			isArt: true,
 			classes: ["hero-portrait"]
 		});
@@ -72,7 +72,7 @@ class HeroArt extends React.Component<HeroArtProps, {}> {
 		return (
 			<CardArt layers={images} scale={1} square={true} margin={false}
 				assetDirectory={this.props.assetDirectory}
-				textureDirectory={this.props.textureDirectory}
+				cardArtDirectory={this.props.cardArtDirectory}
 				/>
 		);
 	}

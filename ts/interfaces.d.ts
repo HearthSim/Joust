@@ -23,7 +23,7 @@ export interface EntityInPlayProps extends EntityProps, OptionProps, DragSourceP
 	isTarget: boolean;
 }
 
-export interface EntityListProps extends OptionCallbackProps, ControllerProps, DropTargetProps, CardDataProps, CardOracleProps, AssetDirectoryProps, TextureDirectoryProps, React.Props<any> {
+export interface EntityListProps extends OptionCallbackProps, ControllerProps, DropTargetProps, CardDataProps, CardOracleProps, AssetDirectoryProps, CardArtDirectory, React.Props<any> {
 	entities: Immutable.Iterable<number, Entity>;
 	options?: Immutable.Iterable<number, Option>;
 	isTop?: boolean;
@@ -33,7 +33,7 @@ export interface ControllerProps {
 	controller?: Player;
 }
 
-export interface EntityProps extends CardDataProps, ControllerProps, AssetDirectoryProps, TextureDirectoryProps {
+export interface EntityProps extends CardDataProps, ControllerProps, AssetDirectoryProps, CardArtDirectory {
 	entity: Entity;
 }
 
@@ -139,15 +139,15 @@ export interface AssetDirectoryProps {
 	assetDirectory: string;
 }
 
-export interface TextureDirectoryProps {
-	textureDirectory: string;
+export interface CardArtDirectory {
+	cardArtDirectory: string;
 }
 
 export interface QueryCardMetadata {
 	(build: number, cb: (cards: CardData[]) => void): void;
 }
 
-export interface GameWidgetProps extends AssetDirectoryProps, TextureDirectoryProps, React.Props<any> {
+export interface GameWidgetProps extends AssetDirectoryProps, CardArtDirectory, React.Props<any> {
 	sink: GameStateSink;
 	interaction?: InteractiveBackend;
 	scrubber?: StreamScrubber;
@@ -163,7 +163,7 @@ export interface StreamScrubberInhibitor {
 	isInhibiting: () => boolean;
 }
 
-export interface RankProps extends AssetDirectoryProps, TextureDirectoryProps, React.Props<any> {
+export interface RankProps extends AssetDirectoryProps, CardArtDirectory, React.Props<any> {
 	rank?: number;
 	legendRank?: number;
 }

@@ -150,7 +150,7 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 		let isSwapped = this.swapPlayers !== this.state.swapPlayers /* XOR */;
 
 		parts.push(<GameWrapper key="game" state={this.state.gameState} interaction={this.props.interaction}
-			assetDirectory={this.props.assetDirectory} textureDirectory={this.props.textureDirectory}
+			assetDirectory={this.props.assetDirectory} cardArtDirectory={this.props.cardArtDirectory}
 			cards={this.state.cards} swapPlayers={isSwapped}
 			cardOracle={this.state.isRevealingCards && this.state.cardOracle}
 			/>);

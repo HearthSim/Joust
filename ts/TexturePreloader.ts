@@ -2,9 +2,9 @@ import * as Stream from "stream";
 import {CardData} from "./interfaces";
 import Entity from "./Entity";
 
-class TexturePreloader extends Stream.Writable {
+class CardArtPreloader extends Stream.Writable {
 	protected fired = {};
-	protected textureQueue = ['GAME_005'];
+	protected cardArtQueue = ['GAME_005'];
 	protected images = [];
 	private working = 0;
 	protected assetQueue = ['cardback', 'hero_frame', 'hero_power', 'inhand_minion', 'inhand_spell', 'inhand_weapon',
@@ -13,7 +13,7 @@ class TexturePreloader extends Stream.Writable {
 							'icon_poisonous', 'icon_trigger', 'inplay_minion_frozen', 'inplay_minion_legendary',
 							'inplay_minion_taunt', 'inplay_weapon', 'inplay_weapon_dome'];
 
-	constructor(public textureDirectory?: string, public assetDirectory?: string, public cards?: Immutable.Map<string, CardData>) {
+	constructor(public cardArtDirectory?: string, public assetDirectory?: string) {
 		super({objectMode: true});
 		this.consume();
 	}
@@ -31,7 +31,7 @@ class TexturePreloader extends Stream.Writable {
 		id = id || mutator.cardId;
 
 		if(id) {
-			this.textureQueue.push(id);
+			this.cardArtQueue.push(id);
 			this.consume();
 		}
 
@@ -44,7 +44,7 @@ class TexturePreloader extends Stream.Writable {
 			return;
 		}
 
-		if((!this.textureDirectory || !this.cards || !this.textureQueue.length) && (!this.assetDirectory || !this.assetQueue.length)) {
+		if((!this.cardArtDirectory || !this.cardArtQueue.length) && (!this.assetDirectory || !this.assetQueue.length)) {
 			return;
 		}
 
@@ -60,13 +60,8 @@ class TexturePreloader extends Stream.Writable {
 			file = this.assetDirectory + 'images/' + file + '.png';
 		}
 		else {
-			let cardId = this.textureQueue.shift();
-			if (!this.cards.get(cardId)) {
-				console.warn('No texture for ' + cardId + ' to preload');
-				next();
-				return;
-			}
-			file = this.textureDirectory + this.cards.get(cardId).texture + '.jpg';
+			let cardId = this.cardArtQueue.shift();
+			file = this.cardArtDirectory + cardId + '.jpg';
 		}
 
 		if (this.fired[file]) {
@@ -87,8 +82,8 @@ class TexturePreloader extends Stream.Writable {
 	}
 
 	public canPreload(): boolean {
-		return !!this.assetDirectory || !!this.textureDirectory;
+		return !!this.assetDirectory || !!this.cardArtDirectory;
 	}
 }
 
-export default TexturePreloader;
+export default CardArtPreloader;

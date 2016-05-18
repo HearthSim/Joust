@@ -11,7 +11,7 @@ class WeaponArt extends React.Component<EntityProps, {}> {
 		var entity = this.props.entity;
 
 		images.push({
-			image: InPlayCardArt.extractTexture(entity.getCardId(), this.props.cards),
+			image: entity.getCardId(),
 			isArt: true,
 			classes: ["hero-weapon-portrait"]
 		});
@@ -29,7 +29,7 @@ class WeaponArt extends React.Component<EntityProps, {}> {
 		return (
 			<CardArt layers={images} scale={1} square={true} margin={true}
 				assetDirectory={this.props.assetDirectory}
-				textureDirectory={this.props.textureDirectory}
+				cardArtDirectory={this.props.cardArtDirectory}
 				/>
 		);
 	}

@@ -6,10 +6,10 @@ import {CardType, OptionType} from "../enums";
 import Entity from "../Entity";
 import Option from "../Option";
 import PlayerEntity from "../Player";
-import {InteractiveBackend, CardOracleProps, AssetDirectoryProps, TextureDirectoryProps} from "../interfaces";
+import {InteractiveBackend, CardOracleProps, AssetDirectoryProps, CardArtDirectory} from "../interfaces";
 import {Zone} from "../enums";
 
-interface GameWrapperProps extends CardDataProps, CardOracleProps, AssetDirectoryProps, TextureDirectoryProps, React.Props<any> {
+interface GameWrapperProps extends CardDataProps, CardOracleProps, AssetDirectoryProps, CardArtDirectory, React.Props<any> {
 	state: GameState;
 	interaction?: InteractiveBackend;
 	swapPlayers?: boolean;
@@ -73,7 +73,7 @@ class GameWrapper extends React.Component<GameWrapperProps, {}> {
 					cards={this.props.cards}
 					cardOracle={this.props.cardOracle}
 					assetDirectory={this.props.assetDirectory}
-					textureDirectory={this.props.textureDirectory}
+					cardArtDirectory={this.props.cardArtDirectory}
 					/>;
 			default:
 				return <div>Unsupported player count ({playerCount}).</div>

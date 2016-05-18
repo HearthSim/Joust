@@ -30,7 +30,7 @@ class Hero extends EntityInPlay<HeroProps, {}> {
 				secrets={this.props.secrets}
 				cards={this.props.cards}
 				assetDirectory={this.props.assetDirectory}
-				textureDirectory={this.props.textureDirectory}
+				cardArtDirectory={this.props.cardArtDirectory}
 				/>,
 			<div key="stats" className="stats">
 				{entity.getAtk() ? <Attack attack={entity.getAtk() }/> : null}
