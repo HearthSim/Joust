@@ -16,7 +16,7 @@ class SetOptionsMutator implements GameStateMutator {
 
 		var optionTree = this.buildOptionTree(this.options, state.getEntities());
 
-		return new GameState(state.getEntities(), state.getEntityTree(), this.options, optionTree, state.getTime(), state.getChoices());
+		return new GameState(state.getEntities(), state.getEntityTree(), this.options, optionTree, state.getTime(), state.getChoices(), state.getDescriptor());
 	}
 
 	protected buildOptionTree(options: Immutable.Map<number, Option>, entities: Immutable.Map<number, Entity>): Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Option>>> {
