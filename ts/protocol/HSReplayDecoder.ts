@@ -9,7 +9,7 @@ import AddEntityMutator from "../state/mutators/AddEntityMutator";
 import Option from "../Option";
 import Entity from "../Entity";
 import Player from "../Player";
-import {GameTag} from "../enums";
+import {GameTag, PowSubType} from "../enums";
 import ShowEntityMutator from "../state/mutators/ShowEntityMutator";
 import SetTimeMutator from "../state/mutators/SetTimeMutator";
 import {CardOracle} from "../interfaces";
@@ -18,6 +18,9 @@ import Choice from "../Choice";
 import SetChoicesMutator from "../state/mutators/SetChoicesMutator";
 import ClearChoicesMutator from "../state/mutators/ClearChoicesMutator";
 import Choices from "../Choices";
+import GameStateDescriptor from "../state/GameStateDescriptor";
+import SetDescriptorMutator from "../state/mutators/SetDescriptorMutator";
+import ClearDescriptorMutator from "../state/mutators/ClearDescriptorMutator";
 
 interface PlayerDetails {
 	id: number;
@@ -138,8 +141,16 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 				break;
 			case 'Action':
 			case 'Block':
-				this.push(new IncrementTimeMutator(0));
-				break;
+				let type = +node.attributes.type;
+				// attach meta information to current game state
+				let descriptor = new GameStateDescriptor(
+					+node.attributes.entity,
+					+node.attributes.target,
+					type
+				);
+				this.push(new IncrementTimeMutator());
+				this.push(new SetDescriptorMutator(descriptor));
+ 				break;
 		}
 
 		this.nodeStack.push(node);
@@ -167,7 +178,7 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 					this.gameId = 1;
 				}
 				// force checkpoint
-				this.push(new IncrementTimeMutator(0));
+				//this.push(new IncrementTimeMutator(0));
 				break;
 			case 'GameEntity':
 			case 'FullEntity':
@@ -317,7 +328,8 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 				break;
 			case 'Action':
 			case 'Block':
-				this.push(new IncrementTimeMutator());
+				//this.push(new IncrementTimeMutator());
+				this.push(new ClearDescriptorMutator());
 				break;
 			default:
 				//console.warn('Unknown HSReplay tag "' + node.name + '"');
