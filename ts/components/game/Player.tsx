@@ -14,11 +14,15 @@ import Field from "./Field";
 import Weapon from "./Weapon";
 import Choices from "./Choices";
 import Rank from "./Rank";
+import Card from "./Card";
 
-import {Zone, CardType, GameTag, ChoiceType, Mulligan, PlayState} from "../../enums"
-import {OptionCallbackProps, CardDataProps, CardOracleProps, AssetDirectoryProps, CardArtDirectory} from "../../interfaces";
+import {Zone, CardType, GameTag, ChoiceType, Mulligan, PlayState, PowSubType} from "../../enums"
+import {
+	OptionCallbackProps, CardDataProps, CardOracleProps, AssetDirectoryProps, CardArtDirectory,
+	GameStateDescriptorProps
+} from "../../interfaces";
 
-interface PlayerProps extends OptionCallbackProps, CardDataProps, CardOracleProps, AssetDirectoryProps, CardArtDirectory, React.Props<any> {
+interface PlayerProps extends OptionCallbackProps, CardDataProps, CardOracleProps, AssetDirectoryProps, CardArtDirectory, GameStateDescriptorProps, React.Props<any> {
 	player: PlayerEntity;
 	entities: Immutable.Map<number, Immutable.Map<number, Entity>>;
 	options: Immutable.Map<number, Immutable.Map<number, Option>>;
@@ -205,11 +209,47 @@ class Player extends React.Component<PlayerProps, {}> {
 				break;
 		}
 
+		var action = null;
+		if(this.props.descriptor) {
+			let descriptor = this.props.descriptor;
+			console.log(this.props.descriptor.getType());
+			switch(this.props.descriptor.getType()) {
+				case PowSubType.PLAY:
+					let entity = null;
+					// search for entity
+					this.props.entities.forEach((map: Immutable.Map<number, Entity>) => {
+						map.forEach((toCompare: Entity) => {
+							if(descriptor.getEntity() == toCompare.getId()) {
+								entity = toCompare;
+							}
+						});
+					});
+					if(entity !== null) {
+						let type = entity.getTag(GameTag.CARDTYPE);
+						let types = [CardType.WEAPON, CardType.SPELL, CardType.MINION];
+						if(types.indexOf(type) != -1) {
+							action = <div className="played"><Card
+								entity={entity}
+								option={null}
+								optionCallback={null}
+								assetDirectory={this.props.assetDirectory}
+								cards={this.props.cards}
+								isHidden={false}
+								controller={this.props.player}
+								cardArtDirectory={this.props.cardArtDirectory}
+							/></div>;
+						}
+					}
+					break;
+			}
+		}
+
 		if (this.props.isTop) {
 			return (
 				<div className={classNames.join(' ')}>
 					{gameresult}
 					{choices}
+					{action}
 					{tall}
 					{short}
 				</div>
@@ -220,6 +260,7 @@ class Player extends React.Component<PlayerProps, {}> {
 				<div className={classNames.join(' ')}>
 					{gameresult}
 					{choices}
+					{action}
 					{short}
 					{tall}
 				</div>
@@ -236,6 +277,7 @@ class Player extends React.Component<PlayerProps, {}> {
 			this.props.optionCallback !== nextProps.optionCallback ||
 			this.props.cardOracle !== nextProps.cardOracle ||
 			this.props.cards !== nextProps.cards ||
+			this.props.descriptor !== nextProps.descriptor ||
 			this.props.isCurrent !== nextProps.isCurrent
 		);
 	}

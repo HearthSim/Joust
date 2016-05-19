@@ -1,5 +1,5 @@
 import * as React from "react";
-import {CardDataProps} from "../interfaces";
+import {CardDataProps, GameStateDescriptorProps} from "../interfaces";
 import GameState from "../state/GameState";
 import TwoPlayerGame from "./game/TwoPlayerGame";
 import {CardType, OptionType} from "../enums";
@@ -72,6 +72,7 @@ class GameWrapper extends React.Component<GameWrapperProps, {}> {
 					optionCallback={this.props.interaction && this.props.interaction.sendOption.bind(this.props.interaction) }
 					cards={this.props.cards}
 					cardOracle={this.props.cardOracle}
+					descriptor={this.props.state.getDescriptor()}
 					assetDirectory={this.props.assetDirectory}
 					cardArtDirectory={this.props.cardArtDirectory}
 					/>;

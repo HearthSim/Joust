@@ -1,7 +1,10 @@
 import * as React from "react";
 import * as Immutable from "immutable";
 
-import {EntityProps, OptionCallbackProps, CardDataProps, CardOracleProps, AssetDirectoryProps, CardArtDirectory} from "../../interfaces";
+import {
+	EntityProps, OptionCallbackProps, CardDataProps, CardOracleProps, AssetDirectoryProps, CardArtDirectory,
+	GameStateDescriptorProps
+} from "../../interfaces";
 import Entity from "../../Entity";
 import Player from "./Player";
 import Option from "../../Option";
@@ -13,7 +16,7 @@ import {GameTag} from "../../enums";
 import Choice from "../../Choice";
 import Choices from "../../Choices";
 
-interface TwoPlayerGameProps extends EntityProps, CardDataProps, CardOracleProps, OptionCallbackProps, AssetDirectoryProps, React.Props<any> {
+interface TwoPlayerGameProps extends EntityProps, CardDataProps, CardOracleProps, OptionCallbackProps, AssetDirectoryProps, GameStateDescriptorProps, React.Props<any> {
 	player1: PlayerEntity;
 	player2: PlayerEntity;
 	entities: Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Entity>>>;
@@ -43,6 +46,7 @@ class TwoPlayerGame extends React.Component<TwoPlayerGameProps, {}> {
 					optionCallback={this.props.optionCallback}
 					cardOracle={this.props.cardOracle}
 					cards={this.props.cards}
+					descriptor={this.props.descriptor}
 					assetDirectory={this.props.assetDirectory}
 					cardArtDirectory={this.props.cardArtDirectory}
 					/>
@@ -58,6 +62,7 @@ class TwoPlayerGame extends React.Component<TwoPlayerGameProps, {}> {
 					optionCallback={this.props.optionCallback}
 					cardOracle={this.props.cardOracle}
 					cards={this.props.cards}
+					descriptor={this.props.descriptor}
 					assetDirectory={this.props.assetDirectory}
 					cardArtDirectory={this.props.cardArtDirectory}
 					/>
@@ -76,7 +81,8 @@ class TwoPlayerGame extends React.Component<TwoPlayerGameProps, {}> {
 			this.props.endTurnOption !== nextProps.endTurnOption ||
 			this.props.optionCallback !== nextProps.optionCallback ||
 			this.props.cardOracle !== nextProps.cardOracle ||
-			this.props.cards !== nextProps.cards
+			this.props.cards !== nextProps.cards ||
+			this.props.descriptor !== nextProps.descriptor
 		);
 	}
 }

@@ -23,14 +23,32 @@
 		}
 	}
 
-	> .choices {
+	> .choices, > .played {
 		display: block;
 		position: absolute;
+		margin: 0 0 0 25%;
+		padding: 0;
+	}
+
+	> .choices {
 		top: 0;
 		left: 0;
-		margin-left: 25%;
 		width: 75%;
 		height: 100%;
+		z-index: 100;
+	}
+
+	> .played {
+		top: -10%;
+		right: 0;
+		height: 57.5%;
+		z-index: 99;
+		margin-right: 10%;
+	}
+
+	&.top > .played {
+		top: 55%;
+		left: 0;
 	}
 
 	.gameresult {
