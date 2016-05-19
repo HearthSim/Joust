@@ -43,6 +43,13 @@ class InPlayCardArt extends React.Component<EntityProps, {}> {
 			});
 		}
 
+		if (entity.isDivineShielded()) {
+			images.push({
+				image: "inplay_minion_divine_shield.png",
+				classes: ["inplay-divine-shield"]
+			});
+		}
+
 		if (entity.getTag(GameTag.INSPIRE) > 0) {
 			images.push({
 				image: "icon_inspire.png",
