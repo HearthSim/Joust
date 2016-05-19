@@ -11,7 +11,8 @@ class CardArtPreloader extends Stream.Writable {
 							'inhand_minion_legendary', 'mana_crystal', 'inplay_minion', 'effect_sleep',
 							'hero_power_exhausted', 'hero_armor', 'hero_attack', 'icon_deathrattle', 'icon_inspire',
 							'icon_poisonous', 'icon_trigger', 'inplay_minion_frozen', 'inplay_minion_legendary',
-							'inplay_minion_taunt', 'inplay_minion_divine_shield', 'inplay_weapon', 'inplay_weapon_dome'];
+							'inplay_minion_taunt', 'inplay_minion_divine_shield', 'inplay_minion_stealth',
+							'inplay_weapon', 'inplay_weapon_dome'];
 
 	constructor(public cardArtDirectory?: string, public assetDirectory?: string) {
 		super({objectMode: true});

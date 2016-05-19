@@ -24,6 +24,13 @@ class InPlayCardArt extends React.Component<EntityProps, {}> {
 			classes: ["inplay-portrait"]
 		});
 
+		if (entity.isStealthed()) {
+			images.push({
+				image: "inplay_minion_stealth.png",
+				classes: ["inplay-stealth"]
+			});
+		}
+
 		images.push({
 			image: "inplay_minion.png",
 			classes: ["inplay-base"]
