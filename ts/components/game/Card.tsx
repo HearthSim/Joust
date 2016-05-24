@@ -9,7 +9,7 @@ import Cost from "./stats/Cost";
 import InHandCardArt from "./visuals/InHandCardArt";
 
 import {DragSource} from "react-dnd";
-import {CardType} from "../../enums";
+import {CardType,CardClass} from "../../enums";
 import {GameTag} from "../../enums";
 import Entity from "../../Entity";
 
@@ -28,7 +28,8 @@ class Card extends React.Component<CardProps, {}> {
 		if (entity.getCardId() === null || (this.props.isHidden && !canBeRevealed)) {
 			return (
 				<div className="card">
-					<InHandCardArt hidden={true} entity={this.props.entity} cardType={0}
+					<InHandCardArt hidden={true} entity={this.props.entity}
+						cardType={0}  cardClass={0}
 						assetDirectory={this.props.assetDirectory}
 						cardArtDirectory={this.props.cardArtDirectory}
 						/>
@@ -58,6 +59,7 @@ class Card extends React.Component<CardProps, {}> {
 		var defaultHealth = null;
 		var defaultDurability = null;
 		var cardType = entity.getCardType();
+		var cardClass = entity.getClass();
 		if (canBeRevealed) {
 			var data = this.props.cards && this.props.cards.get(entity.getCardId());
 			title = data.name;
@@ -78,6 +80,37 @@ class Card extends React.Component<CardProps, {}> {
 						cardType = CardType.SPELL;
 						break;
 				}
+			}
+			switch (data.playerClass) {
+				case 'DRUID':
+					cardClass = CardClass.DRUID;
+					break;
+				case 'HUNTER':
+					cardClass = CardClass.HUNTER;
+					break;
+				case 'MAGE':
+					cardClass = CardClass.MAGE;
+					break;
+				case 'PALADIN':
+					cardClass = CardClass.PALADIN;
+					break;
+				case 'PRIEST':
+					cardClass = CardClass.PRIEST;
+					break;
+				case 'ROGUE':
+					cardClass = CardClass.ROGUE;
+					break;
+				case 'SHAMAN':
+					cardClass = CardClass.SHAMAN;
+					break;
+				case 'WARLOCK':
+					cardClass = CardClass.WARLOCK;
+					break;
+				case 'WARRIOR':
+					cardClass = CardClass.WARRIOR;
+					break;
+				default:
+					cardClass = CardClass.NEUTRAL;
 			}
 		}
 
@@ -113,7 +146,8 @@ class Card extends React.Component<CardProps, {}> {
 		var connectDragSource = this.props.connectDragSource;
 		var jsx = (
 			<div className={classNames.join(' ') } style={this.props.style}>
-				<InHandCardArt entity={entity} hidden={false} cardType={cardType}
+				<InHandCardArt entity={entity} hidden={false}
+					cardType={cardType} cardClass={cardClass}
 					cards={this.props.cards}
 					assetDirectory={this.props.assetDirectory}
 					cardArtDirectory={this.props.cardArtDirectory}
