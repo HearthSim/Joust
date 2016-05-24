@@ -115,7 +115,8 @@ class Card extends React.Component<CardProps, {}> {
 		}
 
 		var stats = null;
-		var textStyle = { color: "black" };
+		var textStyle = { color: entity.isPremium() ? "white" : "black" };
+
 
 		switch (cardType) {
 			case CardType.MINION:
