@@ -27,15 +27,27 @@ class InHandCardArt extends React.Component<InHandCardArtProps, {}> {
 			switch (this.props.cardType) {
 				case CardType.MINION:
 					portraitClass = "inhand-minion";
-					frame = "inhand_minion_" + this.CardClassString() + ".png";
+					if (entity.isPremium()) {
+						frame = "inhand_minion_premium.png"
+					} else {
+						frame = "inhand_minion_" + this.CardClassString() + ".png";
+					}
 					break;
 				case CardType.SPELL:
 					portraitClass = "inhand-spell";
-					frame = "inhand_spell_" + this.CardClassString() + ".png";
+					if (entity.isPremium()) {
+						frame = "inhand_spell_premium.png"
+					} else {
+						frame = "inhand_spell_" + this.CardClassString() + ".png";
+					}
 					break;
 				case CardType.WEAPON:
 					portraitClass = "inhand-weapon";
-					frame = "inhand_weapon_neutral.png";
+					if (entity.isPremium()) {
+						frame = "inhand_weapon_premium.png"
+					} else {
+						frame = "inhand_weapon_neutral.png";
+					}
 					break;
 			}
 
@@ -51,9 +63,10 @@ class InHandCardArt extends React.Component<InHandCardArtProps, {}> {
 			classes: ["inhand-base"]
 		});
 
-		if (this.props.entity.isLegendary()) {
+		if (entity.isLegendary()) {
 			images.push({
-				image: "inhand_minion_legendary.png",
+				image: "inhand_minion_legendary"
+					+ (entity.isPremium() ? "_premium" : "") + ".png",
 				classes: ["inhand-legendary"]
 			});
 		}

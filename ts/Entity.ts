@@ -64,6 +64,10 @@ class Entity {
 		return this.getTag(GameTag.DURABILITY);
 	}
 
+	public isPremium(): boolean {
+		return this.getTag(GameTag.PREMIUM) > 0;
+	}
+
 	public isLegendary(): boolean {
 		return this.getTag(GameTag.RARITY) === Rarity.LEGENDARY;
 	}
