@@ -212,14 +212,13 @@ class Player extends React.Component<PlayerProps, {}> {
 		var action = null;
 		if(this.props.descriptor) {
 			let descriptor = this.props.descriptor;
-			console.log(this.props.descriptor.getType());
 			switch(this.props.descriptor.getType()) {
 				case PowSubType.PLAY:
 					let entity = null;
 					// search for entity
 					this.props.entities.forEach((map: Immutable.Map<number, Entity>) => {
 						map.forEach((toCompare: Entity) => {
-							if(descriptor.getEntity() == toCompare.getId()) {
+							if(descriptor.getEntity() === toCompare.getId()) {
 								entity = toCompare;
 							}
 						});
