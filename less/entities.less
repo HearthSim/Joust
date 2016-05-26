@@ -98,12 +98,16 @@
 	position: relative;
 	display: inline-block;
 	height: 100%;
+	z-index: 60;
 
 	div.visuals {
 		.inplay-base, .inplay-legendary, .inplay-taunt, .inplay-shield, .inplay-frozen, .inplay-divine-shield,
 		.inplay-stealth, .icon-deathrattle, .icon-trigger, .icon-inspire, .icon-poisonous,
 		.effect-sleep {
 			height: 100%;
+		}
+		.inplay-divine-shield {
+			z-index: 65;
 		}
 		.skull {
 			height: 60%;
