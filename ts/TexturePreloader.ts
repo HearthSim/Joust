@@ -7,7 +7,8 @@ class CardArtPreloader extends Stream.Writable {
 	protected cardArtQueue = ['GAME_005'];
 	protected images = [];
 	private working = 0;
-	protected assetQueue = ['cardback', 'hero_frame', 'hero_power', 'inhand_minion', 'inhand_spell', 'inhand_weapon',
+	protected assetQueue = ['cardback', 'hero_frame', 'hero_power',
+							'inhand_minion_neutral', 'inhand_spell_neutral', 'inhand_weapon_neutral',
 							'inhand_minion_legendary', 'mana_crystal', 'inplay_minion', 'effect_sleep',
 							'hero_power_exhausted', 'hero_armor', 'hero_attack', 'icon_deathrattle', 'icon_inspire',
 							'icon_poisonous', 'icon_trigger', 'inplay_minion_frozen', 'inplay_minion_legendary',
