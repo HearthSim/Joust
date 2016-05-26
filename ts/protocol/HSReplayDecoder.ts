@@ -100,6 +100,7 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 			case 'Player':
 			case 'FullEntity':
 			case 'ShowEntity':
+			case 'ChangeEntity':
 				node.attributes.tags = Immutable.Map<string, number>();
 				break;
 			case 'Option':
@@ -226,6 +227,7 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 					break;
 				}
 			case 'ShowEntity':
+			case 'ChangeEntity':
 				{
 					let id = this.resolveEntityId(node.attributes.entity);
 					let cardId = node.attributes.cardID || null;
@@ -233,7 +235,8 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 					mutator = new ShowEntityMutator(
 						id,
 						cardId,
-						node.attributes.tags
+						node.attributes.tags,
+						name == 'ChangeEntity'
 					);
 					break;
 				}
