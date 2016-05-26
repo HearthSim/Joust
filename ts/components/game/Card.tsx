@@ -29,7 +29,6 @@ class Card extends React.Component<CardProps, {}> {
 			return (
 				<div className="card">
 					<InHandCardArt hidden={true} entity={this.props.entity}
-						cardType={0}  cardClass={0}
 						assetDirectory={this.props.assetDirectory}
 						cardArtDirectory={this.props.cardArtDirectory}
 						/>

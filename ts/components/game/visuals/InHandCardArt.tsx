@@ -7,8 +7,8 @@ import InPlayCardArt from "./InPlayCardArt";
 
 interface InHandCardArtProps extends EntityProps {
 	hidden: boolean;
-	cardType: number;
-	cardClass: number;
+	cardType?: number;
+	cardClass?: number;
 }
 
 class InHandCardArt extends React.Component<InHandCardArtProps, {}> {
@@ -30,7 +30,7 @@ class InHandCardArt extends React.Component<InHandCardArtProps, {}> {
 					if (entity.isPremium()) {
 						frame = "inhand_minion_premium.png"
 					} else {
-						frame = "inhand_minion_" + this.CardClassString() + ".png";
+						frame = "inhand_minion_" + this.cardClassToString() + ".png";
 					}
 					break;
 				case CardType.SPELL:
@@ -38,7 +38,7 @@ class InHandCardArt extends React.Component<InHandCardArtProps, {}> {
 					if (entity.isPremium()) {
 						frame = "inhand_spell_premium.png"
 					} else {
-						frame = "inhand_spell_" + this.CardClassString() + ".png";
+						frame = "inhand_spell_" + this.cardClassToString() + ".png";
 					}
 					break;
 				case CardType.WEAPON:
@@ -76,7 +76,7 @@ class InHandCardArt extends React.Component<InHandCardArtProps, {}> {
 		);
 	}
 
-	private CardClassString(): string {
+	private cardClassToString(): string {
 		switch (this.props.cardClass) {
 			case CardClass.DRUID:
 				return "druid";

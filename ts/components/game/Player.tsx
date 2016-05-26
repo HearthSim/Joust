@@ -115,7 +115,7 @@ class Player extends React.Component<PlayerProps, {}> {
 					}
 				});
 				if(entity === null) {
-					console.error('Entity #' + id + ' from choice could not be found for player #' + this.props.player.getId() + ' (playerId=' + this.props.player.getPlayerId() + ')');
+					console.error('Entity #' + id + ' from ch	oice could not be found for player #' + this.props.player.getId() + ' (playerId=' + this.props.player.getPlayerId() + ')');
 				}
 				return entity;
 			});
