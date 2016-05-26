@@ -2,7 +2,7 @@ module.exports = {
 	entry: __dirname + '/ts/run.tsx',
 	output: {
 		path: __dirname + '/dist',
-		filename: 'bundle.js',
+		filename: 'joust.js',
 		library: 'Joust',
 		libraryTarget: 'var'
 	},
