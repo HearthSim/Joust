@@ -118,11 +118,8 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 			case 'HSReplay':
 				this.version = node.attributes.version;
 				if (this.version) {
-					if (this.version == '1.1') {
+					if (this.version == '1.2') {
 						console.debug('HSReplay at version', this.version);
-					}
-					else if(this.version == '1.2') {
-						console.warn('HSReplay version', this.version, 'is not yet fully supported');
 					}
 					else {
 						console.warn('HSReplay version', this.version, 'is unsupported');
