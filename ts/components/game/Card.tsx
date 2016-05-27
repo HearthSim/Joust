@@ -50,6 +50,9 @@ class Card extends React.Component<CardProps, {}> {
 		if (entity.getTag(GameTag.POWERED_UP)) {
 			classNames.push('powered-up');
 		}
+		if (entity.getTag(GameTag.SHIFTING)) {
+			classNames.push('shifting');
+		}
 
 		var title = entity.getCardId();
 		var description = null;
