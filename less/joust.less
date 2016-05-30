@@ -342,14 +342,14 @@ div.visuals {
 .player {
 	border: solid 2px transparent;
 
-	> section:first-child {
+	> section:first-of-type {
 		border-bottom: solid 1px @joust-player-border-color;
 	}
 
 	&.current {
 		border-color: @joust-current-player-border-color;
 
-		&> section:first-child {
+		&> section:first-of-type {
 			border-bottom-color: rgb(55, 92, 167);
 		}
 	}
