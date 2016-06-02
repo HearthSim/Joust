@@ -225,7 +225,7 @@ class Player extends React.Component<PlayerProps, {}> {
 					});
 					if(entity !== null) {
 						let type = entity.getTag(GameTag.CARDTYPE);
-						let types = [CardType.WEAPON, CardType.SPELL, CardType.MINION];
+						let types = [CardType.WEAPON, CardType.SPELL, CardType.MINION, CardType.HERO_POWER];
 						if(types.indexOf(type) != -1) {
 							action = <div className="played"><Card
 								entity={entity}

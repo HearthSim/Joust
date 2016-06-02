@@ -81,6 +81,9 @@ class Card extends React.Component<CardProps, {}> {
 					case 'SPELL':
 						cardType = CardType.SPELL;
 						break;
+					case 'HERO_POWER':
+						cardType = CardType.HERO_POWER;
+						break;
 				}
 			}
 			switch (data.playerClass) {

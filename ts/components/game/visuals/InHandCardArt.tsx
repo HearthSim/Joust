@@ -34,6 +34,7 @@ class InHandCardArt extends React.Component<InHandCardArtProps, {}> {
 					}
 					break;
 				case CardType.SPELL:
+				case CardType.HERO_POWER:
 					portraitClass = "inhand-spell";
 					if (entity.isPremium()) {
 						frame = "inhand_spell_premium.png"
