@@ -10,6 +10,7 @@ import GameStateScrubber from "./state/GameStateScrubber";
 import GameStateHistory from "./state/GameStateHistory";
 import Player from "./Player";
 import GameStateDescriptor from "./state/GameStateDescriptor";
+import {MetaDataType} from "./enums";
 
 export interface DropTargetProps {
 	connectDropTarget?(jsx);
@@ -36,6 +37,8 @@ export interface ControllerProps {
 
 export interface EntityProps extends CardDataProps, ControllerProps, AssetDirectoryProps, CardArtDirectory {
 	entity: Entity;
+	damage?: number;
+	healing?: number;
 }
 
 export interface OptionCallbackProps {

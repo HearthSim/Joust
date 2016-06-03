@@ -95,6 +95,19 @@ class InPlayCardArt extends React.Component<EntityProps, {}> {
 			});
 		}
 
+		if(this.props.damage && this.props.damage > 0) {
+			images.push({
+				image: "damage.png",
+				classes: ["dmg"]
+			});
+		}
+		else if(this.props.healing && this.props.healing > 0) {
+			images.push({
+				image: "healing.png",
+				classes: ["heal"]
+			});
+		}
+
 		return (
 			<CardArt layers={images} scale={0.86} square={false} margin={false}
 				assetDirectory={this.props.assetDirectory}

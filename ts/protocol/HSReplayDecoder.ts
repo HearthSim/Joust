@@ -21,6 +21,8 @@ import Choices from "../Choices";
 import GameStateDescriptor from "../state/GameStateDescriptor";
 import PushDescriptorMutator from "../state/mutators/PushDescriptorMutator";
 import PopDescriptorMutator from "../state/mutators/PopDescriptorMutator";
+import EnrichDescriptorMutator from "../state/mutators/EnrichDescriptorMutator";
+import MetaData from "../MetaData";
 
 interface PlayerDetails {
 	id: number;
@@ -143,9 +145,13 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 					+node.attributes.target,
 					type
 				);
+				node.descriptor = descriptor;
 				this.push(new IncrementTimeMutator());
 				this.push(new PushDescriptorMutator(descriptor));
  				break;
+			case 'MetaData':
+				node.attributes.entities = Immutable.Set<number>();
+				break;
 		}
 
 		this.nodeStack.push(node);
@@ -325,14 +331,30 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 				break;
 			case 'Action':
 			case 'Block':
-				//this.push(new IncrementTimeMutator());
+				let pauses = [PowSubType.PLAY, PowSubType.TRIGGER, PowSubType.POWER, PowSubType.ATTACK];
+				if (pauses.indexOf(+node.attributes.type) !== -1) {
+					this.push(new IncrementTimeMutator());
+				}
 				this.push(new PopDescriptorMutator());
+				break;
+			case 'Info':
+				{
+					let parent = this.nodeStack.pop();
+					parent.attributes.entities = parent.attributes.entities.add(this.resolveEntityId(node.attributes.entity));
+					this.nodeStack.push(parent);
+					break;
+				}
+			case 'MetaData':
+				let meta = new MetaData(
+					+node.attributes.meta,
+					+node.attributes.entity || +node.attributes.data, // "entity" is misleading, is actually data
+					node.attributes.entities
+				);
+				this.push(new EnrichDescriptorMutator(meta));
 				break;
 			case 'HSReplay':
 			case 'Deck':
 			case 'Card':
-			case 'Info':
-			case 'MetaData':
 			case 'SubOption':
 				// unused
 				break;

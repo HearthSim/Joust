@@ -170,7 +170,7 @@
 	}
 }
 
-.cost, .atk, .health, .durability, .armor, .secret-text, .gameresult {
+.cost, .atk, .health, .durability, .armor, .secret-text, .gameresult, .damage, .healing {
 	position: absolute;
 	display: block;
 	width: 20%;
@@ -199,6 +199,10 @@
 	&.positive {
 		color: #29dd4f;
 	}
+}
+
+.damage, .healing {
+	transform: rotate(-15deg);
 }
 
 .cost {
