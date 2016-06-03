@@ -60,6 +60,7 @@ class Player extends React.Component<PlayerProps, {}> {
 			assetDirectory={this.props.assetDirectory}
 			cardArtDirectory={this.props.cardArtDirectory}
 			controller={this.props.player}
+			descriptor={this.props.descriptors.peek()}
 			/>;
 		var heroPowerEntity = playEntities.filter(filterByCardType(CardType.HERO_POWER)).first();
 		var heroPower = <HeroPower entity={heroPowerEntity}
@@ -84,6 +85,7 @@ class Player extends React.Component<PlayerProps, {}> {
 			assetDirectory={this.props.assetDirectory}
 			cardArtDirectory={this.props.cardArtDirectory}
 			controller={this.props.player}
+			descriptor={this.props.descriptors.peek()}
 			/>;
 		var deck = <Deck entities={this.props.entities.get(Zone.DECK) || emptyEntities}
 			options={this.props.options.get(Zone.DECK) || emptyOptions}

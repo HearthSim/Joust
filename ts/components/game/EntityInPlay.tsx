@@ -2,6 +2,7 @@ import * as React from "react";
 import {DragSource, DropTarget} from "react-dnd";
 import {EntityInPlayProps} from "../../interfaces";
 import * as _ from "lodash";
+import {PowSubType} from "../../enums";
 
 abstract class EntityInPlay<P extends EntityInPlayProps, S> extends React.Component<P, S> {
 
@@ -42,6 +43,29 @@ abstract class EntityInPlay<P extends EntityInPlayProps, S> extends React.Compon
 			}
 			if (this.props.entity.isFrozen()) {
 				classNames.push('frozen');
+			}
+
+			if (this.props.descriptor) {
+				switch(this.props.descriptor.getType()) {
+					case PowSubType.ATTACK:
+						if (this.props.entity.getId() == this.props.descriptor.getEntity()) {
+							classNames.push('attacking')
+						}
+						else if (this.props.entity.getId() == this.props.descriptor.getTarget()) {
+							classNames.push('defending')
+						}
+						break;
+					case PowSubType.POWER:
+						if(this.props.descriptor.getTarget() == this.props.entity.getId()) {
+							classNames.push('spellTarget');
+						}
+						break;
+					case PowSubType.TRIGGER:
+						if(this.props.descriptor.getEntity() == this.props.entity.getId()) {
+							classNames.push('triggered');
+						}
+						break;
+				}
 			}
 		}
 		return classNames;
