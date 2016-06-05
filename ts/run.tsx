@@ -18,7 +18,7 @@ import TexturePreloader from "./TexturePreloader";
 var React = require('react');
 var ReactDOM = require('react-dom');
 
-class Viewer {
+class Launcher {
 
 	protected target;
 	protected opts: GameWidgetProps;
@@ -33,44 +33,44 @@ class Viewer {
 		this.opts.assetDirectory = 'assets/';
 	}
 
-	public width(width: number): Viewer {
+	public width(width: number): Launcher {
 		this.opts.width = width;
 		return this;
 	}
 
-	public height(height: number): Viewer {
+	public height(height: number): Launcher {
 		this.opts.height = height;
 		return this;
 	}
 
-	public assets(assets: string): Viewer {
+	public assets(assets: string): Launcher {
 		this.opts.assetDirectory = assets;
 		return this;
 	}
 
-	public textures(a: any): Viewer {
-		console.warn('Viewer.textures() is deprecated, use .cardArt() instead');
+	public textures(a: any): Launcher {
+		console.warn('Launcher.textures() is no longer in use, use .cardArt() instead');
 		return this;
 	}
 
-	public cardArt(url: string): Viewer {
+	public cardArt(url: string): Launcher {
 		this.opts.cardArtDirectory = url;
 		return this;
 	}
 
-	public metadata(query: QueryCardMetadata): Viewer {
+	public metadata(query: QueryCardMetadata): Launcher {
 		this.queryCardMetadata = query;
 		return this;
 	}
 
-	public setOptions(opts: any): Viewer {
+	public setOptions(opts: any): Launcher {
 		for (var prop in opts) {
 			this.opts[prop] = opts[prop];
 		}
 		return this;
 	}
 
-	public debug(enable?: boolean): Viewer {
+	public debug(enable?: boolean): Launcher {
 		if(typeof enable === 'undefined' || enable === null) {
 			enable = true;
 		}
@@ -134,10 +134,10 @@ module.exports = {
 	},
 
 	renderHSReplay: (target: string, url: string, opts?) => {
-		new Viewer(target).setOptions(opts).fromUrl(url);
+		new Launcher(target).setOptions(opts).fromUrl(url);
 	},
 
 	viewer: (target) => {
-		return new Viewer(target);
+		return new Launcher(target);
 	}
 }
