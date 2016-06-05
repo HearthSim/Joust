@@ -158,6 +158,7 @@ export interface GameWidgetProps extends AssetDirectoryProps, CardArtDirectory, 
 	width?: any;
 	height?: any;
 	debug?: boolean;
+	logger?: (error: Error) => void;
 }
 
 export interface StreamScrubberInhibitor {

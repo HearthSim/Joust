@@ -10,7 +10,7 @@ import GameStateTracker from "./state/GameStateTracker";
 import HSReplayDecoder from "./protocol/HSReplayDecoder";
 import GameStateScrubber from "./state/GameStateScrubber";
 import * as http from "http";
-import * as stream from "stream"
+import * as https from "https";
 import * as URL from "url";
 import {QueryCardMetadata} from "./interfaces";
 import TexturePreloader from "./TexturePreloader";
@@ -28,7 +28,11 @@ class Launcher {
 	constructor(target: any) {
 		this.target = target;
 		this.opts = {
-			debug: false
+			debug: false,
+			logger: (error: Error): void => {
+				let message = error.message ? error.message : error;
+				console.error(message);
+			}
 		} as any;
 		this.opts.assetDirectory = 'assets/';
 	}
@@ -70,12 +74,21 @@ class Launcher {
 		return this;
 	}
 
+	public logger(logger: (message) => void): Launcher {
+		this.opts.logger = logger;
+		return this;
+	}
+
 	public debug(enable?: boolean): Launcher {
 		if(typeof enable === 'undefined' || enable === null) {
 			enable = true;
 		}
 		this.opts['debug'] = enable;
 		return this;
+	}
+
+	protected log(message:any): void {
+		this.opts.logger(message);
 	}
 
 	public fromUrl(url: string): void {
@@ -91,13 +104,21 @@ class Launcher {
 
 		var opts = URL.parse(url) as any;
 		opts.withCredentials = false;
-		var request = http.get(opts);
-		request.on('response', (response: stream.Readable) => {
+		var request = https.get(opts);
+		request.on('response', (response: http.IncomingMessage) => {
+			if(response.statusCode != 200) {
+				this.log(new Error('Could not load replay ("' + response.statusCode + ' ' + response.statusMessage + '")'));
+;				return;
+			}
+
 			response
 				.pipe(decoder) // json -> mutators
 				.pipe(tracker) // mutators -> latest gamestate
 				.pipe(scrubber) // gamestate -> gamestate emit on scrub past
 				.pipe(sink); // gamestate
+
+			decoder.on('error', this.log.bind(this));
+
 			if(this.opts.cardArtDirectory) {
 				decoder.pipe(preloader);
 			}
