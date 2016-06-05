@@ -10,6 +10,7 @@ interface TimelineProps extends React.Props<any> {
 	duration: number;
 	seek: (time: number) => void;
 	turnMap?: Immutable.Map<number, GameState>;
+	disabled?: boolean;
 	swapPlayers?: boolean;
 }
 
@@ -51,7 +52,7 @@ class Timeline extends React.Component<TimelineProps, TimelineState> implements 
 	}
 
 	protected onMouseDown(e): void {
-		if (e.button !== 0) {
+		if (e.button !== 0 || this.props.disabled) {
 			// any button other than left click
 			return;
 		}
@@ -78,7 +79,7 @@ class Timeline extends React.Component<TimelineProps, TimelineState> implements 
 	}
 
 	protected onTouchStart(e): void {
-		if (!e.touches[0]) {
+		if (!e.touches[0] || this.props.disabled) {
 			return;
 		}
 		e.preventDefault();
@@ -88,7 +89,7 @@ class Timeline extends React.Component<TimelineProps, TimelineState> implements 
 	}
 
 	protected onTouchMove(e): void {
-		if (!this.state.isDragging) {
+		if (!this.state.isDragging || this.props.disabled) {
 			return;
 		}
 
@@ -147,10 +148,13 @@ class Timeline extends React.Component<TimelineProps, TimelineState> implements 
 			classes.push('no-turns');
 		}
 
+		let style = {} as any;
+		style.cursor = this.props.disabled ? 'default' : 'pointer';
+
 		return (
 			<div className={classes.join(' ')}
 				ref={(ref) => this.ref = ref}
-				style={{ cursor: 'pointer' }}
+				style={style}
 				onMouseDown={this.onMouseDown.bind(this) }
 				onTouchStart={this.onTouchStart.bind(this) }
 				>

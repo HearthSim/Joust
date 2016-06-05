@@ -189,6 +189,7 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 					seek={this.props.scrubber.seek.bind(this.props.scrubber) }
 					turnMap={this.props.scrubber.getHistory().turnMap}
 					swapPlayers={this.props.isSwapped}
+					disabled={!this.state.canInteract}
 					ref={(inhibitor) => this.props.scrubber.setInhibitor(inhibitor) }
 					/>
 				{reveal}
