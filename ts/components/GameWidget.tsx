@@ -122,7 +122,7 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 			return;
 		}
 		let players = this.state.gameState.getPlayers();
-		if(!players) {
+		if(!players.length) {
 			return;
 		}
 		let player = players[0];
