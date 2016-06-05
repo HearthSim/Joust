@@ -70,8 +70,8 @@ gulp.task('assets', function () {
 
 gulp.task('watch', ['watch:styles', 'watch:html', 'watch:assets'], function () {
 	livereload.listen();
-	gutil.log(gutil.colors.yellow("Warning: only watching HTML/LESS files"));
-	gutil.log(gutil.colors.yellow("Use 'webpack -d --watch' to watch TypeScript"));
+	gutil.log(gutil.colors.yellow("Warning: not compiling or watching TypeScript files"));
+	gutil.log(gutil.colors.yellow("Use 'webpack --watch -d' for development"));
 });
 
 gulp.task('watch:scripts', function () {
