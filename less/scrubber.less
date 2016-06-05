@@ -39,9 +39,12 @@
 	height: 100%;
 	width: 100%;
 	border: solid @scrubber-inactive-border-width @scrubber-inactive-border-color;
-	border-top: none;
-	border-bottom: none;
 	color: white;
+
+	&:not(.no-turns) {
+		border-top: none;
+		border-bottom: none;
+	}
 }
 
 .joust-scrubber-progress {
@@ -59,6 +62,14 @@
 		right: 0;
 		border-right: none;
 		border-left: solid @scrubber-seeker-width @scrubber-seeker-color;
+
+		.no-turns & {
+			border-left: none;
+		}
+	}
+
+	.no-turns & {
+		border-right: none;
 	}
 }
 

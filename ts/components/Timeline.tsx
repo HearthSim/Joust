@@ -141,8 +141,14 @@ class Timeline extends React.Component<TimelineProps, TimelineState> implements 
 
 		let width = 100 / this.props.duration * this.props.at;
 
+		let classes = ['joust-scrubber-timeline'];
+
+		if(!turns.length) {
+			classes.push('no-turns');
+		}
+
 		return (
-			<div className="joust-scrubber-timeline"
+			<div className={classes.join(' ')}
 				ref={(ref) => this.ref = ref}
 				style={{ cursor: 'pointer' }}
 				onMouseDown={this.onMouseDown.bind(this) }
