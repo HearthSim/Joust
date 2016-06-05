@@ -118,22 +118,19 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 			case 'HSReplay':
 				this.version = node.attributes.version;
 				if (this.version) {
-					if (this.version == '1.2') {
-						console.debug('HSReplay at version', this.version);
-					}
-					else {
+					if (this.version != '1.2') {
 						console.warn('HSReplay version', this.version, 'is unsupported');
 					}
 				}
 				else {
-					console.warn('No HSReplay version found');
+					console.warn('Replay does not contain HSReplay version');
 				}
 				this.build = node.attributes.build;
 				if (typeof this.build !== 'undefined') {
 					this.build = +this.build;
 				}
 				if (!this.build) {
-					console.warn('No Hearthstone build number found');
+					console.warn('Replay does not contain Hearthstone build number');
 				}
 				this.emit('build', this.build);
 				break;
@@ -160,7 +157,7 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 
 		// sanity check for our stack
 		if (node.name !== name) {
-			console.error("Closing node did not match the opening node from stack (Stack: " + node.name + ", Node: " + name + ")");
+			this.emit('error', new Error("HSReplay: Stack/Node missmatch (Stack: " + node.name + ", Node: " + name + ")"));
 			return;
 		}
 
@@ -331,8 +328,12 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 				//this.push(new IncrementTimeMutator());
 				this.push(new ClearDescriptorMutator());
 				break;
+			case 'Info':
+			case 'MetaData':
+				// unused
+				break;
 			default:
-				//console.warn('Unknown HSReplay tag "' + node.name + '"');
+				this.emit('error', new Error('HSReplay: Unknown tag "' + node.name + '"'));
 				break;
 		}
 
