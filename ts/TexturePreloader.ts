@@ -2,7 +2,7 @@ import * as Stream from "stream";
 import {CardData} from "./interfaces";
 import Entity from "./Entity";
 
-class CardArtPreloader extends Stream.Writable {
+class TexturePreloader extends Stream.Writable {
 	protected fired = {};
 	protected cardArtQueue = ['GAME_005'];
 	protected images = [];
@@ -41,7 +41,7 @@ class CardArtPreloader extends Stream.Writable {
 	}
 
 	public consume() {
-		// maximum number of parallel request
+		// maximum number of parallel requests
 		if(this.working >= 1024) {
 			return;
 		}
@@ -86,6 +86,10 @@ class CardArtPreloader extends Stream.Writable {
 	public canPreload(): boolean {
 		return !!this.assetDirectory || !!this.cardArtDirectory;
 	}
+
+	public isDone(): boolean {
+		return this.cardArtQueue.length + this.assetQueue.length + this.working == 0;
+	}
 }
 
-export default CardArtPreloader;
+export default TexturePreloader;
