@@ -24,11 +24,7 @@ class TagChangeMutator implements GameStateMutator {
 		var newEntity = oldEntity.setTag(this.tag, this.value);
 
 		if (newEntity === oldEntity) {
-			console.debug(
-				'No tag change ' +
-				'(tag ' + this.tag + ': ' + oldEntity.getTag(this.tag) + ' → ' + this.value + ') ' +
-				'on entity #' + this.id
-			);
+			// tag value did not change
 			return state;
 		}
 
