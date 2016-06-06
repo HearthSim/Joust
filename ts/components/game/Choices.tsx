@@ -24,6 +24,12 @@ class Choices extends EntityList<ChoicesProps> {
 		return this.props.choices.get(entity.getId()).getIndex();
 	}
 
+	private count: number = 0;
+
+	protected beforeRender() {
+		this.count = 0;
+	}
+
 	protected renderEntity(entity: Entity, option: Option, index?: number) {
 		var hidden = false;
 		if (!entity.getCardId() && this.props.cardOracle && this.props.cardOracle.has(+entity.getId())) {
@@ -32,7 +38,9 @@ class Choices extends EntityList<ChoicesProps> {
 			hidden = true;
 		}
 
-		if(this.props.isMulligan && entity.getCardId() === 'GAME_005') {
+		// hard limit mulligan cards to 4, see issue #85
+		this.count++;
+		if(this.props.isMulligan && (entity.getCardId() === 'GAME_005' || (!entity.isRevealed() && this.count > 4))) {
 			return null;
 		}
 
