@@ -36,7 +36,8 @@ gulp.task('compile:scripts:web', function () {
 			compress: {
 				warnings: false
 			}
-		})
+		}),
+		new webpack.optimize.DedupePlugin()
 	]);
 	config.devtool = '#source-map';
 	return gulp.src('ts/run.tsx')
