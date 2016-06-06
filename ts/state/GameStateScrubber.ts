@@ -29,28 +29,21 @@ class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 	protected endTime: number;
 
 	_write(gameState: any, encoding: string, callback: Function): void {
-
-		// setup initial time if unknown
 		var time = gameState.getTime();
 
-		if (this.initialTime !== null) {
-			// add to our history
-			this.history.push(gameState);
-		}
-		else if (time !== null) {
-			this.play();
-			this.initialTime = time;
-		}
-		else {
-			// if no time is set, we're out of luck - just send it through?
-			//console.warn('Passthrough for GameState without time');
-			//this.push(gameState);
-			callback();
-			return;
-		}
+		if (time !== null) {
+			// setup initial time if unknown
+			if (this.initialTime === null) {
+				this.play();
+				this.initialTime = time;
+			}
 
-		if (time && (this.endTime === null || time > this.endTime)) {
-			this.endTime = time;
+			// track game state
+			this.history.push(gameState);
+
+			if(this.endTime === null || time > this.endTime) {
+				this.endTime = time;
+			}
 		}
 
 		callback();
