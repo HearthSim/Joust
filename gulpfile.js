@@ -38,6 +38,7 @@ gulp.task('compile:scripts:web', function () {
 			}
 		})
 	]);
+	config.devtool = '#source-map';
 	return gulp.src('ts/run.tsx')
 		.pipe(webpackStream(config))
 		.pipe(gulp.dest('dist/'));
