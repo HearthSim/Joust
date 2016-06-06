@@ -112,13 +112,14 @@ class Player extends React.Component<PlayerProps, {}> {
 				this.props.entities.forEach((zoneEntities:Immutable.Map<number, Entity>) => {
 					if (zoneEntities.has(id)) {
 						entity = zoneEntities.get(id);
+						return false;
 					}
 				});
 				if(entity === null) {
 					console.error('Entity #' + id + ' from choice could not be found for player #' + this.props.player.getId() + ' (playerId=' + this.props.player.getPlayerId() + ')');
 				}
 				return entity;
-			});
+			}).filter((entity: Entity) => { return !!entity; });
 			choices = <Choices entities={choiceEntities}
 							   cards={this.props.cards}
 							   cardOracle={this.props.cardOracle}
