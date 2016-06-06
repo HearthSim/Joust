@@ -333,6 +333,7 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 			case 'Card':
 			case 'Info':
 			case 'MetaData':
+			case 'SubOption':
 				// unused
 				break;
 			default:
