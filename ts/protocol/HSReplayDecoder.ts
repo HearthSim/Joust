@@ -328,6 +328,9 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 				//this.push(new IncrementTimeMutator());
 				this.push(new ClearDescriptorMutator());
 				break;
+			case 'HSReplay':
+			case 'Deck':
+			case 'Card':
 			case 'Info':
 			case 'MetaData':
 				// unused
