@@ -31,7 +31,7 @@ class AddEntityMutator implements GameStateMutator {
 		entityTree = entityTree.setIn([this.entity.getController(), this.entity.getZone(), id], this.entity);
 
 		// we always mutate the GameState when we add an entity
-		return new GameState(entities, entityTree, state.getOptions(), state.getOptionTree(), state.getTime(), state.getChoices(), state.getDescriptor());
+		return new GameState(entities, entityTree, state.getOptions(), state.getOptionTree(), state.getTime(), state.getChoices(), state.getDescriptors());
 	}
 }
 

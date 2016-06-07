@@ -15,7 +15,7 @@ class GameState {
 		protected optionTree?: Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Option>>>,
 		protected time?: number,
 		protected choices?: Immutable.Map<number, Choices>,
-		protected descriptor?: GameStateDescriptor) {
+		protected descriptors?: Immutable.Stack<GameStateDescriptor>) {
 		if (!this.entities) {
 			this.entities = Immutable.Map<number, Entity>();
 		}
@@ -34,8 +34,8 @@ class GameState {
 		if (!this.choices) {
 			this.choices = Immutable.Map<number, Choices>();
 		}
-		if (typeof (this.descriptor) === 'undefined') {
-			this.descriptor = null;
+		if (typeof (this.descriptors) === 'undefined') {
+			this.descriptors = Immutable.Stack<GameStateDescriptor>();
 		}
 	}
 
@@ -78,7 +78,11 @@ class GameState {
 	}
 
 	public getDescriptor(): GameStateDescriptor {
-		return this.descriptor;
+		return this.descriptors.peek();
+	}
+
+	public getDescriptors(): Immutable.Stack<GameStateDescriptor> {
+		return this.descriptors;
 	}
 
 	public apply(mutator: GameStateMutator): GameState {

@@ -8,7 +8,7 @@ class ClearOptionsMutator implements GameStateMutator {
 			return state;
 		}
 
-		return new GameState(state.getEntities(), state.getEntityTree(), state.getOptions().clear(), state.getOptionTree().clear(), state.getTime(), state.getChoices(), state.getDescriptor());
+		return new GameState(state.getEntities(), state.getEntityTree(), state.getOptions().clear(), state.getOptionTree().clear(), state.getTime(), state.getChoices(), state.getDescriptors());
 	}
 }
 

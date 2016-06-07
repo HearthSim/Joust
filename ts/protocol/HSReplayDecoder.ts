@@ -19,8 +19,8 @@ import SetChoicesMutator from "../state/mutators/SetChoicesMutator";
 import ClearChoicesMutator from "../state/mutators/ClearChoicesMutator";
 import Choices from "../Choices";
 import GameStateDescriptor from "../state/GameStateDescriptor";
-import SetDescriptorMutator from "../state/mutators/SetDescriptorMutator";
-import ClearDescriptorMutator from "../state/mutators/ClearDescriptorMutator";
+import PushDescriptorMutator from "../state/mutators/PushDescriptorMutator";
+import PopDescriptorMutator from "../state/mutators/PopDescriptorMutator";
 
 interface PlayerDetails {
 	id: number;
@@ -144,7 +144,7 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 					type
 				);
 				this.push(new IncrementTimeMutator());
-				this.push(new SetDescriptorMutator(descriptor));
+				this.push(new PushDescriptorMutator(descriptor));
  				break;
 		}
 
@@ -326,7 +326,7 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 			case 'Action':
 			case 'Block':
 				//this.push(new IncrementTimeMutator());
-				this.push(new ClearDescriptorMutator());
+				this.push(new PopDescriptorMutator());
 				break;
 			case 'HSReplay':
 			case 'Deck':

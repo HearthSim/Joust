@@ -6,7 +6,7 @@ class SetTimeMutator implements GameStateMutator {
 	}
 
 	public applyTo(state: GameState): GameState {
-		return new GameState(state.getEntities(), state.getEntityTree(), state.getOptions(), state.getOptionTree(), this.time, state.getChoices(), state.getDescriptor());
+		return new GameState(state.getEntities(), state.getEntityTree(), state.getOptions(), state.getOptionTree(), this.time, state.getChoices(), state.getDescriptors());
 	}
 }
 
