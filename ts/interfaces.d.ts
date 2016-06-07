@@ -170,6 +170,10 @@ export interface RankProps extends AssetDirectoryProps, CardArtDirectory, React.
 	legendRank?: number;
 }
 
+export interface GameStateDescriptorStackProps {
+	descriptors: Immutable.Stack<GameStateDescriptor>;
+}
+
 export interface GameStateDescriptorProps {
 	descriptor: GameStateDescriptor;
 }

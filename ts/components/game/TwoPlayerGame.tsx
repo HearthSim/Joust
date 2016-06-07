@@ -3,7 +3,7 @@ import * as Immutable from "immutable";
 
 import {
 	EntityProps, OptionCallbackProps, CardDataProps, CardOracleProps, AssetDirectoryProps, CardArtDirectory,
-	GameStateDescriptorProps
+	GameStateDescriptorStackProps
 } from "../../interfaces";
 import Entity from "../../Entity";
 import Player from "./Player";
@@ -16,7 +16,7 @@ import {GameTag} from "../../enums";
 import Choice from "../../Choice";
 import Choices from "../../Choices";
 
-interface TwoPlayerGameProps extends EntityProps, CardDataProps, CardOracleProps, OptionCallbackProps, AssetDirectoryProps, GameStateDescriptorProps, React.Props<any> {
+interface TwoPlayerGameProps extends EntityProps, CardDataProps, CardOracleProps, OptionCallbackProps, AssetDirectoryProps, GameStateDescriptorStackProps, React.Props<any> {
 	player1: PlayerEntity;
 	player2: PlayerEntity;
 	entities: Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Entity>>>;
@@ -46,7 +46,7 @@ class TwoPlayerGame extends React.Component<TwoPlayerGameProps, {}> {
 					optionCallback={this.props.optionCallback}
 					cardOracle={this.props.cardOracle}
 					cards={this.props.cards}
-					descriptor={this.props.descriptor}
+					descriptors={this.props.descriptors}
 					assetDirectory={this.props.assetDirectory}
 					cardArtDirectory={this.props.cardArtDirectory}
 					/>
@@ -62,7 +62,7 @@ class TwoPlayerGame extends React.Component<TwoPlayerGameProps, {}> {
 					optionCallback={this.props.optionCallback}
 					cardOracle={this.props.cardOracle}
 					cards={this.props.cards}
-					descriptor={this.props.descriptor}
+					descriptors={this.props.descriptors}
 					assetDirectory={this.props.assetDirectory}
 					cardArtDirectory={this.props.cardArtDirectory}
 					/>
@@ -82,7 +82,7 @@ class TwoPlayerGame extends React.Component<TwoPlayerGameProps, {}> {
 			this.props.optionCallback !== nextProps.optionCallback ||
 			this.props.cardOracle !== nextProps.cardOracle ||
 			this.props.cards !== nextProps.cards ||
-			this.props.descriptor !== nextProps.descriptor
+			this.props.descriptors !== nextProps.descriptors
 		);
 	}
 }

@@ -72,7 +72,7 @@ class GameWrapper extends React.Component<GameWrapperProps, {}> {
 					optionCallback={this.props.interaction && this.props.interaction.sendOption.bind(this.props.interaction) }
 					cards={this.props.cards}
 					cardOracle={this.props.cardOracle}
-					descriptor={this.props.state.getDescriptor()}
+					descriptors={this.props.state.getDescriptors()}
 					assetDirectory={this.props.assetDirectory}
 					cardArtDirectory={this.props.cardArtDirectory}
 					/>;
