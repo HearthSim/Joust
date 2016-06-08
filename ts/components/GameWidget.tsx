@@ -152,7 +152,8 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 		parts.push(<GameWrapper key="game" state={this.state.gameState} interaction={this.props.interaction}
 			assetDirectory={this.props.assetDirectory} cardArtDirectory={this.props.cardArtDirectory}
 			cards={this.state.cards} swapPlayers={isSwapped}
-			cardOracle={this.state.isRevealingCards && this.state.cardOracle}
+			cardOracle={this.state.cardOracle}
+			hideCards={!this.state.isRevealingCards}
 			/>);
 
 		if (this.props.scrubber) {

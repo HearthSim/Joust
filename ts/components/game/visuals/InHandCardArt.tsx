@@ -64,7 +64,7 @@ class InHandCardArt extends React.Component<InHandCardArtProps, {}> {
 			classes: ["inhand-base"]
 		});
 
-		if (entity.isLegendary()) {
+		if (entity.getCardId() && entity.isLegendary()) {
 			images.push({
 				image: "inhand_minion_legendary"
 					+ (entity.isPremium() ? "_premium" : "") + ".png",

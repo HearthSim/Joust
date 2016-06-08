@@ -1,5 +1,5 @@
 import * as React from "react";
-import {CardDataProps, GameStateDescriptorProps} from "../interfaces";
+import {CardDataProps, GameStateDescriptorProps, HideCardsProps} from "../interfaces";
 import GameState from "../state/GameState";
 import TwoPlayerGame from "./game/TwoPlayerGame";
 import {CardType, OptionType} from "../enums";
@@ -9,7 +9,7 @@ import PlayerEntity from "../Player";
 import {InteractiveBackend, CardOracleProps, AssetDirectoryProps, CardArtDirectory} from "../interfaces";
 import {Zone} from "../enums";
 
-interface GameWrapperProps extends CardDataProps, CardOracleProps, AssetDirectoryProps, CardArtDirectory, React.Props<any> {
+interface GameWrapperProps extends CardDataProps, CardOracleProps, AssetDirectoryProps, CardArtDirectory, HideCardsProps, React.Props<any> {
 	state: GameState;
 	interaction?: InteractiveBackend;
 	swapPlayers?: boolean;
@@ -75,6 +75,7 @@ class GameWrapper extends React.Component<GameWrapperProps, {}> {
 					descriptors={this.props.state.getDescriptors()}
 					assetDirectory={this.props.assetDirectory}
 					cardArtDirectory={this.props.cardArtDirectory}
+					hideCards={this.props.hideCards}
 					/>;
 			default:
 				return <div>Unsupported player count ({playerCount}).</div>

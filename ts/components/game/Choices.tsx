@@ -31,8 +31,13 @@ class Choices extends EntityList<ChoicesProps> {
 	}
 
 	protected renderEntity(entity: Entity, option: Option, index?: number) {
+
 		var hidden = false;
-		if (!entity.getCardId() && this.props.cardOracle && this.props.cardOracle.has(+entity.getId())) {
+
+		if(this.props.hideCards) {
+			entity = new Entity(entity.getId(), entity.getTags());
+		}
+		else if (!entity.getCardId() && this.props.cardOracle && this.props.cardOracle.has(+entity.getId())) {
 			let cardId = this.props.cardOracle.get(entity.getId());
 			entity = new Entity(entity.getId(), entity.getTags(), cardId);
 			hidden = true;

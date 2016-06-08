@@ -19,11 +19,12 @@ import Card from "./Card";
 import {Zone, CardType, GameTag, ChoiceType, Mulligan, PlayState, PowSubType} from "../../enums"
 import {
 	OptionCallbackProps, CardDataProps, CardOracleProps, AssetDirectoryProps, CardArtDirectory,
-	GameStateDescriptorStackProps
+	GameStateDescriptorStackProps, HideCardsProps
 } from "../../interfaces";
 import GameStateDescriptor from "../../state/GameStateDescriptor";
 
-interface PlayerProps extends OptionCallbackProps, CardDataProps, CardOracleProps, AssetDirectoryProps, CardArtDirectory, GameStateDescriptorStackProps, React.Props<any> {
+interface PlayerProps extends OptionCallbackProps, CardDataProps, CardOracleProps, AssetDirectoryProps,
+	CardArtDirectory,GameStateDescriptorStackProps, HideCardsProps, React.Props<any> {
 	player: PlayerEntity;
 	entities: Immutable.Map<number, Immutable.Map<number, Entity>>;
 	options: Immutable.Map<number, Immutable.Map<number, Option>>;
@@ -104,6 +105,7 @@ class Player extends React.Component<PlayerProps, {}> {
 			assetDirectory={this.props.assetDirectory}
 			cardArtDirectory={this.props.cardArtDirectory}
 			controller={this.props.player}
+			hideCards={this.props.hideCards}
 			/>;
 		var name = this.props.player.getName() ? <div className="name">{this.props.player.getName() }</div> : null;
 		var choices = null;
@@ -132,6 +134,7 @@ class Player extends React.Component<PlayerProps, {}> {
 							   controller={this.props.player}
 							   isMulligan={this.props.choices.getType() === ChoiceType.MULLIGAN}
 							   choices={this.props.choices && this.props.choices.getChoices()}
+							   hideCards={this.props.hideCards}
 			/>;
 		}
 
@@ -282,7 +285,8 @@ class Player extends React.Component<PlayerProps, {}> {
 			this.props.cardOracle !== nextProps.cardOracle ||
 			this.props.cards !== nextProps.cards ||
 			this.props.descriptors !== nextProps.descriptors ||
-			this.props.isCurrent !== nextProps.isCurrent
+			this.props.isCurrent !== nextProps.isCurrent ||
+			this.props.hideCards !== nextProps.hideCards
 		);
 	}
 }

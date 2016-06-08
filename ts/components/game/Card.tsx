@@ -25,7 +25,7 @@ class Card extends React.Component<CardProps, {}> {
 	public render(): JSX.Element {
 		var entity = this.props.entity;
 		var canBeRevealed = this.props.cards && this.props.cards.has(entity.getCardId());
-		if (entity.getCardId() === null || (this.props.isHidden && !canBeRevealed)) {
+		if (!entity.getCardId() || (this.props.isHidden && !canBeRevealed)) {
 			return (
 				<div className="card">
 					<InHandCardArt hidden={true} entity={this.props.entity}

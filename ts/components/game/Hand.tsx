@@ -32,11 +32,15 @@ class Hand extends EntityList<EntityListProps> {
 		 style['transform'] = 'rotate(' + deg + 'deg) translateY(' + '-' + px + '%)';
 		 }*/
 
-		var hidden = false;
-		if (!entity.getCardId() && this.props.cardOracle && this.props.cardOracle.has(+entity.getId())) {
+		var wasHidden = false;
+
+		if (this.props.hideCards) {
+			entity = new Entity(entity.getId(), entity.getTags());
+		}
+		else if (!entity.getCardId() && this.props.cardOracle && this.props.cardOracle.has(+entity.getId())) {
 			let cardId = this.props.cardOracle.get(entity.getId());
 			entity = new Entity(entity.getId(), entity.getTags(), cardId);
-			hidden = true;
+			wasHidden = true;
 		}
 
 		return (<Card entity={entity}
@@ -45,7 +49,7 @@ class Hand extends EntityList<EntityListProps> {
 			optionCallback={this.props.optionCallback}
 			assetDirectory={this.props.assetDirectory}
 			cards={this.props.cards}
-			isHidden={hidden}
+			isHidden={wasHidden}
 			controller={this.props.controller}
 			cardArtDirectory={this.props.cardArtDirectory}
 			/>);

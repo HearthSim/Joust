@@ -25,7 +25,8 @@ export interface EntityInPlayProps extends EntityProps, OptionProps, DragSourceP
 	isTarget: boolean;
 }
 
-export interface EntityListProps extends OptionCallbackProps, ControllerProps, DropTargetProps, CardDataProps, CardOracleProps, AssetDirectoryProps, CardArtDirectory, GameStateDescriptorProps, React.Props<any> {
+export interface EntityListProps extends OptionCallbackProps, ControllerProps, DropTargetProps, CardDataProps,
+	CardOracleProps, AssetDirectoryProps, CardArtDirectory, GameStateDescriptorProps, HideCardsProps, React.Props<any> {
 	entities: Immutable.Iterable<number, Entity>;
 	options?: Immutable.Iterable<number, Option>;
 	isTop?: boolean;
@@ -179,4 +180,8 @@ export interface GameStateDescriptorStackProps {
 
 export interface GameStateDescriptorProps {
 	descriptor?: GameStateDescriptor;
+}
+
+export interface HideCardsProps {
+	hideCards?: boolean;
 }

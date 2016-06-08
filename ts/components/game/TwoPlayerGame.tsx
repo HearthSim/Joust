@@ -3,7 +3,7 @@ import * as Immutable from "immutable";
 
 import {
 	EntityProps, OptionCallbackProps, CardDataProps, CardOracleProps, AssetDirectoryProps, CardArtDirectory,
-	GameStateDescriptorStackProps
+	GameStateDescriptorStackProps, HideCardsProps
 } from "../../interfaces";
 import Entity from "../../Entity";
 import Player from "./Player";
@@ -16,7 +16,9 @@ import {GameTag} from "../../enums";
 import Choice from "../../Choice";
 import Choices from "../../Choices";
 
-interface TwoPlayerGameProps extends EntityProps, CardDataProps, CardOracleProps, OptionCallbackProps, AssetDirectoryProps, GameStateDescriptorStackProps, React.Props<any> {
+//noinspection TypeScriptUnresolvedVariable
+interface TwoPlayerGameProps extends EntityProps, CardDataProps, CardOracleProps, OptionCallbackProps,
+	AssetDirectoryProps,GameStateDescriptorStackProps, HideCardsProps, React.Props<any> {
 	player1: PlayerEntity;
 	player2: PlayerEntity;
 	entities: Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Entity>>>;
@@ -49,6 +51,7 @@ class TwoPlayerGame extends React.Component<TwoPlayerGameProps, {}> {
 					descriptors={this.props.descriptors}
 					assetDirectory={this.props.assetDirectory}
 					cardArtDirectory={this.props.cardArtDirectory}
+					hideCards={this.props.hideCards}
 					/>
 				{this.props.optionCallback && <EndTurnButton option={this.props.endTurnOption}
 					optionCallback={this.props.optionCallback} onlyOption={options.count() === 0}
@@ -82,8 +85,9 @@ class TwoPlayerGame extends React.Component<TwoPlayerGameProps, {}> {
 			this.props.optionCallback !== nextProps.optionCallback ||
 			this.props.cardOracle !== nextProps.cardOracle ||
 			this.props.cards !== nextProps.cards ||
-			this.props.descriptors !== nextProps.descriptors
-		);
+			this.props.descriptors !== nextProps.descriptors ||
+			this.props.hideCards !== nextProps.hideCards
+	);
 	}
 }
 
