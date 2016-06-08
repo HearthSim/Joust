@@ -120,8 +120,8 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 				}
 				break;
 			case 67: // c
-				//e.preventDefault();
-				//this.props.swapPlayers();
+				e.preventDefault();
+				this.props.swapPlayers();
 				break;
 		}
 	}
@@ -193,6 +193,7 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 					ref={(inhibitor) => this.props.scrubber.setInhibitor(inhibitor) }
 					/>
 				{reveal}
+				{swap}
 				{fullscreen}
 			</div>
 		);
