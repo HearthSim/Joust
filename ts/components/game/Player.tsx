@@ -217,7 +217,7 @@ class Player extends React.Component<PlayerProps, {}> {
 		}
 
 		var action = null;
-		if(this.props.descriptors.count() > 0) {
+		if(this.props.descriptors.count() > 0 && !this.props.choices) {
 			this.props.descriptors.forEach((descriptor: GameStateDescriptor) => {
 				if (descriptor.getType() == PowSubType.PLAY) {
 					let entity = null;
