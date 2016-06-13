@@ -14,6 +14,7 @@ import * as https from "https";
 import * as URL from "url";
 import {QueryCardMetadata} from "./interfaces";
 import TexturePreloader from "./TexturePreloader";
+import {EventEmitter} from "events";
 
 var React = require('react');
 var ReactDOM = require('react-dom');
@@ -111,13 +112,16 @@ class Launcher {
 ;				return;
 			}
 
+			let components = [decoder, tracker, scrubber, preloader];
+			components.forEach((component:EventEmitter) => {
+				component.on('error', this.log.bind(this));
+			});
+
 			response
 				.pipe(decoder) // json -> mutators
 				.pipe(tracker) // mutators -> latest gamestate
 				.pipe(scrubber) // gamestate -> gamestate emit on scrub past
 				.pipe(sink); // gamestate
-
-			decoder.on('error', this.log.bind(this));
 
 			if(this.opts.cardArtDirectory) {
 				decoder.pipe(preloader);
