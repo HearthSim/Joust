@@ -106,9 +106,11 @@ class Launcher {
 		var opts = URL.parse(url) as any;
 		opts.withCredentials = false;
 		var request = https.get(opts);
-		request.on('response', (response: http.IncomingMessage) => {
-			if(response.statusCode != 200) {
-				this.log(new Error('Could not load replay ("' + response.statusCode + ' ' + response.statusMessage + '")'));
+		request.on('response', (message: http.IncomingMessage) => {
+			if(message.statusCode != 200) {
+				if(message.statusCode || message.statusMessage) {
+					this.log(new Error('Could not load replay ("' + message.statusCode + ' ' + message.statusMessage + '")'));
+				}
 ;				return;
 			}
 
@@ -117,7 +119,7 @@ class Launcher {
 				component.on('error', this.log.bind(this));
 			});
 
-			response
+			message
 				.pipe(decoder) // json -> mutators
 				.pipe(tracker) // mutators -> latest gamestate
 				.pipe(scrubber) // gamestate -> gamestate emit on scrub past
