@@ -52,7 +52,7 @@ abstract class EntityList<T extends EntityListProps> extends React.Component<T, 
 			this.props.optionCallback !== nextProps.optionCallback ||
 			this.props.cardOracle !== nextProps.cardOracle ||
 			this.props.cards !== nextProps.cards ||
-			this.props.descriptor !== nextProps.descriptor ||
+			this.props.descriptors !== nextProps.descriptors ||
 			this.props.hideCards !== nextProps.hideCards
 		);
 	}

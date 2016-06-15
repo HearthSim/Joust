@@ -13,6 +13,7 @@ import {DragSource, DropTarget} from "react-dnd";
 import * as _ from "lodash";
 import {CardData} from "../../interfaces";
 import MetaData from "../../MetaData";
+import GameStateDescriptor from "../../state/GameStateDescriptor";
 
 class Minion extends EntityInPlay<EntityInPlayProps, {}> {
 
@@ -32,18 +33,20 @@ class Minion extends EntityInPlay<EntityInPlayProps, {}> {
 		var damage = 0;
 		var healing = 0;
 
-		if(this.props.descriptor) {
-			this.props.descriptor.getMetaData().forEach((metaData: MetaData) => {
-				if(metaData.getEntities().has(entity.getId())) {
-					switch(metaData.getType()) {
-						case MetaDataType.DAMAGE:
-							damage += metaData.getData();
-							break;
-						case MetaDataType.HEALING:
-							healing += metaData.getData();
-							break;
+		if (this.props.descriptors) {
+			this.props.descriptors.forEach((descriptor: GameStateDescriptor) => {
+				descriptor.getMetaData().forEach((metaData: MetaData) => {
+					if (metaData.getEntities().has(entity.getId())) {
+						switch(metaData.getType()) {
+							case MetaDataType.DAMAGE:
+								damage += metaData.getData();
+								break;
+							case MetaDataType.HEALING:
+								healing += metaData.getData();
+								break;
+						}
 					}
-				}
+				})
 			})
 		}
 

@@ -1,5 +1,5 @@
 import * as React from "react";
-import {CardDataProps, GameStateDescriptorProps, HideCardsProps} from "../interfaces";
+import {CardDataProps, HideCardsProps} from "../interfaces";
 import GameState from "../state/GameState";
 import TwoPlayerGame from "./game/TwoPlayerGame";
 import {CardType, OptionType} from "../enums";

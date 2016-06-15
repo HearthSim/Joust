@@ -21,12 +21,12 @@ export interface DragSourceProps {
 	connectDragSource?(jsx);
 }
 
-export interface EntityInPlayProps extends EntityProps, OptionProps, DragSourceProps, DropTargetProps, GameStateDescriptorProps, React.Props<any> {
+export interface EntityInPlayProps extends EntityProps, OptionProps, DragSourceProps, DropTargetProps, GameStateDescriptorStackProps, React.Props<any> {
 	isTarget: boolean;
 }
 
 export interface EntityListProps extends OptionCallbackProps, ControllerProps, DropTargetProps, CardDataProps,
-	CardOracleProps, AssetDirectoryProps, CardArtDirectory, GameStateDescriptorProps, HideCardsProps, React.Props<any> {
+	CardOracleProps, AssetDirectoryProps, CardArtDirectory, GameStateDescriptorStackProps, HideCardsProps, React.Props<any> {
 	entities: Immutable.Iterable<number, Entity>;
 	options?: Immutable.Iterable<number, Option>;
 	isTop?: boolean;
@@ -175,11 +175,7 @@ export interface RankProps extends AssetDirectoryProps, CardArtDirectory, React.
 }
 
 export interface GameStateDescriptorStackProps {
-	descriptors: Immutable.Stack<GameStateDescriptor>;
-}
-
-export interface GameStateDescriptorProps {
-	descriptor?: GameStateDescriptor;
+	descriptors?: Immutable.Stack<GameStateDescriptor>;
 }
 
 export interface HideCardsProps {

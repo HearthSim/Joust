@@ -29,7 +29,7 @@ class Field extends EntityList<EntityListProps> {
 			cardArtDirectory={this.props.cardArtDirectory}
 			cards={this.props.cards}
 			controller={this.props.controller}
-			descriptor={this.props.descriptor}
+			descriptors={this.props.descriptors}
 			/>);
 	}
 }

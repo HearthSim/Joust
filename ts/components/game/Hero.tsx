@@ -13,6 +13,7 @@ import HeroArt from "./visuals/HeroArt";
 import * as _ from "lodash";
 import {MetaDataType} from "../../enums";
 import MetaData from "../../MetaData";
+import GameStateDescriptor from "../../state/GameStateDescriptor";
 
 interface HeroProps extends EntityInPlayProps {
 	secrets: Immutable.Map<number, Entity>;
@@ -32,18 +33,20 @@ class Hero extends EntityInPlay<HeroProps, {}> {
 		var damage = 0;
 		var healing = 0;
 
-		if(this.props.descriptor) {
-			this.props.descriptor.getMetaData().forEach((metaData: MetaData) => {
-				if(metaData.getEntities().has(entity.getId())) {
-					switch(metaData.getType()) {
-						case MetaDataType.DAMAGE:
-							damage += metaData.getData();
-							break;
-						case MetaDataType.HEALING:
-							healing += metaData.getData();
-							break;
+		if (this.props.descriptors) {
+			this.props.descriptors.forEach((descriptor: GameStateDescriptor) => {
+				descriptor.getMetaData().forEach((metaData: MetaData) => {
+					if (metaData.getEntities().has(entity.getId())) {
+						switch(metaData.getType()) {
+							case MetaDataType.DAMAGE:
+								damage += metaData.getData();
+								break;
+							case MetaDataType.HEALING:
+								healing += metaData.getData();
+								break;
+						}
 					}
-				}
+				})
 			})
 		}
 
