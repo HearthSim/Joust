@@ -10,8 +10,6 @@ import Player from "./Player";
 import Option from "../../Option";
 import PlayerEntity from "../../Player";
 import EndTurnButton from "./EndTurnButton";
-import {DragDropContext} from "react-dnd";
-import HTML5Backend from "react-dnd-html5-backend";
 import {GameTag} from "../../enums";
 import Choice from "../../Choice";
 import Choices from "../../Choices";
@@ -91,4 +89,4 @@ class TwoPlayerGame extends React.Component<TwoPlayerGameProps, {}> {
 	}
 }
 
-export default DragDropContext<TwoPlayerGameProps>(HTML5Backend)(TwoPlayerGame);
+export default TwoPlayerGame;

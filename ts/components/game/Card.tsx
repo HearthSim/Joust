@@ -7,8 +7,6 @@ import Health from "./stats/Health";
 import Cost from "./stats/Cost";
 
 import InHandCardArt from "./visuals/InHandCardArt";
-
-import {DragSource} from "react-dnd";
 import {CardType,CardClass} from "../../enums";
 import {GameTag} from "../../enums";
 import Entity from "../../Entity";
@@ -215,17 +213,4 @@ class Card extends React.Component<CardProps, {}> {
 	}
 }
 
-export default DragSource('card', {
-	beginDrag: function(props: CardProps) {
-		return {
-			option: props.option,
-			action: props.optionCallback
-		};
-	}
-},
-	function(connect, monitor) {
-		return {
-			connectDragSource: connect.dragSource(),
-			dragging: monitor.isDragging()
-		}
-	})(Card);
+export default Card;

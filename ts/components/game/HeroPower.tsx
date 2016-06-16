@@ -4,7 +4,6 @@ import {EntityInPlayProps} from "../../interfaces";
 import EntityInPlay from "./EntityInPlay";
 import Cost from "./stats/Cost";
 import HeroPowerArt from "./visuals/HeroPowerArt";
-import * as _ from "lodash";
 
 class HeroPower extends EntityInPlay<EntityInPlayProps, {}> {
 	constructor() {
@@ -29,7 +28,4 @@ class HeroPower extends EntityInPlay<EntityInPlayProps, {}> {
 	}
 }
 
-export default _.flow(
-	EntityInPlay.DragSource(),
-	EntityInPlay.DropTarget()
-)(HeroPower);
+export default HeroPower;

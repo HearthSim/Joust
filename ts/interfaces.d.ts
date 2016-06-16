@@ -12,20 +12,11 @@ import Player from "./Player";
 import GameStateDescriptor from "./state/GameStateDescriptor";
 import {MetaDataType} from "./enums";
 
-export interface DropTargetProps {
-	connectDropTarget?(jsx);
-	isOver?;
+export interface EntityInPlayProps extends EntityProps, OptionProps, GameStateDescriptorStackProps, React.Props<any> {
+	isTarget?: boolean;
 }
 
-export interface DragSourceProps {
-	connectDragSource?(jsx);
-}
-
-export interface EntityInPlayProps extends EntityProps, OptionProps, DragSourceProps, DropTargetProps, GameStateDescriptorStackProps, React.Props<any> {
-	isTarget: boolean;
-}
-
-export interface EntityListProps extends OptionCallbackProps, ControllerProps, DropTargetProps, CardDataProps,
+export interface EntityListProps extends OptionCallbackProps, ControllerProps, CardDataProps,
 	CardOracleProps, AssetDirectoryProps, CardArtDirectory, GameStateDescriptorStackProps, HideCardsProps, React.Props<any> {
 	entities: Immutable.Iterable<number, Entity>;
 	options?: Immutable.Iterable<number, Option>;

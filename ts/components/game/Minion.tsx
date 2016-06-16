@@ -9,8 +9,6 @@ import Health from "./stats/Health";
 import Damage from "./stats/Damage";
 import Healing from "./stats/Healing";
 
-import {DragSource, DropTarget} from "react-dnd";
-import * as _ from "lodash";
 import {CardData} from "../../interfaces";
 import MetaData from "../../MetaData";
 import GameStateDescriptor from "../../state/GameStateDescriptor";
@@ -70,7 +68,4 @@ class Minion extends EntityInPlay<EntityInPlayProps, {}> {
 	}
 }
 
-export default _.flow(
-	EntityInPlay.DragSource(),
-	EntityInPlay.DropTarget()
-)(Minion);
+export default Minion;

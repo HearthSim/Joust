@@ -10,7 +10,6 @@ import Health from "./stats/Health";
 import Armor from "./stats/Armor";
 import SecretText from "./stats/SecretText"
 import HeroArt from "./visuals/HeroArt";
-import * as _ from "lodash";
 import {MetaDataType} from "../../enums";
 import MetaData from "../../MetaData";
 import GameStateDescriptor from "../../state/GameStateDescriptor";
@@ -72,7 +71,4 @@ class Hero extends EntityInPlay<HeroProps, {}> {
 	}
 }
 
-export default _.flow(
-	EntityInPlay.DragSource(),
-	EntityInPlay.DropTarget()
-)(Hero);
+export default Hero;
