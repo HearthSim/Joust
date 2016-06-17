@@ -219,13 +219,16 @@ class Player extends React.Component<PlayerProps, {}> {
 		var action = null;
 		if(this.props.descriptors.count() > 0 && !this.props.choices) {
 			this.props.descriptors.forEach((descriptor: GameStateDescriptor) => {
-				if (descriptor.getType() == PowSubType.PLAY) {
+				let type = descriptor.getType();
+				if (type == PowSubType.PLAY || type == PowSubType.TRIGGER) {
 					let entity = null;
 					// search for entity
 					this.props.entities.forEach((map:Immutable.Map<number, Entity>) => {
 						map.forEach((toCompare:Entity) => {
 							if (descriptor.getEntity() === toCompare.getId()) {
-								entity = toCompare;
+								if (type == PowSubType.PLAY || toCompare.getTag(GameTag.SECRET)) {
+									entity = toCompare;
+								}
 							}
 						});
 					});
