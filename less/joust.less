@@ -278,23 +278,13 @@ div.visuals {
 		height: 1.2em;
 		width: 1.2em;
 		opacity: 1;
-		-webkit-transition: -webkit-filter 400ms linear, opacity 400ms linear;
-		-moz-transition: -moz-filter 400ms linear, opacity 400ms linear;
-		-o-transition: -o-filter 400ms linear, opacity 400ms linear;
-		-ms-transition: opacity 400ms linear;
 		transition: filter 400ms linear, opacity 400ms linear;
 
 		&.full {
-			-webkit-filter: brightness(100%);
-			-moz-filter: brightness(100%);
-			-o-filter: brightness(100%);
 			filter: brightness(100%);
 		}
 
 		&.empty {
-			-webkit-filter: brightness(50%);
-			-moz-filter: brightness(50%);
-			-o-filter: brightness(50%);
 			filter: brightness(50%);
 		}
 
@@ -303,9 +293,6 @@ div.visuals {
 		}
 
 		&.locked {
-			-webkit-filter: grayscale(100%);
-			-moz-filter: grayscale(100%);
-			-o-filter: grayscale(100%);
 			filter: grayscale(100%);
 		}
 	}
