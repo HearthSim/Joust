@@ -144,31 +144,25 @@ class Player extends React.Component<PlayerProps, {}> {
 			cardArtDirectory={this.props.cardArtDirectory}
 			/>;
 
-		var crystals = [];
+		let crystals = [];
 		let resources = this.props.player.getTag(GameTag.RESOURCES) + this.props.player.getTag(GameTag.TEMP_RESOURCES);
 		let available = resources - this.props.player.getTag(GameTag.RESOURCES_USED);
-		for (let i = 0; i < this.props.player.getTag(GameTag.MAXRESOURCES); i++) {
-			var crystalClassNames = ['crystal'];
-			if (i < available) {
-				crystalClassNames.push('full');
-			}
-			else if (i < resources) {
-				if (i >= resources - this.props.player.getTag(GameTag.OVERLOAD_LOCKED)) {
-					crystalClassNames.push('locked');
-				}
-				else {
-					crystalClassNames.push('empty');
-				}
+		let crystalClassNames = ['crystal'];
+		if(available > 0) {
+			crystalClassNames.push('full');
+		}
+		else {
+			if(this.props.player.getTag(GameTag.OVERLOAD_LOCKED) > 0) {
+				crystalClassNames.push('locked');
 			}
 			else {
-				crystalClassNames.push('hidden');
+				crystalClassNames.push('empty');
 			}
-			crystals.push(<img src={this.props.assetDirectory + 'images/mana_crystal.png'} key={i} className={crystalClassNames.join(' ') }></img>);
 		}
 		var tray = (
 			<div className="tray">
 				<span>{available}/{resources}</span>
-				{crystals}
+				<img src={this.props.assetDirectory + 'images/mana_crystal.png'} className={crystalClassNames.join(' ') }></img>
 			</div>
 		);
 
