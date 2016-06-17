@@ -4,7 +4,9 @@ var plumber = require('gulp-plumber');
 
 var sourcemaps = require('gulp-sourcemaps');
 var less = require('gulp-less');
-var autoprefixer = require('gulp-autoprefixer');
+var postcss = require('gulp-postcss');
+var autoprefixer = require('autoprefixer');
+var cssnano = require('cssnano');
 
 var _ = require('lodash');
 var through = require('through2');
@@ -53,7 +55,10 @@ gulp.task('compile:styles', function () {
 		}))
 		.pipe(sourcemaps.init())
 		.pipe(less({'strictMath': true}))
-		.pipe(autoprefixer({browsers: ['last 2 versions']}))
+		.pipe(postcss([
+			autoprefixer({browsers: ['last 2 versions']}),
+			cssnano()
+		]))
 		.pipe(sourcemaps.write('.'))
 		.pipe(gulp.dest('dist/'))
 		.pipe(filter(['**/*.css']))
