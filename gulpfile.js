@@ -56,7 +56,10 @@ gulp.task('compile:styles', function () {
 		.pipe(sourcemaps.init())
 		.pipe(less({'strictMath': true}))
 		.pipe(postcss([
-			autoprefixer({browsers: ['last 2 versions']}),
+			autoprefixer({
+				browsers: ['last 2 versions'],
+				remove: false
+			}),
 			cssnano()
 		]))
 		.pipe(sourcemaps.write('.'))
