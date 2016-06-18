@@ -103,6 +103,10 @@ class Launcher {
 			preloader.consume();
 		}
 
+		if(url.match(/^\//) && location && location.protocol) {
+			let old = url;
+			url = location.protocol + url;
+		}
 		var opts = URL.parse(url) as any;
 		opts.withCredentials = false;
 		var request = (opts.protocol == 'https:' ? https : http).get(opts);
