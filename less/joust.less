@@ -250,45 +250,54 @@ div.visuals {
 	}
 }
 
-.tray {
-	font-family: "Belwe Bd BT";
-	background-color: rgba(0, 0, 0, 0.3);
+.equipment {
+	.tray {
+		font-family: "Belwe Bd BT";
+		background-color: rgba(0, 0, 0, 0.3);
 
-	> span {
-		color: white;
-		font-size: 0.8em;
-		height: 2.5em;
-		text-align: center;
-		line-height: 2.5em;
-		align-self: center;
-		text-shadow: -1px -1px 0 #000,
-			1px -1px 0 #000,
-		-1px 1px 0 #000,
-		1px 1px 0 #000;
+		> span {
+			color: white;
+			font-size: 0.8em;
+			height: 2.5em;
+			text-align: center;
+			line-height: 2.5em;
+			align-self: center;
+			text-shadow: -1px -1px 0 #000,
+				1px -1px 0 #000,
+			-1px 1px 0 #000,
+			1px 1px 0 #000;
+		}
+
+		.crystal {
+			position: relative;
+			height: 1.2em;
+			width: 1.2em;
+			opacity: 1;
+			transition: filter 400ms linear, opacity 400ms linear;
+
+			&.full {
+				filter: brightness(100%);
+			}
+
+			&.empty {
+				filter: brightness(50%);
+			}
+
+			&.hidden {
+				opacity: 0;
+			}
+
+			&.locked {
+				filter: grayscale(100%);
+			}
+		}
 	}
 
-	.crystal {
-		position: relative;
-		height: 1.2em;
-		width: 1.2em;
-		opacity: 1;
-		transition: filter 400ms linear, opacity 400ms linear;
-
-		&.full {
-			filter: brightness(100%);
-		}
-
-		&.empty {
-			filter: brightness(50%);
-		}
-
-		&.hidden {
-			opacity: 0;
-		}
-
-		&.locked {
-			filter: grayscale(100%);
-		}
+	.name {
+		font-family: "Belwe Bd BT";
+		background-color: rgba(0, 0, 0, 0.3);
+		line-height: 1.2em;
+		text-align: center;
 	}
 }
 

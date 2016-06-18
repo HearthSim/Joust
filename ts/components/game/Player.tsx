@@ -107,7 +107,7 @@ class Player extends React.Component<PlayerProps, {}> {
 			controller={this.props.player}
 			hideCards={this.props.hideCards}
 			/>;
-		var name = this.props.player.getName() ? <div className="name">{this.props.player.getName() }</div> : null;
+
 		var choices = null;
 		if(this.props.choices) {
 			let choiceEntities = this.props.choices.getChoices().map((choice:Choice) => {
@@ -138,6 +138,7 @@ class Player extends React.Component<PlayerProps, {}> {
 			/>;
 		}
 
+		var name = this.props.player.getName() ? <div className="name" title={this.props.player.getName()}>{this.props.player.getName()}</div> : null;
 		var rank = <Rank rank={this.props.player.getRank() }
 			legendRank={this.props.player.getLegendRank() }
 			assetDirectory={this.props.assetDirectory}
@@ -168,14 +169,17 @@ class Player extends React.Component<PlayerProps, {}> {
 
 		let tall = <section className="tall">
 			<div className="equipment">
-				<section>
+				<section className="entities">
 					{hero}
 					<section>
 						{weapon}
 						{heroPower}
 					</section>
 				</section>
-				{tray}
+				<section className="details">
+					{name}
+					{tray}
+				</section>
 			</div>
 			{hand}
 		</section>;
