@@ -105,7 +105,7 @@ class Launcher {
 
 		var opts = URL.parse(url) as any;
 		opts.withCredentials = false;
-		var request = https.get(opts);
+		var request = (opts.protocol == 'https:' ? https : http).get(opts);
 		request.on('response', (message: http.IncomingMessage) => {
 			if(message.statusCode != 200) {
 				if(message.statusCode || message.statusMessage) {
