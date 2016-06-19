@@ -120,7 +120,7 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 			case 'HSReplay':
 				this.version = node.attributes.version;
 				if (this.version) {
-					if (this.version != '1.2') {
+					if (this.version != '1.3') {
 						console.warn('HSReplay version', this.version, 'is unsupported');
 					}
 				}
@@ -347,7 +347,7 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 			case 'MetaData':
 				let meta = new MetaData(
 					+node.attributes.meta,
-					+node.attributes.entity || +node.attributes.data, // "entity" is misleading, is actually data
+					+node.attributes.data || +node.attributes.entity, // entity is pre-1.3
 					node.attributes.entities
 				);
 				this.push(new EnrichDescriptorMutator(meta));
