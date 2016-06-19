@@ -209,7 +209,11 @@ class Card extends React.Component<CardProps, {}> {
 
 		description = description.replace(/\$(\d+)/g, modifier(damageBonus, damageDoubling));
 		description = description.replace(/#(\d+)/g, modifier(0, healingDoubling));
-		return description;
+
+		// strip starting [x] - used internally for line breaks?
+		description = description.replace(/^\[x\]/, '');
+
+		return description.trim();
 	}
 }
 
