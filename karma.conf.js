@@ -1,3 +1,5 @@
+var webpack = require('./webpack.config.js');
+
 module.exports = function (config) {
 	config.set({
 		browsers: ['PhantomJS'],
@@ -13,14 +15,8 @@ module.exports = function (config) {
 		},
 
 		webpack: {
-			resolve: {
-				extensions: ['', '.webpack.js', '.web.js', '.ts', '.tsx', '.js']
-			},
-			module: {
-				loaders: [
-					{test: /\.tsx?$/, loader: 'babel-loader?presets[]=react&presets[]=es2015!ts-loader'}
-				]
-			},
+			resolve: webpack.resolve,
+			module: webpack.module,
 			watch: true
 		},
 
