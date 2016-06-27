@@ -80,6 +80,11 @@ class Launcher {
 		return this;
 	}
 
+	public events(cb: (event: string, values: Object, tags?: Object) => void): Launcher {
+		cb('init', {count: 1});
+		return this;
+	}
+
 	public debug(enable?: boolean): Launcher {
 		if(typeof enable === 'undefined' || enable === null) {
 			enable = true;
