@@ -59,6 +59,9 @@ class Card extends React.Component<CardProps, {}> {
 		var defaultHealth = null;
 		var defaultDurability = null;
 		var cardType = entity.getCardType();
+		if (!cardType && entity.getTag(GameTag.SECRET)) {
+			cardType = CardType.SPELL;
+		}
 		var cardClass = entity.getClass();
 		if (canBeRevealed) {
 			var data = this.props.cards && this.props.cards.get(entity.getCardId());
