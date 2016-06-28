@@ -2,7 +2,7 @@
 /// <reference path="./global.d.ts"/>
 /// <reference path="../node_modules/immutable/dist/immutable.d.ts"/>
 
-import {GameWidgetProps, CardData} from "./interfaces";
+import {GameWidgetProps, CardData, JoustEventHandler} from "./interfaces";
 import Application from "./components/Joust";
 import GameWidget from "./components/GameWidget";
 import GameStateSink from "./state/GameStateSink";
@@ -80,8 +80,9 @@ class Launcher {
 		return this;
 	}
 
-	public events(cb: (event: string, values: Object, tags?: Object) => void): Launcher {
+	public events(cb: JoustEventHandler): Launcher {
 		cb('init', {count: 1});
+		this.opts.events = cb;
 		return this;
 	}
 
@@ -140,8 +141,13 @@ class Launcher {
 		});
 		decoder.once('build', (build: number) => {
 			if (this.queryCardMetadata) {
+				let queryTime = Date.now();
 				this.queryCardMetadata(build, (cards: CardData[]) => {
 					this.ref.setCards(cards);
+					this.opts.events && this.opts.events('cards_received', {duration: (Date.now() - queryTime) / 1000}, {
+						cards: cards.length + 'i',
+						build: build + 'i'
+					});
 				});
 			}
 		});
@@ -154,6 +160,7 @@ class Launcher {
 	}
 
 	protected render(): void {
+		this.opts.startupTime = +Date.now();
 		this.ref = ReactDOM.render(
 			React.createElement(GameWidget, this.opts),
 			typeof this.target !== 'string' ? this.target : document.getElementById(this.target)

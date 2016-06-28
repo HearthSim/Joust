@@ -57,6 +57,7 @@ class Joust extends React.Component<{}, JoustState> {
 			case Widget.GAME:
 				widget =
 					<GameWidget sink={this.state.sink}
+						startupTime={0}
 						interaction={this.state.interaction}
 						scrubber={this.state.scrubber}
 						exitGame={this.exitGame.bind(this) }

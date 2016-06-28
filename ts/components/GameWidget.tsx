@@ -45,6 +45,9 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 	public componentDidMount() {
 		this.cb = this.setGameState.bind(this);
 		this.props.sink.on('gamestate', this.cb.bind(this));
+		this.props.sink.once('gamestate', () => {
+			this.track('startup', {count: 1, duration: (Date.now() - this.props.startupTime) / 1000});
+		});
 		this.fullscreen = new Fullscreen(this.ref);
 		this.fullscreen.on('attain', this.onAttainFullscreen.bind(this));
 		this.fullscreen.on('release', this.onReleaseFullscreen.bind(this));
@@ -52,6 +55,13 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 		if (this.props.cardOracle) {
 			this.props.cardOracle.on('cards', this.cardOracleCb);
 		}
+	}
+
+	private track(event: string, values: Object, tags?: Object): void {
+		if(!this.props.events) {
+			return;
+		}
+		this.props.events(event, values, tags || {});
 	}
 
 	protected setGameState(gameState: GameState): void {

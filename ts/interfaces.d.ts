@@ -143,8 +143,9 @@ export interface QueryCardMetadata {
 	(build: number, cb: (cards: CardData[]) => void): void;
 }
 
-export interface GameWidgetProps extends AssetDirectoryProps, CardArtDirectory, React.Props<any> {
+export interface GameWidgetProps extends AssetDirectoryProps, CardArtDirectory, EventHandlerProps, React.Props<any> {
 	sink: GameStateSink;
+	startupTime: number;
 	interaction?: InteractiveBackend;
 	scrubber?: StreamScrubber;
 	getImageURL?: (cardId: string) => string;
@@ -171,4 +172,12 @@ export interface GameStateDescriptorStackProps {
 
 export interface HideCardsProps {
 	hideCards?: boolean;
+}
+
+export interface JoustEventHandler {
+	(event: string, values: Object, tags?: Object): void;
+}
+
+export interface EventHandlerProps {
+	events?: JoustEventHandler;
 }
