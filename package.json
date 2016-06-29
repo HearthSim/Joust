@@ -7,7 +7,7 @@
     "test": "karma start --single-run --no-auto-watch karma.conf.js"
   },
   "author": "Benedict Etzel <developer@beheh.de>",
-  "license": "AGPL-3.0",
+  "license": "UNLICENSED",
   "dependencies": {
     "filereader-stream": "^1.0.0",
     "fullscreen": "^1.0.2",
