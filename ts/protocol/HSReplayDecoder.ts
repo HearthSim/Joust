@@ -8,7 +8,7 @@ import AddEntityMutator from "../state/mutators/AddEntityMutator";
 import Option from "../Option";
 import Entity from "../Entity";
 import Player from "../Player";
-import {GameTag, PowSubType} from "../enums";
+import {GameTag, BlockType} from "../enums";
 import ShowEntityMutator from "../state/mutators/ShowEntityMutator";
 import {CardOracle} from "../interfaces";
 import IncrementTimeMutator from "../state/mutators/IncrementTimeMutator";
@@ -329,7 +329,7 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 				break;
 			case 'Action':
 			case 'Block':
-				let pauses = [PowSubType.PLAY, PowSubType.TRIGGER, PowSubType.POWER, PowSubType.ATTACK];
+				let pauses = [BlockType.PLAY, BlockType.TRIGGER, BlockType.POWER, BlockType.ATTACK];
 				if (pauses.indexOf(+node.attributes.type) !== -1) {
 					this.push(new IncrementTimeMutator());
 				}

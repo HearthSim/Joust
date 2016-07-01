@@ -16,7 +16,7 @@ import Choices from "./Choices";
 import Rank from "./Rank";
 import Card from "./Card";
 
-import {Zone, CardType, GameTag, ChoiceType, Mulligan, PlayState, PowSubType} from "../../enums"
+import {Zone, CardType, GameTag, ChoiceType, Mulligan, PlayState, BlockType} from "../../enums"
 import {
 	OptionCallbackProps, CardDataProps, CardOracleProps, AssetDirectoryProps, CardArtDirectory,
 	GameStateDescriptorStackProps, HideCardsProps
@@ -218,13 +218,13 @@ class Player extends React.Component<PlayerProps, {}> {
 		if(this.props.descriptors.count() > 0 && !this.props.choices) {
 			this.props.descriptors.forEach((descriptor: GameStateDescriptor) => {
 				let type = descriptor.getType();
-				if (type == PowSubType.PLAY || type == PowSubType.TRIGGER) {
+				if (type == BlockType.PLAY || type == BlockType.TRIGGER) {
 					let entity = null;
 					// search for entity
 					this.props.entities.forEach((map:Immutable.Map<number, Entity>) => {
 						map.forEach((toCompare:Entity) => {
 							if (descriptor.getEntity() === toCompare.getId()) {
-								if (type == PowSubType.PLAY || toCompare.getTag(GameTag.SECRET)) {
+								if (type == BlockType.PLAY || toCompare.getTag(GameTag.SECRET)) {
 									entity = toCompare;
 								}
 							}

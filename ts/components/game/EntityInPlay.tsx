@@ -1,7 +1,7 @@
 import * as React from "react";
 import {EntityInPlayProps} from "../../interfaces";
 import * as _ from "lodash";
-import {PowSubType} from "../../enums";
+import {BlockType} from "../../enums";
 import GameStateDescriptor from "../../state/GameStateDescriptor";
 
 abstract class EntityInPlay<P extends EntityInPlayProps, S> extends React.Component<P, S> {
@@ -48,7 +48,7 @@ abstract class EntityInPlay<P extends EntityInPlayProps, S> extends React.Compon
 			if (this.props.descriptors) {
 				this.props.descriptors.forEach((descriptor: GameStateDescriptor) => {
 					switch (descriptor.getType()) {
-						case PowSubType.ATTACK:
+						case BlockType.ATTACK:
 							if (this.props.entity.getId() == descriptor.getEntity()) {
 								classNames.push('attacking')
 							}
@@ -56,12 +56,12 @@ abstract class EntityInPlay<P extends EntityInPlayProps, S> extends React.Compon
 								classNames.push('defending')
 							}
 							break;
-						case PowSubType.POWER:
+						case BlockType.POWER:
 							if (descriptor.getTarget() == this.props.entity.getId()) {
 								classNames.push('spellTarget');
 							}
 							break;
-						case PowSubType.TRIGGER:
+						case BlockType.TRIGGER:
 							if (descriptor.getEntity() == this.props.entity.getId()) {
 								classNames.push('triggered');
 							}
