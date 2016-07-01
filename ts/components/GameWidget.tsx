@@ -1,6 +1,7 @@
 import * as React from "react";
 import {GameWidgetProps, JoustClient, CardDataProps, AssetDirectoryProps, CardOracle} from "../interfaces";
 import Scrubber from "./Scrubber";
+import Log from "./Log";
 import GameState from "../state/GameState";
 import GameWrapper from "./GameWrapper";
 import {InteractiveBackend} from "../interfaces";
@@ -165,6 +166,14 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 			cardOracle={this.state.cardOracle}
 			hideCards={!this.state.isRevealingCards}
 			/>);
+
+		parts.push(<Log key="log"
+			state={this.state.gameState}
+			cards={this.state.cards}
+			cardOracle={this.state.cardOracle}
+			tail={this.props.scrubber.getHistory().tail}
+			currentTime={this.props.scrubber.getCurrentTime()}
+		/>);
 
 		if (this.props.scrubber) {
 			parts.push(<Scrubber key="scrubber" scrubber={this.props.scrubber}

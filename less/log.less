@@ -1,0 +1,67 @@
+.joust-log {
+	position: absolute;
+	width: @log-width;
+	display: inline-flex;
+	flex-direction: column;
+	overflow: hidden;
+	top: 8px;
+	right: 8px;
+	height: calc(100% - (@scrubber-height + @scrubber-margin-top) - 16px);
+	z-index: 1000;
+	background-color: @scrubber-background-color;
+	border: solid 1px @joust-current-player-border-color;
+	font-size: 1.76vh;
+	font-family: "Franklin Gothic Condensed", sans-serif;
+	.line {
+		position: relative;
+		margin-left: 8px;
+		> * {
+			display: inline;
+		}
+		&.inactive {
+			opacity: 0.3;
+		}
+		&.header {
+			margin-left: 0;
+			margin-top: 10px;
+			margin-bottom: 5px;
+			border-top: solid 1px @joust-current-player-border-color;
+			border-bottom: solid 1px @joust-current-player-border-color;
+			font-weight: bold;
+			text-align: center;
+			background-color: lighten(@scrubber-background-color, 5%);
+		}
+		&.indent {
+			margin-left: 1.8em;
+		}
+		> pre {
+			display: inline-block;
+			width: 0;
+			height: 0;
+			padding: 0;
+			margin: 0;
+			line-height: 0;
+			font-size: 0;
+			color: transparent;
+		}
+	}
+
+	.entity {
+		&.common, &.free {
+			color: #e0e0e0;
+		}
+		&.rare {
+			color: lighten(#0070dd, 10%);
+		}
+		&.epic {
+			color: lighten(#a335ee, 10%);
+		}
+		&.legendary {
+			color: lighten(#ff8000, 10%);
+		}
+		&.special {
+			color: lighten(#e6cc80, 10%);
+		}
+	}
+
+}
