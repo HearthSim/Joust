@@ -2,6 +2,7 @@
 @import "entities.less";
 @import "layout.less";
 @import "scrubber.less";
+@import "log.less";
 @import "font-awesome/font-awesome.less";
 @import "animations.less";
 
@@ -50,7 +51,7 @@
 .game {
 	position: relative;
 	overflow: hidden;
-	width: 100%;
+	width: calc(100% - (@log-width + @log-margin-left));
 	height: calc(100% - (@scrubber-height + @scrubber-margin-top));
 	font-size: 2vh;
 }

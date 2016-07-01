@@ -194,3 +194,59 @@ export interface GameStateDiff {
 	previous: number;
 	current: number;
 }
+
+export interface LogItemData {
+	type: LineType;
+	time?: number;
+	entity?: CardData;
+	entityId?: number;
+	target?: CardData;
+	targetId?: number;
+	player?: string;
+	data?: number;
+	data2?: number;
+	indent?: boolean;
+}
+
+export const enum LineType {
+	Turn = 1,
+	Draw,
+	Play,
+	Summon,
+	ArmorBuff,
+	AttackBuff,
+	HealthBuff,
+	AttackReduce,
+	HealthReduce,
+	Attack,
+	Death,
+	Get,
+	Trigger,
+	Damage,
+	Healing,
+	Remove,
+	Mulligan,
+	DivineShield,
+	Taunt,
+	CantBeDamaged,
+	Windfury,
+	Silenced,
+	Charge,
+	Frozen,
+	Stealth,
+	Concede,
+	Win,
+	Replace,
+	StatsBuff,
+	Cthun,
+	Discard,
+	GetToDeck,
+	DiscardFromDeck,
+	Steal,
+	DeckToPlay,
+	PlayToDeck,
+	PlayToHand,
+	Weapon,
+	TurnEnd,
+}
+
