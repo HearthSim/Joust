@@ -3,17 +3,12 @@ import Entity from "../Entity";
 import {GameTag} from "../enums";
 import {Step} from "../enums";
 import * as Immutable from "immutable";
-
-interface ListElement {
-	state: GameState;
-	next?: ListElement;
-	prev?: ListElement;
-}
+import {HistoryEntry} from "../interfaces";
 
 class GameStateHistory {
-	public tail: ListElement = null; // earliest
-	public head: ListElement = null; // latest
-	public pointer: ListElement = null;
+	public tail: HistoryEntry = null; // earliest
+	public head: HistoryEntry = null; // latest
+	public pointer: HistoryEntry = null;
 	public turnMap: Immutable.Map<number, GameState> = Immutable.OrderedMap<number, GameState>();
 
 	public push(gameState: GameState): void {
