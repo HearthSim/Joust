@@ -1,6 +1,7 @@
 import GameState from "../GameState";
 import GameStateMutator from "../GameStateMutator";
 import Entity from "../../Entity";
+import {GameStateDiff} from "../../interfaces";
 
 class ReplaceEntityMutator implements GameStateMutator {
 	constructor(public entity: Entity) {
@@ -35,7 +36,7 @@ class ReplaceEntityMutator implements GameStateMutator {
 				.setIn([newEntity.getController(), newEntity.getZone(), id], newEntity);
 		});
 
-		return new GameState(entities, entityTree, state.getOptions(), state.getOptionTree(), state.getTime(), state.getChoices(), state.getDescriptors());
+		return new GameState(entities, entityTree, state.getOptions(), state.getOptionTree(), state.getTime(), state.getChoices(), state.getDescriptors(), state.getDiffs());
 	}
 }
 

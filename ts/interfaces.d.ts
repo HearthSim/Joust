@@ -181,3 +181,10 @@ export interface JoustEventHandler {
 export interface EventHandlerProps {
 	events?: JoustEventHandler;
 }
+
+export interface GameStateDiff {
+	tag: number;
+	entity: number;
+	previous: number;
+	current: number;
+}

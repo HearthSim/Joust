@@ -2,6 +2,7 @@ import GameState from "../GameState";
 import GameStateMutator from "../GameStateMutator";
 import * as Immutable from "immutable";
 import ReplaceEntityMutator from "./ReplaceEntityMutator";
+import AddDiffsMutator from "./AddDiffsMutator";
 
 class ShowEntityMutator implements GameStateMutator {
 
@@ -23,9 +24,19 @@ class ShowEntityMutator implements GameStateMutator {
 
 		newEntity = newEntity.setTags(this.tags);
 
-		var mutator = new ReplaceEntityMutator(newEntity);
+		let diffs = [];
+		this.tags.forEach((value: number, tag: string) => {
+			diffs.push({
+				entity: this.entityId,
+				tag: +tag,
+				previous: this.replaceTags ? null : (oldEntity.getTags().has(tag) ? oldEntity.getTag(+tag) : null),
+				current: value
+			});
+		});
 
-		return state.apply(mutator);
+		return state
+			.apply(new ReplaceEntityMutator(newEntity))
+			.apply(new AddDiffsMutator(diffs));
 	}
 }
 

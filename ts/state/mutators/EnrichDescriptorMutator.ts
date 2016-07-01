@@ -16,7 +16,7 @@ class EnrichDescriptorMutator implements GameStateMutator {
 		descriptor = new GameStateDescriptor(descriptor.getEntity(), descriptor.getTarget(), descriptor.getType(), meta);
 		descriptors = descriptors.push(descriptor);
 
-		return new GameState(state.getEntities(), state.getEntityTree(), state.getOptions(), state.getOptionTree(), state.getTime(), state.getChoices(), descriptors);
+		return new GameState(state.getEntities(), state.getEntityTree(), state.getOptions(), state.getOptionTree(), state.getTime(), state.getChoices(), descriptors, state.getDiffs());
 	}
 }
 

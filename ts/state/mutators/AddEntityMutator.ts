@@ -2,6 +2,7 @@ import * as Immutable from "immutable";
 import GameState from "../GameState";
 import GameStateMutator from "../GameStateMutator";
 import Entity from "../../Entity";
+import AddDiffsMutator from "./AddDiffsMutator";
 
 class AddEntityMutator implements GameStateMutator {
 	constructor(public entity: Entity) {
@@ -30,8 +31,20 @@ class AddEntityMutator implements GameStateMutator {
 		var entityTree = state.getEntityTree();
 		entityTree = entityTree.setIn([this.entity.getController(), this.entity.getZone(), id], this.entity);
 
+		let diffs = [];
+		this.entity.getTags().forEach((value: number, tag: string) => {
+			diffs.push({
+				entity: id,
+				tag: +tag,
+				previous: null,
+				current: value
+			});
+		});
+
 		// we always mutate the GameState when we add an entity
-		return new GameState(entities, entityTree, state.getOptions(), state.getOptionTree(), state.getTime(), state.getChoices(), state.getDescriptors());
+		state = new GameState(entities, entityTree, state.getOptions(), state.getOptionTree(), state.getTime(), state.getChoices(), state.getDescriptors(), state.getDiffs());
+
+		return state.apply(new AddDiffsMutator(diffs));
 	}
 }
 

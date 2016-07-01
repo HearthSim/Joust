@@ -8,7 +8,7 @@ class PushDescriptorMutator implements GameStateMutator {
 
 	public applyTo(state: GameState): GameState {
 		let descriptors = state.getDescriptors().push(this.descriptor);
-		return new GameState(state.getEntities(), state.getEntityTree(), state.getOptions(), state.getOptionTree(), state.getTime(), state.getChoices(), descriptors);
+		return new GameState(state.getEntities(), state.getEntityTree(), state.getOptions(), state.getOptionTree(), state.getTime(), state.getChoices(), descriptors, state.getDiffs());
 	}
 }
 

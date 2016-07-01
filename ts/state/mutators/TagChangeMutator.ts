@@ -1,7 +1,8 @@
 import GameState from "../GameState";
 import GameStateMutator from "../GameStateMutator";
-import Entity from "../../Entity";
 import ReplaceEntityMutator from "./ReplaceEntityMutator";
+import AddDiffsMutator from "./AddDiffsMutator";
+import {GameStateDiff} from "../../interfaces";
 
 class TagChangeMutator implements GameStateMutator {
 	public id;
@@ -28,9 +29,16 @@ class TagChangeMutator implements GameStateMutator {
 			return state;
 		}
 
-		var mutator = new ReplaceEntityMutator(newEntity);
+		let diff: GameStateDiff = {
+			entity: this.id,
+			tag: this.tag,
+			previous: oldEntity.getTag(this.tag),
+			current: this.value,
+		};
 
-		return state.apply(mutator);
+		return state
+			.apply(new ReplaceEntityMutator(newEntity))
+			.apply(new AddDiffsMutator([diff]));
 	}
 }
 

@@ -6,6 +6,7 @@ import Choices from "../Choices";
 import Player from "../Player";
 import {CardType} from "../enums";
 import GameStateDescriptor from "./GameStateDescriptor";
+import {GameStateDiff} from "../interfaces";
 
 class GameState {
 
@@ -15,7 +16,8 @@ class GameState {
 		protected optionTree?: Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Option>>>,
 		protected time?: number,
 		protected choices?: Immutable.Map<number, Choices>,
-		protected descriptors?: Immutable.Stack<GameStateDescriptor>) {
+		protected descriptors?: Immutable.Stack<GameStateDescriptor>,
+		protected diffs?: Immutable.Set<GameStateDiff>) {
 		if (!this.entities) {
 			this.entities = Immutable.Map<number, Entity>();
 		}
@@ -36,6 +38,9 @@ class GameState {
 		}
 		if (typeof (this.descriptors) === 'undefined') {
 			this.descriptors = Immutable.Stack<GameStateDescriptor>();
+		}
+		if (!this.diffs) {
+			this.diffs = Immutable.Set<GameStateDiff>();
 		}
 	}
 
@@ -83,6 +88,10 @@ class GameState {
 
 	public getDescriptors(): Immutable.Stack<GameStateDescriptor> {
 		return this.descriptors;
+	}
+
+	public getDiffs(): Immutable.Set<GameStateDiff> {
+		return this.diffs;
 	}
 
 	public apply(mutator: GameStateMutator): GameState {

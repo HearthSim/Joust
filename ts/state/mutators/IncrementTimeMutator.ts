@@ -22,7 +22,7 @@ class IncrementTimeMutator implements GameStateMutator {
 			return state;
 		}
 
-		return new GameState(state.getEntities(), state.getEntityTree(), state.getOptions(), state.getOptionTree(), time, state.getChoices(), state.getDescriptors());
+		return new GameState(state.getEntities(), state.getEntityTree(), state.getOptions(), state.getOptionTree(), time, state.getChoices(), state.getDescriptors(), state.getDiffs().clear());
 	}
 }
 
