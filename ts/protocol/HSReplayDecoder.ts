@@ -329,7 +329,7 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 				break;
 			case 'Action':
 			case 'Block':
-				let pauses = [BlockType.PLAY, BlockType.TRIGGER, BlockType.POWER, BlockType.ATTACK];
+				let pauses = [BlockType.PLAY, BlockType.TRIGGER, BlockType.POWER, BlockType.ATTACK, BlockType.RITUAL];
 				if (pauses.indexOf(+node.attributes.type) !== -1) {
 					this.push(new IncrementTimeMutator());
 				}
