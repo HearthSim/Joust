@@ -3,6 +3,7 @@
 	display: inline-block;
 	height: 100%;
 	z-index: 50;
+	animation: draw-intro 0.25s ease-out;
 
 	h1 {
 		position: absolute;
@@ -99,6 +100,7 @@
 	display: inline-block;
 	height: 100%;
 	z-index: 60;
+	animation: minion-intro 0.25s ease-out;
 
 	div.visuals {
 		.inplay-base, .inplay-legendary, .inplay-taunt, .inplay-shield, .inplay-frozen, .inplay-divine-shield,
@@ -118,11 +120,13 @@
 			left: 15%;
 		}
 		.dmg {
+			animation: damage-intro 0.25s ease-out;
 			height: 70%;
 			top: 11%;
 			left: 9%;
 		}
 		.heal {
+			animation: damage-intro 0.25s ease-out;
 			height: 65%;
 			top: 13%;
 			left: 12%;
@@ -233,6 +237,7 @@
 			left: 10%;
 		}
 		.dmg, .heal {
+			animation: damage-intro 0.25s ease-out;
 			height: 80%;
 			top: 12%;
 			left: 9%;
