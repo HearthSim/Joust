@@ -22,10 +22,14 @@ class Card extends React.Component<CardProps, {}> {
 
 	public render(): JSX.Element {
 		var entity = this.props.entity;
+		var classNames = ['card'];
+		if (entity.getTag(GameTag.EVIL_GLOW)) {
+			classNames.push('evil-glow');
+		}
 		var canBeRevealed = this.props.cards && this.props.cards.has(entity.getCardId());
 		if (!entity.getCardId() || (this.props.isHidden && !canBeRevealed)) {
 			return (
-				<div className="card">
+				<div className={classNames.join(' ')}>
 					<InHandCardArt hidden={true} entity={this.props.entity}
 						assetDirectory={this.props.assetDirectory}
 						cardArtDirectory={this.props.cardArtDirectory}
@@ -35,7 +39,7 @@ class Card extends React.Component<CardProps, {}> {
 		}
 
 		var draggable = this.props.option && this.props.optionCallback;
-		var classNames = ['card', 'revealed'];
+		classNames.push('revealed');
 		if (this.props.option) {
 			classNames.push('playable');
 		}
