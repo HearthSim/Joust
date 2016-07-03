@@ -224,7 +224,7 @@ class Player extends React.Component<PlayerProps, {}> {
 					this.props.entities.forEach((map:Immutable.Map<number, Entity>) => {
 						map.forEach((toCompare:Entity) => {
 							if (descriptor.getEntity() === toCompare.getId()) {
-								if (type == BlockType.PLAY || toCompare.getTag(GameTag.SECRET)) {
+								if (type == BlockType.PLAY || toCompare.getTag(GameTag.SECRET) || toCompare.getTag(GameTag.EVIL_GLOW)) {
 									entity = toCompare;
 								}
 							}
