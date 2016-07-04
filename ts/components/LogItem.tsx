@@ -1,6 +1,7 @@
 import * as React from "react";
 import * as _ from "lodash";
 import { CardDataProps, CardOracleProps, CardData, LogItemData,	LineType } from "../interfaces";
+import LogCard from "./LogCard";
 
 interface LogItemProps extends CardDataProps, CardOracleProps, React.Props<any> {
 	lid: LogItemData;
@@ -39,18 +40,8 @@ class LogItem extends React.Component<LogItemProps, {}> {
 			characters += '\t';
 		}
 
-		if (!lid.entity) {
-			let cardId = this.props.cardOracle.get(lid.entityId);
-			lid.entity = this.props.cards.get(cardId);
-		}
-		if (!lid.target) {
-			let cardId = this.props.cardOracle.get(lid.targetId);
-			lid.target = this.props.cards.get(cardId);
-		}
-		let entity = lid.entity ?
-			<div key="entity" className={this.getRarityClass(lid.entity)}>[{lid.entity.name}]</div> : ' a card';
-		let target = lid.target ?
-			<div key="target" className={this.getRarityClass(lid.target)}>[{lid.target.name}]</div> : ' a card';
+		let entity = <LogCard key="entity" cards={this.props.cards} cardId={this.props.cardOracle.get(lid.entityId)} />;
+		let target= <LogCard key="target" cards={this.props.cards} cardId={this.props.cardOracle.get(lid.targetId)} />;
 
 		let strings = {
 			'player': lid.player,
@@ -194,18 +185,6 @@ class LogItem extends React.Component<LogItemProps, {}> {
 			case LineType.Stealth: return 'Stealth';
 			case LineType.CantBeDamaged: return 'Immunity';
 		}
-	}
-
-	private getRarityClass(card:CardData):string {
-		if (card) {
-			if (card.type == "HERO" || card.type == "HERO_POWER") {
-				return 'entity special';
-			}
-			if (card.rarity) {
-				return 'entity ' + card.rarity.toString().toLowerCase();
-			}
-		}
-		return 'entity';
 	}
 }
 
