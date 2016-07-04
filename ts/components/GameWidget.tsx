@@ -154,7 +154,7 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 		var parts = [];
 
 		if (this.props.exitGame) {
-			parts.push(<div id="joust-quit"><a key="exit" href="#" onClick={this.onClickExit.bind(this) }>Exit Game</a></div>);
+			parts.push(<div id="joust-quit" key="exit"><a href="#" onClick={this.onClickExit.bind(this) }>Exit Game</a></div>);
 		}
 
 		let isSwapped = this.swapPlayers !== this.state.swapPlayers /* XOR */;
