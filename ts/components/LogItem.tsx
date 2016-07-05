@@ -3,8 +3,7 @@ import * as _ from "lodash";
 import { CardDataProps, CardOracleProps, CardData, LogItemData,	LineType } from "../interfaces";
 import LogCard from "./LogCard";
 
-interface LogItemProps extends CardDataProps, CardOracleProps, React.Props<any> {
-	lid: LogItemData;
+interface LogItemProps extends CardDataProps, CardOracleProps, LogItemData, React.Props<any> {
 	inactive: boolean;
 	first?: boolean;
 }
@@ -14,44 +13,42 @@ class LogItem extends React.Component<LogItemProps, {}> {
 	public shouldComponentUpdate(nextProps:LogItemProps) {
 		return (
 			(this.props.inactive !== nextProps.inactive ||
-			!_.isEqual(this.props.lid, nextProps.lid) ||
 			this.props.cards !== nextProps.cards ||
 			this.props.cardOracle !== nextProps.cardOracle)
 		);
 	}
 
 	public render():JSX.Element {
-		let lid = this.props.lid;
 		let characters = '';
 		let classNames = ['line'];
 
 		if (this.props.inactive) {
 			classNames.push('inactive');
 		}
-		if(lid.type == LineType.Turn) {
+		if(this.props.type == LineType.Turn) {
 			classNames.push('header');
 			if(!this.props.first) {
 				characters += '\r\n';
 			}
 			characters += '# ';
 		}
-		else if(this.indent(lid)) {
+		else if(this.indent()) {
 			classNames.push('indent');
 			characters += '\t';
 		}
 
-		let entity = <LogCard key="entity" cards={this.props.cards} cardId={this.props.cardOracle.get(lid.entityId)} />;
-		let target= <LogCard key="target" cards={this.props.cards} cardId={this.props.cardOracle.get(lid.targetId)} />;
+		let entity = <LogCard key="entity" cards={this.props.cards} cardId={this.props.cardOracle.get(this.props.entityId)} />;
+		let target= <LogCard key="target" cards={this.props.cards} cardId={this.props.cardOracle.get(this.props.targetId)} />;
 
 		let strings = {
-			'player': lid.player,
+			'player': this.props.player,
 			'entity': entity,
 			'target': target,
 			'source': target,
-			'data': lid.data,
+			'data': this.props.data,
 		} as any;
 
-		var words = this.parseLine(lid, strings).split(' ');
+		var words = this.parseLine(strings).split(' ');
 		var parts = words.map((word) => {
 			let parts = word.match(/^(.*)%(\w+)%(.*)$/);
 			if(parts === null) {
@@ -75,12 +72,12 @@ class LogItem extends React.Component<LogItemProps, {}> {
 		);
 	}
 
-	private indent(lid: LogItemData): boolean {
-		switch(lid.type) {
+	private indent(): boolean {
+		switch(this.props.type) {
 			case LineType.Draw:
 			case LineType.DiscardFromDeck:
 			case LineType.Damage:
-				return lid.indent;
+				return this.props.indent;
 			case LineType.Turn:
 			case LineType.Play:
 			case LineType.Attack:
@@ -93,58 +90,58 @@ class LogItem extends React.Component<LogItemProps, {}> {
 		return true;
 	}
 
-	private parseLine(lid: LogItemData, strings: any): string {
-		switch(lid.type) {
+	private parseLine(strings: any): string {
+		switch(this.props.type) {
 			case LineType.Turn:
-				return lid.data == -1 ? "Mulligan" : "Turn %data%: %player%";
+				return this.props.data == -1 ? "Mulligan" : "Turn %data%: %player%";
 			case LineType.Win:
 				return "%player% wins!";
 			case LineType.Concede:
 				return "%player% concedes";
 			case LineType.Draw:
-				return lid.target ? "%player% draws %entity% from %source%" : "%player% draws %entity%";
+				return this.props.target ? "%player% draws %entity% from %source%" : "%player% draws %entity%";
 			case LineType.Summon:
-				return lid.entity.type === 'WEAPON' ? "%source% creates %entity%" : "%source% summons %entity%";
+				return this.props.entity.type === 'WEAPON' ? "%source% creates %entity%" : "%source% summons %entity%";
 			case LineType.Replace:
 				return "%entity% replaces %target%";
 			case LineType.ArmorBuff:
-				return lid.target ? "%entity% gains %data% armor from %source%" : "%entity% gains %data% armor";
+				return this.props.target ? "%entity% gains %data% armor from %source%" : "%entity% gains %data% armor";
 			case LineType.AttackBuff:
-				return lid.target ? "%entity% gains +%data% attack from %source%" : "%entity% gains +%data% attack";
+				return this.props.target ? "%entity% gains +%data% attack from %source%" : "%entity% gains +%data% attack";
 			case LineType.HealthBuff:
-				return lid.target ? "%entity% gains +%data% health" : "%entity% gains +%data% health from %source%";
+				return this.props.target ? "%entity% gains +%data% health" : "%entity% gains +%data% health from %source%";
 			case LineType.AttackReduce:
 				return "%source% sets %entity%'s attack to %data%";
 			case LineType.HealthReduce:
 				return "%source% sets %entity%'s health to %data%";
 			case LineType.Attack:
-				return lid.data ? "%entity% attacks %target% for %data%" : "%entity% attacks %target%";
+				return this.props.data ? "%entity% attacks %target% for %data%" : "%entity% attacks %target%";
 			case LineType.Death:
-				return lid.entity.type === 'WEAPON' ? "%entity% breaks" : "%entity% dies";
+				return this.props.entity.type === 'WEAPON' ? "%entity% breaks" : "%entity% dies";
 			case LineType.Discard:
 				return "%player% discards %entity%";
 			case LineType.DiscardFromDeck:
 				return "%player% discards %entity% from their deck";
 			case LineType.Get:
-				return lid.target ? "%player% receives %entity% from %source%" : "%player% receives %entity%";
+				return this.props.target ? "%player% receives %entity% from %source%" : "%player% receives %entity%";
 			case LineType.GetToDeck:
-				return lid.target ? "%entity% from %source% is added to %player%'s deck" : "%entity% is added to %player%'s deck";
+				return this.props.target ? "%entity% from %source% is added to %player%'s deck" : "%entity% is added to %player%'s deck";
 			case LineType.Trigger:
 				return "%entity% triggers";
 			case LineType.Damage:
-				return lid.data ? "%entity% damages %target% for %data%" : "%entity% hits %target%";
+				return this.props.data ? "%entity% damages %target% for %data%" : "%entity% hits %target%";
 			case LineType.Healing:
 				return "%entity% heals %target% for %data%";
 			case LineType.Remove:
-				return lid.target ? "%source% removes %entity%" : "%entity% is removed";
+				return this.props.target ? "%source% removes %entity%" : "%entity% is removed";
 			case LineType.Mulligan:
 				return "%player% mulligans %entity%";
 			case LineType.Silenced:
-				return lid.target ? "%entity% is silenced by %source%" : "%entity% is silenced";
+				return this.props.target ? "%entity% is silenced by %source%" : "%entity% is silenced";
 			case LineType.Frozen:
-				return lid.data ? (lid.target ? "%source% freezes %entity%" : "%entity% gets frozen") : "%entity% is no longer frozen";
+				return this.props.data ? (this.props.target ? "%source% freezes %entity%" : "%entity% gets frozen") : "%entity% is no longer frozen";
 			case LineType.Steal:
-				return lid.target ? "%player% steals %entity% using %source%" : "%player% steals %entity%";
+				return this.props.target ? "%player% steals %entity% using %source%" : "%player% steals %entity%";
 			case LineType.DeckToPlay:
 				return "%source% brings %entity% into play";
 			case LineType.PlayToDeck:
@@ -161,23 +158,23 @@ class LogItem extends React.Component<LogItemProps, {}> {
 			case LineType.Windfury:
 			case LineType.Stealth:
 			case LineType.CantBeDamaged:
-				strings['status'] = this.getStatusKeyword(lid.type);
-				return lid.data ? (lid.target ? "%entity% gains %status% from %source%" : "%entity% gains %status%") : "%entity% loses %status%";
+				strings['status'] = this.getStatusKeyword();
+				return this.props.data ? (this.props.target ? "%entity% gains %status% from %source%" : "%entity% gains %status%") : "%entity% loses %status%";
 			case LineType.Cthun:
-				strings['stats'] = lid.data + '/' + lid.data2;
+				strings['stats'] = this.props.data + '/' + this.props.data2;
 				return "%entity% gets buffed to %stats%";
 			case LineType.Play:
 				const HERO_POWER = 'HERO_POWER';
-				return lid.target ? (lid.entity.type === HERO_POWER ? "%player% uses %entity% targeting %target%" : "%player% plays %entity% targeting %target%")
-								  : lid.entity.type === HERO_POWER ? "%player% uses %entity%" : "%player% plays %entity%";
+				return this.props.target ? (this.props.entity && this.props.entity.type === HERO_POWER ? "%player% uses %entity% targeting %target%" : "%player% plays %entity% targeting %target%")
+								  : this.props.entity && this.props.entity.type === HERO_POWER ? "%player% uses %entity%" : "%player% plays %entity%";
 			case LineType.StatsBuff:
-				strings['stats'] = '+' + lid.data + '/+' + lid.data2;
-				return lid.target ? "%entity% gains %stats% from %target%" : "%entity% gains %stats%";
+				strings['stats'] = '+' + this.props.data + '/+' + this.props.data2;
+				return this.props.target ? "%entity% gains %stats% from %target%" : "%entity% gains %stats%";
 		}
 	}
 
-	private getStatusKeyword(type: LineType): string {
-		switch (type) {
+	private getStatusKeyword(): string {
+		switch (this.props.type) {
 			case LineType.DivineShield: return 'Divine Shield';
 			case LineType.Charge: return 'Charge';
 			case LineType.Taunt: return 'Taunt';

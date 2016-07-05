@@ -94,7 +94,17 @@ class Log extends React.Component<LogProps, LogState> {
 		let activeLines = this.state.lines.filter(lid => lid.time <= this.props.currentTime).length;
 		let offset = Math.max(0, activeLines - 20);
 		let lines = this.state.lines.slice(offset).map((lid, index) =>
-			<LogItem key={index + offset} lid={lid} first={!index}
+			<LogItem key={index + offset}
+					 first={!index}
+					 type={lid.type}
+					 entity={lid.entity}
+					 entityId={lid.entityId}
+					 target={lid.target}
+					 targetId={lid.targetId}
+					 player={lid.player}
+					 data={lid.data}
+					 data2={lid.data2}
+					 indent={lid.indent}
 					 inactive={lid.time >= this.props.currentTime}
 					 cardOracle={this.props.cardOracle}
 					 cards={this.props.cards} />);
