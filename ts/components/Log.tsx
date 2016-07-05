@@ -1,12 +1,15 @@
 import * as React from "react";
 import GameState from "../state/GameState";
 import LogItem from "./LogItem";
-import { CardDataProps, CardOracleProps, GameStateDiff, HistoryEntry, LogItemData, LineType, CardData } from "../interfaces";
+import {
+	CardDataProps, CardOracleProps, GameStateDiff, HistoryEntry, LogItemData, LineType, CardData,
+	HideCardsProps
+} from "../interfaces";
 import {Zone, CardType, GameTag, BlockType, MetaDataType, Mulligan, PlayState, Step} from "../enums";
 import Player from "../Player";
 import Entity from "../Entity";
 
-interface LogProps extends CardDataProps, CardOracleProps, React.Props<any> {
+interface LogProps extends CardDataProps, CardOracleProps, HideCardsProps, React.Props<any> {
 	state:GameState;
 	tail:HistoryEntry;
 	currentTime: number;
@@ -30,7 +33,8 @@ class Log extends React.Component<LogProps, LogState> {
 			(this.props.tail && this.props.tail.state !== nextProps.tail.state) ||
 			this.props.currentTime !== nextProps.currentTime ||
 			this.props.cards !== nextProps.cards ||
-			this.props.cardOracle !== nextProps.cardOracle
+			this.props.cardOracle !== nextProps.cardOracle ||
+			this.props.hideCards !== nextProps.hideCards
 		);
 	}
 
@@ -107,7 +111,8 @@ class Log extends React.Component<LogProps, LogState> {
 					 indent={lid.indent}
 					 inactive={lid.time >= this.props.currentTime}
 					 cardOracle={this.props.cardOracle}
-					 cards={this.props.cards} />);
+					 cards={this.props.cards}
+					 hideCards={this.props.hideCards}/>);
 
 		return <div className="joust-log">{lines}</div>;
 	}
