@@ -135,7 +135,7 @@ class LogItem extends React.Component<LogItemProps, LogItemState> {
 			case LineType.Draw:
 				return this.state.targetData ? "%player% draws %entity% from %source%" : "%player% draws %entity%";
 			case LineType.Summon:
-				return this.state.entityData.type === 'WEAPON' ? "%source% creates %entity%" : "%source% summons %entity%";
+				return this.state.entityData && this.state.entityData.type === 'WEAPON' ? "%source% creates %entity%" : "%source% summons %entity%";
 			case LineType.Replace:
 				return "%entity% replaces %target%";
 			case LineType.ArmorBuff:
@@ -151,7 +151,7 @@ class LogItem extends React.Component<LogItemProps, LogItemState> {
 			case LineType.Attack:
 				return this.props.data ? "%entity% attacks %target% for %data%" : "%entity% attacks %target%";
 			case LineType.Death:
-				return this.state.entityData.type === 'WEAPON' ? "%entity% breaks" : "%entity% dies";
+				return this.state.entityData && this.state.entityData.type === 'WEAPON' ? "%entity% breaks" : "%entity% dies";
 			case LineType.Discard:
 				return "%player% discards %entity%";
 			case LineType.DiscardFromDeck:
