@@ -113,7 +113,7 @@ class Log extends React.Component<LogProps, LogState> {
 		let data = [];
 		let turn = this.getTurn(prev, curr);
 		if (turn) {
-			return [turn];
+			data.push(turn);
 		}
 		this.analyzeDescriptors(prev, curr).forEach(x => data.push(x));
 		if (!curr.getDiffs().isEmpty()) {
@@ -376,6 +376,7 @@ class Log extends React.Component<LogProps, LogState> {
 				break;
 			case null:
 			case Zone.INVALID:
+			case Zone.GRAVEYARD:
 				switch (diff.current) {
 					case Zone.DECK:
 						return LineType.GetToDeck;

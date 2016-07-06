@@ -110,6 +110,7 @@ class LogItem extends React.Component<LogItemProps, LogItemState> {
 			case LineType.Draw:
 			case LineType.DiscardFromDeck:
 			case LineType.Damage:
+			case LineType.Get:
 				return this.props.indent;
 			case LineType.Turn:
 			case LineType.Play:
