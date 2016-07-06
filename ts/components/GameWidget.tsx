@@ -172,8 +172,9 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 			cards={this.state.cards}
 			cardOracle={this.state.cardOracle}
 			tail={this.props.scrubber.getHistory().tail}
-			currentTime={this.props.scrubber.getCurrentTime()
+			currentTime={this.props.scrubber.getCurrentTime()}
 			hideCards={!this.state.isRevealingCards}
+			playersSwapped={isSwapped}
 		/>);
 
 		if (this.props.scrubber) {

@@ -13,6 +13,7 @@ interface LogProps extends CardDataProps, CardOracleProps, HideCardsProps, React
 	state:GameState;
 	tail:HistoryEntry;
 	currentTime: number;
+	playersSwapped: boolean;
 }
 
 interface LogState {
@@ -34,7 +35,8 @@ class Log extends React.Component<LogProps, LogState> {
 			this.props.currentTime !== nextProps.currentTime ||
 			this.props.cards !== nextProps.cards ||
 			this.props.cardOracle !== nextProps.cardOracle ||
-			this.props.hideCards !== nextProps.hideCards
+			this.props.hideCards !== nextProps.hideCards ||
+			this.props.playersSwapped !== nextProps.playersSwapped
 		);
 	}
 
@@ -97,6 +99,7 @@ class Log extends React.Component<LogProps, LogState> {
 	public render():JSX.Element {
 		let activeLines = this.state.lines.filter(lid => lid.time <= this.props.currentTime).length;
 		let offset = Math.max(0, activeLines - 20);
+		let topPlayer = this.props.tail && this.props.tail.state.getPlayers()[+this.props.playersSwapped].getPlayerId();
 		let lines = this.state.lines.slice(offset).map((lid, index) =>
 			<LogItem key={index + offset}
 					 first={!index}
@@ -106,6 +109,7 @@ class Log extends React.Component<LogProps, LogState> {
 					 target={lid.target}
 					 targetId={lid.targetId}
 					 player={lid.player}
+					 isTopPlayer={lid.player && lid.player.getPlayerId() == topPlayer}
 					 data={lid.data}
 					 data2={lid.data2}
 					 indent={lid.indent}
@@ -416,8 +420,7 @@ class Log extends React.Component<LogProps, LogState> {
 	}
 
 	private setLidPlayer(lid: LogItemData, state: GameState, predicate: (player: Player) => boolean) {
-		let player = state.getPlayers().find(p => predicate(p));
-		lid.player = player && player.getName();
+		lid.player = state.getPlayers().find(p => predicate(p));
 	}
 
 	private newLogItemData(state: GameState, entity?: CardData, entityId?: number): LogItemData {

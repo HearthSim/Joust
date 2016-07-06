@@ -1,11 +1,11 @@
 import * as React from "react";
-import * as _ from "lodash";
-import {CardDataProps, CardOracleProps, CardData, LogItemData, LineType, HideCardsProps} from "../interfaces";
+import {CardDataProps, CardOracleProps, LogItemData, LineType, HideCardsProps} from "../interfaces";
 import LogCard from "./LogCard";
 
 interface LogItemProps extends CardDataProps, CardOracleProps, LogItemData, HideCardsProps, React.Props<any> {
 	inactive: boolean;
 	first?: boolean;
+	isTopPlayer?: boolean;
 }
 
 class LogItem extends React.Component<LogItemProps, {}> {
@@ -15,7 +15,8 @@ class LogItem extends React.Component<LogItemProps, {}> {
 			(this.props.inactive !== nextProps.inactive ||
 			this.props.cards !== nextProps.cards ||
 			this.props.cardOracle !== nextProps.cardOracle) ||
-			this.props.hideCards !== nextProps.hideCards
+			this.props.hideCards !== nextProps.hideCards ||
+			this.props.isTopPlayer !== nextProps.isTopPlayer
 		);
 	}
 
@@ -38,13 +39,17 @@ class LogItem extends React.Component<LogItemProps, {}> {
 			characters += '\t';
 		}
 
-		let entityCardId = !this.props.hideCards ? this.props.cardOracle.get(lid.entityId) : lid.entity && lid.entity.id;
+
+		let hide = this.props.isTopPlayer && this.props.hideCards && [LineType.Draw, LineType.Get, LineType.GetToDeck].indexOf(this.props.type) !== -1;
+		let knownEntityCardId = !hide && this.props.entity && this.props.entity.id;
+		let entityCardId = hide ? knownEntityCardId : this.props.cardOracle.get(this.props.entityId);
 		let entity = <LogCard key="entity" cards={this.props.cards} cardId={entityCardId} />;
-		let targetCardId = !this.props.hideCards ? this.props.cardOracle.get(lid.targetId) : lid.target && lid.target.id;
+		let knownTargetCardId = this.props.target && this.props.target.id;
+		let targetCardId = (knownTargetCardId || this.props.hideCards) ? knownTargetCardId : this.props.cardOracle.get(this.props.targetId);
 		let target= <LogCard key="target" cards={this.props.cards} cardId={targetCardId} />;
 
 		let strings = {
-			'player': this.props.player,
+			'player': this.props.player && this.props.player.getName(),
 			'entity': entity,
 			'target': target,
 			'source': target,

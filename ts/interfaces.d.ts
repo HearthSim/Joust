@@ -202,7 +202,8 @@ export interface LogItemData {
 	entityId?: number;
 	target?: CardData;
 	targetId?: number;
-	player?: string;
+	player?: Player;
+	isTopPlayer?: boolean;
 	data?: number;
 	data2?: number;
 	indent?: boolean;
