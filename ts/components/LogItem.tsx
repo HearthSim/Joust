@@ -162,7 +162,9 @@ class LogItem extends React.Component<LogItemProps, LogItemState> {
 			case LineType.Trigger:
 				return "%entity% triggers";
 			case LineType.Damage:
-				return this.props.data ? "%entity% damages %target% for %data%" : "%entity% hits %target%";
+				return this.state.targetData && this.state.targetData.type == "WEAPON" ?
+							(this.state.entityData ? "%target% loses %data% durability from %entity%" : "%target% loses %data% durability")
+							: (this.props.data ? "%entity% damages %target% for %data%" : "%entity% hits %target%");
 			case LineType.Healing:
 				return "%entity% heals %target% for %data%";
 			case LineType.Remove:
