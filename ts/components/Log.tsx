@@ -239,10 +239,12 @@ class Log extends React.Component<LogProps, LogState> {
 		if (cthunBuff == 3) {
 			let controller = state.getPlayers().find(x => !!x.getTag(GameTag.CURRENT_PLAYER));
 			let cthunProxy = state.getEntities().find(x => x.getCardId() == 'OG_279' && x.getController() == controller.getPlayerId());
-			lid.entityId = cthunProxy.getId();
-			lid.data = cthunProxy.getAtk();
-			lid.data2 = cthunProxy.getHealth();
-			push(LineType.Cthun);
+			if (cthunProxy) {
+				lid.entityId = cthunProxy.getId();
+				lid.data = cthunProxy.getAtk();
+				lid.data2 = cthunProxy.getHealth();
+				push(LineType.Cthun);
+			}
 		}
 		return lidStack;
 	}
