@@ -118,8 +118,8 @@ class Launcher {
 		var request = (opts.protocol == 'https:' ? https : http).get(opts);
 		request.on('response', (message: http.IncomingMessage) => {
 			if(message.statusCode != 200) {
-				if(message.statusCode || message.statusMessage) {
-					this.log(new Error('Could not load replay ("' + message.statusCode + ' ' + message.statusMessage + '")'));
+				if(message.statusCode) {
+					this.log(new Error('Could not load replay (status code ' + message.statusCode + ')'));
 				}
 ;				return;
 			}
