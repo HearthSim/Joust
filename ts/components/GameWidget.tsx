@@ -22,6 +22,7 @@ interface GameWidgetState {
 	cards?: Immutable.Map<string, CardData>;
 	isRevealingCards?: boolean;
 	isLogVisible?: boolean;
+	isLogMounted?: boolean;
 }
 
 class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
@@ -41,7 +42,8 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 			isFullscreenAvailable: Fullscreen.available(),
 			isRevealingCards: true,
 			cardOracle: null,
-			isLogVisible: true
+			isLogVisible: false,
+			isLogMounted: false
 		};
 	}
 
@@ -177,12 +179,12 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 					   cardOracle={this.state.cardOracle}
 					   tail={this.props.scrubber.getHistory().tail}
 					   currentTime={this.props.scrubber.getCurrentTime()}
-					   hidden={!this.state.isLogVisible} />;
+					   isHidden={!this.state.isLogVisible} />;
 
 		parts.push(
 			<div key="game-wrapper" className="game-wrapper">
 				{game}
-				{log}
+				{this.state.isLogMounted || this.state.isLogVisible ? log : null}
 			</div>
 		);
 
@@ -199,7 +201,7 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 				onClickHideCards={() => this.setState({ isRevealingCards: false }) }
 				onClickRevealCards={() => this.setState({ isRevealingCards: true }) }
 				isLogVisible={this.state.isLogVisible}
-				toggleLog={() => this.setState({ isLogVisible: !this.state.isLogVisible})}
+				toggleLog={() => this.setState({ isLogVisible: !this.state.isLogVisible, isLogMounted: true })}
 				/>);
 		}
 
