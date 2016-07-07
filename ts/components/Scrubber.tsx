@@ -15,6 +15,8 @@ interface ScrubberProps extends React.Props<any> {
 	canRevealCards?: boolean;
 	onClickHideCards?: () => void;
 	onClickRevealCards?: () => void;
+	isLogVisible?: boolean;
+	toggleLog?: () => void;
 }
 
 interface ScrubberState {
@@ -176,6 +178,10 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 			<i className="joust-fa joust-fa-unsorted"></i>
 		</button>;
 
+		var log = <button onClick={this.props.toggleLog} disabled={!this.state.canInteract} title={this.props.isLogVisible ? "Hide log" : "Show log"}>
+			<i className="joust-fa joust-fa-bars"></i>
+		</button>;
+
 		return (
 			<div className="joust-scrubber">
 				{playpause}
@@ -193,6 +199,7 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 					ref={(inhibitor) => this.props.scrubber.setInhibitor(inhibitor) }
 					/>
 				{reveal}
+				{log}
 				{swap}
 				{fullscreen}
 			</div>

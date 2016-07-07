@@ -10,6 +10,7 @@ interface LogProps extends CardDataProps, CardOracleProps, React.Props<any> {
 	state:GameState;
 	tail:HistoryEntry;
 	currentTime: number;
+	isHidden?: boolean;
 }
 
 interface LogState {
@@ -30,7 +31,8 @@ class Log extends React.Component<LogProps, LogState> {
 			(this.props.tail && this.props.tail.state !== nextProps.tail.state) ||
 			this.props.currentTime !== nextProps.currentTime ||
 			this.props.cards !== nextProps.cards ||
-			this.props.cardOracle !== nextProps.cardOracle
+			this.props.cardOracle !== nextProps.cardOracle ||
+			this.props.isHidden !== nextProps.isHidden
 		);
 	}
 
@@ -96,6 +98,9 @@ class Log extends React.Component<LogProps, LogState> {
 	}
 
 	public render():JSX.Element {
+		if(this.props.isHidden) {
+			return null;
+		}
 		let activeLines = this.state.lines.filter(lid => lid.time <= this.props.currentTime).length;
 		let offset = Math.max(0, activeLines - 20);
 		let lines = this.state.lines.slice(offset).map((lid, index) =>
