@@ -160,20 +160,28 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 
 		let isSwapped = this.swapPlayers !== this.state.swapPlayers /* XOR */;
 
-		parts.push(<GameWrapper key="game" state={this.state.gameState} interaction={this.props.interaction}
-			assetDirectory={this.props.assetDirectory} cardArtDirectory={this.props.cardArtDirectory}
-			cards={this.state.cards} swapPlayers={isSwapped}
-			cardOracle={this.state.cardOracle}
-			hideCards={!this.state.isRevealingCards}
-			/>);
+		let game = <GameWrapper key="game"
+						state={this.state.gameState}
+						interaction={this.props.interaction}
+						assetDirectory={this.props.assetDirectory}
+						cardArtDirectory={this.props.cardArtDirectory}
+						cards={this.state.cards}
+						swapPlayers={isSwapped}
+						cardOracle={this.state.cardOracle}
+						hideCards={!this.state.isRevealingCards} />;
+		let log = <Log key="log"
+					   state={this.state.gameState}
+					   cards={this.state.cards}
+					   cardOracle={this.state.cardOracle}
+					   tail={this.props.scrubber.getHistory().tail}
+					   currentTime={this.props.scrubber.getCurrentTime()} />;
 
-		parts.push(<Log key="log"
-			state={this.state.gameState}
-			cards={this.state.cards}
-			cardOracle={this.state.cardOracle}
-			tail={this.props.scrubber.getHistory().tail}
-			currentTime={this.props.scrubber.getCurrentTime()}
-		/>);
+		parts.push(
+			<div key="game-wrapper" className="game-wrapper">
+				{game}
+				{log}
+			</div>
+		);
 
 		if (this.props.scrubber) {
 			parts.push(<Scrubber key="scrubber" scrubber={this.props.scrubber}
