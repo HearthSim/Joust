@@ -21,7 +21,7 @@ class Log extends React.Component<LogProps, LogState> {
 	constructor(props:LogProps) {
 		super(props);
 		this.state = {
-			lines: []
+			lines: this.parseHistory(props.tail)
 		};
 	}
 
@@ -36,17 +36,21 @@ class Log extends React.Component<LogProps, LogState> {
 
 	public componentWillReceiveProps(nextProps:LogProps) {
 		if (this.props.tail !== nextProps.tail) {
-			let lines = [];
-			let next, current = nextProps.tail;
-			if (current) {
-				lines.push({type: LineType.Turn, data: -1, time: current.state.getTime()});
-				while (next = current.next) {
-					this.analyzeGameStateDiff(current.state, next.state).forEach(d => lines.push(d));
-					current = next;
-				}
-			}
-			this.setState({lines: this.simplify(lines)});
+			this.setState({lines: this.parseHistory(nextProps.tail)});
 		}
+	}
+
+	private parseHistory(tail:HistoryEntry) {
+		let lines = [];
+		let next, current = tail;
+		if (current) {
+			lines.push({type: LineType.Turn, data: -1, time: current.state.getTime()});
+			while (next = current.next) {
+				this.analyzeGameStateDiff(current.state, next.state).forEach(d => lines.push(d));
+				current = next;
+			}
+		}
+		return this.simplify(lines);
 	}
 
 	private simplify(input: LogItemData[]): LogItemData[] {
@@ -85,7 +89,9 @@ class Log extends React.Component<LogProps, LogState> {
 				output.push(curr);
 			}
 		}
-		output.push(input[input.length-1]);
+		if(input.length) {
+			output.push(input[input.length - 1]);
+		}
 		return output;
 	}
 
