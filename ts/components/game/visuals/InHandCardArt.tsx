@@ -81,6 +81,7 @@ class InHandCardArt extends React.Component<InHandCardArtProps, {}> {
 		switch (this.props.cardClass) {
 			case CardClass.DRUID:
 				return "druid";
+			case CardClass.DREAM:
 			case CardClass.HUNTER:
 				return "hunter";
 			case CardClass.MAGE:

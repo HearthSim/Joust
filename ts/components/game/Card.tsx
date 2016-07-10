@@ -95,6 +95,7 @@ class Card extends React.Component<CardProps, {}> {
 				case 'DRUID':
 					cardClass = CardClass.DRUID;
 					break;
+				case 'DREAM':
 				case 'HUNTER':
 					cardClass = CardClass.HUNTER;
 					break;
