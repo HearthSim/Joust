@@ -30,7 +30,7 @@ class Choices extends EntityList<ChoicesProps> {
 		this.count = 0;
 	}
 
-	protected renderEntity(entity: Entity, option: Option, index?: number) {
+	protected renderEntity(entity: Entity, option: Option, index?: number): JSX.Element {
 
 		var hidden = false;
 

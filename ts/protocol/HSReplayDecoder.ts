@@ -375,7 +375,7 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 
 		if (str === 'UNKNOWN HUMAN PLAYER') {
 			console.warn('Cannot resolve entity for ' + str);
-			return;
+			return 0;
 		}
 
 		console.warn('HSReplay: Using player names as entity reference is deprecated');
@@ -389,7 +389,7 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 		return +id;
 	}
 
-	protected revealEntity(id: number, cardId: string) {
+	protected revealEntity(id: number, cardId: string): void {
 		if (!cardId || !id) {
 			return;
 		}
@@ -404,7 +404,7 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 	}
 
 
-	public getCardMap() {
+	public getCardMap(): Immutable.Map<number, string> {
 		return this.cardIds;
 	}
 }

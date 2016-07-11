@@ -44,7 +44,7 @@ class GameState {
 		}
 	}
 
-	public getEntity(id: number) {
+	public getEntity(id: number): Entity {
 		return this.entities.get(id);
 	}
 

@@ -40,7 +40,7 @@ class CardArt extends React.Component<CardArtProps, {}> {
 
 	private createImageItem(item: CardArtItem, index: number): JSX.Element {
 		if (item.image === null && !item.isArt) {
-			return;
+			return null;
 		}
 
 		var imgSrc = null;

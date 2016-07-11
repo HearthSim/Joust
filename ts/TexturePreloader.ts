@@ -4,8 +4,8 @@ import Entity from "./Entity";
 
 class TexturePreloader extends Stream.Writable {
 	protected fired = {};
-	protected cardArtQueue = ['GAME_005'];
-	protected images = [];
+	protected cardArtQueue: string[] = ['GAME_005'];
+	protected images: HTMLImageElement[] = [];
 	private working = 0;
 	protected assetQueue = ['cardback', 'hero_frame', 'hero_power',
 							'inhand_minion_neutral', 'inhand_spell_neutral', 'inhand_weapon_neutral',
@@ -23,7 +23,7 @@ class TexturePreloader extends Stream.Writable {
 	_write(chunk: any, encoding: string, callback: Function) {
 		let mutator = (chunk as any);
 
-		let id = undefined;
+		let id: string = null;
 
 		if(mutator.entity) {
 			let entity = mutator.entity as Entity;

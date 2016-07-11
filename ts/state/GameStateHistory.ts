@@ -53,7 +53,7 @@ class GameStateHistory {
 
 	public getLatest(time: number): GameState {
 		if (!this.pointer) {
-			return;
+			return null;
 		}
 
 		while (this.pointer.state.getTime() < time && this.pointer.next) {
