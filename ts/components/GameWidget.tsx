@@ -174,6 +174,7 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 						cardArtDirectory={this.props.cardArtDirectory}
 						cards={this.state.cards}
 						swapPlayers={isSwapped}
+						hasStarted={this.props.scrubber.canInteract()}
 						cardOracle={this.state.cardOracle}
 						hideCards={!this.state.isRevealingCards} />;
 		let log = <Log key="log"

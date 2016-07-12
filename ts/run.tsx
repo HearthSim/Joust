@@ -14,6 +14,7 @@ import * as URL from "url";
 import {QueryCardMetadata} from "./interfaces";
 import TexturePreloader from "./TexturePreloader";
 import {EventEmitter} from "events";
+import * as async from "async";
 
 var React = require('react');
 var ReactDOM = require('react-dom');
@@ -23,6 +24,7 @@ class Launcher {
 	protected target: string | HTMLElement;
 	protected opts: GameWidgetProps;
 	protected queryCardMetadata: QueryCardMetadata;
+	protected startFromTurn: number;
 	protected turnCb: (turn: number) => void;
 	protected ref: GameWidget;
 
@@ -75,8 +77,13 @@ class Launcher {
 		return this;
 	}
 
-	public onTurn(callback: (turn: number) => void) {
+	public onTurn(callback: (turn: number) => void): Launcher {
 		this.turnCb = callback;
+		return this;
+	}
+
+	public turn(turn: number): Launcher {
+		this.startFromTurn = turn;
 		return this;
 	}
 
@@ -107,8 +114,7 @@ class Launcher {
 		var decoder = new HSReplayDecoder();
 		decoder.debug = this.opts.debug;
 		var tracker = new GameStateTracker();
-		var scrubber = new GameStateScrubber();
-		scrubber.once("ready", () => scrubber.play());
+		var scrubber = new GameStateScrubber(null, this.startFromTurn);
 		if(this.turnCb) {
 			scrubber.on("turn", this.turnCb);
 		}
@@ -135,6 +141,17 @@ class Launcher {
 			let components = [decoder, tracker, scrubber, preloader];
 			components.forEach((component:EventEmitter) => {
 				component.on('error', this.log.bind(this));
+			});
+
+			async.parallel([
+				(cb) => {
+					scrubber.once("ready", () => cb());
+				},
+				(cb) => {
+					decoder.once("end", () => cb());
+				}
+			], () => {
+				scrubber.play()
 			});
 
 			message

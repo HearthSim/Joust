@@ -11,6 +11,7 @@ import GameStateTracker from "../state/GameStateTracker";
 import GameStateSink from "../state/GameStateSink";
 import {CardOracle} from "../interfaces";
 import * as Stream from "stream";
+import * as async from "async";
 
 interface SetupWidgetProps extends React.Props<any> {
 	defaultHostname: string;
@@ -103,7 +104,16 @@ class SetupWidget extends React.Component<SetupWidgetProps, SetupWidgetState> {
 		/* HSReplay -> Joust */
 
 		var scrubber = new GameStateScrubber();
-		scrubber.once("ready", () => scrubber.play());
+
+		async.parallel([
+			(cb) => {
+				scrubber.once("ready", () => cb());
+			},
+			(cb) => {
+				filestream.once("end", () => cb());
+			},
+		], () => scrubber.play());
+
 		var decoder = new HSReplayDecoder();
 		var sink = filestream // sink is returned by the last .pipe()
 			.pipe(decoder) // json -> mutators

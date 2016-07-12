@@ -1,5 +1,6 @@
 {
   "globalDependencies": {
+    "async": "registry:dt/async#1.4.2+20160602152629",
     "immutable": "registry:dt/immutable#3.8.1+20160608070634",
     "jasmine": "github:DefinitelyTyped/DefinitelyTyped/jasmine/jasmine.d.ts#d594ef506d1efe2fea15f8f39099d19b39436b71",
     "lodash": "github:DefinitelyTyped/DefinitelyTyped/lodash/lodash.d.ts#ad1c4f411a9ad949c0c73de4d190be1b2bf08a6f",

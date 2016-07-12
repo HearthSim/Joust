@@ -8,11 +8,13 @@ import Option from "../Option";
 import PlayerEntity from "../Player";
 import {InteractiveBackend, CardOracleProps, AssetDirectoryProps, CardArtDirectory} from "../interfaces";
 import {Zone} from "../enums";
+import LoadingScreen from "./LoadingScreen";
 
 interface GameWrapperProps extends CardDataProps, CardOracleProps, AssetDirectoryProps, CardArtDirectory, HideCardsProps, React.Props<any> {
 	state: GameState;
 	interaction?: InteractiveBackend;
 	swapPlayers?: boolean;
+	hasStarted?: boolean;
 }
 
 /**
@@ -22,30 +24,39 @@ interface GameWrapperProps extends CardDataProps, CardOracleProps, AssetDirector
 class GameWrapper extends React.Component<GameWrapperProps, {}> {
 
 	public render(): JSX.Element {
+
+		// check if we even have a game state
 		var gameState = this.props.state;
 		if (!gameState) {
-			return <p className="joust-message">Waiting for game state&hellip; </p>;
+			return this.renderLoadingScreen();
 		}
 
 		var entityTree = gameState.getEntityTree();
 		var optionTree = gameState.getOptionTree();
 
-		// check if any entites are present
+		// check if any entities are present
 		var allEntities = gameState.getEntities();
 		if (!allEntities) {
-			return <p className="joust-message">Waiting for entities&hellip; </p>;
+			return this.renderLoadingScreen();
 		}
 
 		// find the game entity
 		var game = allEntities.filter(GameWrapper.filterByCardType(CardType.GAME)).first();
 		if (!game) {
-			return <p className="joust-message">Waiting for game&hellip; </p>;
+			return this.renderLoadingScreen();
 		}
 
 		// find the players
 		var players = allEntities.filter(GameWrapper.filterByCardType(CardType.PLAYER)) as Immutable.Map<number, PlayerEntity>;
 		if (players.count() == 0) {
-			return <p className="joust-message">Waiting for players&hellip; </p>;
+			return this.renderLoadingScreen();
+		}
+
+		// wait for start
+		if(typeof this.props.hasStarted !== "undefined" && !this.props.hasStarted) {
+			return this.renderLoadingScreen(players.map((player: PlayerEntity) => {
+				return player.name;
+			}).toArray());
 		}
 
 		// find an end turn option
@@ -80,6 +91,10 @@ class GameWrapper extends React.Component<GameWrapperProps, {}> {
 			default:
 				return <div>Unsupported player count ({playerCount}).</div>
 		}
+	}
+
+	private renderLoadingScreen(players?: string[]) {
+		return <LoadingScreen players={players} />;
 	}
 
 	public static filterByCardType(cardType: CardType): (entity: Entity) => boolean {
