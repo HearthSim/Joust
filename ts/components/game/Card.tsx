@@ -13,6 +13,7 @@ import {GameTag} from "../../enums";
 interface CardProps extends EntityProps, OptionProps, React.Props<any> {
 	style?: any;
 	isHidden?: boolean;
+	defaultStats?: boolean;
 }
 
 class Card extends React.Component<CardProps, {}> {
@@ -143,18 +144,18 @@ class Card extends React.Component<CardProps, {}> {
 
 		switch (cardType) {
 			case CardType.MINION:
-				var attack = <Attack attack={!this.props.isHidden ? entity.getAtk() : defaultAttack}
+				var attack = <Attack attack={!this.props.isHidden && !this.props.defaultStats ? entity.getAtk() : defaultAttack}
 					default={defaultAttack}/>;
-				var health = <Health health={!this.props.isHidden ? entity.getHealth() : defaultHealth}
-					damage={entity.getDamage() }
+				var health = <Health health={!this.props.isHidden && !this.props.defaultStats ? entity.getHealth() : defaultHealth}
+					damage={this.props.defaultStats ? 0 : entity.getDamage()}
 					default={defaultHealth}/>;
 				stats = <div className="stats">{attack}{health}</div>;
 				break;
 			case CardType.WEAPON:
-				var attack = <Attack attack={!this.props.isHidden ? entity.getAtk() : defaultAttack}
+				var attack = <Attack attack={!this.props.isHidden && !this.props.defaultStats ? entity.getAtk() : defaultAttack}
 					default={defaultAttack}/>;
 				var durability = <div
-					className="durability">{!this.props.isHidden ? entity.getDurability() : defaultDurability}</div>;
+					className="durability">{!this.props.isHidden && !this.props.defaultStats ? entity.getDurability() : defaultDurability}</div>;
 				stats = <div className="stats">{attack}{durability}</div>;
 				textStyle = { color: "white" };
 		}
@@ -170,7 +171,7 @@ class Card extends React.Component<CardProps, {}> {
 					assetDirectory={this.props.assetDirectory}
 					cardArtDirectory={this.props.cardArtDirectory}
 					/>
-				<Cost cost={!this.props.isHidden ? entity.getCost() : defaultCost} default={defaultCost}/>
+				<Cost cost={!this.props.isHidden && !this.props.defaultStats ? entity.getCost() : defaultCost} default={defaultCost}/>
 				<h1>{title}</h1>
 				<div className="description">
 					<p style={textStyle} dangerouslySetInnerHTML={{ __html: description }}></p>
