@@ -5,9 +5,9 @@ import AddDiffsMutator from "./AddDiffsMutator";
 import {GameStateDiff} from "../../interfaces";
 
 class TagChangeMutator implements GameStateMutator {
-	public id;
-	public tag;
-	public value;
+	public id: number;
+	public tag: number;
+	public value: number;
 
 	constructor(id: number, tag: number, value: number) {
 		this.id = +id;

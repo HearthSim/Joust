@@ -7,6 +7,18 @@ import Option from "../Option";
 import SetOptionsMutator from "../state/mutators/SetOptionsMutator";
 import {ChoiceType} from "../enums";
 import * as Immutable from "immutable"
+import GameStateMutator from "../state/GameStateMutator";
+
+interface KettlePacket {
+	Type: string,
+	Tags: Object,
+	Tag: string,
+	Value: string,
+	EntityID: string,
+	PlayerID: string,
+	CardID: string,
+	Entities: any[]
+}
 
 class KettleDecoder extends Stream.Transform {
 
@@ -61,7 +73,7 @@ class KettleDecoder extends Stream.Transform {
 			}
 			// decode data and shift buffer
 			var decoded = new Buffer(temporary.slice(0, length).toArray()).toString('utf-8');
-			var packets = JSON.parse(decoded);
+			var packets: any[] = JSON.parse(decoded);
 			packets.forEach(this.handlePacket.bind(this));
 			this.buffer = temporary.slice(length).toList();
 		}
@@ -73,11 +85,11 @@ class KettleDecoder extends Stream.Transform {
 		this.drainBuffer();
 	}
 
-	private handlePacket(packet) {
+	private handlePacket(packet: KettlePacket) {
 		var type = packet.Type;
 		packet = packet[type];
 		console.debug(type + ':', packet);
-		var mutator = null;
+		var mutator: GameStateMutator = null;
 		switch (type) {
 			case 'GameEntity':
 			case 'FullEntity':
@@ -115,7 +127,7 @@ class KettleDecoder extends Stream.Transform {
 			case 'Options':
 				var options = Immutable.Map<number, Option>();
 				options = options.withMutations(function(map) {
-					packet.forEach(function(optionObject: any, index: number) {
+					(packet as any).forEach(function(optionObject: any, index: number) {
 						var option = new Option(
 							index,
 							optionObject.Type,
@@ -129,9 +141,9 @@ class KettleDecoder extends Stream.Transform {
 				break;
 			case 'EntityChoices':
 				var entities = packet.Entities;
-				switch (packet.Type) {
+				switch ((packet as any).Type) {
 					case ChoiceType.GENERAL:
-						console.log('Choose between the following entities: ' + entities);
+						console.log('Choose between the following entities:', entities);
 						break;
 					default:
 						console.error("Unknown choice type " + packet.Type);
@@ -146,11 +158,8 @@ class KettleDecoder extends Stream.Transform {
 				console.log('Unknown packet type ' + type);
 				break;
 		}
-		if (mutator) {
-			mutator.time = new Date().getTime();
-			if (!this.push(mutator)) {
-				this.ready = false;
-			}
+		if (!this.push(mutator)) {
+			this.ready = false;
 		}
 	}
 }

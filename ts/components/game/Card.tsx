@@ -9,11 +9,9 @@ import Cost from "./stats/Cost";
 import InHandCardArt from "./visuals/InHandCardArt";
 import {CardType,CardClass} from "../../enums";
 import {GameTag} from "../../enums";
-import Entity from "../../Entity";
 
 interface CardProps extends EntityProps, OptionProps, CardDataProps, React.Props<any> {
 	style?: any;
-	connectDragSource?(react: React.ReactElement<CardProps>);
 	dragging?: boolean;
 	isHidden?: boolean;
 }
@@ -155,9 +153,7 @@ class Card extends React.Component<CardProps, {}> {
 			classNames.push('dragging');
 		}
 
-		var connectDragSource = this.props.connectDragSource;
-		var jsx = (
-			<div className={classNames.join(' ') } style={this.props.style}>
+		return <div className={classNames.join(' ') } style={this.props.style}>
 				<InHandCardArt entity={entity} hidden={false}
 					cardType={cardType} cardClass={cardClass}
 					cards={this.props.cards}
@@ -170,10 +166,7 @@ class Card extends React.Component<CardProps, {}> {
 					<p style={textStyle} dangerouslySetInnerHTML={{ __html: description }}></p>
 				</div>
 				{stats}
-			</div>
-		);
-
-		return (draggable ? connectDragSource(jsx) : jsx);
+			</div>;
 	}
 
 	protected parseDescription(description: string): string {

@@ -21,7 +21,7 @@ var ReactDOM = require('react-dom');
 
 class Launcher {
 
-	protected target;
+	protected target: string | HTMLElement;
 	protected opts: GameWidgetProps;
 	protected queryCardMetadata: QueryCardMetadata;
 	protected ref: GameWidget;
@@ -75,7 +75,7 @@ class Launcher {
 		return this;
 	}
 
-	public logger(logger: (message) => void): Launcher {
+	public logger(logger: (message: string | Error) => void): Launcher {
 		this.opts.logger = logger;
 		return this;
 	}
@@ -163,7 +163,7 @@ class Launcher {
 		this.opts.startupTime = +Date.now();
 		this.ref = ReactDOM.render(
 			React.createElement(GameWidget, this.opts),
-			typeof this.target !== 'string' ? this.target : document.getElementById(this.target)
+			typeof this.target === 'string' ? document.getElementById(this.target as string) : this.target
 		);
 	}
 }
@@ -176,11 +176,11 @@ module.exports = {
 		);
 	},
 
-	renderHSReplay: (target: string, url: string, opts?) => {
+	renderHSReplay: (target: string, url: string, opts?: GameWidgetProps) => {
 		new Launcher(target).setOptions(opts).fromUrl(url);
 	},
 
-	viewer: (target) => {
+	viewer: (target: string | HTMLElement) => {
 		return new Launcher(target);
 	},
 

@@ -10,6 +10,7 @@ import GameStateScrubber from "../state/GameStateScrubber";
 import GameStateTracker from "../state/GameStateTracker";
 import GameStateSink from "../state/GameStateSink";
 import {CardOracle} from "../interfaces";
+import * as Stream from "stream";
 
 interface SetupWidgetProps extends React.Props<any> {
 	defaultHostname: string;
@@ -70,19 +71,19 @@ class SetupWidget extends React.Component<SetupWidgetProps, SetupWidgetState> {
 		);
 	}
 
-	protected onChangeHostname(e): void {
+	protected onChangeHostname(e: any): void {
 		this.setState({ hostname: e.target.value });
 	}
 
-	protected onChangePort(e): void {
+	protected onChangePort(e: any): void {
 		this.setState({ port: e.target.value });
 	}
 
-	protected onChangeWebsocket(e): void {
+	protected onChangeWebsocket(e: any): void {
 		this.setState({ websocket: e.target.checked });
 	}
 
-	protected onChangeSecureWebsocket(e): void {
+	protected onChangeSecureWebsocket(e: any): void {
 		this.setState({ secureWebsocket: e.target.checked });
 	}
 
@@ -123,16 +124,16 @@ class SetupWidget extends React.Component<SetupWidgetProps, SetupWidgetState> {
 		var hostname = this.state.hostname || this.props.defaultHostname;
 		var port = this.state.port || this.props.defaultPort;
 
-		var socket = null;
-
+		var socket: Stream.Duplex = null;
 
 		if (this.state.websocket) {
 			var protocol = this.state.secureWebsocket ? 'wss' : 'ws';
 			socket = new Websocket(protocol + '://' + hostname + ':' + port, 'binary');
 		}
 		else {
-			socket = new Socket();
-			socket.connect(port, hostname);
+			let theSocket = new Socket();
+			theSocket.connect(port, hostname);
+			socket = theSocket;
 		}
 
 

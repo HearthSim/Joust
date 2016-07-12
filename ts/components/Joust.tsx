@@ -48,7 +48,7 @@ class Joust extends React.Component<{}, JoustState> {
 	}
 
 	public render(): JSX.Element {
-		var widget = null;
+		var widget: JSX.Element = null;
 		switch (this.state.currentWidget) {
 			case Widget.SETUP:
 				widget = <SetupWidget defaultHostname="localhost" defaultPort={9111}

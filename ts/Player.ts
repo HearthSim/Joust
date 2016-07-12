@@ -30,7 +30,7 @@ class Player extends Entity {
 		return this.legendRank;
 	}
 
-	protected factory(tags, cardId): Player {
+	protected factory(tags: Immutable.Map<string, number>, cardId: string): Player {
 		return new Player(this.id, tags, this.playerId, this.name, this.rank, this.legendRank);
 	}
 }

@@ -4,7 +4,7 @@ class Entity {
 	constructor(protected id: number, protected tags: Immutable.Map<string, number>, protected cardId?: string) {
 	}
 
-	protected factory(tags, cardId): Entity {
+	protected factory(tags: Immutable.Map<string, number>, cardId: string): Entity {
 		return new Entity(this.id, tags, cardId);
 	}
 
@@ -140,7 +140,7 @@ class Entity {
 		return this.factory(tags, this.cardId);
 	}
 
-	public getTags() {
+	public getTags(): Immutable.Map<string, number> {
 		return this.tags;
 	}
 

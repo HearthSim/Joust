@@ -3,6 +3,7 @@ import GameState from "../GameState";
 import GameStateMutator from "../GameStateMutator";
 import Entity from "../../Entity";
 import AddDiffsMutator from "./AddDiffsMutator";
+import {GameStateDiff} from "../../interfaces";
 
 class AddEntityMutator implements GameStateMutator {
 	constructor(public entity: Entity) {
@@ -31,7 +32,7 @@ class AddEntityMutator implements GameStateMutator {
 		var entityTree = state.getEntityTree();
 		entityTree = entityTree.setIn([this.entity.getController(), this.entity.getZone(), id], this.entity);
 
-		let diffs = [];
+		let diffs: GameStateDiff[] = [];
 		this.entity.getTags().forEach((value: number, tag: string) => {
 			diffs.push({
 				entity: id,

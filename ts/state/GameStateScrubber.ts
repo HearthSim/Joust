@@ -54,7 +54,7 @@ class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 	}
 
 	protected lastUpdate: number;
-	protected interval;
+	protected interval: number;
 
 	public play(): void {
 		this.lastUpdate = new Date().getTime();

@@ -3,6 +3,7 @@ import GameStateMutator from "../GameStateMutator";
 import * as Immutable from "immutable";
 import ReplaceEntityMutator from "./ReplaceEntityMutator";
 import AddDiffsMutator from "./AddDiffsMutator";
+import {GameStateDiff} from "../../interfaces";
 
 class ShowEntityMutator implements GameStateMutator {
 
@@ -24,7 +25,7 @@ class ShowEntityMutator implements GameStateMutator {
 
 		newEntity = newEntity.setTags(this.tags);
 
-		let diffs = [];
+		let diffs: GameStateDiff[] = [];
 		this.tags.forEach((value: number, tag: string) => {
 			diffs.push({
 				entity: this.entityId,
