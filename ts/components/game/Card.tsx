@@ -10,13 +10,27 @@ import InHandCardArt from "./visuals/InHandCardArt";
 import {CardType,CardClass} from "../../enums";
 import {GameTag} from "../../enums";
 
-interface CardProps extends EntityProps, OptionProps, CardDataProps, React.Props<any> {
+interface CardProps extends EntityProps, OptionProps, React.Props<any> {
 	style?: any;
-	dragging?: boolean;
 	isHidden?: boolean;
 }
 
 class Card extends React.Component<CardProps, {}> {
+
+	public shouldComponentUpdate(nextProps:CardProps, nextState:any):boolean {
+		return (
+			!_.isEqual(this.props.style, nextProps.style) ||
+			this.props.isHidden !== nextProps.isHidden ||
+			this.props.entity !== nextProps.entity ||
+			this.props.damage !== nextProps.damage ||
+			this.props.healing !== nextProps.healing ||
+			this.props.option !== nextProps.option ||
+			this.props.cards !== nextProps.cards ||
+			this.props.controller !== nextProps.controller ||
+			this.props.assetDirectory !== nextProps.assetDirectory ||
+			this.props.cardArtDirectory !== nextProps.cardArtDirectory
+		);
+	}
 
 	public render(): JSX.Element {
 		var entity = this.props.entity;
@@ -147,10 +161,6 @@ class Card extends React.Component<CardProps, {}> {
 
 		if (this.props.isHidden) {
 			classNames.push('hidden-card');
-		}
-
-		if (this.props.dragging) {
-			classNames.push('dragging');
 		}
 
 		return <div className={classNames.join(' ') } style={this.props.style}>
