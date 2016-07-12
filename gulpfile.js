@@ -17,6 +17,8 @@ var webpackStream = require('webpack-stream');
 const filter = require('gulp-filter');
 var livereload = require('gulp-livereload');
 
+var git = require('git-rev');
+
 gulp.task('default', ['watch']);
 
 gulp.task('compile', ['compile:scripts', 'compile:styles', 'html', 'assets']);
@@ -29,7 +31,7 @@ gulp.task('compile:scripts', function () {
 
 gulp.task('compile:web', ['compile:scripts:web', 'compile:styles', 'html', 'assets']);
 
-gulp.task('compile:scripts:web', function () {
+gulp.task('compile:scripts:web', ['env:set-release'], function () {
 	var config = require('./webpack.config.js');
 	config.target = 'web';
 	config.plugins = config.plugins.concat([
@@ -39,7 +41,10 @@ gulp.task('compile:scripts:web', function () {
 				warnings: false
 			}
 		}),
-		new webpack.optimize.DedupePlugin()
+		new webpack.optimize.DedupePlugin(),
+		new webpack.DefinePlugin({
+			JOUST_RELEASE: JSON.stringify(process.env.JOUST_RELEASE)
+		})
 	]);
 	config.devtool = '#source-map';
 	return gulp.src('ts/run.tsx')
@@ -66,6 +71,14 @@ gulp.task('compile:styles', function () {
 		.pipe(gulp.dest('dist/'))
 		.pipe(filter(['**/*.css']))
 		.pipe(livereload());
+});
+
+gulp.task('env:set-release', function (cb) {
+	git.tag(function(release) {
+		gutil.log('Setting JOUST_RELEASE to', gutil.colors.green(release));
+		process.env.JOUST_RELEASE = release;
+		cb();
+	});
 });
 
 gulp.task('html', function () {

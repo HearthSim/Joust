@@ -182,5 +182,9 @@ module.exports = {
 
 	viewer: (target) => {
 		return new Launcher(target);
+	},
+
+	release: (): string => {
+		return JOUST_RELEASE;
 	}
 }

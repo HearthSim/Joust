@@ -7,6 +7,8 @@
  *
  */
 
+declare var JOUST_RELEASE: string;
+
 declare module "filereader-stream" {
 	function internal(file?: string, options?: any): any;
 
