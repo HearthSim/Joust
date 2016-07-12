@@ -31,7 +31,7 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 	private ref: HTMLDivElement;
 	private fullscreen: Fullscreen;
 	private hasCheckedForSwap = false;
-	private swapPlayers = false;
+	private swapPlayers = true;
 
 	constructor(props: GameWidgetProps) {
 		super(props);
@@ -141,12 +141,15 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 			return;
 		}
 		let player = players[0];
-		let cards = _.toArray(this.state.gameState.getEntityTree().get(player.getPlayerId()).get(Zone.HAND).toJS()) as Entity[];
-		if (cards.length > 0) {
+		let cards = this.state.gameState.getEntityTree().get(player.getPlayerId()).get(Zone.HAND);
+		if (cards.count() > 0) {
 			this.hasCheckedForSwap = true;
-			if (cards[0].isRevealed()) {
-				this.swapPlayers = true;
-			}
+			cards.forEach((card: Entity) => {
+				if (!card.isRevealed()) {
+					this.swapPlayers = false;
+					return false;
+				}
+			});
 		}
 	}
 
