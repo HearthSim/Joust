@@ -16,6 +16,10 @@ export interface EntityInPlayProps extends EntityProps, OptionProps, GameStateDe
 	isTarget?: boolean;
 }
 
+export interface EntityInPlayState {
+	isHovering?: boolean;
+}
+
 export interface EntityListProps extends OptionCallbackProps, ControllerProps, CardDataProps,
 	CardOracleProps, AssetDirectoryProps, CardArtDirectory, GameStateDescriptorStackProps, HideCardsProps, React.Props<any> {
 	entities: Immutable.Iterable<number, Entity>;

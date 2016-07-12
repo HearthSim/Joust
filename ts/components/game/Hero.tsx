@@ -18,7 +18,7 @@ interface HeroProps extends EntityInPlayProps {
 	secrets: Immutable.Map<number, Entity>;
 }
 
-class Hero extends EntityInPlay<HeroProps, {}> {
+class Hero extends EntityInPlay<HeroProps> {
 	constructor() {
 		super('hero');
 	}

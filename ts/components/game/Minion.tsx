@@ -12,8 +12,9 @@ import Healing from "./stats/Healing";
 import {CardData} from "../../interfaces";
 import MetaData from "../../MetaData";
 import GameStateDescriptor from "../../state/GameStateDescriptor";
+import Card from "./Card";
 
-class Minion extends EntityInPlay<EntityInPlayProps, {}> {
+class Minion extends EntityInPlay<EntityInPlayProps> {
 
 	constructor() {
 		super('minion');

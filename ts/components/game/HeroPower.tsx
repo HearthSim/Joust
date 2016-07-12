@@ -5,7 +5,7 @@ import EntityInPlay from "./EntityInPlay";
 import Cost from "./stats/Cost";
 import HeroPowerArt from "./visuals/HeroPowerArt";
 
-class HeroPower extends EntityInPlay<EntityInPlayProps, {}> {
+class HeroPower extends EntityInPlay<EntityInPlayProps> {
 	constructor() {
 		super('heroPower');
 	}

@@ -1,10 +1,10 @@
 import * as React from "react";
-import {EntityInPlayProps} from "../../interfaces";
+import {EntityInPlayProps, EntityInPlayState} from "../../interfaces";
 import * as _ from "lodash";
 import {BlockType} from "../../enums";
 import GameStateDescriptor from "../../state/GameStateDescriptor";
 
-abstract class EntityInPlay<P extends EntityInPlayProps, S> extends React.Component<P, S> {
+abstract class EntityInPlay<P extends EntityInPlayProps> extends React.Component<P, EntityInPlayState> {
 
 	private baseClassName: string = '';
 
@@ -13,6 +13,9 @@ abstract class EntityInPlay<P extends EntityInPlayProps, S> extends React.Compon
 	constructor(baseClassName: string) {
 		super();
 		this.baseClassName = baseClassName;
+		this.state = {
+			isHovering: false
+		}
 	}
 
 	protected playWithClick(): boolean {
@@ -78,6 +81,14 @@ abstract class EntityInPlay<P extends EntityInPlayProps, S> extends React.Compon
 		this.props.optionCallback(this.props.option);
 	}
 
+	protected startHovering(e) {
+		this.setState({isHovering: true});
+	}
+
+	protected stopHovering(e) {
+		this.setState({isHovering: false});
+	}
+
 	public render(): JSX.Element {
 		if (!this.props.entity) {
 			return <div className={this.getClassNames().concat(['no-entity']).join(' ') }></div>;
@@ -87,22 +98,33 @@ abstract class EntityInPlay<P extends EntityInPlayProps, S> extends React.Compon
 		var requiresTarget = this.props.option && this.props.option.hasTargets();
 
 		var jsx = null;
-		if (playable && !requiresTarget && this.playWithClick()) {
+		/*if (playable && !requiresTarget && this.playWithClick()) {
 			jsx = <div className={this.getClassNames().join(' ') }
-				onClick={(playable && this.props.optionCallback) ? this.click.bind(this) : null}>{this.jsx() }</div>
+					   onClick={(playable && this.props.optionCallback) ? this.click.bind(this) : null}>
+				{this.jsx()}
+			</div>;
 		}
 		else {
 			jsx = <div className={this.getClassNames().join(' ') }>{this.jsx() }</div>;
-			/*if (playable && this.props.optionCallback) {
+			if (playable && this.props.optionCallback) {
 				// make draggable
 				jsx = this.props.connectDragSource(jsx);
-			}*/
-		}
+			}
+		}*/
 
 		// make drop target
 		//jsx = this.props.connectDropTarget(jsx);*/
 
-		return jsx;
+
+
+		return <div className={this.getClassNames().join(' ') }
+					onMouseOver={(e) => {this.startHovering(e)}}
+					onTouchStart={(e) => {this.startHovering(e)}}
+					onMouseOut={(e) => {this.stopHovering(e)}}
+					onTouchEnd={(e) => {this.stopHovering(e)}}
+				>
+			{this.jsx()}
+		</div>;
 	}
 }
 
