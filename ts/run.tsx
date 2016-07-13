@@ -145,8 +145,8 @@ class Launcher {
 				this.queryCardMetadata(build, (cards: CardData[]) => {
 					this.ref.setCards(cards);
 					this.opts.events && this.opts.events('cards_received', {duration: (Date.now() - queryTime) / 1000}, {
-						cards: cards.length + 'i',
-						build: build + 'i'
+						cards: cards.length,
+						build: build
 					});
 				});
 			}
