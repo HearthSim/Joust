@@ -21,7 +21,7 @@ describe("HSReplayDecoder", () => {
 		it("should be emitted for FullEntity tags", (done) => {
 			decoder.write('<FullEntity id="22" />');
 			decoder.once('data', (mutator:AddEntityMutator) => {
-				expect(mutator.entity.getId()).toBe(22);
+				expect(mutator.entity.id).toBe(22);
 				expect(mutator.entity.getTags().count()).toBe(0);
 				done();
 			})
@@ -30,7 +30,7 @@ describe("HSReplayDecoder", () => {
 		it("should be emitted for GameEntity tags", (done) => {
 			decoder.write('<GameEntity id="1" />');
 			decoder.once('data', (mutator:AddEntityMutator) => {
-				expect(mutator.entity.getId()).toBe(1);
+				expect(mutator.entity.id).toBe(1);
 				expect(mutator.entity.getTags().count()).toBe(0);
 				done();
 			})
@@ -40,11 +40,11 @@ describe("HSReplayDecoder", () => {
 			decoder.write('<Player id="3" playerID="2" name="BehEh" rank="0" legendRank="5"></Player>');
 			decoder.once('data', (mutator:AddEntityMutator) => {
 				let player = mutator.entity as Player;
-				expect(player.getId()).toBe(3);
-				expect(player.getPlayerId()).toBe(2);
-				expect(player.getName()).toBe("BehEh");
-				expect(player.getRank()).toBe(0);
-				expect(player.getLegendRank()).toBe(5);
+				expect(player.id).toBe(3);
+				expect(player.playerId).toBe(2);
+				expect(player.name).toBe("BehEh");
+				expect(player.rank).toBe(0);
+				expect(player.legendRank).toBe(5);
 				done();
 			})
 		});

@@ -14,11 +14,11 @@ class Weapon extends React.Component<WeaponProps, {}> {
 		if (this.props.entity) {
 			var entity = this.props.entity;
 
-			var title = entity.getCardId();
+			var title = entity.cardId;
 			var defaultAttack = null;
 			var defaultDurability = null;
-			if (this.props.cards && this.props.cards.has(entity.getCardId())) {
-				var data = this.props.cards.get(entity.getCardId());
+			if (this.props.cards && this.props.cards.has(entity.cardId)) {
+				var data = this.props.cards.get(entity.cardId);
 				var title = '' + data.name;
 				defaultAttack = data.attack;
 				defaultDurability = data.durability;

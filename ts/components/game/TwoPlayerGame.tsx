@@ -40,9 +40,9 @@ class TwoPlayerGame extends React.Component<TwoPlayerGameProps, {}> {
 			<div className="game">
 				<Player player={player1 as PlayerEntity} isTop={true}
 					isCurrent={currentPlayer === player1}
-					entities={entities.get(player1.getPlayerId()) || emptyEntities}
-					options={options.get(player1.getPlayerId()) || emptyOptions}
-					choices={this.props.choices.get(player1.getId())}
+					entities={entities.get(player1.playerId) || emptyEntities}
+					options={options.get(player1.playerId) || emptyOptions}
+					choices={this.props.choices.get(player1.id)}
 					optionCallback={this.props.optionCallback}
 					cardOracle={this.props.cardOracle}
 					cards={this.props.cards}
@@ -57,9 +57,9 @@ class TwoPlayerGame extends React.Component<TwoPlayerGameProps, {}> {
 					/>}
 				<Player player={player2 as PlayerEntity} isTop={false}
 					isCurrent={currentPlayer === player2}
-					entities={entities.get(player2.getPlayerId()) || emptyEntities}
-					options={options.get(player2.getPlayerId()) || emptyOptions}
-					choices={this.props.choices.get(player2.getId())}
+					entities={entities.get(player2.playerId) || emptyEntities}
+					options={options.get(player2.playerId) || emptyOptions}
+					choices={this.props.choices.get(player2.id)}
 					optionCallback={this.props.optionCallback}
 					cardOracle={this.props.cardOracle}
 					cards={this.props.cards}

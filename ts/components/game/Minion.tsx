@@ -22,7 +22,7 @@ class Minion extends EntityInPlay<EntityInPlayProps> {
 
 	public jsx() {
 		let entity = this.props.entity;
-		let cardId = entity.getCardId();
+		let cardId = entity.cardId;
 
 		let data: CardData = {};
 		if (this.props.cards && this.props.cards.has(cardId)) {
@@ -35,7 +35,7 @@ class Minion extends EntityInPlay<EntityInPlayProps> {
 		if (this.props.descriptors) {
 			this.props.descriptors.forEach((descriptor: GameStateDescriptor) => {
 				descriptor.getMetaData().forEach((metaData: MetaData) => {
-					if (metaData.getEntities().has(entity.getId())) {
+					if (metaData.getEntities().has(entity.id)) {
 						switch(metaData.getType()) {
 							case MetaDataType.DAMAGE:
 								damage += metaData.getData();

@@ -21,7 +21,7 @@ class Choices extends EntityList<ChoicesProps> {
 	}
 
 	protected sort(entity: Entity): number {
-		return this.props.choices.get(entity.getId()).getIndex();
+		return this.props.choices.get(entity.id).getIndex();
 	}
 
 	private count: number = 0;
@@ -35,17 +35,17 @@ class Choices extends EntityList<ChoicesProps> {
 		var hidden = false;
 
 		if(this.props.hideCards) {
-			entity = new Entity(entity.getId(), entity.getTags());
+			entity = new Entity(entity.id, entity.getTags());
 		}
-		else if (!entity.getCardId() && this.props.cardOracle && this.props.cardOracle.has(+entity.getId())) {
-			let cardId = this.props.cardOracle.get(entity.getId());
-			entity = new Entity(entity.getId(), entity.getTags(), cardId);
+		else if (!entity.cardId && this.props.cardOracle && this.props.cardOracle.has(+entity.id)) {
+			let cardId = this.props.cardOracle.get(entity.id);
+			entity = new Entity(entity.id, entity.getTags(), cardId);
 			hidden = true;
 		}
 
 		// hard limit mulligan cards to 4, see issue #85
 		this.count++;
-		if(this.props.isMulligan && (entity.getCardId() === 'GAME_005' || (!entity.isRevealed() && this.count > 4))) {
+		if(this.props.isMulligan && (entity.cardId === 'GAME_005' || (!entity.isRevealed() && this.count > 4))) {
 			return null;
 		}
 

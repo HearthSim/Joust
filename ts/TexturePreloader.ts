@@ -27,7 +27,7 @@ class TexturePreloader extends Stream.Writable {
 
 		if(mutator.entity) {
 			let entity = mutator.entity as Entity;
-			id = entity.getCardId();
+			id = entity.cardId;
 		}
 
 		id = id || mutator.cardId;

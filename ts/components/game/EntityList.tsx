@@ -7,8 +7,8 @@ import Option from "../../Option";
 abstract class EntityList<T extends EntityListProps> extends React.Component<T, {}> {
 
 	protected renderEntity(entity: Entity, option: Option, index?: number) {
-		var id = entity.getCardId() ? (' (CardID=' + entity.getCardId() + ')') : '';
-		return (<span>Entity #{entity.getId() }{id}</span>);
+		var id = entity.cardId ? (' (CardID=' + entity.cardId + ')') : '';
+		return (<span>Entity #{entity.id }{id}</span>);
 	}
 
 	protected sort(entity: Entity): number {
@@ -25,13 +25,13 @@ abstract class EntityList<T extends EntityListProps> extends React.Component<T, 
 			var entities = this.props.entities.toList().sortBy(this.sort.bind(this));
 			this.beforeRender(entities.count());
 			entities.forEach(function(entity, i) {
-				var option = this.props.options ? this.props.options.get(entity.getId()) : null;
+				var option = this.props.options ? this.props.options.get(entity.id) : null;
 				let rendered = this.renderEntity(entity, option, i);
 				if(!rendered) {
 					return;
 				}
 				elements.push(
-					<li key={entity.getId() }>
+					<li key={entity.id }>
 						{rendered}
 					</li>);
 			}.bind(this));

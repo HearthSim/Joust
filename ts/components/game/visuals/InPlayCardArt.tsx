@@ -19,7 +19,7 @@ class InPlayCardArt extends React.Component<EntityProps, {}> {
 		}
 
 		images.push({
-			image: entity.getCardId(),
+			image: entity.cardId,
 			isArt: true,
 			classes: ["inplay-portrait"]
 		});

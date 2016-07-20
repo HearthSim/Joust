@@ -15,7 +15,7 @@ class HeroArt extends React.Component<HeroArtProps, {}> {
 		var entity = this.props.entity;
 
 		images.push({
-			image: entity.getCardId(),
+			image: entity.cardId,
 			isArt: true,
 			classes: ["hero-portrait"]
 		});

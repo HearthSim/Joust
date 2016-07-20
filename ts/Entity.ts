@@ -1,19 +1,19 @@
 import {GameTag, Rarity} from "./enums";
 
 class Entity {
-	constructor(protected id: number, protected tags: Immutable.Map<string, number>, protected cardId?: string) {
+	constructor(protected _id: number, protected tags: Immutable.Map<string, number>, protected _cardId?: string) {
 	}
 
 	protected factory(tags: Immutable.Map<string, number>, cardId: string): Entity {
 		return new Entity(this.id, tags, cardId);
 	}
 
-	public getId(): number {
-		return this.id;
+	get id(): number {
+		return this._id;
 	}
 
-	public getCardId(): string {
-		return this.cardId;
+	get cardId(): string {
+		return this._cardId;
 	}
 
 	public isRevealed(): boolean {
@@ -109,7 +109,7 @@ class Entity {
 		value = +value;
 		// verify parameters
 		if (strkey === null) {
-			console.warn('Cannot set invalid tag on entity #' + this.getId());
+			console.warn('Cannot set invalid tag on entity #' + this.id);
 			return this;
 		}
 		if (value === null) {

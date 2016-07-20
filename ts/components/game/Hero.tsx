@@ -35,7 +35,7 @@ class Hero extends EntityInPlay<HeroProps> {
 		if (this.props.descriptors) {
 			this.props.descriptors.forEach((descriptor: GameStateDescriptor) => {
 				descriptor.getMetaData().forEach((metaData: MetaData) => {
-					if (metaData.getEntities().has(entity.getId())) {
+					if (metaData.getEntities().has(entity.id)) {
 						switch(metaData.getType()) {
 							case MetaDataType.DAMAGE:
 								damage += metaData.getData();

@@ -54,7 +54,7 @@ class Player extends React.Component<PlayerProps, {}> {
 			heroEntity = (this.props.entities.get(Zone.GRAVEYARD) || Immutable.Map<number, Entity>()).filter(filterByCardType(CardType.HERO)).first();
 		}
 		var hero = <Hero entity={heroEntity}
-			option={heroEntity ? playOptions.get(heroEntity.getId()) : null}
+			option={heroEntity ? playOptions.get(heroEntity.id) : null}
 			secrets={this.props.entities.get(Zone.SECRET) || Immutable.Map<number, Entity>() }
 			optionCallback={this.props.optionCallback}
 			cards={this.props.cards}
@@ -65,7 +65,7 @@ class Player extends React.Component<PlayerProps, {}> {
 			/>;
 		var heroPowerEntity = playEntities.filter(filterByCardType(CardType.HERO_POWER)).first();
 		var heroPower = <HeroPower entity={heroPowerEntity}
-			option={heroPowerEntity ? playOptions.get(heroPowerEntity.getId()) : null}
+			option={heroPowerEntity ? playOptions.get(heroPowerEntity.id) : null}
 			optionCallback={this.props.optionCallback}
 			cards={this.props.cards}
 			assetDirectory={this.props.assetDirectory}
@@ -121,7 +121,7 @@ class Player extends React.Component<PlayerProps, {}> {
 					}
 				});
 				if(entity === null) {
-					console.error('Entity #' + id + ' from choice could not be found for player #' + this.props.player.getId() + ' (playerId=' + this.props.player.getPlayerId() + ')');
+					console.error('Entity #' + id + ' from choice could not be found for player #' + this.props.player.id + ' (playerId=' + this.props.player.playerId + ')');
 				}
 				return entity;
 			}).filter((entity: Entity) => { return !!entity; });
@@ -138,9 +138,9 @@ class Player extends React.Component<PlayerProps, {}> {
 			/>;
 		}
 
-		var name = this.props.player.getName() ? <div className="name" title={this.props.player.getName()}>{this.props.player.getName()}</div> : null;
-		var rank = <Rank rank={this.props.player.getRank() }
-			legendRank={this.props.player.getLegendRank() }
+		var name = this.props.player.name ? <div className="name" title={this.props.player.name}>{this.props.player.name}</div> : null;
+		var rank = <Rank rank={this.props.player.rank }
+			legendRank={this.props.player.legendRank }
 			assetDirectory={this.props.assetDirectory}
 			cardArtDirectory={this.props.cardArtDirectory}
 			/>;
@@ -206,7 +206,7 @@ class Player extends React.Component<PlayerProps, {}> {
 		var gameresult = null;
 		switch (this.props.player.getTag(GameTag.PLAYSTATE)) {
 			case PlayState.WON:
-				gameresult = <div className="gameresult">{this.props.player.getName()} wins!</div>;
+				gameresult = <div className="gameresult">{this.props.player.name} wins!</div>;
 				classNames.push('inactive-colored');
 				break;
 			case PlayState.LOST:
@@ -223,7 +223,7 @@ class Player extends React.Component<PlayerProps, {}> {
 					// search for entity
 					this.props.entities.forEach((map:Immutable.Map<number, Entity>) => {
 						map.forEach((toCompare:Entity) => {
-							if (descriptor.getEntity() === toCompare.getId()) {
+							if (descriptor.getEntity() === toCompare.id) {
 								if (type == BlockType.PLAY || toCompare.getTag(GameTag.SECRET) || toCompare.getTag(GameTag.EVIL_GLOW)) {
 									entity = toCompare;
 								}
@@ -234,9 +234,9 @@ class Player extends React.Component<PlayerProps, {}> {
 						let type = entity.getTag(GameTag.CARDTYPE);
 						let types = [CardType.WEAPON, CardType.SPELL, CardType.MINION, CardType.HERO_POWER];
 						if (types.indexOf(type) != -1 || entity.getTag(GameTag.SECRET)) {
-							if(!entity.getCardId() && this.props.cardOracle && this.props.cardOracle.has(+entity.getId())) {
-								let cardId = this.props.cardOracle.get(entity.getId());
-								entity = new Entity(entity.getId(), entity.getTags(), cardId);
+							if(!entity.cardId && this.props.cardOracle && this.props.cardOracle.has(+entity.id)) {
+								let cardId = this.props.cardOracle.get(entity.id);
+								entity = new Entity(entity.id, entity.getTags(), cardId);
 							}
 							action = <div className="played"><Card
 								entity={entity}

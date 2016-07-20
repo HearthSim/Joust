@@ -39,8 +39,8 @@ class Card extends React.Component<CardProps, {}> {
 		if (entity.getTag(GameTag.EVIL_GLOW)) {
 			classNames.push('evil-glow');
 		}
-		var canBeRevealed = this.props.cards && this.props.cards.has(entity.getCardId());
-		if (!entity.getCardId() || (this.props.isHidden && !canBeRevealed)) {
+		var canBeRevealed = this.props.cards && this.props.cards.has(entity.cardId);
+		if (!entity.cardId || (this.props.isHidden && !canBeRevealed)) {
 			return (
 				<div className={classNames.join(' ')}>
 					<InHandCardArt hidden={true} entity={this.props.entity}
@@ -72,7 +72,7 @@ class Card extends React.Component<CardProps, {}> {
 			classNames.push('choose-both');
 		}
 
-		var title = entity.getCardId();
+		var title = entity.cardId;
 		var description = null;
 		var defaultAttack = null;
 		var defaultCost = null;
@@ -84,7 +84,7 @@ class Card extends React.Component<CardProps, {}> {
 		}
 		var cardClass = entity.getClass();
 		if (canBeRevealed) {
-			var data = this.props.cards && this.props.cards.get(entity.getCardId());
+			var data = this.props.cards && this.props.cards.get(entity.cardId);
 			title = data.name;
 			description = this.parseDescription(data.text);
 			defaultAttack = data.attack;

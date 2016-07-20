@@ -197,7 +197,7 @@ class Log extends React.Component<LogProps, LogState> {
 				});
 			}
 			else if (type == BlockType.PLAY) {
-				this.setLidPlayer(lid, curr, p => p.getPlayerId() == entity.getController());
+				this.setLidPlayer(lid, curr, p => p.playerId == entity.getController());
 				push(LineType.Play);
 			}
 		});
@@ -223,7 +223,7 @@ class Log extends React.Component<LogProps, LogState> {
 
 			this.setLidEntity(lid, state, diff.entity);
 			this.setLidTarget(lid, state, descriptor && descriptor.getEntity());
-			this.setLidPlayer(lid, state, p => p.getPlayerId() == entity.getController());
+			this.setLidPlayer(lid, state, p => p.playerId == entity.getController());
 
 			if (diff.tag == GameTag.ZONE) {
 				if (diff.previous == Zone.DECK && diff.current == Zone.HAND && lid.targetId
@@ -240,18 +240,18 @@ class Log extends React.Component<LogProps, LogState> {
 				}
 				push(this.getLine(diff));
 				if (diff.tag == GameTag.ATK && entity && lid.targetId && diff.previous < diff.current) {
-					cthunBuff |= +(entity.getCardId() == 'OG_279');
+					cthunBuff |= +(entity.cardId == 'OG_279');
 				}
 				else if (diff.tag == GameTag.HEALTH && entity && diff.previous < diff.current) {
-					cthunBuff |= +(entity.getCardId() == 'OG_279') << 1;
+					cthunBuff |= +(entity.cardId == 'OG_279') << 1;
 				}
 			}
 		});
 		if (cthunBuff == 3) {
 			let controller = state.getPlayers().find(x => !!x.getTag(GameTag.CURRENT_PLAYER));
-			let cthunProxy = state.getEntities().find(x => x.getCardId() == 'OG_279' && x.getController() == controller.getPlayerId());
+			let cthunProxy = state.getEntities().find(x => x.cardId == 'OG_279' && x.getController() == controller.playerId);
 			if (cthunProxy) {
-				lid.entityId = cthunProxy.getId();
+				lid.entityId = cthunProxy.id;
 				lid.data = cthunProxy.getAtk();
 				lid.data2 = cthunProxy.getHealth();
 				push(LineType.Cthun);
@@ -403,7 +403,7 @@ class Log extends React.Component<LogProps, LogState> {
 
 	private getCardData(state: GameState, id: number) {
 		let entity = state.getEntity(id);
-		return this.props.cards.get(entity && entity.getCardId() || this.props.cardOracle.get(id));
+		return this.props.cards.get(entity && entity.cardId || this.props.cardOracle.get(id));
 	}
 
 	private setLidEntity(lid: LogItemData, state: GameState, id: number) {
@@ -420,7 +420,7 @@ class Log extends React.Component<LogProps, LogState> {
 
 	private setLidPlayer(lid: LogItemData, state: GameState, predicate: (player: Player) => boolean) {
 		let player = state.getPlayers().find(p => predicate(p));
-		lid.player = player && player.getName();
+		lid.player = player && player.name;
 	}
 
 	private newLogItemData(state: GameState, entityId?: number): LogItemData {

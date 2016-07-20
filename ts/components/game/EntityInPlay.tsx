@@ -52,20 +52,20 @@ abstract class EntityInPlay<P extends EntityInPlayProps> extends React.Component
 				this.props.descriptors.forEach((descriptor: GameStateDescriptor) => {
 					switch (descriptor.getType()) {
 						case BlockType.ATTACK:
-							if (this.props.entity.getId() == descriptor.getEntity()) {
+							if (this.props.entity.id == descriptor.getEntity()) {
 								classNames.push('attacking')
 							}
-							else if (this.props.entity.getId() == descriptor.getTarget()) {
+							else if (this.props.entity.id == descriptor.getTarget()) {
 								classNames.push('defending')
 							}
 							break;
 						case BlockType.POWER:
-							if (descriptor.getTarget() == this.props.entity.getId()) {
+							if (descriptor.getTarget() == this.props.entity.id) {
 								classNames.push('spellTarget');
 							}
 							break;
 						case BlockType.TRIGGER:
-							if (descriptor.getEntity() == this.props.entity.getId()) {
+							if (descriptor.getEntity() == this.props.entity.id) {
 								classNames.push('triggered');
 							}
 							break;

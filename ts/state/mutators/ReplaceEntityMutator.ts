@@ -14,7 +14,7 @@ class ReplaceEntityMutator implements GameStateMutator {
 			return state;
 		}
 
-		var id = this.entity.getId();
+		var id = this.entity.id;
 		var oldEntity = state.getEntity(id);
 		if (!oldEntity) {
 			console.error('Cannot update non-existent entity #' + id);

@@ -11,7 +11,7 @@ class WeaponArt extends React.Component<EntityProps, {}> {
 		var entity = this.props.entity;
 
 		images.push({
-			image: entity.getCardId(),
+			image: entity.cardId,
 			isArt: true,
 			classes: ["hero-weapon-portrait"]
 		});

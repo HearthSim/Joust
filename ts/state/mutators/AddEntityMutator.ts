@@ -15,7 +15,7 @@ class AddEntityMutator implements GameStateMutator {
 			return state;
 		}
 
-		var id = +this.entity.getId();
+		var id = +this.entity.id;
 		if (id < 1) {
 			console.error('Cannot add entity: Invalid entity id');
 			return state;

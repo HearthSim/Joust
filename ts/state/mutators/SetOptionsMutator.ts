@@ -27,7 +27,7 @@ class SetOptionsMutator implements GameStateMutator {
 					return;
 				}
 				var entity = entities.get(option.getEntity());
-				map = map.setIn([entity.getController(), entity.getZone(), entity.getId()], option);
+				map = map.setIn([entity.getController(), entity.getZone(), entity.id], option);
 			});
 		});
 		return optionTree;

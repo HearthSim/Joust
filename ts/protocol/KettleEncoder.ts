@@ -79,7 +79,7 @@ class KettleEncoder extends Stream.Readable implements InteractiveBackend {
 
 	public chooseEntities(entities: Entity[]): void {
 		var ids = entities.map(function(entity: Entity) {
-			return entity.getId();
+			return entity.id;
 		});
 		this.queueMessage({
 			Type: 'ChooseEntities',

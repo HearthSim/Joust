@@ -5,7 +5,7 @@ describe("Entity", () => {
 
 	it('should save the entity id', () => {
 		let entity = new Entity(1, Immutable.Map<string, number>());
-		expect(entity.getId()).toBe(1);
+		expect(entity.id).toBe(1);
 	});
 
 	it('should save an identical set of tags', () => {

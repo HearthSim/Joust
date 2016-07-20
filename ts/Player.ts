@@ -1,33 +1,33 @@
 import Entity from "./Entity";
 
 class Player extends Entity {
-	protected name: string;
-	protected playerId: number;
-	protected rank: number;
-	protected legendRank: number;
+	protected _name: string;
+	protected _playerId: number;
+	protected _rank: number;
+	protected _legendRank: number;
 
 	constructor(id: number, tags: Immutable.Map<string, number>, playerId: number, name: string, rank?: number, legendRank?: number) {
 		super(id, tags);
-		this.playerId = playerId;
-		this.name = name;
-		this.rank = rank;
-		this.legendRank = legendRank;
+		this._playerId = playerId;
+		this._name = name;
+		this._rank = rank;
+		this._legendRank = legendRank;
 	}
 
-	public getPlayerId(): number {
-		return this.playerId;
+	get playerId(): number {
+		return this._playerId;
 	}
 
-	public getName(): string {
-		return this.name;
+	get name(): string {
+		return this._name;
 	}
 
-	public getRank(): number {
-		return this.rank;
+	get rank(): number {
+		return this._rank;
 	}
 
-	public getLegendRank(): number {
-		return this.legendRank;
+	get legendRank(): number {
+		return this._legendRank;
 	}
 
 	protected factory(tags: Immutable.Map<string, number>, cardId: string): Player {
