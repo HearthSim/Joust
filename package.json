@@ -43,6 +43,7 @@
     "through2": "^2.0.1",
     "ts-loader": "^0.8.2",
     "typescript": "^1.8.10",
+    "webpack": "^1.13.1",
     "webpack-stream": "^3.2.0"
   },
   "private": true
