@@ -58,6 +58,7 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 		this.clearOptionsOnTimestamp = false;
 		this.playerMap = Immutable.Map<string, PlayerDetails>();
 		this.choiceMap = Immutable.Map<number, number>();
+		this.build = null;
 		this.debug = false;
 
 		this.sax = Sax.createStream(true, {});
@@ -132,9 +133,7 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 				if (!this.build) {
 					console.warn('Replay does not contain Hearthstone build number');
 				}
-				else {
-					this.emit('build', this.build);
-				}
+				this.emit('build', this.build);
 				break;
 			case 'Action':
 			case 'Block':

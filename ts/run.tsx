@@ -139,10 +139,10 @@ class Launcher {
 				decoder.pipe(preloader);
 			}
 		});
-		decoder.once('build', (build: number) => {
+		decoder.once('build', (build?: number) => {
 			if (this.queryCardMetadata) {
 				let queryTime = Date.now();
-				this.queryCardMetadata(build, (cards: CardData[]) => {
+				this.queryCardMetadata(build || null, (cards: CardData[]) => {
 					this.ref.setCards(cards);
 					this.opts.events && this.opts.events('cards_received', {duration: (Date.now() - queryTime) / 1000}, {
 						cards: cards.length,
