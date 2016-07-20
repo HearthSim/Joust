@@ -88,7 +88,7 @@ class LogItem extends React.Component<LogItemProps, LogItemState> {
 				return word;
 			}
 			let key = parts[2];
-			if(strings[key]) {
+			if(typeof strings[key] !== 'undefined') {
 				if(typeof strings[key] !== 'object') {
 					return parts[1] + strings[key] + parts[3];
 				}
@@ -96,6 +96,7 @@ class LogItem extends React.Component<LogItemProps, LogItemState> {
 					return strings[key];
 				}
 			}
+			return word;
 		}).map((word, i) => typeof word !== 'object' ? (i > 0 ? ' ' : '') + word + ' ' : word);
 
 		return (
