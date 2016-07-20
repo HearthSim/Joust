@@ -89,6 +89,8 @@ class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 			return;
 		}
 
+		let lastTurn = this.currentTurn;
+
 		if (this.isPlaying() && this.speed != 0) {
 			let now = new Date().getTime();
 			let elapsed = (now - this.lastUpdate) * this.speed;
@@ -109,6 +111,10 @@ class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 		if (latest !== this.lastState) {
 			this.lastState = latest;
 			this.push(latest);
+		}
+
+		if(lastTurn !== this.currentTurn) {
+			this.emit('turn', this.currentTurn);
 		}
 
 		this.emit('update');
@@ -186,9 +192,20 @@ class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 		return this.inhibitor && this.inhibitor.isInhibiting();
 	}
 
+	get currentTurn(): number {
+		if(!this.lastState) {
+			return;
+		}
+		let game = this.lastState.getEntity(1);
+		if(!game) {
+			return;
+		}
+		return game.getTag(GameTag.TURN);
+	}
+
 	public nextTurn(): void {
 		let nextTurn = this.endTime - this.initialTime;
-		let currentTurn = this.lastState.getEntity(1).getTag(GameTag.TURN);
+		let currentTurn = this.currentTurn;
 		if (this.currentTime < this.history.turnMap.first().getTime()) {
 			currentTurn--;
 		}
@@ -205,7 +222,7 @@ class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 
 	public previousTurn(): void {
 		let previousTurn = this.initialTime;
-		let currentTurn = this.lastState.getEntity(1).getTag(GameTag.TURN);
+		let currentTurn = this.currentTurn;
 		let turn = currentTurn - 1;
 		while (!this.history.turnMap.has(turn) && turn > 0) {
 			turn--;
@@ -218,7 +235,7 @@ class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 	}
 
 	public skipBack(): void {
-		let currentTurn = this.lastState.getEntity(1).getTag(GameTag.TURN);
+		let currentTurn = this.currentTurn;
 		let turnStart = this.history.turnMap.get(currentTurn).getTime();
 		let timeElapsed = this.currentTime - turnStart;
 		if (timeElapsed > 1.5 * this.speed) {

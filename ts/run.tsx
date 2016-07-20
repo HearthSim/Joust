@@ -24,6 +24,7 @@ class Launcher {
 	protected target: string | HTMLElement;
 	protected opts: GameWidgetProps;
 	protected queryCardMetadata: QueryCardMetadata;
+	protected turnCb: (turn: number) => void;
 	protected ref: GameWidget;
 
 	constructor(target: any) {
@@ -75,6 +76,11 @@ class Launcher {
 		return this;
 	}
 
+	public onTurn(callback: (turn: number) => void) {
+		this.turnCb = callback;
+		return this;
+	}
+
 	public logger(logger: (message: string | Error) => void): Launcher {
 		this.opts.logger = logger;
 		return this;
@@ -103,6 +109,9 @@ class Launcher {
 		decoder.debug = this.opts.debug;
 		var tracker = new GameStateTracker();
 		var scrubber = new GameStateScrubber();
+		if(this.turnCb) {
+			scrubber.on("turn", this.turnCb);
+		}
 		var sink = new GameStateSink();
 		var preloader = new TexturePreloader(this.opts.cardArtDirectory, this.opts.assetDirectory);
 		if(preloader.canPreload()) {
@@ -121,7 +130,7 @@ class Launcher {
 				if(message.statusCode) {
 					this.log(new Error('Could not load replay (status code ' + message.statusCode + ')'));
 				}
-;				return;
+				return;
 			}
 
 			let components = [decoder, tracker, scrubber, preloader];
