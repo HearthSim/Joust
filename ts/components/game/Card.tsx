@@ -68,6 +68,9 @@ class Card extends React.Component<CardProps, {}> {
 		if (entity.getTag(GameTag.SHIFTING)) {
 			classNames.push('shifting');
 		}
+		if (entity.getTag(GameTag.CHOOSE_BOTH)) {
+			classNames.push('choose-both');
+		}
 
 		var title = entity.getCardId();
 		var description = null;
