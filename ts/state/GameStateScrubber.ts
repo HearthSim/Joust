@@ -10,7 +10,7 @@ class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 	protected history: GameStateHistory;
 	protected inhibitor: StreamScrubberInhibitor;
 
-	constructor(history?: GameStateHistory, opts?: Stream.DuplexOptions) {
+	constructor(history?: GameStateHistory, startFromTurn?: number, opts?: Stream.DuplexOptions) {
 		opts = opts || {};
 		opts.objectMode = true;
 		opts.allowHalfOpen = true;
@@ -22,13 +22,17 @@ class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 		this.history = history || new GameStateHistory();
 		this.lastState = null;
 		this.endTime = null;
+		this.hasEmittedReady = false;
 		this.hasStarted = false;
+		this.startFromTurn = startFromTurn || null;
 	}
 
 	protected initialTime: number;
 	protected currentTime: number;
 	protected endTime: number;
+	protected hasEmittedReady: boolean;
 	protected hasStarted: boolean;
+	protected startFromTurn: number;
 
 	_write(gameState: any, encoding: string, callback: Function): void {
 		var time = gameState.getTime();
@@ -50,8 +54,17 @@ class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 			}
 		}
 
+		if (!this.hasStarted && this.currentTime === 0 && this.startFromTurn) {
+			ready = false;
+			if(this.history.turnMap.has(this.startFromTurn)) {
+				this.currentTime = this.history.turnMap.get(this.startFromTurn).getTime();
+				ready = true;
+			}
+		}
+
 		if (ready) {
 			this.emit("ready");
+			this.hasEmittedReady = true;
 			this.update();
 		}
 
@@ -62,6 +75,15 @@ class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 		return;
 	}
 
+	end(): void {
+		if(!this.hasEmittedReady) {
+			// this might happen if a initial turn is requested that we never found
+			this.emit("ready");
+			this.hasEmittedReady = true;
+			this.update();
+		}
+	}
+
 	protected lastUpdate: number;
 	protected interval: number;
 
@@ -70,6 +92,7 @@ class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 		this.interval = setInterval(this.update.bind(this), 100);
 		this.hasStarted = true;
 		this.emit("play");
+		this.lastState = null;
 		this.update();
 	}
 

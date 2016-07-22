@@ -77,7 +77,7 @@ class Launcher {
 		return this;
 	}
 
-	public onTurn(callback: (turn: number) => void): Launcher {
+	public onTurn(callback: (turn: number) => void) {
 		this.turnCb = callback;
 		return this;
 	}
