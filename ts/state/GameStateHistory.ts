@@ -1,5 +1,4 @@
 import GameState from "./GameState";
-import Entity from "../Entity";
 import {GameTag} from "../enums";
 import {Step} from "../enums";
 import * as Immutable from "immutable";
@@ -16,6 +15,17 @@ class GameStateHistory {
 		if (typeof time !== 'number') {
 			// we cannot handle timeless game states
 			return;
+		}
+
+		let game = gameState.game;
+		if (game) {
+			let turn = +game.getTag(GameTag.TURN);
+			if (!this.turnMap.has(turn)) {
+				let step = game.getTag(GameTag.STEP);
+				if (step !== Step.MAIN_NEXT && step !== Step.MAIN_READY && step !== Step.BEGIN_MULLIGAN) {
+					this.turnMap = this.turnMap.set(turn, gameState);
+				}
+			}
 		}
 
 		if (!this.tail && !this.head) {
@@ -36,18 +46,7 @@ class GameStateHistory {
 			this.head.state = gameState;
 		}
 		else {
-			console.error('Replay contains out-of-order timestamps');
-		}
-
-		let game = gameState.game;
-		if (game) {
-			let turn = +game.getTag(GameTag.TURN);
-			if (!this.turnMap.has(turn)) {
-				let step = game.getTag(GameTag.STEP);
-				if (step !== Step.MAIN_NEXT && step !== Step.MAIN_READY && step !== Step.BEGIN_MULLIGAN) {
-					this.turnMap = this.turnMap.set(turn, gameState);
-				}
-			}
+			console.error("Replay contains out-of-order timestamps");
 		}
 	}
 
