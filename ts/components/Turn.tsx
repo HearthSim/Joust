@@ -38,7 +38,7 @@ class Turn extends React.Component<TurnProps, {}> {
 			classNames.push('mulligan');
 		}
 
-		return <div className={classNames.join(' ') } style={style}>{!this.props.mulligan && (this.props.turnNumber % 2) ? Math.floor(this.props.turnNumber / 2) + 1 : null}</div>;
+		return <section className={classNames.join(' ') } style={style}>{this.props.mulligan ? "M" : (this.props.turnNumber % 2) ? Math.floor(this.props.turnNumber / 2) + 1 : null}</section>;
 	}
 }
 
