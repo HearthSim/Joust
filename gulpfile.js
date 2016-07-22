@@ -21,15 +21,11 @@ var git = require('git-rev');
 
 gulp.task('default', ['watch']);
 
-gulp.task('compile', ['compile:scripts', 'compile:styles', 'html', 'assets']);
-
-gulp.task('compile:scripts', function () {
-	return gulp.src('ts/run.tsx')
-		.pipe(webpackStream(require('./webpack.config.js')))
-		.pipe(gulp.dest('dist/'));
-});
-
+gulp.task('compile', ['compile:web']);
 gulp.task('compile:web', ['compile:scripts:web', 'compile:styles', 'html', 'assets']);
+gulp.task('compile:dev', ['compile:scripts:dev', 'compile:styles', 'html', 'assets']);
+
+gulp.task('compile:scripts', ['compile:scripts:web']);
 
 gulp.task('compile:scripts:web', ['env:set-release'], function () {
 	var config = require('./webpack.config.js');
@@ -49,6 +45,12 @@ gulp.task('compile:scripts:web', ['env:set-release'], function () {
 	config.devtool = '#source-map';
 	return gulp.src('ts/run.tsx')
 		.pipe(webpackStream(config))
+		.pipe(gulp.dest('dist/'));
+});
+
+gulp.task('compile:scripts:dev', function () {
+	return gulp.src('ts/run.tsx')
+		.pipe(webpackStream(require('./webpack.config.js')))
 		.pipe(gulp.dest('dist/'));
 });
 

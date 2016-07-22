@@ -7,7 +7,8 @@ A web viewer for HearthStone games and replays, written in React.
 ## Requirements
 
 - Node.js ~v5.7.0
-- `npm install -g electron-prebuilt typings gulp webpack`
+- Compiling: `npm install -g typings gulp webpack`
+- Development: `npm install -g electron-prebuilt typings gulp webpack`
 
 
 ## Compiling
@@ -21,7 +22,7 @@ typings install
 ```
 
 ```
-gulp compile:web
+gulp compile
 ```
 
 
@@ -29,8 +30,8 @@ gulp compile:web
 
 ```html
 <div id="container"></div>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react-dom.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/react/15.2.1/react.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/react/15.2.1/react-dom.min.js"></script>
 <script type="text/javascript" src="joust.js"></script>
 <script type="text/javascript">
 	Joust.viewer("container").height(500).width(500).assets("assets/").fromUrl("//example.org/brawl.hsreplay");
