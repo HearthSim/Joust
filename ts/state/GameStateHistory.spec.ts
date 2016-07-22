@@ -10,9 +10,9 @@ describe("GameStateHistory", () => {
 	var stateOne = new GameState(undefined, undefined, undefined, undefined, 1);
 	var stateTwo = new GameState(undefined, undefined, undefined, undefined, 2);
 	var stateFour = new GameState(undefined, undefined, undefined, undefined, 4);
-	var stateTurnOne = new GameState(Immutable.Map<number, Entity>().set(1, new Entity(1, Immutable.Map<string, number>({"20": 1}))), undefined, undefined, undefined, 20);
-	var stateTurnOnePointFive = new GameState(Immutable.Map<number, Entity>().set(1, new Entity(1, Immutable.Map<string, number>({"20": 1}))), undefined, undefined, undefined, 22);
-	var stateTurnTwo = new GameState(Immutable.Map<number, Entity>().set(1, new Entity(1, Immutable.Map<string, number>({"20": 2}))), undefined, undefined, undefined, 25);
+	var stateTurnOne = new GameState(Immutable.Map<number, Entity>().set(1, new Entity(1, Immutable.Map<string, number>({"19": 9, "20": 1}))), undefined, undefined, undefined, 20);
+	var stateTurnOnePointFive = new GameState(Immutable.Map<number, Entity>().set(1, new Entity(1, Immutable.Map<string, number>({"19": 9, "20": 1}))), undefined, undefined, undefined, 22);
+	var stateTurnTwo = new GameState(Immutable.Map<number, Entity>().set(1, new Entity(1, Immutable.Map<string, number>({"19": 9, "20": 2}))), undefined, undefined, undefined, 25);
 
 	beforeEach(() => {
 		history = new GameStateHistory();
