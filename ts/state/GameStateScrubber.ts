@@ -34,7 +34,7 @@ class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 		if (time !== null) {
 			// setup initial time if unknown
 			if (this.initialTime === null) {
-				this.play();
+				this.emit("ready");
 				this.initialTime = time;
 			}
 
@@ -59,7 +59,7 @@ class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 	public play(): void {
 		this.lastUpdate = new Date().getTime();
 		this.interval = setInterval(this.update.bind(this), 100);
-		this.emit('play');
+		this.emit("play");
 		this.update();
 	}
 
@@ -68,7 +68,7 @@ class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 			clearInterval(this.interval);
 			this.interval = null;
 		}
-		this.emit('pause');
+		this.emit("pause");
 		this.update();
 	}
 
@@ -114,10 +114,10 @@ class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 		}
 
 		if(lastTurn !== this.currentTurn) {
-			this.emit('turn', this.currentTurn);
+			this.emit("turn", this.currentTurn);
 		}
 
-		this.emit('update');
+		this.emit("update");
 	}
 
 

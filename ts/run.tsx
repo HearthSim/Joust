@@ -109,6 +109,7 @@ class Launcher {
 		decoder.debug = this.opts.debug;
 		var tracker = new GameStateTracker();
 		var scrubber = new GameStateScrubber();
+		scrubber.once("ready", () => scrubber.play());
 		if(this.turnCb) {
 			scrubber.on("turn", this.turnCb);
 		}

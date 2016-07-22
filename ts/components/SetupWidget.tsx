@@ -103,6 +103,7 @@ class SetupWidget extends React.Component<SetupWidgetProps, SetupWidgetState> {
 		/* HSReplay -> Joust */
 
 		var scrubber = new GameStateScrubber();
+		scrubber.once("ready", () => scrubber.play());
 		var decoder = new HSReplayDecoder();
 		var sink = filestream // sink is returned by the last .pipe()
 			.pipe(decoder) // json -> mutators
