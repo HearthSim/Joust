@@ -135,8 +135,8 @@ class Log extends React.Component<LogProps, LogState> {
 
 	private getTurn(prev:GameState, curr:GameState):LogItemData {
 		let lid = this.newLogItemData(curr);
-		let cGame = curr.getEntity(1);
-		let pGame = prev.getEntity(1);
+		let cGame = curr.game;
+		let pGame = prev.game;
 		if (cGame.getTag(GameTag.TURN) > pGame.getTag(GameTag.TURN)
 			|| !prev.getPlayers().every(x => x.getTag(GameTag.MULLIGAN_STATE) == Mulligan.DONE)
 			&& curr.getPlayers().every(x => x.getTag(GameTag.MULLIGAN_STATE) == Mulligan.DONE)) {
@@ -425,7 +425,7 @@ class Log extends React.Component<LogProps, LogState> {
 
 	private newLogItemData(state: GameState, entityId?: number): LogItemData {
 		return {type: 0, data: 0, time: state.getTime(), entityId: entityId,
-			indent: state.getDescriptors().count() > 1 || state.getEntity(1).getTag(GameTag.NEXT_STEP) == Step.MAIN_CLEANUP} as LogItemData;
+			indent: state.getDescriptors().count() > 1 || state.game.getTag(GameTag.NEXT_STEP) == Step.MAIN_CLEANUP} as LogItemData;
 	}
 }
 

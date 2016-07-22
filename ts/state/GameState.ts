@@ -56,6 +56,10 @@ class GameState {
 		return this.entityTree;
 	}
 
+	get game():Entity {
+		return this.entities.get(1);
+	}
+
 	public getPlayers(): Player[] {
 		return this.entities.filter((entity: Entity):boolean => {
 			return !!entity && entity.getCardType() === CardType.PLAYER;

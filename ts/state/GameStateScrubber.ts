@@ -196,7 +196,7 @@ class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 		if(!this.lastState) {
 			return;
 		}
-		let game = this.lastState.getEntity(1);
+		let game = this.lastState.game;
 		if(!game) {
 			return;
 		}

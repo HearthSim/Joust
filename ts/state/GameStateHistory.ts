@@ -39,7 +39,7 @@ class GameStateHistory {
 			console.error('Replay contains out-of-order timestamps');
 		}
 
-		let game = gameState.getEntity(1);
+		let game = gameState.game;
 		if (game) {
 			let turn = +game.getTag(GameTag.TURN);
 			if (!this.turnMap.has(turn)) {

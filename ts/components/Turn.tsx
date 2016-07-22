@@ -29,7 +29,7 @@ class Turn extends React.Component<TurnProps, {}> {
 			if(players[0]) {
 				flip += players[0].getTag(GameTag.FIRST_PLAYER) ? 1 : 0;
 			}
-			let game = this.props.state.getEntity(1);
+			let game = this.props.state.game;
 			if (game) {
 				turn = game.getTag(GameTag.TURN);
 				classNames.push((!!((game.getTag(GameTag.TURN) + flip) % 2) != this.props.invert) ? 'top' : 'bottom');
