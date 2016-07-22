@@ -1,6 +1,5 @@
 /// <reference path="../typings/index.d.ts"/>
 /// <reference path="./global.d.ts"/>
-/// <reference path="../node_modules/immutable/dist/immutable.d.ts"/>
 
 import {GameWidgetProps, CardData, JoustEventHandler} from "./interfaces";
 import Application from "./components/Joust";

@@ -93,25 +93,25 @@ class KettleDecoder extends Stream.Transform {
 		switch (type) {
 			case 'GameEntity':
 			case 'FullEntity':
-				var tags = {};
+				var tags: { [s: string]: number; } = {};
 				Object.keys(packet.Tags).forEach(function(key) {
 					tags['' + key] = packet.Tags[key];
 				});
 				var entity = new Entity(
 					+packet.EntityID,
-					Immutable.Map<string, number>(tags),
+					Immutable.Map<number>(tags),
 					packet.CardID || null
 				);
 				mutator = new AddEntityMutator(entity);
 				break;
 			case 'Player':
-				var tags = {};
+				var tags: { [s: string]: number; } = {};
 				Object.keys(packet.Tags).forEach(function(key) {
 					tags['' + key] = packet.Tags[key];
 				});
 				var player = new Player(
 					+packet.EntityID,
-					Immutable.Map<string, number>(tags),
+					Immutable.Map<number>(tags),
 					+packet.PlayerID || +packet.EntityID, // default to EntityID until Kettle is changed
 					'PlayerName'
 				);

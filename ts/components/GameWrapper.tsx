@@ -43,7 +43,7 @@ class GameWrapper extends React.Component<GameWrapperProps, {}> {
 		}
 
 		// find the players
-		var players = allEntities.filter(GameWrapper.filterByCardType(CardType.PLAYER)) as Immutable.Iterable<number, PlayerEntity>;
+		var players = allEntities.filter(GameWrapper.filterByCardType(CardType.PLAYER)) as Immutable.Map<number, PlayerEntity>;
 		if (players.count() == 0) {
 			return <p className="joust-message">Waiting for players&hellip; </p>;
 		}
