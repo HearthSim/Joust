@@ -146,8 +146,9 @@ class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 			this.push(latest);
 		}
 
-		if(lastTurn !== this.currentTurn) {
-			this.emit("turn", this.currentTurn);
+		let currentTurn = this.currentTurn;
+		if(lastTurn !== currentTurn) {
+			this.emit("turn", currentTurn);
 		}
 
 		this.emit("update");
@@ -227,13 +228,20 @@ class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 
 	get currentTurn(): number {
 		if(!this.lastState) {
-			return;
+			return null;
 		}
 		let game = this.lastState.game;
 		if(!game) {
-			return;
+			return null;
 		}
-		return game.getTag(GameTag.TURN);
+		if(!this.history.turnMap.has(1)) {
+			return 0;
+		}
+		let turnOne = this.history.turnMap.get(1);
+		if(this.lastState.getTime() < turnOne.getTime()) {
+			return 0;
+		}
+		return game.getTag(GameTag.TURN) || 0;
 	}
 
 	public nextTurn(): void {
