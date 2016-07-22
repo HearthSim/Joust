@@ -125,8 +125,7 @@ class Launcher {
 		}
 		var opts = URL.parse(url) as any;
 		opts.withCredentials = false;
-		var request = (opts.protocol == 'https:' ? https : http).get(opts);
-		request.on('response', (message: http.IncomingMessage) => {
+		(opts.protocol == 'https:' ? https : http).get(opts, (message: http.IncomingMessage) => {
 			if(message.statusCode != 200) {
 				if(message.statusCode) {
 					this.log(new Error('Could not load replay (status code ' + message.statusCode + ')'));
@@ -160,7 +159,7 @@ class Launcher {
 					});
 				});
 			}
-		});
+		}).on('error', this.log.bind(this));
 
 		this.opts.sink = sink;
 		this.opts.scrubber = scrubber;
