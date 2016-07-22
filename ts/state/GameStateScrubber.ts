@@ -22,20 +22,24 @@ class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 		this.history = history || new GameStateHistory();
 		this.lastState = null;
 		this.endTime = null;
+		this.hasStarted = false;
 	}
 
 	protected initialTime: number;
 	protected currentTime: number;
 	protected endTime: number;
+	protected hasStarted: boolean;
 
 	_write(gameState: any, encoding: string, callback: Function): void {
 		var time = gameState.getTime();
 
+		let ready = false;
+
 		if (time !== null) {
 			// setup initial time if unknown
 			if (this.initialTime === null) {
-				this.emit("ready");
 				this.initialTime = time;
+				ready = true;
 			}
 
 			// track game state
@@ -44,6 +48,11 @@ class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 			if(this.endTime === null || time > this.endTime) {
 				this.endTime = time;
 			}
+		}
+
+		if (ready) {
+			this.emit("ready");
+			this.update();
 		}
 
 		callback();
@@ -59,6 +68,7 @@ class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 	public play(): void {
 		this.lastUpdate = new Date().getTime();
 		this.interval = setInterval(this.update.bind(this), 100);
+		this.hasStarted = true;
 		this.emit("play");
 		this.update();
 	}
@@ -157,7 +167,7 @@ class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 	}
 
 	public canInteract(): boolean {
-		return this.initialTime !== null;
+		return this.hasStarted;
 	}
 
 	public canRewind(): boolean {
