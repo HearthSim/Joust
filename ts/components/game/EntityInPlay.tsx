@@ -1,8 +1,8 @@
 import * as React from "react";
 import {EntityInPlayProps, EntityInPlayState} from "../../interfaces";
-import * as _ from "lodash";
-import {BlockType} from "../../enums";
+import {BlockType, MetaDataType} from "../../enums";
 import GameStateDescriptor from "../../state/GameStateDescriptor";
+import MetaData from "../../MetaData";
 
 abstract class EntityInPlay<P extends EntityInPlayProps> extends React.Component<P, EntityInPlayState> {
 
@@ -49,7 +49,8 @@ abstract class EntityInPlay<P extends EntityInPlayProps> extends React.Component
 			}
 
 			if (this.props.descriptors) {
-				this.props.descriptors.forEach((descriptor: GameStateDescriptor) => {
+				let spellTarget = false;
+				this.props.descriptors.forEach((descriptor:GameStateDescriptor) => {
 					switch (descriptor.getType()) {
 						case BlockType.ATTACK:
 							if (this.props.entity.id == descriptor.getEntity()) {
@@ -61,7 +62,7 @@ abstract class EntityInPlay<P extends EntityInPlayProps> extends React.Component
 							break;
 						case BlockType.POWER:
 							if (descriptor.getTarget() == this.props.entity.id) {
-								classNames.push('spellTarget');
+								spellTarget = true;
 							}
 							break;
 						case BlockType.TRIGGER:
@@ -70,7 +71,17 @@ abstract class EntityInPlay<P extends EntityInPlayProps> extends React.Component
 							}
 							break;
 					}
-				})
+					descriptor.getMetaData().forEach((metadata:MetaData) => {
+						if (metadata.getType() === MetaDataType.TARGET) {
+							if (metadata.getEntities().contains(this.props.entity.id)) {
+								spellTarget = true;
+							}
+						}
+					});
+				});
+				if (spellTarget) {
+					classNames.push('spellTarget');
+				}
 			}
 		}
 		return classNames;
