@@ -18,7 +18,12 @@ class LoadingScreen extends React.Component<LoadingScreenProps, {}> {
 		"Spreading Madness...",
 		"Spreading C'Thun's word...",
 		"Increasing base armor by 1...",
-
+		"Prep-Coin-Conceding...",
+		"Funneling cakes...",
+		"Tossing coin...",
+		"Well met!",
+		"Disguising toast...",
+		"Calling the cavalry...",
 	];
 
 	public render() {
