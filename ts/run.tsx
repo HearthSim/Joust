@@ -26,6 +26,7 @@ class Launcher {
 	protected queryCardMetadata: QueryCardMetadata;
 	protected startFromTurn: number;
 	protected turnCb: (turn: number) => void;
+	protected pause: boolean;
 	protected ref: GameWidget;
 
 	constructor(target: any) {
@@ -82,7 +83,19 @@ class Launcher {
 		return this;
 	}
 
+	public startPaused(paused?: boolean): Launcher {
+		this.pause = typeof paused === "undefined" ? true : !!paused;
+		return this;
+	}
+
+	/**
+	 * @deprecated
+	 */
 	public turn(turn: number): Launcher {
+		return this.startAtTurn(turn);
+	}
+
+	public startAtTurn(turn: number): Launcher {
 		this.startFromTurn = turn;
 		return this;
 	}
@@ -151,7 +164,10 @@ class Launcher {
 					decoder.once("end", () => cb());
 				}
 			], () => {
-				scrubber.play()
+				scrubber.play();
+				if(this.pause || (typeof this.pause === "undefined" && this.startFromTurn)) {
+					scrubber.pause();
+				}
 			});
 
 			message
