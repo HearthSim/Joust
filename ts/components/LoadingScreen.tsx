@@ -10,20 +10,28 @@ class LoadingScreen extends React.Component<LoadingScreenProps, {}> {
 		"Sorting decks...",
 		"Painting cards...",
 		"Calculating lethal...",
-		"SMOrc",
 		"Ensuring face is the place...",
 		"Summoning heroes...",
 		"Nerfing cards...",
 		"Buffing cards...",
 		"Spreading Madness...",
 		"Spreading C'Thun's word...",
-		"Increasing base armor by 1...",
 		"Prep-Coin-Conceding...",
 		"Funneling cakes...",
 		"Tossing coin...",
-		"Well met!",
 		"Disguising toast...",
-		"Calling the cavalry...",
+		"Dropping a 4 mana 7/7...",
+		"Going full Northshire...",
+		"Unlocking Overload...",
+		"Spinning up...",
+		"Rolling Need...",
+		"Watching your back...",
+		"Finding room for another...",
+		"Getting everyone in here...",
+		"Pressing the button...",
+		"Requiring assistance...",
+		'"Well met!"',
+		'"Taz\'dingo!"',
 	];
 
 	public render() {
@@ -37,12 +45,11 @@ class LoadingScreen extends React.Component<LoadingScreenProps, {}> {
 				case 2:
 					players = this.props.players[0] + " vs. " + this.props.players[1];
 					break;
-
 			}
 		}
 
 		return <div className="joust-loading-screen">
-			<p><MessagePicker interval={3} messages={this.messages} /></p>
+			<p><MessagePicker interval={2} messages={this.messages} /></p>
 			<p className="participants">{players}</p>
 		</div>;
 	}
