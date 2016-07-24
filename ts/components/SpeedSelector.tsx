@@ -1,6 +1,4 @@
 import * as React from "react";
-import {StreamScrubber} from "../interfaces";
-import Timeline from "./Timeline";
 import * as _ from "lodash";
 
 interface SpeedSelectorProps extends React.Props<any> {

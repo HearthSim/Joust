@@ -18,7 +18,8 @@ class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 		this.interval = null;
 		this.initialTime = null;
 		this.currentTime = 0;
-		this.speed = 2;
+		this.speed = 1;
+		this.multiplier = 2;
 		this.history = history || new GameStateHistory();
 		this.lastState = null;
 		this.endTime = null;
@@ -115,6 +116,7 @@ class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 	}
 
 	protected speed: number;
+	protected multiplier: number;
 	protected lastState: GameState;
 
 	protected update(): void {
@@ -126,7 +128,7 @@ class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 
 		if (this.isPlaying() && this.speed != 0) {
 			let now = new Date().getTime();
-			let elapsed = (now - this.lastUpdate) * this.speed;
+			let elapsed = (now - this.lastUpdate) * this.speed * this.multiplier;
 			this.lastUpdate = now;
 
 			if (!this.isInhibited()) {
@@ -279,7 +281,7 @@ class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 		let currentTurn = this.currentTurn;
 		let turnStart = this.history.turnMap.get(currentTurn).getTime();
 		let timeElapsed = this.currentTime - turnStart;
-		if (timeElapsed > 1.5 * this.speed) {
+		if (timeElapsed > 1.5 * this.speed * this.multiplier) {
 			this.currentTime = turnStart;
 			this.update();
 		}
