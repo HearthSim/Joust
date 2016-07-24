@@ -49,13 +49,15 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 		this.registerListeners(nextProps);
 	}
 
+	private updateListener = () => this.updateState();
+
 	private registerListeners(props: ScrubberProps): void {
-		props.scrubber.on('update', this.updateState);
+		props.scrubber.on('update', this.updateListener);
 		document.addEventListener('keydown', this.onKeyDown);
 	}
 
 	private removeListeners(props: ScrubberProps): void {
-		props.scrubber.removeListener('update', this.updateState);
+		props.scrubber.removeListener('update', this.updateListener);
 		document.removeEventListener('keydown', this.onKeyDown);
 	}
 
@@ -128,7 +130,7 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 		}
 	}
 
-	protected updateState = (): void => {
+	protected updateState(): void {
 		var scrubber = this.props.scrubber;
 		this.setState({
 			playing: scrubber.isPlaying(),
@@ -145,10 +147,10 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 
 	public render(): JSX.Element {
 		var playpause = this.state.playing ?
-			<button onClick={this.pause.bind(this) } disabled={!this.state.canInteract} title="Pause">
+			<button onClick={() => this.pause()} disabled={!this.state.canInteract} title="Pause">
 				<i className="joust-fa joust-fa-pause"></i>
 			</button> :
-			<button onClick={this.play.bind(this) } disabled={!this.state.canPlay} title="Play">
+			<button onClick={() => this.play()} disabled={!this.state.canPlay} title="Play">
 				<i className="joust-fa joust-fa-play"></i>
 			</button>;
 
@@ -170,7 +172,7 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 				<i className="joust-fa joust-fa-eye"></i>
 			</button>;
 
-		var rewind = <button onClick={this.rewind.bind(this) } disabled={!this.state.canRewind} title="Rewind">
+		var rewind = <button onClick={() => this.rewind()} disabled={!this.state.canRewind} title="Rewind">
 			<i className="joust-fa joust-fa-fast-backward"></i>
 		</button>;
 
@@ -187,7 +189,7 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 				{playpause}
 				<SpeedSelector speed={this.state.speed}
 							   speeds={Scrubber.SPEEDS}
-							   selectSpeed={this.selectSpeed}
+							   selectSpeed={(speed: number) => this.selectSpeed(speed)}
 							   disabled={!this.state.canInteract}
 				/>
 				<Timeline duration={this.props.scrubber.getDuration() }
@@ -206,15 +208,15 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 		);
 	}
 
-	protected play = (): void => {
+	protected play (): void {
 		this.props.scrubber.play();
 	}
 
-	protected pause = (): void => {
+	protected pause(): void {
 		this.props.scrubber.pause();
 	}
 
-	protected rewind = (): void => {
+	protected rewind(): void {
 		let play = false;
 		if (this.props.scrubber.hasEnded()) {
 			play = true;
@@ -225,7 +227,7 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 		}
 	}
 
-	protected selectSpeed = (speed: number): void => {
+	protected selectSpeed(speed: number): void {
 		var speed = Math.max(speed, 0);
 		this.props.scrubber.setSpeed(speed);
 	}
