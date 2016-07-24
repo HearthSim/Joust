@@ -4,10 +4,10 @@ module.exports = {
 		path: __dirname + '/dist',
 		filename: 'joust.js',
 		library: 'Joust',
-		libraryTarget: 'var'
+		libraryTarget: 'var',
 	},
 	resolve: {
-		extensions: ['', '.webpack.js', '.web.js', '.ts', '.tsx', '.js']
+		extensions: ['', '.webpack.js', '.web.js', '.ts', '.tsx', '.js'],
 	},
 	module: {
 		loaders: [
@@ -15,20 +15,20 @@ module.exports = {
 				test: /\.tsx?$/,
 				loaders: [
 					'babel-loader?presets[]=react&presets[]=es2015',
-					'ts-loader'
-				]
-			}
-		]
+					'ts-loader',
+				],
+			},
+		],
 	},
 	node: {
 		// these modules are (possibly) provided by electron
 		fs: 'empty',
-		net: 'empty'
+		net: 'empty',
 	},
 	target: 'electron',
 	plugins: [],
 	externals: {
 		"react": "React",
-		"react-dom": "ReactDOM"
-	}
-}
+		"react-dom": "ReactDOM",
+	},
+};
