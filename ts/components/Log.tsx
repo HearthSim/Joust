@@ -403,7 +403,7 @@ class Log extends React.Component<LogProps, LogState> {
 
 	private getCardData(state: GameState, id: number) {
 		let entity = state.getEntity(id);
-		return this.props.cards.get(entity && entity.cardId || this.props.cardOracle.get(id));
+		return this.props.cards.get(entity ? entity.cardId : this.props.cardOracle.get(id));
 	}
 
 	private setLidEntity(lid: LogItemData, state: GameState, id: number) {
