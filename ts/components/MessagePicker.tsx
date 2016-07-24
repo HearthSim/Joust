@@ -52,12 +52,17 @@ class MessagePicker extends React.Component<MessagePickerProps, MessagePickerSta
 	}
 
 	private generateSequence(): number[] {
-		var sequence = [];
-		for (let i = 0; i < this.props.messages.length; i++) {
+		let sequence = [];
+		let length = this.props.messages.length;
+		for (let i = 0; i < length; i++) {
 			sequence[i] = i;
 		}
 		if (this.props.random !== false) {
-			sequence = sequence.sort(() => {return 0.5 - Math.random()});
+			// Knuth shuffle
+			for (let i = 0; i < length - 1; i++) {
+				let j = Math.floor(i + Math.floor(Math.random() * (length - i)));
+				[sequence[i], sequence[j]] = [sequence[j], sequence[i]];
+			}
 		}
 		return sequence;
 	}
