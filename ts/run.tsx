@@ -123,6 +123,13 @@ class Launcher {
 		this.opts.logger(message);
 	}
 
+	protected track(event: string, values: Object, tags?: Object): void {
+		if(!this.opts.events) {
+			return;
+		}
+		this.opts.events(event, values, tags);
+	}
+
 	public fromUrl(url: string): void {
 		var decoder = new HSReplayDecoder();
 		decoder.debug = this.opts.debug;
@@ -144,10 +151,10 @@ class Launcher {
 		var opts = URL.parse(url) as any;
 		opts.withCredentials = false;
 		(opts.protocol == 'https:' ? https : http).get(opts, (message: http.IncomingMessage) => {
-			if(message.statusCode != 200) {
-				if(message.statusCode) {
-					this.log(new Error('Could not load replay (status code ' + message.statusCode + ')'));
-				}
+			let success = (message.statusCode == 200);
+			this.track("replay_load_error", {error: success ? "f" : "t"}, {statusCode: message.statusCode});
+			if(!success) {
+				this.log(new Error('Could not load replay (status code ' + message.statusCode + ')'));
 				return;
 			}
 
@@ -185,19 +192,22 @@ class Launcher {
 				let queryTime = Date.now();
 				this.queryCardMetadata(build || null, (cards: CardData[]) => {
 					this.ref.setCards(cards);
-					this.opts.events && this.opts.events('cards_received', {duration: (Date.now() - queryTime) / 1000}, {
+					this.track('cards_received', {duration: (Date.now() - queryTime) / 1000}, {
 						cards: cards.length,
 						build: build
 					});
 				});
 			}
-		}).on('error', this.log.bind(this));
+		}).on('error',this.log.bind(this))
+			.once('error', () => this.track("decoder_any_error", {count: 1}));
 
 		this.opts.sink = sink;
 		this.opts.scrubber = scrubber;
 		this.opts.cardOracle = decoder;
 
 		this.render();
+
+		this.track("starting_from_turn", {fromTurn: this.startFromTurn ? "t" : "f", turn: this.startFromTurn | null});
 	}
 
 	protected render(): void {
