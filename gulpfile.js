@@ -17,7 +17,7 @@ var webpackStream = require('webpack-stream');
 const filter = require('gulp-filter');
 var livereload = require('gulp-livereload');
 
-var git = require('git-rev');
+var gitDescribe = require('git-describe').gitDescribe;
 
 gulp.task('default', ['watch']);
 
@@ -76,7 +76,10 @@ gulp.task('compile:styles', function () {
 });
 
 gulp.task('env:set-release', function (cb) {
-	git.tag(function(release) {
+	gitDescribe({
+		match: null,
+	}, function(err, gitInfo) {
+		var release = gitInfo.semverString;
 		gutil.log('Setting JOUST_RELEASE to', gutil.colors.green(release));
 		process.env.JOUST_RELEASE = release;
 		cb();

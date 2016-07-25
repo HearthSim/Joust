@@ -17,7 +17,7 @@
     "cssnano": "^3.7.2",
     "filereader-stream": "^1.0.0",
     "fullscreen": "^1.1.0",
-    "git-rev": "^0.2.1",
+    "git-describe": "^3.0.2",
     "gulp": "^3.9.1",
     "gulp-filter": "^4.0.0",
     "gulp-less": "^3.1.0",
