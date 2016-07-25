@@ -127,8 +127,8 @@ class Launcher {
 	}
 
 	public events(cb: JoustEventHandler): Launcher {
-		cb('init', {count: 1});
 		this.opts.events = cb;
+		this.track("init", {count: 1});
 		return this;
 	}
 
@@ -148,6 +148,10 @@ class Launcher {
 		if(!this.opts.events) {
 			return;
 		}
+		if(!tags) {
+			tags = {};
+		}
+		tags["joust_release"] = JOUST_RELEASE;
 		this.opts.events(event, values, tags);
 	}
 
