@@ -37,10 +37,10 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 		super(props);
 		this.state = {
 			gameState: null,
-			swapPlayers: false,
+			swapPlayers: !!this.props.startSwapped,
 			isFullscreen: false,
 			isFullscreenAvailable: Fullscreen.available(),
-			isRevealingCards: true,
+			isRevealingCards: typeof this.props.startRevealed === "undefined" ? true : this.props.startRevealed,
 			cardOracle: null,
 			isLogVisible: false,
 			isLogMounted: false
@@ -194,7 +194,13 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 
 		if (this.props.scrubber) {
 			parts.push(<Scrubber key="scrubber" scrubber={this.props.scrubber}
-				swapPlayers={() => this.setState({ swapPlayers: !this.state.swapPlayers }) }
+				swapPlayers={() => {
+					let newSwap = !this.state.swapPlayers;
+					this.setState({ swapPlayers: newSwap });
+					if(this.props.onToggleSwap) {
+						this.props.onToggleSwap(newSwap);
+					}
+				}}
 				isSwapped={isSwapped}
 				isFullscreen={this.state.isFullscreen}
 				isFullscreenAvailable={this.state.isFullscreenAvailable}
@@ -202,8 +208,18 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 				onClickMinimize={() => this.fullscreen.release() }
 				isRevealingCards={this.state.isRevealingCards}
 				canRevealCards={!!this.state.cardOracle}
-				onClickHideCards={() => this.setState({ isRevealingCards: false }) }
-				onClickRevealCards={() => this.setState({ isRevealingCards: true }) }
+				onClickHideCards={() => {
+					this.setState({ isRevealingCards: false });
+					if(this.props.onToggleReveal) {
+						this.props.onToggleReveal(false);
+					}
+				}}
+				onClickRevealCards={() => {
+					this.setState({ isRevealingCards: true });
+					if(this.props.onToggleReveal) {
+						this.props.onToggleReveal(true);
+					}
+				}}
 				isLogVisible={this.state.isLogVisible}
 				toggleLog={() => this.setState({ isLogVisible: !this.state.isLogVisible, isLogMounted: true })}
 				/>);

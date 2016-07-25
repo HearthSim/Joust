@@ -83,6 +83,16 @@ class Launcher {
 		return this;
 	}
 
+	public onToggleReveal(callback: (reveal: boolean) => void) {
+		this.opts.onToggleReveal = callback;
+		return this;
+	}
+
+	public onToggleSwap(callback: (swap: boolean) => void) {
+		this.opts.onToggleSwap = callback;
+		return this;
+	}
+
 	public startPaused(paused?: boolean): Launcher {
 		this.pause = typeof paused === "undefined" ? true : !!paused;
 		return this;
@@ -97,6 +107,16 @@ class Launcher {
 
 	public startAtTurn(turn: number): Launcher {
 		this.startFromTurn = turn;
+		return this;
+	}
+
+	public startRevealed(reveal: boolean): Launcher {
+		this.opts.startRevealed = reveal;
+		return this;
+	}
+
+	public startSwapped(swap: boolean): Launcher {
+		this.opts.startSwapped = swap;
 		return this;
 	}
 
