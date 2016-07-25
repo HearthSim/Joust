@@ -39,6 +39,7 @@ class Launcher {
 			}
 		} as any;
 		this.opts.assetDirectory = 'assets/';
+		this.opts.cardArtDirectory = "https://static.hsreplay.net/static/joust/card-art/";
 	}
 
 	public width(width: number): Launcher {
