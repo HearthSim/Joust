@@ -251,7 +251,14 @@ module.exports = {
 		new Launcher(target).setOptions(opts).fromUrl(url);
 	},
 
+	/**
+	 * @deprecated
+	 */
 	viewer: (target: string | HTMLElement) => {
+		return new Launcher(target);
+	},
+
+	launcher: (target: string | HTMLElement) => {
 		return new Launcher(target);
 	},
 
