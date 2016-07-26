@@ -11,7 +11,6 @@ import Player from "../Player";
 import {GameTag, BlockType} from "../enums";
 import ShowEntityMutator from "../state/mutators/ShowEntityMutator";
 import {CardOracle} from "../interfaces";
-import IncrementTimeMutator from "../state/mutators/IncrementTimeMutator";
 import Choice from "../Choice";
 import SetChoicesMutator from "../state/mutators/SetChoicesMutator";
 import ClearChoicesMutator from "../state/mutators/ClearChoicesMutator";
@@ -137,16 +136,15 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 				break;
 			case 'Action':
 			case 'Block':
-				let type = +node.attributes["type"];
 				// attach meta information to current game state
 				let descriptor = new GameStateDescriptor(
 					+node.attributes["entity"],
 					+node.attributes["target"],
-					type
+					+node.attributes["type"]
 				);
-				this.push(new IncrementTimeMutator());
+				node["descriptor"] = descriptor;
 				this.push(new PushDescriptorMutator(descriptor));
- 				break;
+				break;
 			case 'MetaData':
 				node.attributes["entities"] = Immutable.Set<number>() as any;
 				break;
@@ -176,8 +174,6 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 					// force termination
 					this.gameId = 1;
 				}
-				// force checkpoint
-				//this.push(new IncrementTimeMutator(0));
 				break;
 			case 'GameEntity':
 			case 'FullEntity':
@@ -283,7 +279,6 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 				mutator = new SetOptionsMutator(node.attributes["options"]);
 				break;
 			case 'SendOption':
-				this.push(new IncrementTimeMutator(2));
 				mutator = new ClearOptionsMutator();
 				break;
 			case 'Choice':
@@ -308,11 +303,11 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 					);
 					// save player entity in choice map
 					this.choiceMap = this.choiceMap.set(+node.attributes["id"], entity);
+
 				}
 				break;
 			case 'ChosenEntities':
 			case 'SendChoices':
-				this.push(new IncrementTimeMutator(2));
 				let entity: number = null;
 				if (node.attributes["entity"]) {
 					entity = node.attributes["entity"] && this.resolveEntityId(node.attributes["entity"]);
@@ -329,11 +324,7 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 				break;
 			case 'Action':
 			case 'Block':
-				let pauses = [BlockType.PLAY, BlockType.TRIGGER, BlockType.POWER, BlockType.ATTACK, BlockType.RITUAL];
-				if (pauses.indexOf(+node.attributes["type"]) !== -1) {
-					this.push(new IncrementTimeMutator());
-				}
-				this.push(new PopDescriptorMutator());
+				mutator = new PopDescriptorMutator();
 				break;
 			case 'Info':
 				{
@@ -348,7 +339,7 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 					+node.attributes["data"] || +node.attributes["entity"], // entity is pre-1.3
 					node.attributes["entities"]
 				);
-				this.push(new EnrichDescriptorMutator(meta));
+				mutator = new EnrichDescriptorMutator(meta);
 				break;
 			case 'HSReplay':
 			case 'Deck':

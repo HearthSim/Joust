@@ -19,7 +19,7 @@ class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 		this.initialTime = null;
 		this.currentTime = 0;
 		this.speed = 1;
-		this.multiplier = 2;
+		this.multiplier = 1;
 		this.history = history || new GameStateHistory();
 		this.lastState = null;
 		this.endTime = null;
