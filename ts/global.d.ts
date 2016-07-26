@@ -9,6 +9,10 @@
 
 declare var JOUST_RELEASE: string;
 
+declare interface Screen extends EventTarget {
+	orientation;
+}
+
 declare module "filereader-stream" {
 	function internal(file?: string, options?: any): any;
 

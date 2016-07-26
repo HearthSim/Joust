@@ -1,14 +1,10 @@
 import * as React from "react";
-import {GameWidgetProps, JoustClient, CardDataProps, AssetDirectoryProps, CardOracle} from "../interfaces";
+import {GameWidgetProps, CardData} from "../interfaces";
 import Scrubber from "./Scrubber";
 import Log from "./Log";
 import GameState from "../state/GameState";
 import GameWrapper from "./GameWrapper";
-import {InteractiveBackend} from "../interfaces";
-import GameStateScrubber from "../state/GameStateScrubber";
-import GameStateSink from "../state/GameStateSink";
 import Fullscreen from "fullscreen";
-import {CardData} from "../interfaces";
 import * as Immutable from "immutable";
 import {Zone} from "../enums";
 import Entity from "../Entity";
@@ -89,11 +85,17 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 
 	protected onAttainFullscreen() {
 		this.setState({ isFullscreen: true });
+		if ('orientation' in screen) {
+			screen.orientation.lock("landscape");
+		}
 		this.triggerResize();
 	}
 
 	protected onReleaseFullscreen() {
 		this.setState({ isFullscreen: false });
+		if ('orientation' in screen) {
+			screen.orientation.unlock();
+		}
 		this.triggerResize();
 	}
 
