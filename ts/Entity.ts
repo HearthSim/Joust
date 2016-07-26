@@ -16,7 +16,7 @@ class Entity {
 		return this._cardId;
 	}
 
-	public isRevealed():boolean {
+	get revealed():boolean {
 		return !!this.cardId;
 	}
 

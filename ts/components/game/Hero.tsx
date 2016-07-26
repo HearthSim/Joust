@@ -30,7 +30,7 @@ class Hero extends EntityInPlay<HeroProps> {
 		var secretText = secretCount > 1 ? secretCount.toString() : "?";
 		var secretTitle = this.props.secrets.reduce((title, entity: Entity): string => {
 			let name = entity.cardId;
-			if(!entity.isRevealed()) {
+			if(!entity.revealed) {
 				if(this.props.cardOracle && this.props.cardOracle.has(entity.id)) {
 					name = this.props.cardOracle.get(entity.id);
 				}

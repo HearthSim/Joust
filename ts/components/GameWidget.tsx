@@ -147,7 +147,7 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 		if (cards && cards.count() > 0) {
 			this.hasCheckedForSwap = true;
 			cards.forEach((card: Entity) => {
-				if (!card.isRevealed()) {
+				if (!card.revealed) {
 					this.swapPlayers = false;
 					return false;
 				}

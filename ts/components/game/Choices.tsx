@@ -45,7 +45,7 @@ class Choices extends EntityList<ChoicesProps> {
 
 		// hard limit mulligan cards to 4, see issue #85
 		this.count++;
-		if(this.props.isMulligan && (entity.cardId === 'GAME_005' || (!entity.isRevealed() && this.count > 4))) {
+		if(this.props.isMulligan && (entity.cardId === 'GAME_005' || (!entity.revealed && this.count > 4))) {
 			return null;
 		}
 
