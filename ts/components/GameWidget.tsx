@@ -241,7 +241,7 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 		}
 
 		return (
-			<div className={classes.join(' ')} ref={(ref) => this.ref = ref} style={style}>
+			<div className={classes.join(' ')} ref={(ref) => this.ref = ref} style={style} onContextMenu={(e) => e.preventDefault()}>
 				{parts}
 			</div>
 		);

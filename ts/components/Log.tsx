@@ -117,7 +117,7 @@ class Log extends React.Component<LogProps, LogState> {
 					 cardOracle={this.props.cardOracle}
 					 cards={this.props.cards} />);
 
-		return <div className="joust-log">{lines}</div>;
+		return <div className="joust-log" onContextMenu={(e) => e.stopPropagation()}>{lines}</div>;
 	}
 
 	private analyzeGameStateDiff(prev:GameState, curr:GameState):LogItemData[] {
