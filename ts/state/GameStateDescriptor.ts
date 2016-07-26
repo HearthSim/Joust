@@ -4,26 +4,26 @@ import MetaData from "../MetaData";
 
 class GameStateDescriptor {
 
-	constructor(private entity: number, private target: number, private action: BlockType, private metaData?: Immutable.Set<MetaData>) {
-		if(!this.metaData) {
-			this.metaData = Immutable.Set<MetaData>();
+	constructor(private _entityId: number, private _target: number, private _action: BlockType, private _metaData?: Immutable.Set<MetaData>) {
+		if(!this._metaData) {
+			this._metaData = Immutable.Set<MetaData>();
 		}
 	}
 
-	public getEntity(): number {
-		return this.entity;
+	get entityId(): number {
+		return this._entityId;
 	}
 
-	public getTarget(): number {
-		return this.target;
+	get target(): number {
+		return this._target;
 	}
 
-	public getType(): BlockType {
-		return this.action;
+	get type(): BlockType {
+		return this._action;
 	}
 
-	public getMetaData(): Immutable.Set<MetaData> {
-		return this.metaData;
+	get metaData(): Immutable.Set<MetaData> {
+		return this._metaData;
 	}
 }
 

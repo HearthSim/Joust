@@ -9,9 +9,9 @@ class SetChoicesMutator implements GameStateMutator {
 	}
 
 	public applyTo(state: GameState): GameState {
-		let choices = state.getChoices();
+		let choices = state.choices;
 		choices = choices.set(+this.player, this.choices);
-		return new GameState(state.getEntities(), state.getEntityTree(), state.getOptions(), state.getOptionTree(), state.getTime(), choices, state.getDescriptors(), state.getDiffs());
+		return new GameState(state.entities, state.entityTree, state.options, state.optionTree, state.time, choices, state.descriptors, state.diffs);
 	}
 }
 

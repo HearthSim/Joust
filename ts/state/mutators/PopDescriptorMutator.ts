@@ -3,13 +3,13 @@ import GameStateMutator from "../GameStateMutator";
 
 class PopDescriptorMutator implements GameStateMutator {
 	public applyTo(state: GameState): GameState {
-		let descriptors = state.getDescriptors().pop();
+		let descriptors = state.descriptors.pop();
 
-		if(descriptors === state.getDescriptors()) {
+		if(descriptors === state.descriptors) {
 			return state;
 		}
 
-		return new GameState(state.getEntities(), state.getEntityTree(), state.getOptions(), state.getOptionTree(), state.getTime(), state.getChoices(), descriptors, state.getDiffs());
+		return new GameState(state.entities, state.entityTree, state.options, state.optionTree, state.time, state.choices, descriptors, state.diffs);
 	}
 }
 

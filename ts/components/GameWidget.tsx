@@ -143,7 +143,7 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 			return;
 		}
 		let player = players[0];
-		let cards = this.state.gameState.getEntityTree().get(player.playerId).get(Zone.HAND);
+		let cards = this.state.gameState.entityTree.get(player.playerId).get(Zone.HAND);
 		if (cards && cards.count() > 0) {
 			this.hasCheckedForSwap = true;
 			cards.forEach((card: Entity) => {

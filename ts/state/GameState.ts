@@ -10,37 +10,37 @@ import {GameStateDiff} from "../interfaces";
 
 class GameState {
 
-	constructor(protected entities?: Immutable.Map<number, Entity>,
-		protected entityTree?: Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Entity>>>,
-		protected options?: Immutable.Map<number, Option>,
-		protected optionTree?: Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Option>>>,
-		protected time?: number,
-		protected choices?: Immutable.Map<number, Choices>,
-		protected descriptors?: Immutable.Stack<GameStateDescriptor>,
-		protected diffs?: Immutable.Set<GameStateDiff>) {
-		if (!this.entities) {
-			this.entities = Immutable.Map<number, Entity>();
+	constructor(protected _entities?: Immutable.Map<number, Entity>,
+		protected _entityTree?: Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Entity>>>,
+		protected _options?: Immutable.Map<number, Option>,
+		protected _optionTree?: Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Option>>>,
+		protected _time?: number,
+		protected _choices?: Immutable.Map<number, Choices>,
+		protected _descriptors?: Immutable.Stack<GameStateDescriptor>,
+		protected _diffs?: Immutable.Set<GameStateDiff>) {
+		if (!this._entities) {
+			this._entities = Immutable.Map<number, Entity>();
 		}
-		if (!this.entityTree) {
-			this.entityTree = Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Entity>>>();
+		if (!this._entityTree) {
+			this._entityTree = Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Entity>>>();
 		}
-		if (!this.options) {
-			this.options = Immutable.Map<number, Option>();
+		if (!this._options) {
+			this._options = Immutable.Map<number, Option>();
 		}
-		if (!this.optionTree) {
-			this.optionTree = Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Option>>>();
+		if (!this._optionTree) {
+			this._optionTree = Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Option>>>();
 		}
-		if (typeof (this.time) === 'undefined') {
-			this.time = null;
+		if (typeof (this._time) === 'undefined') {
+			this._time = null;
 		}
-		if (!this.choices) {
-			this.choices = Immutable.Map<number, Choices>();
+		if (!this._choices) {
+			this._choices = Immutable.Map<number, Choices>();
 		}
-		if (typeof (this.descriptors) === 'undefined') {
-			this.descriptors = Immutable.Stack<GameStateDescriptor>();
+		if (typeof (this._descriptors) === 'undefined') {
+			this._descriptors = Immutable.Stack<GameStateDescriptor>();
 		}
-		if (!this.diffs) {
-			this.diffs = Immutable.Set<GameStateDiff>();
+		if (!this._diffs) {
+			this._diffs = Immutable.Set<GameStateDiff>();
 		}
 	}
 
@@ -48,12 +48,12 @@ class GameState {
 		return this.entities.get(id);
 	}
 
-	public getEntities(): Immutable.Map<number, Entity> {
-		return this.entities;
+	get entities(): Immutable.Map<number, Entity> {
+		return this._entities;
 	}
 
-	public getEntityTree(): Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Entity>>> {
-		return this.entityTree;
+	get entityTree(): Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Entity>>> {
+		return this._entityTree;
 	}
 
 	get game():Entity {
@@ -67,35 +67,35 @@ class GameState {
 	}
 
 	public getPlayerCount(): number {
-		return this.entityTree.count();
+		return this._entityTree.count();
 	}
 
-	public getOptions(): Immutable.Map<number, Option> {
-		return this.options;
+	get options(): Immutable.Map<number, Option> {
+		return this._options;
 	}
 
-	public getOptionTree(): Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Option>>> {
-		return this.optionTree;
+	get optionTree(): Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Option>>> {
+		return this._optionTree;
 	}
 
-	public getTime(): number {
-		return this.time;
+	get time(): number {
+		return this._time;
 	}
 
-	public getChoices(): Immutable.Map<number, Choices> {
-		return this.choices;
+	get choices(): Immutable.Map<number, Choices> {
+		return this._choices;
 	}
 
-	public getDescriptor(): GameStateDescriptor {
+	get descriptor(): GameStateDescriptor {
 		return this.descriptors.peek();
 	}
 
-	public getDescriptors(): Immutable.Stack<GameStateDescriptor> {
-		return this.descriptors;
+	get descriptors(): Immutable.Stack<GameStateDescriptor> {
+		return this._descriptors;
 	}
 
-	public getDiffs(): Immutable.Set<GameStateDiff> {
-		return this.diffs;
+	get diffs(): Immutable.Set<GameStateDiff> {
+		return this._diffs;
 	}
 
 	public apply(mutator: GameStateMutator): GameState {

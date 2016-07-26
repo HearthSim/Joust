@@ -2,22 +2,22 @@ import * as Immutable from "immutable";
 import {MetaDataType} from "./enums";
 
 class MetaData {
-	constructor(private type: MetaDataType, private data: number, private entities?: Immutable.Set<number>) {
-		if(!this.entities) {
-			this.entities = Immutable.Set<number>();
+	constructor(private _type: MetaDataType, private _data: number, private _entities?: Immutable.Set<number>) {
+		if(!this._entities) {
+			this._entities = Immutable.Set<number>();
 		}
 	}
 
-	public getType(): MetaDataType {
-		return this.type;
+	get type(): MetaDataType {
+		return this._type;
 	}
 
-	public getData(): number {
-		return this.data;
+	get data(): number {
+		return this._data;
 	}
 
-	public getEntities(): Immutable.Set<number> {
-		return this.entities;
+	get entities(): Immutable.Set<number> {
+		return this._entities;
 	}
 }
 

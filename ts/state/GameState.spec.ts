@@ -4,7 +4,7 @@ describe("GameState", () => {
 
 	it("should start at time null", () => {
 		let state = new GameState();
-		expect(state.getTime()).toBeNull();
+		expect(state.time).toBeNull();
 	});
 
 

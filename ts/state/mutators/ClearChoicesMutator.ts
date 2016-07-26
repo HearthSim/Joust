@@ -13,14 +13,14 @@ class ClearChoicesMutator implements GameStateMutator {
 			return state;
 		}
 
-		let oldChoices = state.getChoices();
-		let newChoices = state.getChoices().delete(+this.player);
+		let oldChoices = state.choices;
+		let newChoices = state.choices.delete(+this.player);
 
 		if(newChoices === oldChoices) {
 			return state;
 		}
 
-		return new GameState(state.getEntities(), state.getEntityTree(), state.getOptions(), state.getOptionTree().clear(), state.getTime(), newChoices, state.getDescriptors(), state.getDiffs());
+		return new GameState(state.entities, state.entityTree, state.options, state.optionTree.clear(), state.time, newChoices, state.descriptors, state.diffs);
 	}
 }
 

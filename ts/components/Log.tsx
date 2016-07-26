@@ -46,7 +46,7 @@ class Log extends React.Component<LogProps, LogState> {
 		let lines = [];
 		let next, current = tail;
 		if (current) {
-			lines.push({type: LineType.Turn, data: -1, time: current.state.getTime()});
+			lines.push({type: LineType.Turn, data: -1, time: current.state.time});
 			while (next = current.next) {
 				this.analyzeGameStateDiff(current.state, next.state).forEach(d => lines.push(d));
 				current = next;
@@ -127,7 +127,7 @@ class Log extends React.Component<LogProps, LogState> {
 			data.push(turn);
 		}
 		this.analyzeDescriptors(prev, curr).forEach(x => data.push(x));
-		if (!curr.getDiffs().isEmpty()) {
+		if (!curr.diffs.isEmpty()) {
 			this.analyzeDiffs(curr).forEach(x => data.push(x));
 		}
 		return data;
@@ -160,28 +160,28 @@ class Log extends React.Component<LogProps, LogState> {
 			lid = this.newLogItemData(curr, lid.entityId);
 		};
 
-		curr.getDescriptors().filterNot(d => prev.getDescriptors().contains(d)).forEach(d => {
-			let entity = curr.getEntity(d.getEntity());
-			lid.entityId = d.getEntity();
-			lid.targetId = d.getTarget();
-			let type = d.getType();
+		curr.descriptors.filterNot(d => prev.descriptors.contains(d)).forEach(d => {
+			let entity = curr.getEntity(d.entityId);
+			lid.entityId = d.entityId;
+			lid.targetId = d.target;
+			let type = d.type;
 			if (type == BlockType.ATTACK) {
-				let metaDamage = d.getMetaData().find(x => x.getType() == MetaDataType.DAMAGE);
-				lid.data = metaDamage && metaDamage.getData();
+				let metaDamage = d.metaData.find(x => x.type == MetaDataType.DAMAGE);
+				lid.data = metaDamage && metaDamage.data;
 				push(LineType.Attack);
 			}
 			else if ((type == BlockType.POWER || type == BlockType.TRIGGER) && lid.entityId) {
-				if (d.getType() == BlockType.TRIGGER && entity.getTag(GameTag.SECRET)) {
+				if (d.type == BlockType.TRIGGER && entity.getTag(GameTag.SECRET)) {
 					push(LineType.Trigger);
 				}
 				let damages = new Map();
 				let heals = new Map();
-				d.getMetaData().forEach(x => {
-					let metaType = x.getType();
+				d.metaData.forEach(x => {
+					let metaType = x.type;
 					if (metaType == MetaDataType.DAMAGE || metaType == MetaDataType.HEALING) {
-						x.getEntities().forEach(e => {
+						x.entities.forEach(e => {
 							let map = metaType == MetaDataType.DAMAGE ? damages : heals;
-							map.set(e, x.getData() + (map.get(e) || 0));
+							map.set(e, x.data + (map.get(e) || 0));
 						});
 					}
 				});
@@ -217,12 +217,12 @@ class Log extends React.Component<LogProps, LogState> {
 			}
 		};
 
-		state.getDiffs().forEach((diff:GameStateDiff) => {
+		state.diffs.forEach((diff:GameStateDiff) => {
 			let entity = state.getEntity(diff.entity);
-			let descriptor = state.getDescriptor();
+			let descriptor = state.descriptor;
 
 			this.setLidEntity(lid, state, diff.entity);
-			this.setLidTarget(lid, state, descriptor && descriptor.getEntity());
+			this.setLidTarget(lid, state, descriptor && descriptor.entityId);
 			this.setLidPlayer(lid, state, p => p.playerId == entity.getController());
 
 			if (diff.tag == GameTag.ZONE) {
@@ -249,7 +249,7 @@ class Log extends React.Component<LogProps, LogState> {
 		});
 		if (cthunBuff == 3) {
 			let controller = state.getPlayers().find(x => !!x.getTag(GameTag.CURRENT_PLAYER));
-			let cthunProxy = state.getEntities().find(x => x.cardId == 'OG_279' && x.getController() == controller.playerId);
+			let cthunProxy = state.entities.find(x => x.cardId == 'OG_279' && x.getController() == controller.playerId);
 			if (cthunProxy) {
 				lid.entityId = cthunProxy.id;
 				lid.data = cthunProxy.getAtk();
@@ -424,8 +424,8 @@ class Log extends React.Component<LogProps, LogState> {
 	}
 
 	private newLogItemData(state: GameState, entityId?: number): LogItemData {
-		return {type: 0, data: 0, time: state.getTime(), entityId: entityId,
-			indent: state.getDescriptors().count() > 1 || state.game.getTag(GameTag.NEXT_STEP) == Step.MAIN_CLEANUP} as LogItemData;
+		return {type: 0, data: 0, time: state.time, entityId: entityId,
+			indent: state.descriptors.count() > 1 || state.game.getTag(GameTag.NEXT_STEP) == Step.MAIN_CLEANUP} as LogItemData;
 	}
 }
 

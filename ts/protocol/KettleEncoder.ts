@@ -56,13 +56,13 @@ class KettleEncoder extends Stream.Readable implements InteractiveBackend {
 		}
 		var sendOption = null;
 		target = target || null;
-		switch (option.getType()) {
+		switch (option.type) {
 			case 2: // end turn
-				sendOption = { Index: option.getIndex() };
+				sendOption = { Index: option.index };
 				break;
 			case 3: // power
 				sendOption = {
-					Index: option.getIndex(),
+					Index: option.index,
 					Target: target
 				};
 				if (typeof position === "number") {

@@ -97,7 +97,7 @@ class Player extends React.Component<PlayerProps, {}> {
 			controller={this.props.player}
 			fatigue={this.props.player.getTag(GameTag.FATIGUE) + 1}
 			/>;
-		var hand = <Hand entities={((!this.props.choices || this.props.choices.getType() !== ChoiceType.MULLIGAN) && this.props.entities.get(Zone.HAND)) || emptyEntities}
+		var hand = <Hand entities={((!this.props.choices || this.props.choices.type !== ChoiceType.MULLIGAN) && this.props.entities.get(Zone.HAND)) || emptyEntities}
 			options={this.props.options.get(Zone.HAND) || emptyOptions}
 			optionCallback={this.props.optionCallback}
 			cards={this.props.cards}
@@ -111,10 +111,10 @@ class Player extends React.Component<PlayerProps, {}> {
 
 		var choices = null;
 		if(this.props.choices) {
-			let choiceEntities = this.props.choices.getChoices().map((choice:Choice) => {
+			let choiceEntities = this.props.choices.choices.map((choice:Choice) => {
 				var entity = null;
 				// search for the entity in all player zones
-				let id = choice.getEntity();
+				let id = choice.entityId;
 				this.props.entities.forEach((zoneEntities:Immutable.Map<number, Entity>) => {
 					if (zoneEntities.has(id)) {
 						entity = zoneEntities.get(id);
@@ -133,8 +133,8 @@ class Player extends React.Component<PlayerProps, {}> {
 							   assetDirectory={this.props.assetDirectory}
 							   cardArtDirectory={this.props.cardArtDirectory}
 							   controller={this.props.player}
-							   isMulligan={this.props.choices.getType() === ChoiceType.MULLIGAN}
-							   choices={this.props.choices && this.props.choices.getChoices()}
+							   isMulligan={this.props.choices.type === ChoiceType.MULLIGAN}
+							   choices={this.props.choices && this.props.choices.choices}
 							   hideCards={this.props.hideCards}
 			/>;
 		}
@@ -218,13 +218,13 @@ class Player extends React.Component<PlayerProps, {}> {
 		var action = null;
 		if(this.props.descriptors.count() > 0 && !this.props.choices) {
 			this.props.descriptors.forEach((descriptor: GameStateDescriptor) => {
-				let type = descriptor.getType();
+				let type = descriptor.type;
 				if (type == BlockType.PLAY || type == BlockType.TRIGGER) {
 					let entity = null;
 					// search for entity
 					this.props.entities.forEach((map:Immutable.Map<number, Entity>) => {
 						map.forEach((toCompare:Entity) => {
-							if (descriptor.getEntity() === toCompare.id) {
+							if (descriptor.entityId === toCompare.id) {
 								if (type == BlockType.PLAY || toCompare.getTag(GameTag.SECRET) || toCompare.getTag(GameTag.EVIL_GLOW)) {
 									entity = toCompare;
 								}

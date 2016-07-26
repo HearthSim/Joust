@@ -1,26 +1,21 @@
 class Option {
-	protected index: number;
-	protected type: number;
-	protected entity: number;
-	protected targets: number[];
 
-	constructor(index: number, type: number, entity: number, targets: number[]) {
-		this.index = index;
-		this.type = type;
-		this.entity = entity;
-		this.targets = targets ? targets : [];
+	constructor(protected _index: number, protected _type: number, protected _entityId: number, protected _targets: number[]) {
+		if(!this._targets) {
+			this._targets = [];
+		}
 	}
 
-	public getIndex(): number {
-		return this.index;
+	get index(): number {
+		return this._index;
 	}
 
-	public getType(): number {
-		return this.type;
+	get type(): number {
+		return this._type;
 	}
 
-	public getEntity(): number {
-		return this.entity;
+	get entityId(): number {
+		return this._entityId;
 	}
 
 	public hasTargets(): boolean {
@@ -33,8 +28,8 @@ class Option {
 		}).length == 1;
 	}
 
-	public getTargets(): number[] {
-		return this.targets;
+	get targets(): number[] {
+		return this._targets;
 	}
 }
 

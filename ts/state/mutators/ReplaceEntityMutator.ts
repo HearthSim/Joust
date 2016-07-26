@@ -27,16 +27,16 @@ class ReplaceEntityMutator implements GameStateMutator {
 			return state;
 		}
 
-		var entities = state.getEntities();
+		var entities = state.entities;
 		entities = entities.set(id, newEntity);
 
-		var entityTree = state.getEntityTree();
+		var entityTree = state.entityTree;
 		entityTree = entityTree.withMutations(function(map) {
 			map.deleteIn([oldEntity.getController(), oldEntity.getZone(), id])
 				.setIn([newEntity.getController(), newEntity.getZone(), id], newEntity);
 		});
 
-		return new GameState(entities, entityTree, state.getOptions(), state.getOptionTree(), state.getTime(), state.getChoices(), state.getDescriptors(), state.getDiffs());
+		return new GameState(entities, entityTree, state.options, state.optionTree, state.time, state.choices, state.descriptors, state.diffs);
 	}
 }
 

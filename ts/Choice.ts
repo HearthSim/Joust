@@ -1,18 +1,13 @@
 class Choice {
-	protected index: number;
-	protected entity: number;
-
-	constructor(index: number, entity: number) {
-		this.index = index;
-		this.entity = entity;
+	constructor(protected _index: number, protected _entityId: number) {
 	}
 
-	public getIndex(): number {
-		return this.index;
+	get index(): number {
+		return this._index;
 	}
 
-	public getEntity(): number {
-		return this.entity;
+	get entityId(): number {
+		return this._entityId;
 	}
 }
 

@@ -2,17 +2,16 @@ import Choice from "./Choice";
 
 class Choices {
 
-	constructor(protected choices:Immutable.Map<number, Choice>, protected type:number) {
+	constructor(protected _choices:Immutable.Map<number, Choice>, protected _type:number) {
 	}
 
-	public getType():number {
-		return this.type;
+	get choices():Immutable.Map<number, Choice> {
+		return this._choices;
 	}
 
-	public getChoices():Immutable.Map<number, Choice> {
-		return this.choices;
+	get type():number {
+		return this._type;
 	}
-
 }
 
 export default Choices;

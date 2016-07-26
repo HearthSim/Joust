@@ -21,7 +21,7 @@ class Choices extends EntityList<ChoicesProps> {
 	}
 
 	protected sort(entity: Entity): number {
-		return this.props.choices.get(entity.id).getIndex();
+		return this.props.choices.get(entity.id).index;
 	}
 
 	private count: number = 0;

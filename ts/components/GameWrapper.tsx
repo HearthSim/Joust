@@ -31,11 +31,11 @@ class GameWrapper extends React.Component<GameWrapperProps, {}> {
 			return this.renderLoadingScreen();
 		}
 
-		var entityTree = gameState.getEntityTree();
-		var optionTree = gameState.getOptionTree();
+		var entityTree = gameState.entityTree;
+		var optionTree = gameState.optionTree;
 
 		// check if any entities are present
-		var allEntities = gameState.getEntities();
+		var allEntities = gameState.entities;
 		if (!allEntities) {
 			return this.renderLoadingScreen();
 		}
@@ -60,8 +60,8 @@ class GameWrapper extends React.Component<GameWrapperProps, {}> {
 		}
 
 		// find an end turn option
-		var endTurnOption = gameState.getOptions().filter(function(option: Option): boolean {
-			return !!option && option.getType() === OptionType.END_TURN;
+		var endTurnOption = gameState.options.filter(function(option: Option): boolean {
+			return !!option && option.type === OptionType.END_TURN;
 		}).first();
 
 		var playerCount = players.count();
@@ -78,12 +78,12 @@ class GameWrapper extends React.Component<GameWrapperProps, {}> {
 					player2={player2}
 					entities={entityTree}
 					options={optionTree}
-					choices={gameState.getChoices()}
+					choices={gameState.choices}
 					endTurnOption={endTurnOption}
 					optionCallback={this.props.interaction && this.props.interaction.sendOption.bind(this.props.interaction) }
 					cards={this.props.cards}
 					cardOracle={this.props.cardOracle}
-					descriptors={this.props.state.getDescriptors()}
+					descriptors={this.props.state.descriptors}
 					assetDirectory={this.props.assetDirectory}
 					cardArtDirectory={this.props.cardArtDirectory}
 					hideCards={this.props.hideCards}

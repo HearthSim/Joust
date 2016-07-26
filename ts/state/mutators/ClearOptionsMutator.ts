@@ -4,11 +4,11 @@ import Option from "../../Option";
 
 class ClearOptionsMutator implements GameStateMutator {
 	public applyTo(state: GameState): GameState {
-		if (state.getOptions().isEmpty()) {
+		if (state.options.isEmpty()) {
 			return state;
 		}
 
-		return new GameState(state.getEntities(), state.getEntityTree(), state.getOptions().clear(), state.getOptionTree().clear(), state.getTime(), state.getChoices(), state.getDescriptors(), state.getDiffs());
+		return new GameState(state.entities, state.entityTree, state.options.clear(), state.optionTree.clear(), state.time, state.choices, state.descriptors, state.diffs);
 	}
 }
 

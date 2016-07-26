@@ -6,11 +6,11 @@ class IncrementTimeMutator implements GameStateMutator {
 	}
 
 	public applyTo(state: GameState): GameState {
-		if (this.time === 0 && state.getTime() !== null) {
+		if (this.time === 0 && state.time !== null) {
 			return state;
 		}
 
-		var time = state.getTime();
+		var time = state.time;
 		if (time === null) {
 			time = 0;
 		}
@@ -18,11 +18,11 @@ class IncrementTimeMutator implements GameStateMutator {
 			time += this.time;
 		}
 
-		if(time === state.getTime()) {
+		if(time === state.time) {
 			return state;
 		}
 
-		return new GameState(state.getEntities(), state.getEntityTree(), state.getOptions(), state.getOptionTree(), time, state.getChoices(), state.getDescriptors(), state.getDiffs().clear());
+		return new GameState(state.entities, state.entityTree, state.options, state.optionTree, time, state.choices, state.descriptors, state.diffs.clear());
 	}
 }
 

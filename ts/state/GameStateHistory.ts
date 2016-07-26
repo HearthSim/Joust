@@ -11,7 +11,7 @@ class GameStateHistory {
 	public turnMap: Immutable.Map<number, GameState> = Immutable.OrderedMap<number, GameState>();
 
 	public push(gameState: GameState): void {
-		var time = gameState.getTime();
+		var time = gameState.time;
 		if (typeof time !== 'number') {
 			// we cannot handle timeless game states
 			return;
@@ -35,12 +35,12 @@ class GameStateHistory {
 			return;
 		}
 
-		if (time > this.head.state.getTime()) {
+		if (time > this.head.state.time) {
 			let element = { state: gameState, prev: this.head };
 			this.head.next = element;
 			this.head = element;
 		}
-		else if (time === this.head.state.getTime()) {
+		else if (time === this.head.state.time) {
 			// overwrite state if time is identical
 			this.head.state = gameState;
 		}
@@ -54,10 +54,10 @@ class GameStateHistory {
 			return null;
 		}
 
-		while (this.pointer.state.getTime() < time && this.pointer.next) {
+		while (this.pointer.state.time < time && this.pointer.next) {
 			// we want to move towards the head
 
-			if (this.pointer.next.state.getTime() > time) {
+			if (this.pointer.next.state.time > time) {
 				// do not pass the last state before time
 				break;
 			}
@@ -65,7 +65,7 @@ class GameStateHistory {
 			this.pointer = this.pointer.next;
 		}
 
-		while (this.pointer.state.getTime() > time && this.pointer.prev) {
+		while (this.pointer.state.time > time && this.pointer.prev) {
 			// we want to move towards the tail
 			this.pointer = this.pointer.prev;
 		}

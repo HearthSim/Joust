@@ -21,7 +21,7 @@ class AddEntityMutator implements GameStateMutator {
 			return state;
 		}
 
-		var entities = state.getEntities();
+		var entities = state.entities;
 		if (entities.has(id)) {
 			console.warn('Overwriting entity with id #' + id);
 			// we might have a stale entity at the old location in the entity tree
@@ -29,7 +29,7 @@ class AddEntityMutator implements GameStateMutator {
 
 		entities = entities.set(id, this.entity);
 
-		var entityTree = state.getEntityTree();
+		var entityTree = state.entityTree;
 		entityTree = entityTree.setIn([this.entity.getController(), this.entity.getZone(), id], this.entity);
 
 		let diffs: GameStateDiff[] = [];
@@ -43,7 +43,7 @@ class AddEntityMutator implements GameStateMutator {
 		});
 
 		// we always mutate the GameState when we add an entity
-		state = new GameState(entities, entityTree, state.getOptions(), state.getOptionTree(), state.getTime(), state.getChoices(), state.getDescriptors(), state.getDiffs());
+		state = new GameState(entities, entityTree, state.options, state.optionTree, state.time, state.choices, state.descriptors, state.diffs);
 
 		return state.apply(new AddDiffsMutator(diffs));
 	}

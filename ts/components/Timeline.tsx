@@ -118,7 +118,7 @@ class Timeline extends React.Component<TimelineProps, TimelineState> implements 
 		let mulligan = this.props.turnMap.has(1) ?
 			<Turn key={0}
 				mulligan={true}
-				duration={this.props.turnMap.get(1).getTime() }
+				duration={this.props.turnMap.get(1).time }
 				totalDuration={this.props.duration}
 				/> : null;
 
@@ -131,10 +131,10 @@ class Timeline extends React.Component<TimelineProps, TimelineState> implements 
 
 			if (map.has(turn + i)) {
 				let next = map.get(turn + i);
-				duration = next.getTime() - current.getTime();
+				duration = next.time - current.time;
 			}
 			else {
-				duration = this.props.duration - current.getTime();
+				duration = this.props.duration - current.time;
 			}
 
 			return <Turn key={turn} state={current} invert={this.props.swapPlayers} duration={duration} totalDuration={this.props.duration} turnNumber={turn} />;

@@ -9,11 +9,11 @@ class AddDiffsMutator implements GameStateMutator {
 	}
 
 	public applyTo(state: GameState): GameState {
-		let diffs = state.getDiffs();
+		let diffs = state.diffs;
 		_.forEach(this.diffs, (diff: GameStateDiff) => {
 			diffs = diffs.add(diff);
 		});
-		return new GameState(state.getEntities(), state.getEntityTree(), state.getOptions(), state.getOptionTree(), state.getTime(), state.getChoices(), state.getDescriptors(), diffs);
+		return new GameState(state.entities, state.entityTree, state.options, state.optionTree, state.time, state.choices, state.descriptors, diffs);
 	}
 }
 

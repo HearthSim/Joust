@@ -51,29 +51,29 @@ abstract class EntityInPlay<P extends EntityInPlayProps> extends React.Component
 			if (this.props.descriptors) {
 				let spellTarget = false;
 				this.props.descriptors.forEach((descriptor:GameStateDescriptor) => {
-					switch (descriptor.getType()) {
+					switch (descriptor.type) {
 						case BlockType.ATTACK:
-							if (this.props.entity.id == descriptor.getEntity()) {
+							if (this.props.entity.id == descriptor.entityId) {
 								classNames.push('attacking')
 							}
-							else if (this.props.entity.id == descriptor.getTarget()) {
+							else if (this.props.entity.id == descriptor.target) {
 								classNames.push('defending')
 							}
 							break;
 						case BlockType.POWER:
-							if (descriptor.getTarget() == this.props.entity.id) {
+							if (descriptor.target == this.props.entity.id) {
 								spellTarget = true;
 							}
 							break;
 						case BlockType.TRIGGER:
-							if (descriptor.getEntity() == this.props.entity.id) {
+							if (descriptor.entityId == this.props.entity.id) {
 								classNames.push('triggered');
 							}
 							break;
 					}
-					descriptor.getMetaData().forEach((metadata:MetaData) => {
-						if (metadata.getType() === MetaDataType.TARGET) {
-							if (metadata.getEntities().contains(this.props.entity.id)) {
+					descriptor.metaData.forEach((metadata:MetaData) => {
+						if (metadata.type === MetaDataType.TARGET) {
+							if (metadata.entities.contains(this.props.entity.id)) {
 								spellTarget = true;
 							}
 						}
