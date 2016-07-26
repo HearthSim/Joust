@@ -233,19 +233,24 @@ class Player extends React.Component<PlayerProps, {}> {
 					});
 					if (entity !== null) {
 						let type = entity.getTag(GameTag.CARDTYPE);
-						let types = [CardType.WEAPON, CardType.SPELL, CardType.MINION, CardType.HERO_POWER];
-						if (types.indexOf(type) != -1 || entity.getTag(GameTag.SECRET)) {
-							if(!entity.cardId && this.props.cardOracle && this.props.cardOracle.has(+entity.id)) {
-								let cardId = this.props.cardOracle.get(entity.id);
-								entity = new Entity(entity.id, entity.getTags(), cardId);
+						let hidden = false;
+						if(!entity.cardId && this.props.cardOracle && this.props.cardOracle.has(+entity.id)) {
+							let cardId = this.props.cardOracle.get(entity.id);
+							entity = new Entity(entity.id, entity.getTags(), cardId);
+							hidden = true;
+							if(this.props.cards && this.props.cards.has(cardId)) {
+								type = this.props.cards.get(cardId).type;
 							}
+						}
+						let types = [CardType.WEAPON, CardType.SPELL, CardType.MINION, CardType.HERO_POWER, "WEAPON", "SPELL", "MINION", "HERO_POWER"];
+						if (types.indexOf(type) != -1 || entity.getTag(GameTag.SECRET)) {
 							action = <div className="played"><Card
 								entity={entity}
 								option={null}
 								optionCallback={null}
 								assetDirectory={this.props.assetDirectory}
 								cards={this.props.cards}
-								isHidden={false}
+								isHidden={hidden}
 								controller={this.props.player}
 								cardArtDirectory={this.props.cardArtDirectory}
 							/></div>;
