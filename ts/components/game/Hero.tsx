@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import EntityInPlay from "./EntityInPlay";
-import {EntityInPlayProps, CardDataProps} from "../../interfaces";
+import {EntityInPlayProps, CardOracleProps} from "../../interfaces";
 import Entity from "../../Entity";
 import Attack from "./stats/Attack";
 import Damage from "./stats/Damage";
@@ -14,7 +14,7 @@ import {MetaDataType} from "../../enums";
 import MetaData from "../../MetaData";
 import GameStateDescriptor from "../../state/GameStateDescriptor";
 
-interface HeroProps extends EntityInPlayProps {
+interface HeroProps extends EntityInPlayProps, CardOracleProps {
 	secrets: Immutable.Map<number, Entity>;
 }
 
@@ -28,6 +28,24 @@ class Hero extends EntityInPlay<HeroProps> {
 
 		var secretCount = this.props.secrets.count();
 		var secretText = secretCount > 1 ? secretCount.toString() : "?";
+		var secretTitle = this.props.secrets.reduce((title, entity: Entity): string => {
+			let name = entity.cardId;
+			if(!entity.isRevealed()) {
+				if(this.props.cardOracle && this.props.cardOracle.has(entity.id)) {
+					name = this.props.cardOracle.get(entity.id);
+				}
+				else {
+					return title;
+				}
+			}
+			if(title) {
+				title += ", ";
+			}
+			if(this.props.cards && this.props.cards.has(name)) {
+				name = this.props.cards.get(name).name || name;
+			}
+			return title += name;
+		}, "");
 
 		var damage = 0;
 		var healing = 0;
@@ -63,7 +81,7 @@ class Hero extends EntityInPlay<HeroProps> {
 				{entity.getAtk() ? <Attack attack={entity.getAtk()}/> : null}
 				<Health health={entity.getHealth() } damage={entity.getDamage()}/>
 				{entity.getArmor() ? <Armor armor={entity.getArmor()}/> : null}
-				{secretCount > 0 ? <SecretText text={secretText}/> : null}
+				{secretCount > 0 ? <SecretText text={secretText} title={secretTitle}/> : null}
 				{damage != 0 ? <Damage damage={damage}/> : null}
 				{healing != 0 ? <Healing healing={healing}/> : null}
 			</div>

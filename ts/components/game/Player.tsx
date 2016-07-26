@@ -62,6 +62,7 @@ class Player extends React.Component<PlayerProps, {}> {
 			cardArtDirectory={this.props.cardArtDirectory}
 			controller={this.props.player}
 			descriptors={this.props.descriptors}
+			cardOracle={this.props.cardOracle}
 			/>;
 		var heroPowerEntity = playEntities.filter(filterByCardType(CardType.HERO_POWER)).first();
 		var heroPower = <HeroPower entity={heroPowerEntity}
