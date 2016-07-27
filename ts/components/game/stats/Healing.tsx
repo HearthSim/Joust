@@ -1,13 +1,16 @@
 import * as React from "react";
 
 interface HealingProps extends React.Props<any> {
-	healing: number;
+	healing:number;
 }
 
-class Healing extends React.Component<HealingProps, {}> {
-	public render(): JSX.Element {
-		return <div className='healing'>{this.props.healing > 0 ? '+' + this.props.healing : ''}</div>;
+export default class Healing extends React.Component<HealingProps, {}> {
+
+	shouldComponentUpdate(nextProps:HealingProps):boolean {
+		return nextProps.healing !== this.props.healing;
+	}
+
+	public render():JSX.Element {
+		return <div className="healing">{this.props.healing > 0 ? '+' + this.props.healing : ''}</div>;
 	}
 }
-
-export default Healing;

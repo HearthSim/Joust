@@ -1,10 +1,20 @@
 import * as React from "react";
 import {CardType, GameTag} from "../../../enums";
-import Entity from "../../../Entity";
 import CardArt from "./CardArt";
 import {EntityProps, CardData} from "../../../interfaces";
 
 class InPlayCardArt extends React.Component<EntityProps, {}> {
+
+	shouldComponentUpdate(nextProps:EntityProps):boolean {
+		return (
+			nextProps.entity !== this.props.entity ||
+			nextProps.damage !== this.props.damage ||
+			nextProps.healing !== this.props.healing ||
+			nextProps.controller !== this.props.controller ||
+			nextProps.assetDirectory !== this.props.assetDirectory ||
+			nextProps.cardArtDirectory !== this.props.cardArtDirectory
+		);
+	}
 
 	public render(): JSX.Element {
 		var images = [];
@@ -88,13 +98,6 @@ class InPlayCardArt extends React.Component<EntityProps, {}> {
 			});
 		}
 
-		if (entity.getTag(GameTag.HEALTH) - entity.getTag(GameTag.DAMAGE) <= 0) {
-			images.push({
-				image: "skull.png",
-				classes: ["skull"]
-			});
-		}
-
 		if(this.props.damage && this.props.damage > 0) {
 			images.push({
 				image: "damage.png",
@@ -105,6 +108,12 @@ class InPlayCardArt extends React.Component<EntityProps, {}> {
 			images.push({
 				image: "healing.png",
 				classes: ["heal"]
+			});
+		}
+		else if (entity.getTag(GameTag.HEALTH) - entity.getTag(GameTag.DAMAGE) <= 0) {
+			images.push({
+				image: "skull.png",
+				classes: ["skull"]
 			});
 		}
 

@@ -1,29 +1,42 @@
 import * as React from "react";
 import Dimensions from "react-dimensions";
-import * as Immutable from "immutable";
-import {AssetDirectoryProps, CardArtDirectory, CardData} from "../../../interfaces";
+import * as _ from "lodash";
+import {AssetDirectoryProps, CardArtDirectory} from "../../../interfaces";
 
 interface CardArtItem {
-	image: string;
-	isArt?: boolean;
-	classes: Array<String>;
+	image:string;
+	isArt?:boolean;
+	classes:Array<String>;
 }
 
 interface CardArtProps extends AssetDirectoryProps, CardArtDirectory {
-	layers: Array<CardArtItem>;
-	scale: number;
-	square: boolean;
-	margin: boolean;
-	containerWidth: number;
-	containerHeight: number;
+	layers:Array<CardArtItem>;
+	scale:number;
+	square:boolean;
+	margin:boolean;
+	containerWidth:number;
+	containerHeight:number;
 }
 
 class CardArt extends React.Component<CardArtProps, {}> {
 
-	private static baseArtExt: string = ".jpg";
-	private static imageDirectory: string = "images/";
+	shouldComponentUpdate(nextProps:CardArtProps):boolean {
+		return (
+			!_.isEqual(nextProps.layers, this.props.layers) ||
+			nextProps.scale !== this.props.scale ||
+			nextProps.square !== this.props.square ||
+			nextProps.margin !== this.props.margin ||
+			nextProps.containerWidth !== this.props.containerWidth ||
+			nextProps.containerHeight !== this.props.containerHeight ||
+			nextProps.assetDirectory !== this.props.assetDirectory ||
+			nextProps.cardArtDirectory !== this.props.cardArtDirectory
+		);
+	}
 
-	private createStyle(): any {
+	private static baseArtExt:string = ".jpg";
+	private static imageDirectory:string = "images/";
+
+	private createStyle():any {
 		// keep proportions with scale
 		var width = Math.round(this.props.containerHeight * this.props.scale);
 		var height = Math.round(this.props.containerHeight);
@@ -31,14 +44,14 @@ class CardArt extends React.Component<CardArtProps, {}> {
 			height = width;
 		}
 		var margin = Math.round(this.props.containerHeight * (1 - this.props.scale));
-		var style = { width: width + 'px', height: height + 'px', marginTop: '0px' };
+		var style = {width: width + 'px', height: height + 'px', marginTop: '0px'};
 		if (this.props.margin) {
 			style.marginTop = margin + 'px';
 		}
 		return style;
 	}
 
-	private createImageItem(item: CardArtItem, index: number): JSX.Element {
+	private createImageItem(item:CardArtItem, index:number):JSX.Element {
 		if (item.image === null && !item.isArt) {
 			return null;
 		}
@@ -57,17 +70,17 @@ class CardArt extends React.Component<CardArtProps, {}> {
 
 		return (
 			<img key={index}
-				src={imgSrc}
-				className={item.classes.join(' ') }
-				draggable={false}
-				/>
+				 src={imgSrc}
+				 className={item.classes.join(' ') }
+				 draggable={false}
+			/>
 		);
 	}
 
-	public render(): JSX.Element {
+	public render():JSX.Element {
 		var style = this.createStyle();
 		return (
-			<div className='visuals' style={style}>
+			<div className="visuals" style={style}>
 				{ this.props.layers.map(this.createImageItem.bind(this)) }
 			</div>
 		);
