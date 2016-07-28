@@ -118,17 +118,39 @@
 	position: relative;
 
 	> .joust-tooltipper-tooltip {
-		white-space: nowrap;
 		z-index: 1000;
-		font-family: sans-serif;
 		display: block;
-		text-align: center;
 		position: absolute;
 		top: -36px;
-		color: white;
-		background-color: black;
-		padding: 6px 8px;
-		border-radius: 4px;
-		font-size: 1em;
+		width: 0;
+		left: 50%;
+
+		> span {
+			text-align: center;
+			font-size: 1em;
+			display: inline-block;
+			white-space: nowrap;
+			font-family: sans-serif;
+			color: white;
+			background-color: black;
+			padding: 6px 8px;
+			border-radius: 4px;
+			transform: translateX(-50%);
+		}
+
+		&.left {
+			left: 0;
+			> span {
+				transform: none;
+			}
+		}
+
+		&.right {
+			left: auto;
+			right: 0;
+			> span {
+				transform: translateX(-100%);
+			}
+		}
 	}
 }
