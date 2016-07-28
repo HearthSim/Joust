@@ -1,5 +1,6 @@
 # Joust
-[![Build Status](https://travis-ci.org/HearthSim/joust.svg?branch=master)](https://travis-ci.org/HearthSim/joust)
+[![Travis](https://img.shields.io/travis/HearthSim/joust.svg)](https://travis-ci.org/HearthSim/joust)
+[![GitHub release](https://img.shields.io/github/release/HearthSim/joust.svg)](https://github.com/HearthSim/joust/releases)
 
 A web viewer for HearthStone games and replays, written in React.
 
