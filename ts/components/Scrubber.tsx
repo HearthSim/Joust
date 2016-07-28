@@ -172,7 +172,7 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 				<button onClick={this.props.onClickRevealCards} disabled={!this.props.canRevealCards}><i className="joust-fa joust-fa-eye"></i></button>
 			</Tooltipper>;
 
-		var rewind = <Tooltipper title="Rewind">
+		var restart = <Tooltipper title="Restart">
 			<button onClick={() => this.rewind()} disabled={!this.state.canRewind}><i className="joust-fa joust-fa-fast-backward"></i></button>
 		</Tooltipper>;
 
@@ -186,7 +186,7 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 
 		return (
 			<div className="joust-scrubber">
-				{this.state.canRewind && !this.state.canPlay ? rewind : playpause}
+				{this.state.canRewind && !this.state.canPlay ? restart : playpause}
 				<Tooltipper title="Playback speed"><SpeedSelector speed={this.state.speed}
 							   speeds={Scrubber.SPEEDS}
 							   selectSpeed={(speed: number) => this.selectSpeed(speed)}
