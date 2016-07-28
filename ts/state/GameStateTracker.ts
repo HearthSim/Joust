@@ -41,12 +41,12 @@ class GameStateTracker extends Stream.Transform {
 	private hasSteppedThisBlock:boolean;
 
 	protected time(mutator:GameStateMutator) {
-		let postStep = 0;
-		let step = this.gameState.game ? this.gameState.game.getTag(GameTag.STEP) : Step.INVALID;
+		let timeStep = 0;
+		let gameStep = this.gameState.game ? this.gameState.game.getTag(GameTag.STEP) : Step.INVALID;
 
 		// main action timing
 		if (this.waitAtNextBlockOrEndOfBlock && (mutator instanceof PopDescriptorMutator || mutator instanceof PushDescriptorMutator)) {
-			postStep = 2;
+			timeStep = 2;
 			this.waitAtNextBlockOrEndOfBlock = false;
 		}
 
@@ -58,20 +58,20 @@ class GameStateTracker extends Stream.Transform {
 					this.waitAtNextBlockOrEndOfBlock = true;
 					break;
 				case BlockType.TRIGGER:
-					if (!postStep) {
+					if (!timeStep) {
 						if (mutator.descriptor.entityId > 3) {
 							// normal entity triggers
-							postStep = 1;
+							timeStep = 1;
 						}
 						else {
-							switch (step) {
+							switch (gameStep) {
 								case Step.MAIN_START:
 									// before card is drawn
-									postStep = 1;
+									timeStep = 1;
 									break;
 								case Step.MAIN_ACTION:
 									// after card is drawn
-									postStep = 2;
+									timeStep = 2;
 									break;
 							}
 						}
@@ -79,29 +79,32 @@ class GameStateTracker extends Stream.Transform {
 					break;
 				case BlockType.ATTACK:
 					// before attack hits
-					postStep = 1;
+					timeStep = 1;
 					break;
 				case BlockType.POWER:
-					if (!postStep) {
-						postStep = 1;
+					if (!timeStep) {
+						timeStep = 1;
 					}
 					break;
 				default:
-					if (!postStep) {
-						postStep = 1.5;
+					if (!timeStep) {
+						timeStep = 1.5;
 					}
 					break;
 			}
 		}
 
 		if (mutator instanceof PopDescriptorMutator) {
-			if (!postStep) {
+			if (!timeStep) {
 				if (this.lastDescriptorEntityId > 3) {
 					if(this.lastDescriptorType === BlockType.TRIGGER) {
-						postStep = 1;
+						timeStep = 1;
+					}
+					else if(this.lastDescriptorType === BlockType.PLAY) {
+						timeStep = 1;
 					}
 					else if(!this.hasSteppedThisBlock) {
-						postStep = 2;
+						timeStep = 2;
 						this.hasSteppedThisBlock = true;
 					}
 				}
@@ -125,7 +128,7 @@ class GameStateTracker extends Stream.Transform {
 					if (!this.upcomingMetadataTargets.length) {
 						// once all targets have received their damage value, we step
 						this.hasSteppedThisBlock = true;
-						postStep = targets.length > 1 ? 2 : 1;
+						timeStep = targets.length > 1 ? 2 : 1;
 					}
 				}
 			}
@@ -135,33 +138,33 @@ class GameStateTracker extends Stream.Transform {
 		if (mutator instanceof TagChangeMutator) {
 			if (this.lastDescriptorType === BlockType.ATTACK) {
 				if (mutator.tag === GameTag.PROPOSED_DEFENDER && mutator.value === 0) {
-					postStep = 1;
+					timeStep = 1;
 				}
 			}
 		}
 
 		// step when playable options are available
 		if (mutator instanceof SetOptionsMutator) {
-			postStep = 0;
+			timeStep = 0;
 		}
 
 		// step when choices are set
 		if (mutator instanceof SetChoicesMutator) {
-			if (step === Step.BEGIN_MULLIGAN) {
+			if (gameStep === Step.BEGIN_MULLIGAN) {
 				this.mulliganChoicesSeen++;
 				if (this.mulliganChoicesSeen >= 2) {
 					// mulligan step
-					postStep = 6;
+					timeStep = 6;
 				}
 			}
 			else {
 				// discover step
-				postStep = 4;
+				timeStep = 4;
 			}
 		}
 
-		if (postStep) {
-			this.gameState = this.gameState.apply(new IncrementTimeMutator(postStep));
+		if (timeStep) {
+			this.gameState = this.gameState.apply(new IncrementTimeMutator(timeStep));
 		}
 	}
 }
