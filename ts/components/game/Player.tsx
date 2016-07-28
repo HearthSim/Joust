@@ -211,6 +211,9 @@ class Player extends React.Component<PlayerProps, {}> {
 				classNames.push('inactive-colored');
 				break;
 			case PlayState.LOST:
+				if (this.props.player.conceded) {
+					gameresult = <div className="gameresult">{this.props.player.name} concedes</div>;
+				}
 				classNames.push('inactive');
 				break;
 		}
