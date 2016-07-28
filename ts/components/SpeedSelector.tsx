@@ -28,7 +28,7 @@ class SpeedSelector extends React.Component<SpeedSelectorProps, {}> {
 
 		return (
 			<select onChange={this.changeSpeed.bind(this) } value={'' + this.props.speed}
-				disabled={this.props.disabled} title="Playback speed">
+				disabled={this.props.disabled}>
 				{speeds}
 			</select>
 		);

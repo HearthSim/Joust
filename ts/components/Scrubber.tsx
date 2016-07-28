@@ -2,6 +2,7 @@ import * as React from "react";
 import {StreamScrubber} from "../interfaces";
 import Timeline from "./Timeline";
 import SpeedSelector from "./SpeedSelector";
+import Tooltipper from "./Tooltipper";
 
 interface ScrubberProps extends React.Props<any> {
 	scrubber: StreamScrubber;
@@ -147,51 +148,50 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 
 	public render(): JSX.Element {
 		var playpause = this.state.playing ?
-			<button onClick={() => this.pause()} disabled={!this.state.canInteract} title="Pause">
-				<i className="joust-fa joust-fa-pause"></i>
-			</button> :
-			<button onClick={() => this.play()} disabled={!this.state.canPlay} title="Play">
-				<i className="joust-fa joust-fa-play"></i>
-			</button>;
+			<Tooltipper title="Pause">
+				<button onClick={() => this.pause()} disabled={!this.state.canInteract}><i className="joust-fa joust-fa-pause"></i></button>
+			</Tooltipper> :
+			<Tooltipper title="Play">
+				<button onClick={() => this.play()} disabled={!this.state.canPlay}><i className="joust-fa joust-fa-play"></i></button>
+			</Tooltipper>;
 
 
 		var fullscreen = this.props.isFullscreen ?
-			<button onClick={this.props.onClickMinimize} title="Minimize">
-				<i className="joust-fa joust-fa-compress"></i>
-			</button> :
-			<button onClick={this.props.onClickFullscreen} disabled={!this.props.isFullscreenAvailable}
-				title="Fullscreen">
-				<i className="joust-fa joust-fa-expand"></i>
-			</button>;
+			<Tooltipper title="Minimize">
+				<button onClick={this.props.onClickMinimize}><i className="joust-fa joust-fa-compress"></i></button>
+			</Tooltipper> :
+			<Tooltipper	title="Fullscreen">
+				<button onClick={this.props.onClickFullscreen} disabled={!this.props.isFullscreenAvailable}><i className="joust-fa joust-fa-expand"></i></button>
+			</Tooltipper>;
 
 		var reveal = this.props.isRevealingCards ?
-			<button onClick={this.props.onClickHideCards} title="Hide cards">
-				<i className="joust-fa joust-fa-eye-slash"></i>
-			</button> :
-			<button onClick={this.props.onClickRevealCards} title="Reveal cards" disabled={!this.props.canRevealCards}>
-				<i className="joust-fa joust-fa-eye"></i>
-			</button>;
+			<Tooltipper title="Hide cards">
+				<button onClick={this.props.onClickHideCards}><i className="joust-fa joust-fa-eye-slash"></i></button>
+			</Tooltipper> :
+			<Tooltipper title="Reveal cards">
+				<button onClick={this.props.onClickRevealCards} disabled={!this.props.canRevealCards}><i className="joust-fa joust-fa-eye"></i></button>
+			</Tooltipper>;
 
-		var rewind = <button onClick={() => this.rewind()} disabled={!this.state.canRewind} title="Rewind">
-			<i className="joust-fa joust-fa-fast-backward"></i>
-		</button>;
+		var rewind = <Tooltipper title="Rewind">
+			<button onClick={() => this.rewind()} disabled={!this.state.canRewind}><i className="joust-fa joust-fa-fast-backward"></i></button>
+		</Tooltipper>;
 
-		var swap = <button onClick={this.props.swapPlayers} disabled={!this.state.canInteract} title="Swap players">
-			<i className="joust-fa joust-fa-unsorted"></i>
-		</button>;
+		var swap = <Tooltipper title="Swap players">
+			<button onClick={this.props.swapPlayers} disabled={!this.state.canInteract}><i className="joust-fa joust-fa-unsorted"></i></button>
+		</Tooltipper>;
 
-		var log = <button onClick={this.props.toggleLog} disabled={!this.state.canInteract} title={this.props.isLogVisible ? "Hide log" : "Show log"}>
-			<i className="joust-fa joust-fa-bars"></i>
-		</button>;
+		var log = <Tooltipper title={this.props.isLogVisible ? "Hide event log" : "Show event log"}>
+			<button onClick={this.props.toggleLog} disabled={!this.state.canInteract}><i className="joust-fa joust-fa-bars"></i></button>
+		</Tooltipper>;
 
 		return (
 			<div className="joust-scrubber">
-				{playpause}
-				<SpeedSelector speed={this.state.speed}
+				{this.state.canRewind && !this.state.canPlay ? rewind : playpause}
+				<Tooltipper title="Playback speed"><SpeedSelector speed={this.state.speed}
 							   speeds={Scrubber.SPEEDS}
 							   selectSpeed={(speed: number) => this.selectSpeed(speed)}
 							   disabled={!this.state.canInteract}
-				/>
+				/></Tooltipper>
 				<Timeline duration={this.props.scrubber.getDuration() }
 					at={this.props.scrubber.getCurrentTime() }
 					seek={this.props.scrubber.seek.bind(this.props.scrubber) }
