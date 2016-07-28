@@ -201,8 +201,8 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 					ref={(inhibitor) => this.props.scrubber.setInhibitor(inhibitor) }
 					/>
 				{reveal}
-				{log}
 				{swap}
+				{log}
 				{fullscreen}
 			</div>
 		);
