@@ -149,14 +149,14 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 	public render(): JSX.Element {
 		var playpause = this.state.playing ?
 			<Tooltipper title="Pause" align="left">
-				<button onClick={() => this.pause()} disabled={!this.state.canInteract}><i className="joust-fa joust-fa-pause"></i></button>
+				<button onClick={() => this.pause()} disabled={!this.state.canInteract} className="joust-scrubber-button-wide"><i className="joust-fa joust-fa-pause"></i></button>
 			</Tooltipper> :
 			<Tooltipper title="Play" align="left">
-				<button onClick={() => this.play()} disabled={!this.state.canPlay}><i className="joust-fa joust-fa-play"></i></button>
+				<button onClick={() => this.play()} disabled={!this.state.canPlay} className="joust-scrubber-button-wide"><i className="joust-fa joust-fa-play"></i></button>
 			</Tooltipper>;
 
 		var restart = <Tooltipper title="Restart" align="left">
-			<button onClick={() => this.rewind()} disabled={!this.state.canRewind}><i className="joust-fa joust-fa-fast-backward"></i></button>
+			<button onClick={() => this.rewind()} disabled={!this.state.canRewind} className="joust-scrubber-button-wide"><i className="joust-fa joust-fa-fast-backward"></i></button>
 		</Tooltipper>;
 
 		var fullscreen = this.props.isFullscreen ?

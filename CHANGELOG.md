@@ -11,6 +11,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Reduce the pause after card is drawn
 - Tweak tooltips
 - Remove the pause between cards played by Yogg-Sarron
+- Increase width of play/pause button
 
 ### Fixed
 - Fix release URLs in Changelog
