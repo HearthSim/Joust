@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 - Display full card when hovering minions
+- Show warning to users of IE/Edge due to clip-path not being supported
 
 ### Changed
 - Reduce the pause after card is drawn

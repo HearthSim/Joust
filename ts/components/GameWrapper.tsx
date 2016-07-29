@@ -1,29 +1,60 @@
 import * as React from "react";
-import {CardDataProps, HideCardsProps} from "../interfaces";
+import {
+	CardDataProps,
+	HideCardsProps,
+	InteractiveBackend,
+	CardOracleProps,
+	AssetDirectoryProps,
+	CardArtDirectory
+} from "../interfaces";
 import GameState from "../state/GameState";
 import TwoPlayerGame from "./game/TwoPlayerGame";
 import {CardType, OptionType} from "../enums";
 import Entity from "../Entity";
 import Option from "../Option";
 import PlayerEntity from "../Player";
-import {InteractiveBackend, CardOracleProps, AssetDirectoryProps, CardArtDirectory} from "../interfaces";
-import {Zone} from "../enums";
 import LoadingScreen from "./LoadingScreen";
+import * as bowser from "bowser";
 
 interface GameWrapperProps extends CardDataProps, CardOracleProps, AssetDirectoryProps, CardArtDirectory, HideCardsProps, React.Props<any> {
-	state: GameState;
-	interaction?: InteractiveBackend;
-	swapPlayers?: boolean;
-	hasStarted?: boolean;
+	state:GameState;
+	interaction?:InteractiveBackend;
+	swapPlayers?:boolean;
+	hasStarted?:boolean;
+}
+
+interface GameWrapperState {
+	warnAboutBrowser?:boolean;
 }
 
 /**
  * This component wraps around the /actual/ game component (such as TwoPlayerGame).
  * It extracts the game entities.
  */
-class GameWrapper extends React.Component<GameWrapperProps, {}> {
+class GameWrapper extends React.Component<GameWrapperProps, GameWrapperState> {
 
-	public render(): JSX.Element {
+	constructor(props:GameWrapperProps, context:any) {
+		super(props, context);
+		this.state = {
+			warnAboutBrowser: !(bowser.webkit || (bowser as any).blink || bowser.gecko),
+		};
+	}
+
+	public render():JSX.Element {
+
+		// warn about unsupported browsers
+		if (this.state.warnAboutBrowser) {
+			return (
+				<LoadingScreen>
+					<p><small>Sorry, your browser is out of standard right now.<br/>Please consider using Chrome or Firefox instead.</small></p>
+					<p>
+						<a href="#" onClick={(e) => {e.preventDefault(); this.setState({warnAboutBrowser: true})}}>
+							<small>Continue anyway</small>
+						</a>
+					</p>
+				</LoadingScreen>
+			);
+		}
 
 		// check if we even have a game state
 		var gameState = this.props.state;
@@ -53,14 +84,14 @@ class GameWrapper extends React.Component<GameWrapperProps, {}> {
 		}
 
 		// wait for start
-		if(typeof this.props.hasStarted !== "undefined" && !this.props.hasStarted) {
-			return this.renderLoadingScreen(players.map((player: PlayerEntity) => {
+		if (typeof this.props.hasStarted !== "undefined" && !this.props.hasStarted) {
+			return this.renderLoadingScreen(players.map((player:PlayerEntity) => {
 				return player.name;
 			}).toArray());
 		}
 
 		// find an end turn option
-		var endTurnOption = gameState.options.filter(function(option: Option): boolean {
+		var endTurnOption = gameState.options.filter(function (option:Option):boolean {
 			return !!option && option.type === OptionType.END_TURN;
 		}).first();
 
@@ -87,18 +118,18 @@ class GameWrapper extends React.Component<GameWrapperProps, {}> {
 					assetDirectory={this.props.assetDirectory}
 					cardArtDirectory={this.props.cardArtDirectory}
 					hideCards={this.props.hideCards}
-					/>;
+				/>;
 			default:
 				return <div>Unsupported player count ({playerCount}).</div>
 		}
 	}
 
-	private renderLoadingScreen(players?: string[]) {
-		return <LoadingScreen players={players} />;
+	private renderLoadingScreen(players?:string[]) {
+		return <LoadingScreen players={players}/>;
 	}
 
-	public static filterByCardType(cardType: CardType): (entity: Entity) => boolean {
-		return function(entity: Entity): boolean {
+	public static filterByCardType(cardType:CardType):(entity:Entity) => boolean {
+		return function (entity:Entity):boolean {
 			return !!entity && entity.getCardType() === cardType;
 		};
 	};

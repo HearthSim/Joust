@@ -60,7 +60,7 @@ class LoadingScreen extends React.Component<LoadingScreenProps, {}> {
 		}
 
 		return <div className="joust-loading-screen">
-			<p><MessagePicker interval={2} messages={this.messages} /></p>
+			{this.props.children ? this.props.children: <p><MessagePicker interval={2} messages={this.messages} /></p>}
 			<p className="participants">{players}</p>
 		</div>;
 	}
