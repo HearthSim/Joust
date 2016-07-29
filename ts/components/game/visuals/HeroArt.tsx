@@ -1,16 +1,29 @@
 import * as React from "react";
-import {CardClass, CardType, GameTag, Zone} from "../../../enums";
+import {CardClass, GameTag, Zone} from "../../../enums";
 import Entity from "../../../Entity";
 import CardArt from "./CardArt";
 import {EntityProps} from "../../../interfaces";
-import InPlayCardArt from "./InPlayCardArt";
 
 interface HeroArtProps extends EntityProps {
-	secrets: Immutable.Map<number, Entity>;
+	secrets:Immutable.Map<number, Entity>;
 }
 
 class HeroArt extends React.Component<HeroArtProps, {}> {
-	public render(): JSX.Element {
+
+
+	shouldComponentUpdate(nextProps:HeroArtProps, nextState:{}, nextContext:any):boolean {
+		return (
+			nextProps.entity !== this.props.entity ||
+			nextProps.damage !== this.props.damage ||
+			nextProps.healing !== this.props.healing ||
+			nextProps.controller !== this.props.controller ||
+			nextProps.assetDirectory !== this.props.assetDirectory ||
+			nextProps.cardArtDirectory !== this.props.cardArtDirectory ||
+			nextProps.secrets !== this.props.secrets
+		);
+	}
+
+	public render():JSX.Element {
 		var images = [];
 		var entity = this.props.entity;
 
@@ -69,13 +82,13 @@ class HeroArt extends React.Component<HeroArtProps, {}> {
 			});
 		}
 
-		if(this.props.damage && this.props.damage > 0) {
+		if (this.props.damage && this.props.damage > 0) {
 			images.push({
 				image: "damage.png",
 				classes: ["dmg"]
 			});
 		}
-		else if(this.props.healing && this.props.healing > 0) {
+		else if (this.props.healing && this.props.healing > 0) {
 			images.push({
 				image: "healing.png",
 				classes: ["heal"]
@@ -84,9 +97,9 @@ class HeroArt extends React.Component<HeroArtProps, {}> {
 
 		return (
 			<CardArt layers={images} scale={1} square={true} margin={false}
-				assetDirectory={this.props.assetDirectory}
-				cardArtDirectory={this.props.cardArtDirectory}
-				/>
+					 assetDirectory={this.props.assetDirectory}
+					 cardArtDirectory={this.props.cardArtDirectory}
+			/>
 		);
 	}
 }
