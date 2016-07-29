@@ -150,7 +150,7 @@
 		height: 100%;
 	}
 
-	.stats {
+	> .stats {
 		font-size: 1.3em;
 
 		.atk {
@@ -175,6 +175,24 @@
 			left: 34%;
 			top: 37%;
 			font-size: 1.5em;
+		}
+	}
+
+	&.hovering {
+		z-index: 70;
+	}
+
+	> .minion-mouse-over {
+		display: block;
+		position: absolute;
+		height: 130%;
+		z-index: 100;
+		top: -20%;
+		left: 100%;
+
+		> .card {
+			animation: none;
+			z-index: 101;
 		}
 	}
 }

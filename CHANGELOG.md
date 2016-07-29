@@ -3,6 +3,9 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- Display full card when hovering minions
+
 ### Changed
 - Reduce the pause after card is drawn
 - Tweak tooltips

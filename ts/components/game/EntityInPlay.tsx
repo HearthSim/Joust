@@ -84,6 +84,9 @@ abstract class EntityInPlay<P extends EntityInPlayProps> extends React.Component
 				}
 			}
 		}
+		if (this.state.isHovering) {
+			classNames.push('hovering');
+		}
 		return classNames;
 	}
 

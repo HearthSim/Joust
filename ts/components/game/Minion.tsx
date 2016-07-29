@@ -1,15 +1,12 @@
 import * as React from "react";
 import EntityInPlay from "./EntityInPlay";
-import {EntityInPlayProps} from "../../interfaces";
-import {GameTag, MetaDataType} from "../../enums";
+import {EntityInPlayProps, CardData} from "../../interfaces";
+import {MetaDataType} from "../../enums";
 import InPlayCardArt from "./visuals/InPlayCardArt";
-
 import Attack from "./stats/Attack";
 import Health from "./stats/Health";
 import Damage from "./stats/Damage";
 import Healing from "./stats/Healing";
-
-import {CardData} from "../../interfaces";
 import MetaData from "../../MetaData";
 import GameStateDescriptor from "../../state/GameStateDescriptor";
 import Card from "./Card";
@@ -24,7 +21,7 @@ class Minion extends EntityInPlay<EntityInPlayProps> {
 		let entity = this.props.entity;
 		let cardId = entity.cardId;
 
-		let data: CardData = {};
+		let data:CardData = {};
 		if (this.props.cards && this.props.cards.has(cardId)) {
 			data = this.props.cards.get(cardId);
 		}
@@ -33,10 +30,10 @@ class Minion extends EntityInPlay<EntityInPlayProps> {
 		var healing = 0;
 
 		if (this.props.descriptors) {
-			this.props.descriptors.forEach((descriptor: GameStateDescriptor) => {
-				descriptor.metaData.forEach((metaData: MetaData) => {
+			this.props.descriptors.forEach((descriptor:GameStateDescriptor) => {
+				descriptor.metaData.forEach((metaData:MetaData) => {
 					if (metaData.entities.has(entity.id)) {
-						switch(metaData.type) {
+						switch (metaData.type) {
 							case MetaDataType.DAMAGE:
 								damage += metaData.data;
 								break;
@@ -49,8 +46,9 @@ class Minion extends EntityInPlay<EntityInPlayProps> {
 			})
 		}
 
-		return [
-			<InPlayCardArt key="art"
+		let components = [
+			<InPlayCardArt
+				key="art"
 				entity={entity}
 				controller={this.props.controller}
 				cards={this.props.cards}
@@ -58,7 +56,7 @@ class Minion extends EntityInPlay<EntityInPlayProps> {
 				cardArtDirectory={this.props.cardArtDirectory}
 				damage={damage}
 				healing={healing}
-				/>,
+			/>,
 			<div key="stats" className="stats">
 				<Attack attack={entity.getAtk() } default={data.attack}/>
 				<Health health={entity.getHealth() } damage={entity.getDamage()} default={data.health}/>
@@ -66,6 +64,22 @@ class Minion extends EntityInPlay<EntityInPlayProps> {
 				{healing != 0 ? <Healing healing={healing}/> : null}
 			</div>
 		];
+
+		if (this.state.isHovering) {
+			components.push(<div key="hover" className="minion-mouse-over">
+				<Card
+					entity={entity}
+					assetDirectory={this.props.assetDirectory}
+					cards={this.props.cards}
+					isHidden={false}
+					controller={this.props.controller}
+					cardArtDirectory={this.props.cardArtDirectory}
+					option={null}
+					defaultStats={true}
+				/></div>);
+		}
+
+		return components;
 	}
 }
 
