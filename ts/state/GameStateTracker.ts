@@ -101,7 +101,11 @@ class GameStateTracker extends Stream.Transform {
 						timeStep = 1;
 					}
 					else if(this.lastDescriptorType === BlockType.PLAY) {
-						timeStep = 1;
+						// pause after playing a card
+						if(!this.gameState.descriptor) {
+							// ...if not in another block (Yogg-Sarron)
+							timeStep = 1;
+						}
 					}
 					else if(!this.hasSteppedThisBlock) {
 						timeStep = 2;
