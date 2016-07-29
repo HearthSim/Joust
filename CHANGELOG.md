@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Changed
+- Reduce the pause after card is drawn
+- Tweak tooltips
+
 ### Fixed
 - Fix release URLs in Changelog
 

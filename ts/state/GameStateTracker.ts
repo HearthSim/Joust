@@ -71,7 +71,7 @@ class GameStateTracker extends Stream.Transform {
 									break;
 								case Step.MAIN_ACTION:
 									// after card is drawn
-									timeStep = 2;
+									timeStep = 1.5;
 									break;
 							}
 						}
