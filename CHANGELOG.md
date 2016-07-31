@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [0.3.0] - 2016-07-31
 ### Added
 - Highlight cards that are swapped during Mulligan
 - Display full card when hovering minions
@@ -42,5 +44,6 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Code for initial development release
 
-[Unreleased]: https://github.com/HearthSim/joust/compare/0.2.0...HEAD
+[Unreleased]: https://github.com/HearthSim/joust/compare/0.3.0...HEAD
 [0.2.0]: https://github.com/HearthSim/joust/compare/0.1.0...0.2.0
+[0.3.0]: https://github.com/HearthSim/joust/compare/0.2.0...0.3.0
