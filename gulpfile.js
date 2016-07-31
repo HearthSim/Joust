@@ -1,37 +1,37 @@
-var gulp = require('gulp');
-var gutil = require('gulp-util');
-var plumber = require('gulp-plumber');
+const gulp = require("gulp");
+const gutil = require("gulp-util");
+const plumber = require("gulp-plumber");
 
-var sourcemaps = require('gulp-sourcemaps');
-var less = require('gulp-less');
-var postcss = require('gulp-postcss');
-var autoprefixer = require('autoprefixer');
-var cssnano = require('cssnano');
+const sourcemaps = require("gulp-sourcemaps");
+const less = require("gulp-less");
+const postcss = require("gulp-postcss");
+const autoprefixer = require("autoprefixer");
+const cssnano = require("cssnano");
 
-var _ = require('lodash');
-var through = require('through2');
+const _ = require("lodash");
+const through = require("through2");
 
-var webpack = require('webpack');
-var webpackStream = require('webpack-stream');
+const webpack = require("webpack");
+const webpackStream = require("webpack-stream");
 
-const filter = require('gulp-filter');
-var livereload = require('gulp-livereload');
+const filter = require("gulp-filter");
+const livereload = require("gulp-livereload");
 
-var gitDescribe = require('git-describe').gitDescribe;
+const gitDescribe = require("git-describe").gitDescribe;
 
-var download = require('gulp-download');
+const download = require("gulp-download");
 
-gulp.task('default', ['watch']);
+gulp.task("default", ["watch"]);
 
-gulp.task('compile', ['compile:web']);
-gulp.task('compile:web', ['compile:scripts:web', 'compile:styles', 'html', 'assets']);
-gulp.task('compile:dev', ['compile:scripts:dev', 'compile:styles', 'html', 'assets']);
+gulp.task("compile", ["compile:web"]);
+gulp.task("compile:web", ["compile:scripts:web", "compile:styles", "html", "assets"]);
+gulp.task("compile:dev", ["compile:scripts:dev", "compile:styles", "html", "assets"]);
 
-gulp.task('compile:scripts', ['compile:scripts:web']);
+gulp.task("compile:scripts", ["compile:scripts:web"]);
 
-gulp.task('compile:scripts:web', ['env:set-release'], function () {
-	var config = require('./webpack.config.js');
-	config.target = 'web';
+gulp.task("compile:scripts:web", ["env:set-release"], function () {
+	var config = require("./webpack.config.js");
+	config.target = "web";
 	config.plugins = config.plugins.concat([
 		new webpack.optimize.UglifyJsPlugin({
 			comments: false,
@@ -44,118 +44,114 @@ gulp.task('compile:scripts:web', ['env:set-release'], function () {
 			JOUST_RELEASE: JSON.stringify(process.env.JOUST_RELEASE)
 		})
 	]);
-	config.devtool = '#source-map';
-	return gulp.src('ts/run.tsx')
+	config.devtool = "#source-map";
+	return gulp.src("ts/run.tsx")
 		.pipe(webpackStream(config))
-		.pipe(gulp.dest('dist/'));
+		.pipe(gulp.dest("dist/"));
 });
 
-gulp.task('compile:scripts:dev', function () {
-	return gulp.src('ts/run.tsx')
-		.pipe(webpackStream(require('./webpack.config.js')))
-		.pipe(gulp.dest('dist/'));
+gulp.task("compile:scripts:dev", function () {
+	return gulp.src("ts/run.tsx")
+		.pipe(webpackStream(require("./webpack.config.js")))
+		.pipe(gulp.dest("dist/"));
 });
 
-gulp.task('compile:styles', function () {
-	return gulp.src('less/joust.less')
+gulp.task("compile:styles", function () {
+	return gulp.src("less/joust.less")
 		.pipe(plumber(function(err) {
 			gutil.log(gutil.colors.red(err));
 			this.emit("end", new gutil.PluginError(err));
 		}))
 		.pipe(sourcemaps.init())
-		.pipe(less({'strictMath': true}))
+		.pipe(less({"strictMath": true}))
 		.pipe(postcss([
 			autoprefixer({
-				browsers: ['last 2 versions'],
+				browsers: ["last 2 versions"],
 				remove: false
 			}),
 			cssnano()
 		]))
-		.pipe(sourcemaps.write('.'))
-		.pipe(gulp.dest('dist/'))
-		.pipe(filter(['**/*.css']))
+		.pipe(sourcemaps.write("."))
+		.pipe(gulp.dest("dist/"))
+		.pipe(filter(["**/*.css"]))
 		.pipe(livereload());
 });
 
-gulp.task('env:set-release', function (cb) {
+gulp.task("env:set-release", function (cb) {
 	gitDescribe({
 		match: null,
 	}, function(err, gitInfo) {
 		var release = gitInfo.semverString;
-		gutil.log('Setting JOUST_RELEASE to', gutil.colors.green(release));
+		gutil.log("Setting JOUST_RELEASE to", gutil.colors.green(release));
 		process.env.JOUST_RELEASE = release;
 		cb();
 	});
 });
 
-gulp.task('html', function () {
-	return gulp.src('html/**/*.html')
-		.pipe(gulp.dest('dist/'));
+gulp.task("html", function () {
+	return gulp.src("html/**/*.html")
+		.pipe(gulp.dest("dist/"));
 });
 
-gulp.task('assets', function () {
-	return gulp.src('assets/**/*.*')
-		.pipe(gulp.dest('dist/assets/'));
+gulp.task("assets", function () {
+	return gulp.src("assets/**/*.*")
+		.pipe(gulp.dest("dist/assets/"));
 });
 
-gulp.task('watch', ['watch:styles', 'watch:html', 'watch:assets'], function () {
+gulp.task("watch", ["watch:styles", "watch:html", "watch:assets"], function () {
 	livereload.listen();
 	gutil.log(gutil.colors.yellow("Warning: not compiling or watching TypeScript files"));
-	gutil.log(gutil.colors.yellow("Use 'webpack --watch -d' for development"));
+	gutil.log(gutil.colors.yellow('Use "webpack --watch -d" for development'));
 });
 
-gulp.task('watch:scripts', function () {
-	gutil.log(gutil.colors.red("Deprecated: use 'webpack -d --watch' instead"));
+gulp.task("watch:styles", ["compile:styles"], function () {
+	return gulp.watch(["less/**/*.less"], ["compile:styles"]);
 });
 
-gulp.task('watch:styles', ['compile:styles'], function () {
-	return gulp.watch(['less/**/*.less'], ['compile:styles']);
+gulp.task("watch:html", ["html"], function () {
+	return gulp.watch(["html/**/*.html"], ["html"]);
 });
 
-gulp.task('watch:html', ['html'], function () {
-	return gulp.watch(['html/**/*.html'], ['html']);
+gulp.task("watch:assets", ["assets"], function () {
+	return gulp.watch(["assets/**/*.*"], ["assets"]);
 });
 
-gulp.task('watch:assets', ['assets'], function () {
-	return gulp.watch(['assets/**/*.*'], ['assets']);
+gulp.task("enums", function () {
+	gutil.log(gutil.colors.red('"gulp enums" has been split up in "gulp:enums:download" (preferred) and "gulp:enums:generate" (legacy)'));
 });
 
-gulp.task('enums', function () {
-	gutil.log(gutil.colors.red("'gulp enums' has been split up in 'gulp:enums:download' (preferred) and 'gulp:enums:generate' (legacy)"));
+gulp.task("enums:download", function () {
+	download("https://api.hearthstonejson.com/v1/enums.d.ts").pipe(gulp.dest("ts/"))
 });
 
-gulp.task('enums:download', function () {
-	download('https://api.hearthstonejson.com/v1/enums.d.ts').pipe(gulp.dest('ts/'));
+gulp.task("enums:download:json", function () {
+	download("https://api.hearthstonejson.com/v1/enums.json").pipe(gulp.dest("./"));
 });
 
-gulp.task('enums:download:json', function () {
-	download('https://api.hearthstonejson.com/v1/enums.json').pipe(gulp.dest('./'));
-});
+gulp.task("enums:generate:download", ["enums:download:json", "enums:generate"]);
 
-gulp.task('enums:generate:download', ['enums:download:json', 'enums:generate']);
-
-gulp.task('enums:generate', function () {
-	return gulp.src(process.env.ENUMS_JSON || 'enums.json')
+gulp.task("enums:generate", function () {
+	return gulp.src(process.env.ENUMS_JSON || "enums.json")
 		.pipe(through.obj(function (file, encoding, callback) {
-			gutil.log('Reading enums from', gutil.colors.magenta(file.path));
+			gutil.log("Reading enums from", gutil.colors.magenta(file.path));
 			var json = String(file.contents);
-			var out = '// this file was automatically generated by `gulp enums`\n';
-			out += '// enums.json can be obtained from https://api.hearthstonejson.com/v1/enums.json\n';
+			var out = "// this file was automatically generated by `gulp enums`\n";
+			out += "// enums.json can be obtained from https://api.hearthstonejson.com/v1/enums.json\n";
 			var enums = JSON.parse(json);
 			_.each(enums, function (keys, name) {
-				out += '\nexport const enum ' + name + ' {\n';
+				out += "\nexport const enum " + name + " {\n";
 				foo = [];
 				_.each(keys, function (value, key) {
-					foo.push('\t' + key + ' = ' + value);
+					foo.push("\t" + key + " = " + value);
 				});
-				out += foo.join(',\n') + '\n';
-				out += '}\n';
-				gutil.log('Found enum', "'" + gutil.colors.cyan(name) + "'", 'with', gutil.colors.magenta(foo.length, 'members'));
+				out += foo.join(",\n") + "\n";
+				out += "}\n";
+				gutil.log("Found enum", '"' + gutil.colors.cyan(name) + '"', "with", gutil.colors.magenta(foo.length, "members"));
 			});
-			file.path = 'enums.d.ts';
+			file.path = "enums.d.ts";
 			file.contents = new Buffer(out);
-			gutil.log('Writing to', gutil.colors.magenta(file.path));
+			gutil.log("Writing to", gutil.colors.magenta(file.path));
 			callback(null, file);
 		}))
-		.pipe(gulp.dest('ts/'));
+		.pipe(gulp.dest("ts/"));
 });
