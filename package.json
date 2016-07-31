@@ -5,7 +5,7 @@
   "main": "main.js",
   "scripts": {
     "test": "karma start --single-run --no-auto-watch karma.conf.js",
-    "install": "typings install"
+    "install": "concurrently 'typings install' 'gulp enums:download'"
   },
   "author": "Benedict Etzel <developer@beheh.de>",
   "license": "UNLICENSED",
@@ -16,11 +16,13 @@
     "babel-preset-es2015": "^6.9.0",
     "babel-preset-react": "^6.11.1",
     "bowser": "^1.4.3",
+    "concurrently": "^2.2.0",
     "cssnano": "^3.7.2",
     "filereader-stream": "^1.0.0",
     "fullscreen": "^1.1.0",
     "git-describe": "^3.0.2",
     "gulp": "^3.9.1",
+    "gulp-download": "0.0.1",
     "gulp-filter": "^4.0.0",
     "gulp-less": "^3.1.0",
     "gulp-livereload": "^3.8.1",

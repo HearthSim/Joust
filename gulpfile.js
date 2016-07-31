@@ -19,6 +19,8 @@ var livereload = require('gulp-livereload');
 
 var gitDescribe = require('git-describe').gitDescribe;
 
+var download = require('gulp-download');
+
 gulp.task('default', ['watch']);
 
 gulp.task('compile', ['compile:web']);
@@ -119,6 +121,20 @@ gulp.task('watch:assets', ['assets'], function () {
 });
 
 gulp.task('enums', function () {
+	gutil.log(gutil.colors.red("'gulp enums' has been split up in 'gulp:enums:download' (preferred) and 'gulp:enums:generate' (legacy)"));
+});
+
+gulp.task('enums:download', function () {
+	download('https://api.hearthstonejson.com/v1/enums.d.ts').pipe(gulp.dest('ts/'));
+});
+
+gulp.task('enums:download:json', function () {
+	download('https://api.hearthstonejson.com/v1/enums.json').pipe(gulp.dest('./'));
+});
+
+gulp.task('enums:generate:download', ['enums:download:json', 'enums:generate']);
+
+gulp.task('enums:generate', function () {
 	return gulp.src(process.env.ENUMS_JSON || 'enums.json')
 		.pipe(through.obj(function (file, encoding, callback) {
 			gutil.log('Reading enums from', gutil.colors.magenta(file.path));

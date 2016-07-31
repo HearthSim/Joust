@@ -15,6 +15,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Tweak tooltips
 - Remove the pause between cards played by Yogg-Sarron
 - Increase width of play/pause button
+- Automatically download enums.d.ts on `npm install`
 
 ### Fixed
 - Fix release URLs in Changelog

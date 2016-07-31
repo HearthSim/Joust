@@ -2,10 +2,11 @@ node_modules
 typings
 dist
 
-enums.json
+enums.d.ts
 
 # outdated, but keep around
 less/**/*.css
 less/**/*.css.map
 ts/**/*.js
 ts/**/*.js.map
+enums.json
