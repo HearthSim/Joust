@@ -3,7 +3,7 @@ import HSReplayDecoder from "../protocol/HSReplayDecoder";
 import Websocket from "websocket-stream";
 import KettleDecoder from "../protocol/KettleDecoder";
 import KettleEncoder from "../protocol/KettleEncoder";
-import {InteractiveBackend} from "../interfaces";
+import {InteractiveBackend, MulliganOracle} from "../interfaces";
 import {Socket} from "net";
 import FileReaderStream from "filereader-stream";
 import GameStateScrubber from "../state/GameStateScrubber";
@@ -16,7 +16,7 @@ import * as async from "async";
 interface SetupWidgetProps extends React.Props<any> {
 	defaultHostname: string;
 	defaultPort: number;
-	onSetup: (sink: GameStateSink, interaction?: InteractiveBackend, scrubber?: GameStateScrubber, oracle?: CardOracle) => void;
+	onSetup: (sink: GameStateSink, interaction?: InteractiveBackend, scrubber?: GameStateScrubber, cardOracle?: CardOracle, mulliganOracle?: MulliganOracle) => void;
 }
 
 interface SetupWidgetState {
@@ -122,7 +122,7 @@ class SetupWidget extends React.Component<SetupWidgetProps, SetupWidgetState> {
 			.pipe(new GameStateSink()); // gamestate
 
 
-		this.props.onSetup(sink, null, scrubber, decoder);
+		this.props.onSetup(sink, null, scrubber, decoder, decoder);
 	}
 
 	protected onSubmitKettle(e): void {

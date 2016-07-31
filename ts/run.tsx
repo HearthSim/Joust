@@ -228,6 +228,7 @@ class Launcher {
 		this.opts.sink = sink;
 		this.opts.scrubber = scrubber;
 		this.opts.cardOracle = decoder;
+		this.opts.mulliganOracle = decoder;
 
 		this.render();
 

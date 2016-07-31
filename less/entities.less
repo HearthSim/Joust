@@ -42,8 +42,11 @@
 			clip-path: url(assets/clip-paths.svg#inhand-weapon-clip);
 			-webkit-clip-path: circle(50% at 50% 50%);
 		}
-		.inhand-base, .inhand-legendary {
+		.inhand-base, .inhand-legendary, .inhand-mulligan {
 			height: 100%;
+		}
+		.inhand-mulligan {
+			z-index: 55;
 		}
 	}
 
@@ -92,6 +95,10 @@
 
 	&:hover {
 		z-index: 51;
+
+		.inhand-mulligan {
+			opacity: 0.5;
+		}
 	}
 }
 

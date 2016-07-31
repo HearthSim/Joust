@@ -131,8 +131,16 @@ export interface CardOracleProps {
 	cardOracle?: Immutable.Map<number, string>;
 }
 
+export interface MulliganOracleProps {
+	mulliganOracle?: Immutable.Map<number, boolean>;
+}
+
 export interface CardOracle extends EventEmitter {
 	getCardMap(): Immutable.Map<number, string>;
+}
+
+export interface MulliganOracle extends EventEmitter {
+	getMulligans(): Immutable.Map<number, boolean>;
 }
 
 export interface AssetDirectoryProps {
@@ -154,7 +162,8 @@ export interface GameWidgetProps extends AssetDirectoryProps, CardArtDirectory, 
 	scrubber?: StreamScrubber;
 	getImageURL?: (cardId: string) => string;
 	exitGame?: () => void;
-	cardOracle: CardOracle;
+	cardOracle?: CardOracle;
+	mulliganOracle?: MulliganOracle;
 	width?: any;
 	height?: any;
 	debug?: boolean;

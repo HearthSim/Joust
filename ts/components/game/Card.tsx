@@ -14,6 +14,7 @@ interface CardProps extends EntityProps, OptionProps, React.Props<any> {
 	style?: any;
 	isHidden?: boolean;
 	defaultStats?: boolean;
+	mulligan?: boolean;
 }
 
 class Card extends React.Component<CardProps, {}> {
@@ -43,9 +44,12 @@ class Card extends React.Component<CardProps, {}> {
 		if (!entity.cardId || (this.props.isHidden && !canBeRevealed)) {
 			return (
 				<div className={classNames.join(' ')}>
-					<InHandCardArt hidden={true} entity={this.props.entity}
+					<InHandCardArt
+						hidden={true}
+						entity={this.props.entity}
 						assetDirectory={this.props.assetDirectory}
 						cardArtDirectory={this.props.cardArtDirectory}
+						mulligan={this.props.mulligan}
 						/>
 				</div>
 			);
@@ -70,6 +74,9 @@ class Card extends React.Component<CardProps, {}> {
 		}
 		if (entity.getTag(GameTag.CHOOSE_BOTH)) {
 			classNames.push('choose-both');
+		}
+		if (this.props.mulligan) {
+			classNames.push('mulligan');
 		}
 
 		var title = entity.cardId;
@@ -173,6 +180,7 @@ class Card extends React.Component<CardProps, {}> {
 					cards={this.props.cards}
 					assetDirectory={this.props.assetDirectory}
 					cardArtDirectory={this.props.cardArtDirectory}
+				    mulligan={this.props.mulligan}
 					/>
 				<Cost cost={!this.props.isHidden && !this.props.defaultStats ? entity.getCost() : defaultCost} default={defaultCost}/>
 				<h1>{title}</h1>

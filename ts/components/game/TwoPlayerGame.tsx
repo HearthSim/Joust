@@ -2,8 +2,8 @@ import * as React from "react";
 import * as Immutable from "immutable";
 
 import {
-	EntityProps, OptionCallbackProps, CardDataProps, CardOracleProps, AssetDirectoryProps, CardArtDirectory,
-	GameStateDescriptorStackProps, HideCardsProps
+	EntityProps, OptionCallbackProps, CardDataProps, CardOracleProps, AssetDirectoryProps,
+	GameStateDescriptorStackProps, HideCardsProps, MulliganOracleProps
 } from "../../interfaces";
 import Entity from "../../Entity";
 import Player from "./Player";
@@ -14,8 +14,7 @@ import {GameTag} from "../../enums";
 import Choice from "../../Choice";
 import Choices from "../../Choices";
 
-//noinspection TypeScriptUnresolvedVariable
-interface TwoPlayerGameProps extends EntityProps, CardDataProps, CardOracleProps, OptionCallbackProps,
+interface TwoPlayerGameProps extends EntityProps, CardDataProps, CardOracleProps, MulliganOracleProps, OptionCallbackProps,
 	AssetDirectoryProps,GameStateDescriptorStackProps, HideCardsProps, React.Props<any> {
 	player1: PlayerEntity;
 	player2: PlayerEntity;
@@ -45,6 +44,7 @@ class TwoPlayerGame extends React.Component<TwoPlayerGameProps, {}> {
 					choices={this.props.choices.get(player1.id)}
 					optionCallback={this.props.optionCallback}
 					cardOracle={this.props.cardOracle}
+					mulliganOracle={this.props.mulliganOracle}
 					cards={this.props.cards}
 					descriptors={this.props.descriptors}
 					assetDirectory={this.props.assetDirectory}
@@ -62,6 +62,7 @@ class TwoPlayerGame extends React.Component<TwoPlayerGameProps, {}> {
 					choices={this.props.choices.get(player2.id)}
 					optionCallback={this.props.optionCallback}
 					cardOracle={this.props.cardOracle}
+					mulliganOracle={this.props.mulliganOracle}
 					cards={this.props.cards}
 					descriptors={this.props.descriptors}
 					assetDirectory={this.props.assetDirectory}

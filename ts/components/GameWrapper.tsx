@@ -5,7 +5,8 @@ import {
 	InteractiveBackend,
 	CardOracleProps,
 	AssetDirectoryProps,
-	CardArtDirectory
+	CardArtDirectory,
+	MulliganOracleProps
 } from "../interfaces";
 import GameState from "../state/GameState";
 import TwoPlayerGame from "./game/TwoPlayerGame";
@@ -16,7 +17,7 @@ import PlayerEntity from "../Player";
 import LoadingScreen from "./LoadingScreen";
 import * as bowser from "bowser";
 
-interface GameWrapperProps extends CardDataProps, CardOracleProps, AssetDirectoryProps, CardArtDirectory, HideCardsProps, React.Props<any> {
+interface GameWrapperProps extends CardDataProps, CardOracleProps, MulliganOracleProps, AssetDirectoryProps, CardArtDirectory, HideCardsProps, React.Props<any> {
 	state:GameState;
 	interaction?:InteractiveBackend;
 	swapPlayers?:boolean;
@@ -114,6 +115,7 @@ class GameWrapper extends React.Component<GameWrapperProps, GameWrapperState> {
 					optionCallback={this.props.interaction && this.props.interaction.sendOption.bind(this.props.interaction) }
 					cards={this.props.cards}
 					cardOracle={this.props.cardOracle}
+					mulliganOracle={this.props.mulliganOracle}
 					descriptors={this.props.state.descriptors}
 					assetDirectory={this.props.assetDirectory}
 					cardArtDirectory={this.props.cardArtDirectory}

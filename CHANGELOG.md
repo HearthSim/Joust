@@ -4,6 +4,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- Highlight cards that are swapped during Mulligan
 - Display full card when hovering minions
 - Show warning to users of IE/Edge due to clip-path not being supported
 - Automatically run `typings install` on `npm install`

@@ -19,11 +19,11 @@ import Card from "./Card";
 import {Zone, CardType, GameTag, ChoiceType, Mulligan, PlayState, BlockType} from "../../enums"
 import {
 	OptionCallbackProps, CardDataProps, CardOracleProps, AssetDirectoryProps, CardArtDirectory,
-	GameStateDescriptorStackProps, HideCardsProps
+	GameStateDescriptorStackProps, HideCardsProps, MulliganOracleProps
 } from "../../interfaces";
 import GameStateDescriptor from "../../state/GameStateDescriptor";
 
-interface PlayerProps extends OptionCallbackProps, CardDataProps, CardOracleProps, AssetDirectoryProps,
+interface PlayerProps extends OptionCallbackProps, CardDataProps, CardOracleProps, MulliganOracleProps, AssetDirectoryProps,
 	CardArtDirectory,GameStateDescriptorStackProps, HideCardsProps, React.Props<any> {
 	player: PlayerEntity;
 	entities: Immutable.Map<number, Immutable.Map<number, Entity>>;
@@ -129,6 +129,7 @@ class Player extends React.Component<PlayerProps, {}> {
 			choices = <Choices entities={choiceEntities}
 							   cards={this.props.cards}
 							   cardOracle={this.props.cardOracle}
+							   mulliganOracle={this.props.mulliganOracle}
 							   isTop={this.props.isTop}
 							   assetDirectory={this.props.assetDirectory}
 							   cardArtDirectory={this.props.cardArtDirectory}

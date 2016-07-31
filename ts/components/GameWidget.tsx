@@ -15,6 +15,7 @@ interface GameWidgetState {
 	isFullscreen?: boolean;
 	isFullscreenAvailable?: boolean;
 	cardOracle?: Immutable.Map<number, string>;
+	mulliganOracle?: Immutable.Map<number, boolean>;
 	cards?: Immutable.Map<string, CardData>;
 	isRevealingCards?: boolean;
 	isLogVisible?: boolean;
@@ -24,6 +25,7 @@ interface GameWidgetState {
 class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 	private cb;
 	private cardOracleCb;
+	private mulliganOracleCb;
 	private ref: HTMLDivElement;
 	private fullscreen: Fullscreen;
 	private hasCheckedForSwap = false;
@@ -38,6 +40,7 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 			isFullscreenAvailable: Fullscreen.available(),
 			isRevealingCards: typeof this.props.startRevealed === "undefined" ? true : this.props.startRevealed,
 			cardOracle: null,
+			mulliganOracle: null,
 			isLogVisible: false,
 			isLogMounted: false
 		};
@@ -53,8 +56,12 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 		this.fullscreen.on('attain', this.onAttainFullscreen.bind(this));
 		this.fullscreen.on('release', this.onReleaseFullscreen.bind(this));
 		this.cardOracleCb = this.updateCardOracle.bind(this);
+		this.mulliganOracleCb = this.updateMulliganOracle.bind(this);
 		if (this.props.cardOracle) {
 			this.props.cardOracle.on('cards', this.cardOracleCb);
+		}
+		if (this.props.cardOracle) {
+			this.props.mulliganOracle.on('mulligans', this.mulliganOracleCb);
 		}
 	}
 
@@ -74,6 +81,7 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 		this.fullscreen.removeAllListeners('attain');
 		this.fullscreen.removeAllListeners('release');
 		this.props.cardOracle.removeListener('cards', this.cardOracleCb);
+		this.props.cardOracle.removeListener('mulligans', this.mulliganOracleCb);
 	}
 
 	protected onClickExit(e): void {
@@ -101,6 +109,10 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 
 	protected updateCardOracle(cards: Immutable.Map<number, string>) {
 		this.setState({ cardOracle: cards });
+	}
+
+	protected updateMulliganOracle(mulligans: Immutable.Map<number, boolean>) {
+		this.setState({ mulliganOracle: mulligans });
 	}
 
 	public setCards(cards: CardData[]) {
@@ -178,6 +190,7 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 						swapPlayers={isSwapped}
 						hasStarted={this.props.scrubber.canInteract()}
 						cardOracle={this.state.cardOracle}
+						mulliganOracle={this.state.mulliganOracle}
 						hideCards={!this.state.isRevealingCards} />;
 		let log = <Log key="log"
 					   state={this.state.gameState}

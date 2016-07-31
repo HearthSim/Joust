@@ -9,6 +9,7 @@ interface InHandCardArtProps extends EntityProps {
 	hidden: boolean;
 	cardType?: number;
 	cardClass?: number;
+	mulligan?: boolean;
 }
 
 class InHandCardArt extends React.Component<InHandCardArtProps, {}> {
@@ -69,6 +70,13 @@ class InHandCardArt extends React.Component<InHandCardArtProps, {}> {
 				image: "inhand_minion_legendary"
 					+ (entity.isPremium() ? "_premium" : "") + ".png",
 				classes: ["inhand-legendary"]
+			});
+		}
+
+		if (this.props.mulligan) {
+			images.push({
+				image: "inhand_mulligan.png",
+				classes: ["inhand-mulligan"]
 			});
 		}
 

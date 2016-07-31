@@ -8,9 +8,9 @@ import AddEntityMutator from "../state/mutators/AddEntityMutator";
 import Option from "../Option";
 import Entity from "../Entity";
 import Player from "../Player";
-import {GameTag, BlockType} from "../enums";
+import {GameTag, BlockType, ChoiceType} from "../enums";
 import ShowEntityMutator from "../state/mutators/ShowEntityMutator";
-import {CardOracle} from "../interfaces";
+import {CardOracle, MulliganOracle} from "../interfaces";
 import Choice from "../Choice";
 import SetChoicesMutator from "../state/mutators/SetChoicesMutator";
 import ClearChoicesMutator from "../state/mutators/ClearChoicesMutator";
@@ -29,7 +29,7 @@ interface PlayerDetails {
 	legendRank?: number;
 }
 
-class HSReplayDecoder extends Stream.Transform implements CardOracle {
+class HSReplayDecoder extends Stream.Transform implements CardOracle, MulliganOracle {
 
 	private sax: Sax.SAXStream;
 	private gameId: number;
@@ -37,6 +37,7 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 	private nodeStack: Tag[];
 	private timeOffset: number;
 	private cardIds: Immutable.Map<number, string>;
+	private mulligans: Immutable.Map<number, boolean>;
 	private clearOptionsOnTimestamp: boolean;
 	private playerMap: Immutable.Map<string, PlayerDetails>;
 	private choiceMap: Immutable.Map<number, number>;
@@ -54,6 +55,7 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 		this.nodeStack = [];
 		this.timeOffset = null;
 		this.cardIds = Immutable.Map<number, string>();
+		this.mulligans = Immutable.Map<number, boolean>();
 		this.clearOptionsOnTimestamp = false;
 		this.playerMap = Immutable.Map<string, PlayerDetails>();
 		this.choiceMap = Immutable.Map<number, number>();
@@ -296,19 +298,29 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 			case 'Choices':
 				{
 					let entity = this.resolveEntityId(node.attributes["entity"]);
-					let choices = new Choices(node.attributes["choices"], +node.attributes["type"]);
+					let type = +node.attributes["type"];
+					let choices = new Choices(node.attributes["choices"], type);
 					mutator = new SetChoicesMutator(
 						entity,
 						choices
 					);
 					// save player entity in choice map
 					this.choiceMap = this.choiceMap.set(+node.attributes["id"], entity);
-
+					// setup mulligans
+					if (type === ChoiceType.MULLIGAN) {
+						(node.attributes["choices"] as Immutable.Map<string, Choice>).forEach((choice:Choice) => {
+							this.mulligans = this.mulligans.set(choice.entityId, true);
+						});
+					}
 				}
 				break;
 			case 'ChosenEntities':
 			case 'SendChoices':
 				let entity: number = null;
+				let type = null;
+				if (node.attributes["type"]) {
+					type = node.attributes["type"];
+				}
 				if (node.attributes["entity"]) {
 					entity = node.attributes["entity"] && this.resolveEntityId(node.attributes["entity"]);
 				}
@@ -321,6 +333,13 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 				if (entity !== null) {
 					mutator = new ClearChoicesMutator(entity);
 				}
+				// we can't detect type here, so check the mulligan map
+				(node.attributes["choices"] as Immutable.Map<string, Choice>).forEach((choice:Choice) => {
+					if(this.mulligans.get(choice.entityId, null) === true) {
+						this.mulligans = this.mulligans.set(choice.entityId, false);
+					}
+					this.emit("mulligans", this.mulligans);
+				});
 				break;
 			case 'Action':
 			case 'Block':
@@ -397,6 +416,10 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle {
 
 	public getCardMap(): Immutable.Map<number, string> {
 		return this.cardIds;
+	}
+
+	public getMulligans(): Immutable.Map<number, boolean> {
+		return this.mulligans;
 	}
 }
 

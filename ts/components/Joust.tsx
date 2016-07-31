@@ -3,7 +3,7 @@ import * as React from "react";
 import SetupWidget from "./SetupWidget";
 import GameWidget from "./GameWidget";
 import HearthstoneJSON from "../metadata/HearthstoneJSON";
-import {InteractiveBackend} from "../interfaces";
+import {InteractiveBackend, MulliganOracle} from "../interfaces";
 import GameStateSink from "../state/GameStateSink";
 import GameStateScrubber from "../state/GameStateScrubber";
 import {CardOracle} from "../interfaces";
@@ -20,7 +20,8 @@ interface JoustState {
 	sink?: GameStateSink;
 	scrubber?: GameStateScrubber;
 	interaction?: InteractiveBackend;
-	oracle?: CardOracle;
+	cardOracle?: CardOracle;
+	mulliganOracle?: MulliganOracle;
 }
 
 class Joust extends React.Component<{}, JoustState> {
@@ -35,7 +36,8 @@ class Joust extends React.Component<{}, JoustState> {
 			sink: null,
 			interaction: null,
 			scrubber: null,
-			oracle: null
+			cardOracle: null,
+			mulliganOracle: null,
 		};
 	}
 
@@ -61,7 +63,8 @@ class Joust extends React.Component<{}, JoustState> {
 						interaction={this.state.interaction}
 						scrubber={this.state.scrubber}
 						exitGame={this.exitGame.bind(this) }
-						cardOracle={this.state.oracle}
+						cardOracle={this.state.cardOracle}
+						mulliganOracle={this.state.mulliganOracle}
 						assetDirectory={'./assets/'}
 						cardArtDirectory={null}
 						ref={this.onMountGameWidget.bind(this) }
@@ -94,13 +97,14 @@ class Joust extends React.Component<{}, JoustState> {
 		}
 	}
 
-	protected onSetup(sink: GameStateSink, interaction?: InteractiveBackend, scrubber?: GameStateScrubber, oracle?: CardOracle): void {
+	protected onSetup(sink: GameStateSink, interaction?: InteractiveBackend, scrubber?: GameStateScrubber, cardOracle?: CardOracle, mulliganOracle?: MulliganOracle): void {
 		this.setState({
 			currentWidget: Widget.GAME,
 			sink: sink,
 			interaction: interaction,
 			scrubber: scrubber,
-			oracle: oracle
+			cardOracle: cardOracle,
+			mulliganOracle: mulliganOracle,
 		});
 	}
 
@@ -114,7 +118,8 @@ class Joust extends React.Component<{}, JoustState> {
 			sink: null,
 			interaction: null,
 			scrubber: null,
-			oracle: null
+			cardOracle: null,
+			mulliganOracle: null,
 		});
 	}
 }
