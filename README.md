@@ -7,7 +7,7 @@ A web viewer for HearthStone games and replays, written in React.
 
 ## Requirements
 
-- Node.js ~v5.7.0
+- Node.js ~v6.3 (v5.7 is still supported)
 - Compiling: `npm install -g gulp webpack`
 - Development: `npm install -g electron-prebuilt gulp webpack`
 
