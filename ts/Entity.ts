@@ -9,7 +9,7 @@ class Entity {
 	}
 
 	get id():number {
-		return this._id;
+		return +this._id;
 	}
 
 	get cardId():string {
