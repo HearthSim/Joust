@@ -6,6 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Display full card when hovering minions
 - Show warning to users of IE/Edge due to clip-path not being supported
+- Automatically run `typings install` on `npm install`
 
 ### Changed
 - Reduce the pause after card is drawn
