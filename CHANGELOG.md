@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ## Added
 - Display keybindings in scrubber tooltips
+- `Launcher.cardArt()` and `.assets()` can now accept a callback
 
 ## [0.3.1] - 2016-08-01
 ### Fixed

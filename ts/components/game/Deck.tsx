@@ -30,7 +30,7 @@ class Deck extends EntityList<DeckProps> {
 		return (
 			<div className={classNames.join(' ') } title={tooltip}>
 				<figure>
-					<img src={this.props.assetDirectory + 'images/cardback.png'} />
+					<img src={this.props.assetDirectory('images/cardback.png')} />
 					<figcaption>{this.props.entities.size || -this.props.fatigue}</figcaption>
 				</figure>
 			</div>);

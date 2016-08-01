@@ -37,8 +37,8 @@ class Launcher {
 				console.error(message);
 			}
 		} as any;
-		this.opts.assetDirectory = 'assets/';
-		this.opts.cardArtDirectory = "https://static.hsreplay.net/static/joust/card-art/";
+		this.opts.assetDirectory = (asset) => "assets/" + asset;
+		this.opts.cardArtDirectory = (cardId) => "https://static.hsreplay.net/static/joust/card-art/" + cardId + ".jpg";
 	}
 
 	public width(width:number):Launcher {
@@ -51,8 +51,15 @@ class Launcher {
 		return this;
 	}
 
-	public assets(assets:string):Launcher {
-		this.opts.assetDirectory = assets;
+	public assets(assets:string|((asset:string) => string)):Launcher {
+		let cb = null;
+		if (typeof assets === "string") {
+			cb = (asset:string) => assets + asset;
+		}
+		else {
+			cb = assets;
+		}
+		this.opts.assetDirectory = cb;
 		return this;
 	}
 
@@ -61,8 +68,15 @@ class Launcher {
 		return this;
 	}
 
-	public cardArt(url:string):Launcher {
-		this.opts.cardArtDirectory = url;
+	public cardArt(url:string|((cardId:string) => string)):Launcher {
+		let cb = null;
+		if (typeof url === "string") {
+			cb = (cardId:string) => url + cardId + ".jpg";
+		}
+		else {
+			cb = url;
+		}
+		this.opts.cardArtDirectory = cb;
 		return this;
 	}
 

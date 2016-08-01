@@ -15,7 +15,7 @@ class TexturePreloader extends Stream.Writable {
 							'inplay_minion_taunt', 'inplay_minion_divine_shield', 'inplay_minion_stealth',
 							'inplay_weapon', 'inplay_weapon_dome', 'healing', 'damage', 'skull'];
 
-	constructor(public cardArtDirectory?: string, public assetDirectory?: string) {
+	constructor(public cardArt?: (cardId: string) => string, public assets?: (asset: string) => string) {
 		super({objectMode: true});
 		this.consume();
 	}
@@ -46,7 +46,7 @@ class TexturePreloader extends Stream.Writable {
 			return;
 		}
 
-		if((!this.cardArtDirectory || !this.cardArtQueue.length) && (!this.assetDirectory || !this.assetQueue.length)) {
+		if((!this.cardArt || !this.cardArtQueue.length) && (!this.assets || !this.assetQueue.length)) {
 			return;
 		}
 
@@ -58,12 +58,12 @@ class TexturePreloader extends Stream.Writable {
 		};
 
 		let file = this.assetQueue.shift();
-		if (!!this.assetDirectory && file) {
-			file = this.assetDirectory + 'images/' + file + '.png';
+		if (!!this.assets && file) {
+			file = this.assets("images/" + file + ".png");
 		}
 		else {
 			let cardId = this.cardArtQueue.shift();
-			file = this.cardArtDirectory + cardId + '.jpg';
+			file = this.cardArt(cardId);
 		}
 
 		if (this.fired[file]) {
@@ -84,7 +84,7 @@ class TexturePreloader extends Stream.Writable {
 	}
 
 	public canPreload(): boolean {
-		return !!this.assetDirectory || !!this.cardArtDirectory;
+		return !!this.assets || !!this.cardArt;
 	}
 
 	public isDone(): boolean {

@@ -165,7 +165,7 @@ class Player extends React.Component<PlayerProps, {}> {
 		var tray = (
 			<div className="tray">
 				<span>{available}/{resources}</span>
-				<img src={this.props.assetDirectory + 'images/mana_crystal.png'} className={crystalClassNames.join(' ') }></img>
+				<img src={this.props.assetDirectory("images/mana_crystal.png")} className={crystalClassNames.join(' ') }></img>
 			</div>
 		);
 

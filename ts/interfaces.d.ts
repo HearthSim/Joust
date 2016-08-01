@@ -144,11 +144,11 @@ export interface MulliganOracle extends EventEmitter {
 }
 
 export interface AssetDirectoryProps {
-	assetDirectory: string;
+	assetDirectory: (asset: string) => string;
 }
 
 export interface CardArtDirectory {
-	cardArtDirectory: string;
+	cardArtDirectory: (cardId: string) => string;
 }
 
 export interface QueryCardMetadata {

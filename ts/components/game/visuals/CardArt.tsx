@@ -33,7 +33,6 @@ class CardArt extends React.Component<CardArtProps, {}> {
 		);
 	}
 
-	private static baseArtExt:string = ".jpg";
 	private static imageDirectory:string = "images/";
 
 	private createStyle():any {
@@ -59,13 +58,13 @@ class CardArt extends React.Component<CardArtProps, {}> {
 		var imgSrc = null;
 		if (item.isArt) {
 			if (item.image !== null && this.props.cardArtDirectory && this.props.cardArtDirectory.length > 0) {
-				imgSrc = this.props.cardArtDirectory + item.image + CardArt.baseArtExt;
+				imgSrc = this.props.cardArtDirectory(item.image);
 			}
 			else {
-				imgSrc = this.props.assetDirectory + CardArt.imageDirectory + "portrait.jpg";
+				imgSrc = this.props.assetDirectory(CardArt.imageDirectory + "portrait.jpg");
 			}
 		} else {
-			imgSrc = this.props.assetDirectory + CardArt.imageDirectory + item.image;
+			imgSrc = this.props.assetDirectory(CardArt.imageDirectory + item.image);
 		}
 
 		return (
