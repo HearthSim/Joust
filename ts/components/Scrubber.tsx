@@ -168,14 +168,14 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 			</Tooltipper>;
 
 		var reveal = this.props.isRevealingCards ?
-			<Tooltipper title="Hide cards">
+			<Tooltipper title="Hide cards" desktop="%s (X)">
 				<button onClick={this.props.onClickHideCards}><i className="joust-fa joust-fa-eye-slash"></i></button>
 			</Tooltipper> :
-			<Tooltipper title="Reveal cards">
+			<Tooltipper title="Reveal cards" desktop="%s (X)">
 				<button onClick={this.props.onClickRevealCards} disabled={!this.props.canRevealCards}><i className="joust-fa joust-fa-eye"></i></button>
 			</Tooltipper>;
 
-		var swap = <Tooltipper title="Swap players">
+		var swap = <Tooltipper title="Swap players" desktop="%s (C)">
 			<button onClick={this.props.swapPlayers} disabled={!this.state.canInteract}><i className="joust-fa joust-fa-unsorted"></i></button>
 		</Tooltipper>;
 
@@ -186,7 +186,7 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 		return (
 			<div className="joust-scrubber">
 				{this.state.canRewind && !this.state.canPlay ? restart : playpause}
-				<Tooltipper title="Playback speed"><SpeedSelector speed={this.state.speed}
+				<Tooltipper title="Playback speed" desktop="%s (W/S)"><SpeedSelector speed={this.state.speed}
 							   speeds={Scrubber.SPEEDS}
 							   selectSpeed={(speed: number) => this.selectSpeed(speed)}
 							   disabled={!this.state.canInteract}

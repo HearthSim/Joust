@@ -5,10 +5,13 @@ import MouseEventHandler = __React.MouseEventHandler;
 interface TooltipperProps extends React.Props<any> {
 	title?:string;
 	align?:"left" | "center" | "right";
+	desktop?:string;
+	mobile?:string;
 }
 
 interface TooltipperState {
 	isHovering?:boolean;
+	mobile?:boolean;
 }
 
 export default class Tooltipper extends React.Component<TooltipperProps, TooltipperState> {
@@ -16,11 +19,35 @@ export default class Tooltipper extends React.Component<TooltipperProps, Tooltip
 		super(props, context);
 		this.state = {
 			isHovering: false,
+			mobile: false,
 		}
 	}
 
-	protected startHovering(e) {
-		this.setState({isHovering: true});
+	protected get mobile() {
+		return this.state.mobile;
+	}
+
+	protected get desktop() {
+		return !this.mobile;
+	}
+
+	protected get tooltip() {
+		let tooltip = this.props.title || "";
+		if (this.props.mobile && this.mobile) {
+			tooltip = this.props.mobile.replace(/%s/, tooltip);
+		}
+		else if (this.props.desktop && this.desktop) {
+			tooltip = this.props.desktop.replace(/%s/, tooltip);
+		}
+		return tooltip;
+	}
+
+	protected startHovering(e, mobile?:boolean) {
+		let state:TooltipperState = {isHovering: true};
+		if (typeof mobile !== undefined) {
+			state.mobile = mobile;
+		}
+		this.setState(state);
 	}
 
 	protected stopHovering(e) {
@@ -33,11 +60,11 @@ export default class Tooltipper extends React.Component<TooltipperProps, Tooltip
 			classNames.push(this.props.align);
 		}
 		return <div className="joust-tooltipper"
-					onMouseOver={(e) => {this.startHovering(e)}}
-					onTouchStart={(e) => {this.startHovering(e)}}
+					onMouseOver={(e) => {this.startHovering(e, false)}}
+					onTouchStart={(e) => {this.startHovering(e, true)}}
 					onMouseOut={(e) => {this.stopHovering(e)}}
 					onTouchEnd={(e) => {this.stopHovering(e)}}>
-			{this.state.isHovering ? <div className={classNames.join(" ")}><span>{this.props.title}</span></div> : null}
+			{this.state.isHovering ? <div className={classNames.join(" ")}><span>{this.tooltip}</span></div> : null}
 			{this.props.children}
 		</div>;
 	}
