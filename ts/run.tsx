@@ -92,17 +92,17 @@ class Launcher {
 		return this;
 	}
 
-	public onTurn(callback:(turn:number) => void) {
+	public onTurn(callback:(turn:number) => void):Launcher {
 		this.turnCb = callback;
 		return this;
 	}
 
-	public onToggleReveal(callback:(reveal:boolean) => void) {
+	public onToggleReveal(callback:(reveal:boolean) => void):Launcher {
 		this.opts.onToggleReveal = callback;
 		return this;
 	}
 
-	public onToggleSwap(callback:(swap:boolean) => void) {
+	public onToggleSwap(callback:(swap:boolean) => void):Launcher {
 		this.opts.onToggleSwap = callback;
 		return this;
 	}
