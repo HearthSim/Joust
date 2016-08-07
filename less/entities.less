@@ -192,18 +192,9 @@
 		z-index: 70;
 	}
 
-	> .minion-mouse-over {
-		display: block;
-		position: absolute;
+	.mouse-over {
 		height: 130%;
-		z-index: 100;
 		top: -20%;
-		left: 100%;
-
-		> .card {
-			animation: none;
-			z-index: 101;
-		}
 	}
 }
 
@@ -299,7 +290,7 @@
 		}
 	}
 
-	.cost {
+	> .cost {
 		position: absolute;
 		top: 4%;
 		left: 40%;
@@ -308,6 +299,11 @@
 
 	&.exhausted {
 		font-size: 0;
+	}
+
+	.mouse-over {
+		height: 200%;
+		top: -50%;
 	}
 }
 
@@ -342,4 +338,18 @@
 
 .card, .minion {
 	filter: drop-shadow(-3px 2px 2px rgba(0,0,0,0.4));
+}
+
+.entity {
+	.mouse-over {
+		display: block;
+		position: absolute;
+		z-index: 100;
+		left: 100%;
+
+		> .card {
+			animation: none;
+			z-index: 101;
+		}
+	}
 }

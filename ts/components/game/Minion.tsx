@@ -66,7 +66,7 @@ class Minion extends EntityInPlay<EntityInPlayProps> {
 		];
 
 		if (this.state.isHovering) {
-			components.push(<div key="hover" className="minion-mouse-over">
+			components.push(<div key="hover" className="mouse-over">
 				<Card
 					entity={entity}
 					assetDirectory={this.props.assetDirectory}
