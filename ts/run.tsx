@@ -168,6 +168,18 @@ class Launcher {
 		this.opts.events(event, values, tags);
 	}
 
+	public get replayDuration():number {
+		return this.opts.scrubber.getDuration();
+	}
+
+	public get secondsWatched():number {
+		return (this.opts.scrubber as GameStateScrubber).secondsWatched;
+	}
+
+	public get percentageWatched():number {
+		return (this.opts.scrubber as GameStateScrubber).percentageWatched;
+	}
+
 	public fromUrl(url:string):void {
 		var decoder = new HSReplayDecoder();
 		decoder.debug = this.opts.debug;

@@ -7,6 +7,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Display keybindings in scrubber tooltips
 - `Launcher.cardArt()` and `.assets()` can now accept a callback
 - Ensure fullscreen does not error on unsupported devices (#123)
+- Launcher: Add `.duration`, `.secondsWatched` and `.percentageWatched`
 
 ## [0.3.1] - 2016-08-01
 ### Fixed
