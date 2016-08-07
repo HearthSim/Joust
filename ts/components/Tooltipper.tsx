@@ -1,6 +1,8 @@
 import * as React from "react";
 import MouseEvent = __React.MouseEvent;
 import MouseEventHandler = __React.MouseEventHandler;
+import * as bowser from "bowser";
+
 
 interface TooltipperProps extends React.Props<any> {
 	title?:string;
@@ -19,7 +21,7 @@ export default class Tooltipper extends React.Component<TooltipperProps, Tooltip
 		super(props, context);
 		this.state = {
 			isHovering: false,
-			mobile: false,
+			mobile: bowser.ios || bowser.android || bowser.windowsphone,
 		}
 	}
 
@@ -42,12 +44,8 @@ export default class Tooltipper extends React.Component<TooltipperProps, Tooltip
 		return tooltip;
 	}
 
-	protected startHovering(e, mobile?:boolean) {
-		let state:TooltipperState = {isHovering: true};
-		if (typeof mobile !== undefined) {
-			state.mobile = mobile;
-		}
-		this.setState(state);
+	protected startHovering(e) {
+		this.setState({isHovering: true});
 	}
 
 	protected stopHovering(e) {
@@ -60,8 +58,8 @@ export default class Tooltipper extends React.Component<TooltipperProps, Tooltip
 			classNames.push(this.props.align);
 		}
 		return <div className="joust-tooltipper"
-					onMouseOver={(e) => {this.startHovering(e, false)}}
-					onTouchStart={(e) => {this.startHovering(e, true)}}
+					onMouseOver={(e) => {this.startHovering(e)}}
+					onTouchStart={(e) => {this.startHovering(e)}}
 					onMouseOut={(e) => {this.stopHovering(e)}}
 					onTouchEnd={(e) => {this.stopHovering(e)}}>
 			{this.state.isHovering ? <div className={classNames.join(" ")}><span>{this.tooltip}</span></div> : null}
