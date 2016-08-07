@@ -9,6 +9,7 @@ class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 
 	protected history: GameStateHistory;
 	protected inhibitor: StreamScrubberInhibitor;
+	protected timeSeen: boolean[];
 
 	constructor(history?: GameStateHistory, startFromTurn?: number, opts?: Stream.DuplexOptions) {
 		opts = opts || {};
@@ -26,6 +27,7 @@ class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 		this.hasEmittedReady = false;
 		this.hasStarted = false;
 		this.startFromTurn = startFromTurn || null;
+		this.timeSeen = [];
 	}
 
 	protected initialTime: number;
@@ -125,6 +127,8 @@ class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 		}
 
 		let lastTurn = this.currentTurn;
+
+		this.timeSeen[Math.floor(this.currentTime)] = true;
 
 		if (this.isPlaying() && this.speed != 0) {
 			let now = new Date().getTime();
@@ -288,6 +292,20 @@ class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 		else {
 			this.previousTurn();
 		}
+	}
+
+	public get secondsWatched():number {
+		let count = -1; // 0 is always set
+		for (let i = 0; i < this.timeSeen.length; i++) {
+			if (this.timeSeen[i]) {
+				count++;
+			}
+		}
+		return count;
+	}
+
+	public get percentageWatched():number {
+		return 100 / Math.floor(this.getDuration()) * this.secondsWatched;
 	}
 }
 
