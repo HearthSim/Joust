@@ -1,32 +1,33 @@
 import * as React from "react";
+import * as _ from "lodash";
 import GameState from "../state/GameState";
-import LogItem from "./LogItem";
-import { CardDataProps, CardOracleProps, GameStateDiff, HistoryEntry, LogItemData, LineType, CardData } from "../interfaces";
+import EventLogLine from "./EventLogLine";
+import {CardDataProps, CardOracleProps, GameStateDiff, HistoryEntry, EventLogItemData, LineType} from "../interfaces";
 import {Zone, CardType, GameTag, BlockType, MetaDataType, Mulligan, PlayState, Step} from "../enums";
 import Player from "../Player";
 import Entity from "../Entity";
 
-interface LogProps extends CardDataProps, CardOracleProps, React.Props<any> {
+interface EventLogProps extends CardDataProps, CardOracleProps, React.Props<any> {
 	state:GameState;
 	tail:HistoryEntry;
-	currentTime: number;
-	isHidden?: boolean;
+	currentTime:number;
+	isHidden?:boolean;
 }
 
-interface LogState {
-	lines:LogItemData[];
+interface EventLogState {
+	lines:EventLogItemData[];
 }
 
-class Log extends React.Component<LogProps, LogState> {
+class EventLog extends React.Component<EventLogProps, EventLogState> {
 
-	constructor(props:LogProps) {
+	constructor(props:EventLogProps) {
 		super(props);
 		this.state = {
 			lines: this.parseHistory(props.tail)
 		};
 	}
 
-	public shouldComponentUpdate(nextProps:LogProps, nextState:LogState) {
+	public shouldComponentUpdate(nextProps:EventLogProps, nextState:EventLogState) {
 		return (
 			(this.props.tail && this.props.tail.state !== nextProps.tail.state) ||
 			this.props.currentTime !== nextProps.currentTime ||
@@ -36,7 +37,7 @@ class Log extends React.Component<LogProps, LogState> {
 		);
 	}
 
-	public componentWillReceiveProps(nextProps:LogProps) {
+	public componentWillReceiveProps(nextProps:EventLogProps) {
 		if (this.props.tail !== nextProps.tail) {
 			this.setState({lines: this.parseHistory(nextProps.tail)});
 		}
@@ -55,11 +56,11 @@ class Log extends React.Component<LogProps, LogState> {
 		return this.simplify(lines);
 	}
 
-	private simplify(input: LogItemData[]): LogItemData[] {
+	private simplify(input:EventLogItemData[]):EventLogItemData[] {
 		let output = [];
 		for (let i = 0; i < input.length - 1; i++) {
 			let curr = input[i];
-			let next = input[i+1];
+			let next = input[i + 1];
 			if (curr.targetId == next.targetId) {
 				if (curr.type == LineType.Summon && next.type == LineType.Remove || curr.type == LineType.Remove && next.type == LineType.Summon) {
 					let entity = curr.type == LineType.Summon ? curr : next;
@@ -70,8 +71,8 @@ class Log extends React.Component<LogProps, LogState> {
 					});
 					i++;
 				}
-				else if(curr.entityId == next.entityId && (curr.type == LineType.AttackBuff && next.type == LineType.HealthBuff
-						|| curr.type == LineType.HealthBuff && next.type == LineType.AttackBuff)) {
+				else if (curr.entityId == next.entityId && (curr.type == LineType.AttackBuff && next.type == LineType.HealthBuff
+					|| curr.type == LineType.HealthBuff && next.type == LineType.AttackBuff)) {
 					output.push({
 						type: LineType.StatsBuff, time: curr.time, entityId: curr.entityId,
 						targetId: curr.targetId, indent: next.indent,
@@ -91,36 +92,36 @@ class Log extends React.Component<LogProps, LogState> {
 				output.push(curr);
 			}
 		}
-		if(input.length) {
+		if (input.length) {
 			output.push(input[input.length - 1]);
 		}
 		return output;
 	}
 
 	public render():JSX.Element {
-		if(this.props.isHidden) {
+		if (this.props.isHidden) {
 			return null;
 		}
 		let activeLines = this.state.lines.filter(lid => lid.time <= this.props.currentTime).length;
 		let offset = Math.max(0, activeLines - 20);
 		let lines = this.state.lines.slice(offset).map((lid, index) =>
-			<LogItem key={index + offset}
-					 first={!index}
-					 type={lid.type}
-					 entityId={lid.entityId}
-					 targetId={lid.targetId}
-					 player={lid.player}
-					 data={lid.data}
-					 data2={lid.data2}
-					 indent={lid.indent}
-					 inactive={lid.time >= this.props.currentTime}
-					 cardOracle={this.props.cardOracle}
-					 cards={this.props.cards} />);
+			<EventLogLine key={index + offset}
+						  first={!index}
+						  type={lid.type}
+						  entityId={lid.entityId}
+						  targetId={lid.targetId}
+						  player={lid.player}
+						  data={lid.data}
+						  data2={lid.data2}
+						  indent={lid.indent}
+						  inactive={lid.time >= this.props.currentTime}
+						  cardOracle={this.props.cardOracle}
+						  cards={this.props.cards}/>);
 
 		return <div className="joust-log" onContextMenu={(e) => e.stopPropagation()}>{lines}</div>;
 	}
 
-	private analyzeGameStateDiff(prev:GameState, curr:GameState):LogItemData[] {
+	private analyzeGameStateDiff(prev:GameState, curr:GameState):EventLogItemData[] {
 		let data = [];
 		let turn = this.getTurn(prev, curr);
 		if (turn) {
@@ -133,7 +134,7 @@ class Log extends React.Component<LogProps, LogState> {
 		return data;
 	}
 
-	private getTurn(prev:GameState, curr:GameState):LogItemData {
+	private getTurn(prev:GameState, curr:GameState):EventLogItemData {
 		let lid = this.newLogItemData(curr);
 		let cGame = curr.game;
 		let pGame = prev.game;
@@ -150,7 +151,7 @@ class Log extends React.Component<LogProps, LogState> {
 		return null;
 	}
 
-	private analyzeDescriptors(prev:GameState, curr:GameState):LogItemData[] {
+	private analyzeDescriptors(prev:GameState, curr:GameState):EventLogItemData[] {
 		let lid = this.newLogItemData(curr);
 		let lidStack = [];
 
@@ -204,7 +205,7 @@ class Log extends React.Component<LogProps, LogState> {
 		return lidStack;
 	}
 
-	private analyzeDiffs(state:GameState):LogItemData[] {
+	private analyzeDiffs(state:GameState):EventLogItemData[] {
 		let lid = this.newLogItemData(state);
 		let lidStack = [];
 		let cthunBuff = 0;
@@ -248,7 +249,7 @@ class Log extends React.Component<LogProps, LogState> {
 			}
 		});
 		if (cthunBuff == 3) {
-			let controller = state.getPlayers().find(x => !!x.getTag(GameTag.CURRENT_PLAYER));
+			let controller = _.find(state.getPlayers(), (x => !!x.getTag(GameTag.CURRENT_PLAYER)));
 			let cthunProxy = state.entities.find(x => x.cardId == 'OG_279' && x.getController() == controller.playerId);
 			if (cthunProxy) {
 				lid.entityId = cthunProxy.id;
@@ -260,7 +261,7 @@ class Log extends React.Component<LogProps, LogState> {
 		return lidStack;
 	}
 
-	private getLine(diff: GameStateDiff): LineType {
+	private getLine(diff:GameStateDiff):LineType {
 		switch (diff.tag) {
 			case GameTag.CONTROLLER:
 				return LineType.Steal;
@@ -275,7 +276,7 @@ class Log extends React.Component<LogProps, LogState> {
 		return null;
 	}
 
-	private getInPlayLine(diff: GameStateDiff, state: GameState, entity: Entity, lid: LogItemData): LineType {
+	private getInPlayLine(diff:GameStateDiff, state:GameState, entity:Entity, lid:EventLogItemData):LineType {
 		switch (diff.tag) {
 			case GameTag.ATK:
 				if (entity && lid.targetId) {
@@ -341,7 +342,7 @@ class Log extends React.Component<LogProps, LogState> {
 		return null;
 	}
 
-	private getZoneChangeLine(diff: GameStateDiff, cardType: CardType): LineType {
+	private getZoneChangeLine(diff:GameStateDiff, cardType:CardType):LineType {
 		switch (diff.previous) {
 			case Zone.PLAY:
 				switch (diff.current) {
@@ -378,7 +379,7 @@ class Log extends React.Component<LogProps, LogState> {
 				}
 				break;
 			case Zone.SETASIDE:
-				switch(diff.current) {
+				switch (diff.current) {
 					case Zone.HAND:
 						return LineType.Get;
 					case Zone.PLAY:
@@ -401,32 +402,34 @@ class Log extends React.Component<LogProps, LogState> {
 		return null;
 	}
 
-	private getCardData(state: GameState, id: number) {
+	private getCardData(state:GameState, id:number) {
 		let entity = state.getEntity(id);
 		return this.props.cards.get(entity ? entity.cardId : this.props.cardOracle.get(id));
 	}
 
-	private setLidEntity(lid: LogItemData, state: GameState, id: number) {
+	private setLidEntity(lid:EventLogItemData, state:GameState, id:number) {
 		if (id) {
 			lid.entityId = id;
 		}
 	}
 
-	private setLidTarget(lid: LogItemData, state: GameState, id: number) {
+	private setLidTarget(lid:EventLogItemData, state:GameState, id:number) {
 		if (id) {
 			lid.targetId = id;
 		}
 	}
 
-	private setLidPlayer(lid: LogItemData, state: GameState, predicate: (player: Player) => boolean) {
+	private setLidPlayer(lid:EventLogItemData, state:GameState, predicate:(player:Player) => boolean) {
 		let player = state.getPlayers().find(p => predicate(p));
 		lid.player = player && player.name;
 	}
 
-	private newLogItemData(state: GameState, entityId?: number): LogItemData {
-		return {type: 0, data: 0, time: state.time, entityId: entityId,
-			indent: state.descriptors.count() > 1 || state.game.getTag(GameTag.NEXT_STEP) == Step.MAIN_CLEANUP} as LogItemData;
+	private newLogItemData(state:GameState, entityId?:number):EventLogItemData {
+		return {
+			type: 0, data: 0, time: state.time, entityId: entityId,
+			indent: state.descriptors.count() > 1 || state.game.getTag(GameTag.NEXT_STEP) == Step.MAIN_CLEANUP
+		} as EventLogItemData;
 	}
 }
 
-export default Log;
+export default EventLog;

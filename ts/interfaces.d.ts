@@ -212,7 +212,7 @@ export interface GameStateDiff {
 	current: number;
 }
 
-export interface LogItemData {
+export interface EventLogItemData {
 	type: LineType;
 	time?: number;
 	entityId?: number;

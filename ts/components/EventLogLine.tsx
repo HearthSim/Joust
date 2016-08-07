@@ -1,19 +1,18 @@
 import * as React from "react";
-import * as _ from "lodash";
-import { CardDataProps, CardOracleProps, CardData, LogItemData,	LineType } from "../interfaces";
-import LogCard from "./LogCard";
+import {CardDataProps, CardOracleProps, CardData, EventLogItemData, LineType} from "../interfaces";
+import EventLogCard from "./EventLogCard";
 
-interface LogItemProps extends CardDataProps, CardOracleProps, LogItemData, React.Props<any> {
-	inactive: boolean;
-	first?: boolean;
+interface LogItemProps extends CardDataProps, CardOracleProps, EventLogItemData, React.Props<any> {
+	inactive:boolean;
+	first?:boolean;
 }
 
 interface LogItemState {
-	entityData?: CardData;
-	targetData?: CardData;
+	entityData?:CardData;
+	targetData?:CardData;
 }
 
-class LogItem extends React.Component<LogItemProps, LogItemState> {
+class EventLogLine extends React.Component<LogItemProps, LogItemState> {
 
 	constructor(props:LogItemProps) {
 		super(props);
@@ -42,10 +41,10 @@ class LogItem extends React.Component<LogItemProps, LogItemState> {
 
 	public componentWillReceiveProps(nextProps:LogItemProps):void {
 		let changes = {} as LogItemState;
-		if(this.props.entityId !== nextProps.entityId) {
+		if (this.props.entityId !== nextProps.entityId) {
 			changes.entityData = this.lookupEntity(nextProps.entityId);
 		}
-		if(this.props.targetId !== nextProps.targetId) {
+		if (this.props.targetId !== nextProps.targetId) {
 			changes.targetData = this.lookupEntity(nextProps.targetId);
 		}
 		this.setState(changes);
@@ -58,20 +57,22 @@ class LogItem extends React.Component<LogItemProps, LogItemState> {
 		if (this.props.inactive) {
 			classNames.push('inactive');
 		}
-		if(this.props.type == LineType.Turn) {
+		if (this.props.type == LineType.Turn) {
 			classNames.push('header');
-			if(!this.props.first) {
+			if (!this.props.first) {
 				characters += '\r\n';
 			}
 			characters += '# ';
 		}
-		else if(this.indent()) {
+		else if (this.indent()) {
 			classNames.push('indent');
 			characters += '\t';
 		}
 
-		let entity = <LogCard key="entity" cards={this.props.cards} cardId={this.props.cardOracle.get(this.props.entityId)} />;
-		let target= <LogCard key="target" cards={this.props.cards} cardId={this.props.cardOracle.get(this.props.targetId)} />;
+		let entity = <EventLogCard key="entity" cards={this.props.cards}
+								   cardId={this.props.cardOracle.get(this.props.entityId)}/>;
+		let target = <EventLogCard key="target" cards={this.props.cards}
+								   cardId={this.props.cardOracle.get(this.props.targetId)}/>;
 
 		let strings = {
 			'player': this.props.player,
@@ -84,12 +85,12 @@ class LogItem extends React.Component<LogItemProps, LogItemState> {
 		var words = this.parseLine(strings).split(' ');
 		var parts = words.map((word) => {
 			let parts = word.match(/^(.*)%(\w+)%(.*)$/);
-			if(parts === null) {
+			if (parts === null) {
 				return word;
 			}
 			let key = parts[2];
-			if(typeof strings[key] !== 'undefined') {
-				if(typeof strings[key] !== 'object') {
+			if (typeof strings[key] !== 'undefined') {
+				if (typeof strings[key] !== 'object') {
 					return parts[1] + strings[key] + parts[3];
 				}
 				else {
@@ -106,8 +107,8 @@ class LogItem extends React.Component<LogItemProps, LogItemState> {
 		);
 	}
 
-	private indent(): boolean {
-		switch(this.props.type) {
+	private indent():boolean {
+		switch (this.props.type) {
 			case LineType.Draw:
 			case LineType.DiscardFromDeck:
 			case LineType.Damage:
@@ -125,8 +126,8 @@ class LogItem extends React.Component<LogItemProps, LogItemState> {
 		return true;
 	}
 
-	private parseLine(strings: any): string {
-		switch(this.props.type) {
+	private parseLine(strings:any):string {
+		switch (this.props.type) {
 			case LineType.Turn:
 				return this.props.data == -1 ? "Mulligan" : "Turn %data%: %player%";
 			case LineType.Win:
@@ -165,8 +166,8 @@ class LogItem extends React.Component<LogItemProps, LogItemState> {
 				return "%entity% triggers";
 			case LineType.Damage:
 				return this.state.targetData && this.state.targetData.type == "WEAPON" ?
-							(this.state.entityData ? "%target% loses %data% durability from %entity%" : "%target% loses %data% durability")
-							: (this.props.data ? "%entity% damages %target% for %data%" : "%entity% hits %target%");
+					(this.state.entityData ? "%target% loses %data% durability from %entity%" : "%target% loses %data% durability")
+					: (this.props.data ? "%entity% damages %target% for %data%" : "%entity% hits %target%");
 			case LineType.Healing:
 				return "%entity% heals %target% for %data%";
 			case LineType.Remove:
@@ -203,26 +204,32 @@ class LogItem extends React.Component<LogItemProps, LogItemState> {
 			case LineType.Play:
 				const HERO_POWER = 'HERO_POWER';
 				return this.state.targetData ? (this.state.entityData && this.state.entityData.type === HERO_POWER ? "%player% uses %entity% targeting %target%" : "%player% plays %entity% targeting %target%")
-								  : this.state.entityData && this.state.entityData.type === HERO_POWER ? "%player% uses %entity%" : "%player% plays %entity%";
+					: this.state.entityData && this.state.entityData.type === HERO_POWER ? "%player% uses %entity%" : "%player% plays %entity%";
 			case LineType.StatsBuff:
 				strings['stats'] = '+' + this.props.data + '/+' + this.props.data2;
 				return this.state.targetData ? "%entity% gains %stats% from %target%" : "%entity% gains %stats%";
 		}
 	}
 
-	private getStatusKeyword(): string {
+	private getStatusKeyword():string {
 		switch (this.props.type) {
-			case LineType.DivineShield: return 'Divine Shield';
-			case LineType.Charge: return 'Charge';
-			case LineType.Taunt: return 'Taunt';
-			case LineType.Windfury: return 'Windfury';
-			case LineType.Stealth: return 'Stealth';
-			case LineType.CantBeDamaged: return 'Immunity';
+			case LineType.DivineShield:
+				return 'Divine Shield';
+			case LineType.Charge:
+				return 'Charge';
+			case LineType.Taunt:
+				return 'Taunt';
+			case LineType.Windfury:
+				return 'Windfury';
+			case LineType.Stealth:
+				return 'Stealth';
+			case LineType.CantBeDamaged:
+				return 'Immunity';
 		}
 	}
 
-	private lookupEntity(id: number):CardData {
-		if(!id || !this.props.cardOracle || !this.props.cards) {
+	private lookupEntity(id:number):CardData {
+		if (!id || !this.props.cardOracle || !this.props.cards) {
 			return;
 		}
 		let cardId = this.props.cardOracle.get(id);
@@ -230,4 +237,4 @@ class LogItem extends React.Component<LogItemProps, LogItemState> {
 	}
 }
 
-export default LogItem;
+export default EventLogLine;

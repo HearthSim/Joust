@@ -1,7 +1,7 @@
 import * as React from "react";
 import {GameWidgetProps, CardData} from "../interfaces";
 import Scrubber from "./Scrubber";
-import Log from "./Log";
+import EventLog from "./EventLog";
 import GameState from "../state/GameState";
 import GameWrapper from "./GameWrapper";
 import Fullscreen from "fullscreen";
@@ -192,13 +192,13 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 						cardOracle={this.state.cardOracle}
 						mulliganOracle={this.state.mulliganOracle}
 						hideCards={!this.state.isRevealingCards} />;
-		let log = <Log key="log"
-					   state={this.state.gameState}
-					   cards={this.state.cards}
-					   cardOracle={this.state.cardOracle}
-					   tail={this.props.scrubber.getHistory().tail}
-					   currentTime={this.props.scrubber.getCurrentTime()}
-					   isHidden={!this.state.isLogVisible} />;
+		let log = <EventLog key="log"
+							state={this.state.gameState}
+							cards={this.state.cards}
+							cardOracle={this.state.cardOracle}
+							tail={this.props.scrubber.getHistory().tail}
+							currentTime={this.props.scrubber.getCurrentTime()}
+							isHidden={!this.state.isLogVisible} />;
 
 		parts.push(
 			<div key="game-wrapper" className="game-wrapper">
