@@ -164,7 +164,7 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 				<button onClick={this.props.onClickMinimize}><i className="joust-fa joust-fa-compress"></i></button>
 			</Tooltipper> :
 			<Tooltipper title="Fullscreen" align="right">
-				<button onClick={this.props.onClickFullscreen} disabled={!this.props.isFullscreenAvailable}><i className="joust-fa joust-fa-expand"></i></button>
+				<button onClick={() => this.props.isFullscreenAvailable && this.props.onClickFullscreen()} disabled={!this.props.isFullscreenAvailable}><i className="joust-fa joust-fa-expand"></i></button>
 			</Tooltipper>;
 
 		var reveal = this.props.isRevealingCards ?
