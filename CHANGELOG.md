@@ -3,9 +3,11 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Fixed
+- Changelog formatting
 
 ## [0.4.0] - 2016-08-07
-## Added
+### Added
 - Display keybindings in scrubber tooltips
 - `Launcher.cardArt()` and `.assets()` can now accept a callback
 - Ensure fullscreen does not error on unsupported devices (#123)
