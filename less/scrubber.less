@@ -6,19 +6,22 @@
 	margin-top: @scrubber-margin-top;
 	user-select: none;
 
-	button {
-		width: @scrubber-height;
-
-		&.joust-scrubber-button-wide {
-			width: (@scrubber-height * 1.5);
-		}
-	}
-
-	.joust-tooltipper {
+	> button, > select, > .joust-tooltipper {
 		margin: 0 @scrubber-component-margin 0 0;
 
 		&:last-child {
 			margin-right: 0;
+		}
+	}
+
+	button {
+
+		&:not(.joust-scrubber-width-auto) {
+			width: @scrubber-height;
+		}
+
+		&.joust-scrubber-button-wide {
+			width: (@scrubber-height * 1.5);
 		}
 	}
 
