@@ -164,7 +164,6 @@ class Launcher {
 		if (!tags) {
 			tags = {};
 		}
-		tags["joust_release"] = JOUST_RELEASE;
 		this.opts.events(event, values, tags);
 	}
 
