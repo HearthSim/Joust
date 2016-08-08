@@ -5,7 +5,10 @@ import GameStateHistory from "./GameStateHistory";
 import {StreamScrubberInhibitor} from "../interfaces";
 import {GameTag} from "../enums";
 
-class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
+/**
+ * Interacts with the GameStateHistory by scrubbing over it, emitting whenever the historical GameState changes.
+ */
+export default class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 
 	protected history: GameStateHistory;
 	protected inhibitor: StreamScrubberInhibitor;
@@ -308,5 +311,3 @@ class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
 		return 100 / Math.floor(this.getDuration()) * this.secondsWatched;
 	}
 }
-
-export default GameStateScrubber;

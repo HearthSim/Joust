@@ -2,7 +2,7 @@ import * as Immutable from "immutable";
 import {BlockType} from "../enums";
 import MetaData from "../MetaData";
 
-class GameStateDescriptor {
+export default class GameStateDescriptor {
 
 	constructor(private _entityId: number, private _target: number, private _action: BlockType, private _metaData?: Immutable.Set<MetaData>) {
 		if(!this._metaData) {
@@ -26,5 +26,3 @@ class GameStateDescriptor {
 		return this._metaData;
 	}
 }
-
-export default GameStateDescriptor;

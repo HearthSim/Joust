@@ -4,7 +4,10 @@ import {Step} from "../enums";
 import * as Immutable from "immutable";
 import {HistoryEntry} from "../interfaces";
 
-class GameStateHistory {
+/**
+ * Organizes game states in a linear history.
+ */
+export default class GameStateHistory {
 	public tail: HistoryEntry = null; // earliest
 	public head: HistoryEntry = null; // latest
 	public pointer: HistoryEntry = null;
@@ -12,7 +15,7 @@ class GameStateHistory {
 
 	public push(gameState: GameState): void {
 		var time = gameState.time;
-		if (typeof time !== 'number') {
+		if (typeof time !== "number") {
 			// we cannot handle timeless game states
 			return;
 		}
@@ -73,5 +76,3 @@ class GameStateHistory {
 		return this.pointer.state;
 	}
 }
-
-export default GameStateHistory;

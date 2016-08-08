@@ -8,7 +8,10 @@ import {CardType} from "../enums";
 import GameStateDescriptor from "./GameStateDescriptor";
 import {GameStateDiff} from "../interfaces";
 
-class GameState {
+/**
+ * Fully describes a single game constellation ("snapshot")
+ */
+export default class GameState {
 
 	constructor(protected _entities?: Immutable.Map<number, Entity>,
 		protected _entityTree?: Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Entity>>>,
@@ -30,13 +33,13 @@ class GameState {
 		if (!this._optionTree) {
 			this._optionTree = Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Option>>>();
 		}
-		if (typeof (this._time) === 'undefined') {
+		if (typeof (this._time) === "undefined") {
 			this._time = null;
 		}
 		if (!this._choices) {
 			this._choices = Immutable.Map<number, Choices>();
 		}
-		if (typeof (this._descriptors) === 'undefined') {
+		if (typeof (this._descriptors) === "undefined") {
 			this._descriptors = Immutable.Stack<GameStateDescriptor>();
 		}
 		if (!this._diffs) {
@@ -102,5 +105,3 @@ class GameState {
 		return mutator.applyTo(this);
 	}
 }
-
-export default GameState;

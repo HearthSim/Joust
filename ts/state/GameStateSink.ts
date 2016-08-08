@@ -1,9 +1,10 @@
-import GameState from "./GameState";
 import * as Stream from "stream";
-import {StreamScrubber} from "../interfaces";
-import {EventEmitter} from "events";
 
-class GameStateSink extends Stream.Writable {
+
+/**
+ * Emits game states written to it as "gamestate" events.
+ */
+export default class GameStateSink extends Stream.Writable {
 	constructor() {
 		var opts: Stream.WritableOptions = {};
 		opts.objectMode = true;
@@ -11,9 +12,7 @@ class GameStateSink extends Stream.Writable {
 	}
 
 	_write(chunk: any, encoding: string, callback: Function) {
-		this.emit('gamestate', chunk);
+		this.emit("gamestate", chunk);
 		callback();
 	}
 }
-
-export default GameStateSink;

@@ -10,7 +10,11 @@ import EnrichDescriptorMutator from "./mutators/EnrichDescriptorMutator";
 import SetOptionsMutator from "./mutators/SetOptionsMutator";
 import TagChangeMutator from "./mutators/TagChangeMutator";
 
-class GameStateTracker extends Stream.Transform {
+/**
+ * Follows the initial game state by applying incoming mutators to the game state.
+ * Also increments game state times based on the incoming mutators.
+ */
+export default class GameStateTracker extends Stream.Transform {
 
 	public gameState:GameState;
 
@@ -29,6 +33,7 @@ class GameStateTracker extends Stream.Transform {
 		if (oldState !== this.gameState) {
 			this.push(this.gameState);
 			this.time(mutator as GameStateMutator);
+			//this.push(this.gameState);
 		}
 		callback();
 	}
@@ -172,5 +177,3 @@ class GameStateTracker extends Stream.Transform {
 		}
 	}
 }
-
-export default GameStateTracker;
