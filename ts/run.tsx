@@ -236,19 +236,19 @@ class Launcher {
 				decoder.pipe(preloader);
 			}
 		});
-		decoder.once('build', (build?:number) => {
+		decoder.once("build", (build?:number) => {
 			if (this.queryCardMetadata) {
 				let queryTime = Date.now();
 				this.queryCardMetadata(build || null, (cards:CardData[]) => {
 					this.ref.setCards(cards);
-					this.track('cards_received', {duration: (Date.now() - queryTime) / 1000}, {
+					this.track("metadata", {duration: (Date.now() - queryTime) / 1000}, {
 						cards: cards.length,
 						build: build
 					});
 				});
 			}
-		}).on('error', this.log.bind(this))
-			.once('error', () => this.track("decoder_any_error", {count: 1}));
+		}).on("error", this.log.bind(this))
+		.once("error", () => this.track("decoder_error", {count: 1}));
 
 		this.opts.sink = sink;
 		this.opts.scrubber = scrubber;
