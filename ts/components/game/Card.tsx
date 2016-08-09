@@ -154,6 +154,7 @@ class Card extends React.Component<CardProps, {}> {
 
 		switch (cardType) {
 			case CardType.MINION:
+				classNames.push("card-minion");
 				var attack = <Attack attack={!this.props.isHidden && !this.props.defaultStats ? entity.getAtk() : defaultAttack}
 					default={defaultAttack}/>;
 				var health = <Health health={!this.props.isHidden && !this.props.defaultStats ? entity.getHealth() : defaultHealth}
@@ -162,12 +163,19 @@ class Card extends React.Component<CardProps, {}> {
 				stats = <div className="stats">{attack}{health}</div>;
 				break;
 			case CardType.WEAPON:
+				classNames.push("card-weapon");
 				var attack = <Attack attack={!this.props.isHidden && !this.props.defaultStats ? entity.getAtk() : defaultAttack}
 					default={defaultAttack}/>;
 				var durability = <div
 					className="durability">{!this.props.isHidden && !this.props.defaultStats ? entity.getDurability() : defaultDurability}</div>;
 				stats = <div className="stats">{attack}{durability}</div>;
 				textStyle = { color: "white" };
+			case CardType.SPELL:
+				classNames.push("card-spell");
+				break;
+			case CardType.HERO_POWER:
+				classNames.push("card-hero-power");
+				break;
 		}
 
 		if (this.props.isHidden) {
