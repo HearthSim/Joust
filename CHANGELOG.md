@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Fixed
 - Changelog formatting
+- Remove proprietary fonts from source
 - Tweak text positioning
 
 ## [0.4.0] - 2016-08-07
