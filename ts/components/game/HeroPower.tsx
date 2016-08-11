@@ -4,13 +4,14 @@ import {EntityInPlayProps} from "../../interfaces";
 import EntityInPlay from "./EntityInPlay";
 import Cost from "./stats/Cost";
 import HeroPowerArt from "./visuals/HeroPowerArt";
+import {GameTag} from "../../enums";
 
 class HeroPower extends EntityInPlay<EntityInPlayProps> {
 	constructor() {
 		super('heroPower');
 	}
 
-	protected playWithClick(): boolean {
+	protected playWithClick():boolean {
 		return true;
 	}
 
@@ -21,10 +22,30 @@ class HeroPower extends EntityInPlay<EntityInPlayProps> {
 			defaultCost = data.cost;
 		}
 
-		return [,
-			<HeroPowerArt key="heroPower" entity={this.props.entity} cards={this.props.cards} assetDirectory={this.props.assetDirectory} cardArtDirectory={this.props.cardArtDirectory}/>,
-			<Cost key="cost" cost={this.props.entity.getCost() } default={defaultCost}/>
+		let entity = this.props.entity;
+		if (this.state.isHovering) {
+			entity = entity.setTag(GameTag.EXHAUSTED, 0);
+		}
+
+		let components = [
+			<HeroPowerArt
+				key="art"
+				entity={entity}
+				cards={this.props.cards}
+				assetDirectory={this.props.assetDirectory}
+				cardArtDirectory={this.props.cardArtDirectory}
+			/>
 		];
+
+		if (!entity.isExhausted()) {
+			components.push(<Cost
+				key="cost"
+				cost={entity.getCost()}
+				default={defaultCost}
+			/>);
+		}
+
+		return components;
 	}
 }
 

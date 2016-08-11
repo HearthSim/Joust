@@ -42,7 +42,7 @@ export interface OptionCallbackProps {
 }
 
 export interface OptionProps extends OptionCallbackProps {
-	option: Option;
+	option?: Option;
 }
 
 export interface JoustClient {

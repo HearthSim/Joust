@@ -7,6 +7,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Save replay speed preference in cookie
 - Save ignore browser warning in cookie
+- Unexhaust weapons and hero powers when hovering
 
 ### Changed
 - Tweak text positioning
