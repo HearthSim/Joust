@@ -272,8 +272,7 @@ export default class GameStateScrubber extends Stream.Duplex implements StreamSc
 
 	public previousTurn(): void {
 		let previousTurn = this.initialTime;
-		let currentTurn = this.currentTurn;
-		let turn = currentTurn - 1;
+		let turn = this.currentTurn - 1;
 		while (!this.history.turnMap.has(turn) && turn > 0) {
 			turn--;
 		}
@@ -285,8 +284,12 @@ export default class GameStateScrubber extends Stream.Duplex implements StreamSc
 	}
 
 	public skipBack(): void {
-		let currentTurn = this.currentTurn;
-		let turnStart = this.history.turnMap.get(currentTurn).time;
+		let turnStartState = this.history.turnMap.get(this.currentTurn);
+		if(!turnStartState) {
+			this.previousTurn();
+			return;
+		}
+		let turnStart = turnStartState.time;
 		let timeElapsed = this.currentTime - turnStart;
 		if (timeElapsed > 1.5 * this.speed * this.multiplier) {
 			this.currentTime = turnStart;

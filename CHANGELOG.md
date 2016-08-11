@@ -16,6 +16,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - Changelog formatting
+- Fix error when skipping back during Mulligan
 
 ## [0.4.0] - 2016-08-07
 ### Added
