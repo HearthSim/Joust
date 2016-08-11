@@ -2,13 +2,20 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
-### Fixed
-- Changelog formatting
-- Remove proprietary fonts from source
-- Tweak text positioning
+### [Unreleased]
+
+### Added
 - Save replay speed preference in cookie
 - Save ignore browser warning in cookie
+
+### Changed
+- Tweak text positioning
+
+### Removed
+- Remove proprietary fonts from source
+
+### Fixed
+- Changelog formatting
 
 ## [0.4.0] - 2016-08-07
 ### Added
