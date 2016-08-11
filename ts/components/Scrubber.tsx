@@ -3,6 +3,7 @@ import {StreamScrubber} from "../interfaces";
 import Timeline from "./Timeline";
 import SpeedSelector from "./SpeedSelector";
 import Tooltipper from "./Tooltipper";
+import * as cookie from "cookiejs";
 
 interface ScrubberProps extends React.Props<any> {
 	scrubber: StreamScrubber;
@@ -34,13 +35,21 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 
 	constructor(props: ScrubberProps) {
 		super(props);
+
+		// restore speed setting
+		let speed = +cookie.get("joust_speed", "1");
+		if(Scrubber.SPEEDS.indexOf(speed) === -1) {
+			speed = 1;
+		}
+
 		this.state = {
 			playing: false,
 			canInteract: false,
 			canRewind: false,
 			canPlay: false,
-			speed: 1,
+			speed: speed,
 		};
+		this.props.scrubber.setSpeed(this.state.speed);
 		this.onKeyDown = this.onKeyDown.bind(this);
 		this.registerListeners(this.props);
 	}
@@ -227,7 +236,11 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 	}
 
 	protected selectSpeed(speed: number): void {
-		var speed = Math.max(speed, 0);
+		speed = Math.max(speed, 0);
+		cookie.set("joust_speed", "" + speed, {
+			exires: 365, // one year
+			path: "/",
+		});
 		this.props.scrubber.setSpeed(speed);
 	}
 }

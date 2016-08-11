@@ -17,6 +17,7 @@
     "babel-preset-react": "^6.11.1",
     "bowser": "^1.4.3",
     "concurrently": "^2.2.0",
+    "cookiejs": "^1.0.9",
     "cssnano": "^3.7.2",
     "filereader-stream": "^1.0.0",
     "fullscreen": "^1.1.0",
