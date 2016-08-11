@@ -45,13 +45,17 @@ class GameWrapper extends React.Component<GameWrapperProps, GameWrapperState> {
 
 		// warn about unsupported browsers
 		if (this.state.warnAboutBrowser) {
+			let ignoreBrowser = (e) => {
+				e.preventDefault();
+				this.setState({warnAboutBrowser: false});
+			};
 			return (
 				<LoadingScreen>
-					<p><small>Sorry, your browser is out of standard right now.<br/>Please consider using Chrome or Firefox instead.</small></p>
 					<p>
-						<a href="#" onClick={(e) => {e.preventDefault(); this.setState({warnAboutBrowser: true})}}>
-							<small>Continue anyway</small>
-						</a>
+						<small>Sorry, your browser is out of standard right now.<br/>Please consider using Chrome or Firefox instead.</small>
+					</p>
+					<p>
+						<a href="#" onClick={ignoreBrowser} onTouchStart={ignoreBrowser}>Continue anyway</a>
 					</p>
 				</LoadingScreen>
 			);
