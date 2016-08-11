@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Remove proprietary fonts from source
 - Tweak text positioning
 - Save replay speed preference in cookie
+- Save ignore browser warning in cookie
 
 ## [0.4.0] - 2016-08-07
 ### Added

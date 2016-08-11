@@ -16,6 +16,7 @@ import Option from "../Option";
 import PlayerEntity from "../Player";
 import LoadingScreen from "./LoadingScreen";
 import * as bowser from "bowser";
+import * as cookie from "cookiejs";
 
 interface GameWrapperProps extends CardDataProps, CardOracleProps, MulliganOracleProps, AssetDirectoryProps, CardArtDirectory, HideCardsProps, React.Props<any> {
 	state:GameState;
@@ -36,8 +37,13 @@ class GameWrapper extends React.Component<GameWrapperProps, GameWrapperState> {
 
 	constructor(props:GameWrapperProps, context:any) {
 		super(props, context);
+		let shouldWarn = false;
+		let ignoreWarning = !!(+cookie.get("joust_ludicrous", "0"));
+		if(!ignoreWarning) {
+			shouldWarn = !(bowser.webkit || (bowser as any).blink || bowser.gecko)
+		}
 		this.state = {
-			warnAboutBrowser: !(bowser.webkit || (bowser as any).blink || bowser.gecko),
+			warnAboutBrowser: shouldWarn,
 		};
 	}
 
@@ -48,6 +54,10 @@ class GameWrapper extends React.Component<GameWrapperProps, GameWrapperState> {
 			let ignoreBrowser = (e) => {
 				e.preventDefault();
 				this.setState({warnAboutBrowser: false});
+				cookie.set("joust_ludicrous", "1", {
+					exires: 365, // one year
+					path: "/",
+				});
 			};
 			return (
 				<LoadingScreen>
