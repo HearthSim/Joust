@@ -26,7 +26,6 @@ class CardArt extends React.Component<CardArtProps, {}> {
 			nextProps.scale !== this.props.scale ||
 			nextProps.square !== this.props.square ||
 			nextProps.margin !== this.props.margin ||
-			nextProps.containerWidth !== this.props.containerWidth ||
 			nextProps.containerHeight !== this.props.containerHeight ||
 			nextProps.assetDirectory !== this.props.assetDirectory ||
 			nextProps.cardArtDirectory !== this.props.cardArtDirectory
