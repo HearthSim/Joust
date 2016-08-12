@@ -11,6 +11,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - Tweak text positioning
+- Change timeline cursor (graphical)
 
 ### Removed
 - Remove proprietary fonts from source

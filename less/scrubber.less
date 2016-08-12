@@ -58,6 +58,16 @@
 		border-top: none;
 		border-bottom: none;
 	}
+
+	cursor: grab;
+
+	&.dragging {
+		cursor: grabbing;
+	}
+
+	&.disabled {
+		cursor: not-allowed;
+	}
 }
 
 .joust-scrubber-progress {

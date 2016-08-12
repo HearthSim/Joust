@@ -148,16 +148,20 @@ class Timeline extends React.Component<TimelineProps, TimelineState> implements 
 			classes.push('no-turns');
 		}
 
-		let style = {} as any;
-		style.cursor = this.props.disabled ? 'default' : 'pointer';
+		if(this.props.disabled) {
+			classes.push("disabled");
+		}
+		else if(this.state.isDragging) {
+			classes.push("dragging");
+		}
 
 		return (
-			<div className={classes.join(' ')}
+			<div
+				className={classes.join(' ')}
 				ref={(ref) => this.ref = ref}
-				style={style}
 				onMouseDown={this.onMouseDown.bind(this) }
 				onTouchStart={this.onTouchStart.bind(this) }
-				>
+			>
 				<div className="joust-scrubber-progress" style={{ width: width + '%' }}></div>
 				{mulligan}
 				{turns}
