@@ -34,7 +34,7 @@ class Weapon extends EntityInPlay<EntityInPlayProps> {
 				assetDirectory={this.props.assetDirectory}
 				cardArtDirectory={this.props.cardArtDirectory}
 			/>,
-			<div className="stats">
+			<div className="stats" key="stats">
 				<Attack attack={entity.getAtk() } default={defaultAttack}/>
 				<Durability durability={entity.getDurability() } damage={entity.getDamage() }
 							default={defaultDurability}/>
