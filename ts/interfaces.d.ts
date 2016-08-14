@@ -172,6 +172,7 @@ export interface GameWidgetProps extends AssetDirectoryProps, CardArtDirectory, 
 	onToggleReveal?: (reveal: boolean) => void;
 	startSwapped?: boolean;
 	onToggleSwap?: (swap: boolean) => void;
+	startPaused?: boolean;
 }
 
 export interface StreamScrubberInhibitor {

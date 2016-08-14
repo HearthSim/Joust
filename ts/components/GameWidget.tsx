@@ -20,6 +20,7 @@ interface GameWidgetState {
 	isRevealingCards?: boolean;
 	isLogVisible?: boolean;
 	isLogMounted?: boolean;
+	hasPlayed?: boolean;
 }
 
 class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
@@ -42,8 +43,10 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 			cardOracle: null,
 			mulliganOracle: null,
 			isLogVisible: false,
-			isLogMounted: false
+			isLogMounted: false,
+			hasPlayed: false,
 		};
+		this.props.scrubber.once("pause", () => this.props.scrubber.once("play", () => this.setState({hasPlayed: true})));
 	}
 
 	public componentDidMount() {
@@ -173,10 +176,21 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 			this.checkForSwap();
 		}
 
+		var classNames = ['joust-widget', 'game-widget'];
 		var parts = [];
 
 		if (this.props.exitGame) {
-			parts.push(<div id="joust-quit" key="exit"><a href="#" onClick={this.onClickExit.bind(this) }>Exit Game</a></div>);
+			parts.push(<div id="joust-quit" key="exit"><a href="#" onClick={this.onClickExit.bind(this) }>Exit Game</a>
+			</div>);
+		}
+
+		if (this.props.startPaused && !this.state.hasPlayed) {
+			let onClick = (e) => {e.stopPropagation(); this.props.scrubber.play()};
+			classNames.push("click-to-play");
+			parts.push(<div key="click-to-play-overlay" className="click-to-play-overlay" onClick={onClick} onTouchStart={onClick}></div>);
+			parts.push(<div key="click-to-play" className="click-to-play-button">
+				<i className="joust-fa joust-fa-play"></i>
+			</div>);
 		}
 
 		let isSwapped = this.swapPlayers !== this.state.swapPlayers /* XOR */;
@@ -191,7 +205,8 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 						hasStarted={this.props.scrubber.canInteract()}
 						cardOracle={this.state.cardOracle}
 						mulliganOracle={this.state.mulliganOracle}
-						hideCards={!this.state.isRevealingCards} />;
+						hideCards={!this.state.isRevealingCards}
+		/>;
 		let log = <EventLog key="log"
 							state={this.state.gameState}
 							cards={this.state.cards}
@@ -250,13 +265,17 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 			}
 		}
 
-		var classes = ['joust-widget', 'game-widget'];
 		if(this.state.isFullscreen) {
-			classes.push('joust-fullscreen');
+			classNames.push('joust-fullscreen');
 		}
 
 		return (
-			<div className={classes.join(' ')} ref={(ref) => this.ref = ref} style={style} onContextMenu={(e) => e.preventDefault()}>
+			<div
+				className={classNames.join(' ')}
+				ref={(ref) => this.ref = ref}
+				style={style}
+				onContextMenu={(e) => e.preventDefault()}
+			>
 				{parts}
 			</div>
 		);

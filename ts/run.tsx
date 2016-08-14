@@ -25,7 +25,6 @@ class Launcher {
 	protected queryCardMetadata:QueryCardMetadata;
 	protected startFromTurn:number;
 	protected turnCb:(turn:number) => void;
-	protected pause:boolean;
 	protected ref:GameWidget;
 
 	constructor(target:any) {
@@ -108,7 +107,7 @@ class Launcher {
 	}
 
 	public startPaused(paused?:boolean):Launcher {
-		this.pause = typeof paused === "undefined" ? true : !!paused;
+		this.opts.startPaused = typeof paused === "undefined" ? true : !!paused;
 		return this;
 	}
 
@@ -180,6 +179,10 @@ class Launcher {
 	}
 
 	public fromUrl(url:string):void {
+		if (typeof this.opts.startPaused === "undefined" && this.startFromTurn) {
+			this.opts.startPaused = true;
+		}
+
 		var decoder = new HSReplayDecoder();
 		decoder.debug = this.opts.debug;
 		var tracker = new GameStateTracker();
@@ -221,7 +224,7 @@ class Launcher {
 				}
 			], () => {
 				scrubber.play();
-				if (this.pause || (typeof this.pause === "undefined" && this.startFromTurn)) {
+				if (this.opts.startPaused) {
 					scrubber.pause();
 				}
 			});
