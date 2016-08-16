@@ -112,13 +112,6 @@ class Launcher {
 		return this;
 	}
 
-	/**
-	 * @deprecated
-	 */
-	public turn(turn:number):Launcher {
-		return this.startAtTurn(turn);
-	}
-
 	public startAtTurn(turn:number):Launcher {
 		this.startFromTurn = turn;
 		return this;
@@ -279,13 +272,6 @@ module.exports = {
 
 	renderHSReplay: (target:string, url:string, opts?:GameWidgetProps) => {
 		new Launcher(target).setOptions(opts).fromUrl(url);
-	},
-
-	/**
-	 * @deprecated
-	 */
-	viewer: (target:string | HTMLElement) => {
-		return new Launcher(target);
 	},
 
 	launcher: (target:string | HTMLElement) => {
