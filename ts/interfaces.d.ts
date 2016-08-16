@@ -79,6 +79,7 @@ export interface StreamScrubber extends EventEmitter {
 	rewind(): void;
 	fastForward(): void;
 	getCurrentTime(): number;
+	getCurrentTurn(): number;
 	getSpeed(): number;
 	canPlay(): boolean;
 	getHistory(): GameStateHistory;

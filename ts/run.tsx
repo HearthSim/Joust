@@ -25,7 +25,7 @@ class Launcher {
 	protected queryCardMetadata:QueryCardMetadata;
 	protected startFromTurn:number;
 	protected turnCb:(turn:number) => void;
-	protected pause:boolean;
+	protected shouldStartPaused:boolean;
 	protected ref:GameWidget;
 
 	constructor(target:any) {
@@ -108,7 +108,7 @@ class Launcher {
 	}
 
 	public startPaused(paused?:boolean):Launcher {
-		this.pause = typeof paused === "undefined" ? true : !!paused;
+		this.shouldStartPaused = typeof paused === "undefined" ? true : !!paused;
 		return this;
 	}
 
@@ -172,6 +172,29 @@ class Launcher {
 		return (this.opts.scrubber as GameStateScrubber).percentageWatched;
 	}
 
+	public play():void {
+		this.opts.scrubber.play();
+	}
+
+	public pause():void {
+		this.opts.scrubber.pause();
+	}
+
+	public toggle():void {
+		this.opts.scrubber.toggle();
+	}
+
+	public get turn():number {
+		return this.opts.scrubber.getCurrentTurn();
+	}
+
+	public set turn(turn:number) {
+		let turnState = this.opts.scrubber.getHistory().turnMap.get(turn);
+		if (turnState) {
+			this.opts.scrubber.seek(turnState.time);
+		}
+	}
+
 	public fromUrl(url:string):void {
 		var decoder = new HSReplayDecoder();
 		decoder.debug = this.opts.debug;
@@ -214,7 +237,7 @@ class Launcher {
 				}
 			], () => {
 				scrubber.play();
-				if (this.pause || (typeof this.pause === "undefined" && this.startFromTurn)) {
+				if (this.shouldStartPaused || (typeof this.shouldStartPaused === "undefined" && this.startFromTurn)) {
 					scrubber.pause();
 				}
 			});

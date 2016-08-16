@@ -235,6 +235,10 @@ export default class GameStateScrubber extends Stream.Duplex implements StreamSc
 		return this.inhibitor && this.inhibitor.isInhibiting();
 	}
 
+	public getCurrentTurn(): number {
+		return this.currentTurn;
+	}
+
 	get currentTurn(): number {
 		if(!this.lastState) {
 			return null;
