@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 - Add loading screen messages
+- Show Hero Power details on mouse over
 
 ## [0.5.0] - 2016-08-13
 ### Added

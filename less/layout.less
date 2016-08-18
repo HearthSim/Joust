@@ -47,9 +47,25 @@
 		margin-right: 10%;
 	}
 
-	&.top > .played {
-		top: 55%;
-		right: 55%;
+	&.top {
+		> .played {
+			top: 55%;
+			right: 55%;
+		}
+
+		.heroPower .card {
+			top: 0;
+		}
+	}
+
+	.heroPower {
+		.card {
+			height: 135%;
+			top: -50%;
+		}
+		&.hovering {
+			z-index: 101;
+		}
 	}
 
 	.gameresult {
