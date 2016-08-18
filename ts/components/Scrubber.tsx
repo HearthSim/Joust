@@ -139,6 +139,18 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 				e.preventDefault();
 				this.props.swapPlayers();
 				break;
+			case 70: // f
+				e.preventDefault();
+				if (!this.props.isFullscreenAvailable) {
+					return;
+				}
+				if (this.props.isFullscreen) {
+					this.props.onClickMinimize();
+				}
+				else {
+					this.props.onClickFullscreen();
+				}
+				break;
 		}
 	}
 
