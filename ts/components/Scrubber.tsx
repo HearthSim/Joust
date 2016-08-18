@@ -116,6 +116,7 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 				}
 				break;
 			case 87: // w
+			case 187: // +
 				e.preventDefault();
 				{
 					let index = Scrubber.SPEEDS.indexOf(this.state.speed) + 1;
@@ -125,6 +126,7 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 				}
 				break;
 			case 83: // s
+			case 189: // -
 				e.preventDefault();
 				{
 					let index = Scrubber.SPEEDS.indexOf(this.state.speed) - 1;
