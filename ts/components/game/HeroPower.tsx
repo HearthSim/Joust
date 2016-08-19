@@ -24,9 +24,6 @@ class HeroPower extends EntityInPlay<EntityInPlayProps> {
 		}
 
 		let entity = this.props.entity;
-		if (this.state.isHovering) {
-			entity = entity.setTag(GameTag.EXHAUSTED, 0);
-		}
 
 		let components = [
 			<HeroPowerArt

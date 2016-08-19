@@ -10,6 +10,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Show current stats when hovering entities
 
+### Changed
+- Don't unexhaust hero powers when hovering
+
 ## [0.5.0] - 2016-08-13
 ### Added
 - Save replay speed preference in cookie
