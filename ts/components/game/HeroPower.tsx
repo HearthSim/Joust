@@ -48,7 +48,6 @@ class HeroPower extends EntityInPlay<EntityInPlayProps> {
 					controller={this.props.controller}
 					cardArtDirectory={this.props.cardArtDirectory}
 					option={null}
-					defaultStats={true}
 				/></div>);
 		}
 

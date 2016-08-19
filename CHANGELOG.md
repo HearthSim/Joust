@@ -7,6 +7,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Add loading screen messages
 - Show Hero Power details on mouse over
 
+### Fixed
+- Show current stats when hovering entities
+
 ## [0.5.0] - 2016-08-13
 ### Added
 - Save replay speed preference in cookie
