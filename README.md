@@ -31,7 +31,7 @@ gulp compile
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/react/15.2.1/react-dom.min.js"></script>
 <script type="text/javascript" src="joust.js"></script>
 <script type="text/javascript">
-	Joust.viewer("container").height(500).width(500).assets("assets/").fromUrl("//example.org/brawl.hsreplay");
+	Joust.launcher("container").height(500).width(500).assets("assets/").fromUrl("//example.org/brawl.hsreplay");
 </script>
 ```
 
