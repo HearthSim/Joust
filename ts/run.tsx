@@ -38,7 +38,7 @@ class Launcher {
 			}
 		} as any;
 		this.opts.assetDirectory = (asset) => "assets/" + asset;
-		this.opts.cardArtDirectory = (cardId) => "https://static.hsreplay.net/static/joust/card-art/" + cardId + ".jpg";
+		this.opts.cardArtDirectory = (cardId) => "https://art.hearthstonejson.com/cards/by-id/" + cardId + ".jpg";
 	}
 
 	public width(width:number):Launcher {

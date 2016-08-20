@@ -11,6 +11,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Show current stats when hovering entities
 - Fix launcher example in README.md
+- Fix default card art endpoint
 
 ### Changed
 - Don't unexhaust hero powers when hovering
