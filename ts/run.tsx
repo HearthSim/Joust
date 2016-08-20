@@ -35,7 +35,8 @@ class Launcher {
 			logger: (error:Error):void => {
 				let message = error.message ? error.message : error;
 				console.error(message);
-			}
+			},
+			locale: "enUS",
 		} as any;
 		this.opts.assetDirectory = (asset) => "assets/" + asset;
 		this.opts.cardArtDirectory = (cardId) => "https://art.hearthstonejson.com/cards/by-id/" + cardId + ".jpg";
@@ -143,6 +144,11 @@ class Launcher {
 			enable = true;
 		}
 		this.opts['debug'] = enable;
+		return this;
+	}
+
+	public locale(locale?:string):Launcher {
+		this.opts.locale = locale;
 		return this;
 	}
 

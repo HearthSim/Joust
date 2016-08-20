@@ -156,7 +156,11 @@ export interface QueryCardMetadata {
 	(build: number, cb: (cards: CardData[]) => void): void;
 }
 
-export interface GameWidgetProps extends AssetDirectoryProps, CardArtDirectory, EventHandlerProps, React.Props<any> {
+export interface LocaleProps {
+	locale?: string;
+}
+
+export interface GameWidgetProps extends AssetDirectoryProps, CardArtDirectory, EventHandlerProps, LocaleProps, React.Props<any> {
 	sink: GameStateSink;
 	startupTime: number;
 	interaction?: InteractiveBackend;
