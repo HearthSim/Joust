@@ -6,6 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Add loading screen messages
 - Show Hero Power details on mouse over
+- Various loading screen strings
 
 ### Fixed
 - Show current stats when hovering entities
