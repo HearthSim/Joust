@@ -241,8 +241,17 @@ class Card extends React.Component<CardProps, {}> {
 		description = description.replace(/\$(\d+)/g, modifier(damageBonus, damageDoubling));
 		description = description.replace(/#(\d+)/g, modifier(0, healingDoubling));
 
-		// strip starting [x] - used internally for line breaks?
-		description = description.replace(/^\[x\]/, '');
+		// custom line breaks
+		if(description.match(/^\[x\]/)) {
+			description = description.replace(/^\[x\]/, "");
+			// renenable this when font-sizing is fixed
+			//description = description.replace(/\n/g, "<br>");
+		}
+
+		// non-breaking spaces - see issue at https://github.com/HearthSim/HearthstoneJSON/issues/36
+		// replace with spaces for now
+		//description = description.replace(/_/g, String.fromCharCode(160));
+		description = description.replace(/_/g, " ");
 
 		return description.trim();
 	}

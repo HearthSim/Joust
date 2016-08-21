@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Replace own HearthstoneJSON implementation with common one
 
+### Fixed
+- Work around HearthSim/HearthstoneJSON#36
+
 ## [0.6.0] - 2016-08-21
 ### Added
 - Add loading screen messages
