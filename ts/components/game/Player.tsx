@@ -221,9 +221,10 @@ class Player extends React.Component<PlayerProps, {}> {
 
 		var action = null;
 		if(this.props.descriptors.count() > 0 && !this.props.choices) {
-			this.props.descriptors.forEach((descriptor: GameStateDescriptor) => {
+			this.props.descriptors.forEach((descriptor: GameStateDescriptor, index: number) => {
+				let outer = this.props.descriptors.get(index + 1);
 				let type = descriptor.type;
-				if (type == BlockType.PLAY || type == BlockType.TRIGGER) {
+				if (type == BlockType.PLAY || type == BlockType.TRIGGER || type == BlockType.RITUAL) {
 					let entity = null;
 					// search for entity
 					this.props.entities.forEach((map:Immutable.Map<number, Entity>) => {
@@ -235,7 +236,13 @@ class Player extends React.Component<PlayerProps, {}> {
 							}
 						});
 					});
-					if (entity !== null) {
+					if (type === BlockType.RITUAL || (type == BlockType.TRIGGER && outer && outer.type == BlockType.RITUAL)) {
+						let setAside = this.props.entities.get(Zone.SETASIDE);
+						if (setAside) {
+							entity = setAside.find(x => x.cardId == "OG_279");
+						}
+					}
+					if (entity) {
 						let type = entity.getTag(GameTag.CARDTYPE);
 						let hidden = false;
 						if(!entity.cardId && this.props.cardOracle && this.props.cardOracle.has(+entity.id)) {

@@ -9,6 +9,7 @@ import SetChoicesMutator from "./mutators/SetChoicesMutator";
 import EnrichDescriptorMutator from "./mutators/EnrichDescriptorMutator";
 import SetOptionsMutator from "./mutators/SetOptionsMutator";
 import TagChangeMutator from "./mutators/TagChangeMutator";
+import GameStateDescriptor from "./GameStateDescriptor";
 
 /**
  * Follows the initial game state by applying incoming mutators to the game state.
@@ -29,6 +30,7 @@ export default class GameStateTracker extends Stream.Transform {
 
 	_transform(mutator:any, encoding:string, callback:Function):void {
 		var oldState = this.gameState;
+		this.preTime(mutator as GameStateMutator);
 		this.gameState = this.gameState.apply(mutator);
 		if (oldState !== this.gameState) {
 			this.push(this.gameState);
@@ -44,6 +46,20 @@ export default class GameStateTracker extends Stream.Transform {
 	private lastDescriptorType:BlockType;
 	private upcomingMetadataTargets:number[];
 	private hasSteppedThisBlock:boolean;
+
+	protected preTime(mutator:GameStateMutator) {
+		let timeStep = 0;
+
+		if(mutator instanceof PopDescriptorMutator) {
+			if(this.lastDescriptorType === BlockType.RITUAL) {
+				timeStep = 2;
+			}
+		}
+
+		if (timeStep) {
+			this.gameState = this.gameState.apply(new IncrementTimeMutator(timeStep));
+		}
+	}
 
 	protected time(mutator:GameStateMutator) {
 		let timeStep = 0;
@@ -61,6 +77,9 @@ export default class GameStateTracker extends Stream.Transform {
 			switch (mutator.descriptor.type) {
 				case BlockType.PLAY:
 					this.waitAtNextBlockOrEndOfBlock = true;
+					break;
+				case BlockType.RITUAL:
+					timeStep = 2;
 					break;
 				case BlockType.TRIGGER:
 					if (!timeStep) {
