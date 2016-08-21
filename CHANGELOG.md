@@ -8,6 +8,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Show Hero Power and Weapon details on mouse over
 - Various loading screen strings
 - Add locale support
+- Defer metadata fetching to hearthstonejson on npm
+- Add Launcher.metadataSource to override HearthstoneJSON
 
 ### Fixed
 - Show current stats when hovering entities
@@ -18,6 +20,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Don't unexhaust hero powers when hovering
 - Update README.md
 - Switch to Typescript 2.0.0
+
+### Deprecated
+- `Launcher.metadata` is now obsolete
 
 ## [0.5.0] - 2016-08-13
 ### Added

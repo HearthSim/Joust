@@ -14,6 +14,7 @@ import * as URL from "url";
 import TexturePreloader from "./TexturePreloader";
 import {EventEmitter} from "events";
 import * as async from "async";
+import HearthstoneJSON from "hearthstonejson";
 
 var React = require('react');
 var ReactDOM = require('react-dom');
@@ -27,6 +28,7 @@ class Launcher {
 	protected turnCb:(turn:number) => void;
 	protected shouldStartPaused:boolean;
 	protected ref:GameWidget;
+	protected metadataSourceCb: (build: number|"latest", locale: string) => string;
 
 	constructor(target:any) {
 		this.target = target;
@@ -81,8 +83,15 @@ class Launcher {
 		return this;
 	}
 
-	public metadata(query:QueryCardMetadata):Launcher {
-		this.queryCardMetadata = query;
+	/**
+	 * @deprecated
+	 */
+	public metadata(any: any):Launcher {
+		return this;
+	}
+
+	public metadataSource(metadateSource: (build: number|"latest", locale: string) => string):Launcher {
+		this.metadataSourceCb = metadateSource;
 		return this;
 	}
 
@@ -215,6 +224,14 @@ class Launcher {
 			preloader.consume();
 		}
 
+		let hsjson = null;
+		if (this.metadataSourceCb) {
+			hsjson = new HearthstoneJSON(this.metadataSourceCb);
+		}
+		else {
+			hsjson = new HearthstoneJSON();
+		}
+
 		if (url.match(/^\//) && location && location.protocol) {
 			let old = url;
 			url = location.protocol + url;
@@ -239,8 +256,27 @@ class Launcher {
 					scrubber.once("ready", () => cb());
 				},
 				(cb) => {
+					decoder.once("build", (buildNumber?:number) => {
+						let build = buildNumber || "latest";
+						let queryTime = Date.now();
+						hsjson.get(buildNumber, this.opts.locale, (cards: any[]) => {
+							this.ref.setCards(cards);
+							this.track("metadata", {duration: (Date.now() - queryTime) / 1000}, {
+								cards: cards.length,
+								build: build,
+								has_build: build !== "latest",
+								cached: (hsjson as any).cached,
+								fetched: (hsjson as any).fetched,
+								fallback: (hsjson as any).fallback,
+							});
+							cb();
+						});
+					})
+				},
+
+				(cb) => {
 					decoder.once("end", () => cb());
-				}
+				},
 			], () => {
 				scrubber.play();
 				if (this.shouldStartPaused || (typeof this.shouldStartPaused === "undefined" && this.startFromTurn)) {
@@ -258,19 +294,9 @@ class Launcher {
 				decoder.pipe(preloader);
 			}
 		});
-		decoder.once("build", (build?:number) => {
-			if (this.queryCardMetadata) {
-				let queryTime = Date.now();
-				this.queryCardMetadata(build || null, (cards:CardData[]) => {
-					this.ref.setCards(cards);
-					this.track("metadata", {duration: (Date.now() - queryTime) / 1000}, {
-						cards: cards.length,
-						build: build
-					});
-				});
-			}
-		}).on("error", this.log.bind(this))
-		.once("error", () => this.track("decoder_error", {count: 1}));
+		decoder
+			.on("error", this.log.bind(this))
+			.once("error", () => this.track("decoder_error", {count: 1}));
 
 		this.opts.sink = sink;
 		this.opts.scrubber = scrubber;
