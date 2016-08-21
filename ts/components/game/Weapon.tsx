@@ -4,6 +4,7 @@ import Attack from "./stats/Attack";
 import Durability from "./stats/Durability";
 import WeaponArt from "./visuals/WeaponArt";
 import EntityInPlay from "./EntityInPlay";
+import Card from "./Card"
 import {GameTag} from "../../enums";
 
 class Weapon extends EntityInPlay<EntityInPlayProps> {
@@ -22,11 +23,7 @@ class Weapon extends EntityInPlay<EntityInPlayProps> {
 			defaultDurability = data.durability;
 		}
 
-		if (this.state.isHovering) {
-			entity = entity.setTag(GameTag.EXHAUSTED, 0);
-		}
-
-		return [
+		let components = [
 			<WeaponArt
 				key="art"
 				entity={entity}
@@ -40,6 +37,21 @@ class Weapon extends EntityInPlay<EntityInPlayProps> {
 							default={defaultDurability}/>
 			</div>,
 		];
+
+		if (this.state.isHovering) {
+			components.push(<div key="hover" className="mouse-over">
+				<Card
+					entity={entity}
+					assetDirectory={this.props.assetDirectory}
+					cards={this.props.cards}
+					isHidden={false}
+					controller={this.props.controller}
+					cardArtDirectory={this.props.cardArtDirectory}
+					option={null}
+				/></div>);
+		}
+
+		return components;
 	}
 }
 
