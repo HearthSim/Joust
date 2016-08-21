@@ -335,5 +335,9 @@ module.exports = {
 
 	release: ():string => {
 		return JOUST_RELEASE;
+	},
+
+	destroy(target: any):void {
+		ReactDOM.unmountComponentAtNode(target);
 	}
 }

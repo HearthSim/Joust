@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 - Add C'Thun Rituals
+- Joust.destroy()
 
 ### Changed
 - Replace own HearthstoneJSON implementation with common one
