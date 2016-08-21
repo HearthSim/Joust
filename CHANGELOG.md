@@ -15,6 +15,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Show current stats when hovering entities
 - Fix launcher example in README.md
 - Fix default card art endpoint
+- Fix GameStateScrubber.percentageWatched returning +/-Infinity
 
 ### Changed
 - Don't unexhaust hero powers when hovering

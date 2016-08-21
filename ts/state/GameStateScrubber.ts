@@ -315,6 +315,10 @@ export default class GameStateScrubber extends Stream.Duplex implements StreamSc
 	}
 
 	public get percentageWatched():number {
-		return 100 / Math.floor(this.getDuration()) * this.secondsWatched;
+		let percentage = 100 / Math.floor(this.getDuration()) * this.secondsWatched;
+		if(!isFinite(percentage)) {
+			percentage = 0;
+		}
+		return percentage;
 	}
 }
