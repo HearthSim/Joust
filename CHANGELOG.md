@@ -9,6 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - Replace own HearthstoneJSON implementation with common one
+- Tweak scrubber tooltips
 
 ### Fixed
 - Work around HearthSim/HearthstoneJSON#36

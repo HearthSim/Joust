@@ -138,7 +138,7 @@
 		z-index: 1000;
 		display: block;
 		position: absolute;
-		top: -30px;
+		top: -32px;
 		width: 0;
 		left: 50%;
 
@@ -151,8 +151,9 @@
 			color: @scrubber-tooltip-color;
 			background-color: @scrubber-tooltip-background-color;
 			padding: 4px 8px;
-			border-radius: 4px;
+			border-radius: @scrubber-tooltip-border-radius;
 			transform: translateX(-50%);
+			border: 1px rgba(255, 255, 255, 0.25) solid;
 		}
 
 		&.left {
