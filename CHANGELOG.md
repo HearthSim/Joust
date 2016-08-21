@@ -17,6 +17,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Don't unexhaust hero powers when hovering
 - Update README.md
+- Switch to Typescript 2.0.0
 
 ## [0.5.0] - 2016-08-13
 ### Added
