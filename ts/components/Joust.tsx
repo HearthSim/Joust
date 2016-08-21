@@ -2,7 +2,7 @@ import * as React from "react";
 
 import SetupWidget from "./SetupWidget";
 import GameWidget from "./GameWidget";
-import HearthstoneJSON from "../metadata/HearthstoneJSON";
+import HearthstoneJSON from "hearthstonejson";
 import {InteractiveBackend, MulliganOracle} from "../interfaces";
 import GameStateSink from "../state/GameStateSink";
 import GameStateScrubber from "../state/GameStateScrubber";
@@ -42,11 +42,10 @@ class Joust extends React.Component<{}, JoustState> {
 	}
 
 	public componentDidMount() {
-		var jsonClient = new HearthstoneJSON("https://api.hearthstonejson.com/v1/latest/enUS/cards.json");
-		jsonClient.on("cards", function(cards: CardData[]) {
+		let hsjson = new HearthstoneJSON();
+		hsjson.get("latest", (cards: CardData[]) => {
 			this.setState({ cards: cards });
-		}.bind(this));
-		jsonClient.load();
+		});
 	}
 
 	public render(): JSX.Element {
