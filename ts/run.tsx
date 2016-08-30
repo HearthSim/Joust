@@ -117,8 +117,18 @@ class Launcher {
 		return this;
 	}
 
+	public onFullscreen(callback:(fullscreen:boolean) => void):Launcher {
+		this.opts.onFullscreen = callback;
+		return this;
+	}
+
 	public startPaused(paused?:boolean):Launcher {
 		this.shouldStartPaused = typeof paused === "undefined" ? true : !!paused;
+		return this;
+	}
+
+	public onReady(ready:() => void):Launcher {
+		this.opts.onReady = ready;
 		return this;
 	}
 
@@ -134,6 +144,18 @@ class Launcher {
 
 	public startSwapped(swap:boolean):Launcher {
 		this.opts.startSwapped = swap;
+		return this;
+	}
+
+	public fullscreen(fullscreen: boolean) {
+		if (this.ref) {
+			if (fullscreen) {
+				this.ref.enterFullscreen();
+			}
+			else {
+				this.ref.exitFullscreen();
+			}
+		}
 		return this;
 	}
 
@@ -281,6 +303,9 @@ class Launcher {
 				scrubber.play();
 				if (this.shouldStartPaused || (typeof this.shouldStartPaused === "undefined" && this.startFromTurn)) {
 					scrubber.pause();
+				}
+				if (this.opts.onReady) {
+					this.opts.onReady();
 				}
 			});
 

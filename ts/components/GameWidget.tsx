@@ -97,6 +97,9 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 			screen.orientation.lock("landscape");
 		}
 		this.triggerResize();
+		if(this.props.onFullscreen) {
+			this.props.onFullscreen(true);
+		}
 	}
 
 	protected onReleaseFullscreen() {
@@ -105,6 +108,17 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 			screen.orientation.unlock();
 		}
 		this.triggerResize();
+		if(this.props.onFullscreen) {
+			this.props.onFullscreen(false);
+		}
+	}
+
+	public enterFullscreen() {
+		this.fullscreen.request();
+	}
+
+	public exitFullscreen() {
+		this.fullscreen.release();
 	}
 
 	protected updateCardOracle(cards: Immutable.Map<number, string>) {
@@ -219,8 +233,8 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 				isSwapped={isSwapped}
 				isFullscreen={this.state.isFullscreen}
 				isFullscreenAvailable={this.state.isFullscreenAvailable}
-				onClickFullscreen={() => this.fullscreen.request() }
-				onClickMinimize={() => this.fullscreen.release() }
+				onClickFullscreen={() => this.enterFullscreen()}
+				onClickMinimize={() => this.exitFullscreen()}
 				isRevealingCards={this.state.isRevealingCards}
 				canRevealCards={!!this.state.cardOracle}
 				onClickHideCards={() => {

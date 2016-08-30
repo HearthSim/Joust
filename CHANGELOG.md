@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Add C'Thun Rituals
 - Joust.destroy()
+- Launcher.onFullscreen(callback:(fullscreen:boolean) => void)
+- Launcher.onReady(ready:() => void)
+- Launcher.fullscreen(fullscreen: boolean)
 
 ### Changed
 - Replace own HearthstoneJSON implementation with common one
