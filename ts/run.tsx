@@ -41,7 +41,7 @@ class Launcher {
 			locale: "enUS",
 		} as any;
 		this.opts.assetDirectory = (asset) => "assets/" + asset;
-		this.opts.cardArtDirectory = (cardId) => "https://art.hearthstonejson.com/cards/by-id/" + cardId + ".jpg";
+		this.opts.cardArtDirectory = (cardId) => "https://art.hearthstonejson.com/v1/256x/" + cardId + ".jpg";
 	}
 
 	public width(width:number):Launcher {
