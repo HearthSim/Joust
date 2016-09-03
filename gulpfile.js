@@ -21,6 +21,10 @@ const gitDescribe = require("git-describe").gitDescribe;
 
 const download = require("gulp-download");
 
+const Sentry = require('sentry-api').Client;
+const fs = require("fs");
+const path = require("path");
+
 gulp.task("default", ["watch"]);
 
 gulp.task("compile", ["compile:web"]);
@@ -91,6 +95,42 @@ gulp.task("env:set-release", function (cb) {
 		gutil.log("Setting JOUST_RELEASE to", gutil.colors.green(release));
 		process.env.JOUST_RELEASE = release;
 		cb();
+	});
+});
+
+gulp.task("sentry:release", ["env:set-release"], function (cb) {
+	var version = process.env.JOUST_RELEASE;
+	var key = "SENTRY_TOKEN";
+	var token = process.env[key];
+	if (!token) {
+		throw Error("Sentry Token not found (expected environment variable " + key + ")");
+	}
+	var sentry = new Sentry({token: token});
+
+	sentry.releases.create("hearthsim", "joust", {
+		version: version,
+		ref: version,
+	}).then(function (release) {
+		gutil.log("Created Sentry release", gutil.colors.green(release.version));
+
+		var files = ["dist/joust.css", "dist/joust.css.map", "dist/joust.js", "dist/joust.js.map"];
+		var uploads = files.map(function (file) {
+			return sentry.releases.createFile("hearthsim", "joust", version, {
+				name: path.basename(file),
+				file: fs.createReadStream(file)
+			}).then(function (newFile) {
+				gutil.log("Uploaded", gutil.colors.green(newFile.name), "to Sentry");
+			}).catch(function (error) {
+				gutil.log(gutil.colors.red("Error uploading file to Sentry", error));
+			});
+		});
+
+		return Promise.all(uploads);
+	}).then(function () {
+		gutil.log("Release successful");
+	})
+	.catch(function (error) {
+		gutil.log(gutil.colors.red("Error creating Sentry release", error));
 	});
 });
 

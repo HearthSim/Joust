@@ -10,6 +10,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Launcher.onReady(ready:() => void)
 - Launcher.fullscreen(fullscreen: boolean)
 - Shrinkwrap dependencies
+- Add `gulp sentry:release`
 
 ### Changed
 - Replace own HearthstoneJSON implementation with common one
