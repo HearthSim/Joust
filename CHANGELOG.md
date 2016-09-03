@@ -9,6 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Launcher.onFullscreen(callback:(fullscreen:boolean) => void)
 - Launcher.onReady(ready:() => void)
 - Launcher.fullscreen(fullscreen: boolean)
+- Shrinkwrap dependencies
 
 ### Changed
 - Replace own HearthstoneJSON implementation with common one
