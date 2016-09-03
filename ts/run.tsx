@@ -255,12 +255,11 @@ class Launcher {
 		}
 
 		if (url.match(/^\//) && location && location.protocol) {
-			let old = url;
 			url = location.protocol + url;
 		}
-		var opts = URL.parse(url) as any;
+		let opts = URL.parse(url) as any;
 		opts.withCredentials = false;
-		(opts.protocol == 'https:' ? https : http).get(opts, (message:http.IncomingMessage) => {
+		((opts.protocol == 'https:' ? https : http) as any).get(opts, (message:http.IncomingMessage) => {
 			let success = (message.statusCode == 200);
 			this.track("replay_load_error", {error: success ? "f" : "t"}, {statusCode: message.statusCode});
 			if (!success) {
