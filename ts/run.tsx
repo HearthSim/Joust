@@ -90,8 +90,8 @@ class Launcher {
 		return this;
 	}
 
-	public metadataSource(metadateSource: (build: number|"latest", locale: string) => string):Launcher {
-		this.metadataSourceCb = metadateSource;
+	public metadataSource(metadataSource: (build: number|"latest", locale: string) => string):Launcher {
+		this.metadataSourceCb = metadataSource;
 		return this;
 	}
 
