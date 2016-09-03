@@ -106,6 +106,7 @@ gulp.task("sentry:release", ["env:set-release"], function (cb) {
 		throw Error("Sentry Token not found (expected environment variable " + key + ")");
 	}
 	var sentry = new Sentry({token: token});
+	var prefix = process.env.SENTRY_FILE_PREFIX ? process.env.SENTRY_FILE_PREFIX : "";
 
 	sentry.releases.create("hearthsim", "joust", {
 		version: version,
@@ -116,7 +117,7 @@ gulp.task("sentry:release", ["env:set-release"], function (cb) {
 		var files = ["dist/joust.css", "dist/joust.css.map", "dist/joust.js", "dist/joust.js.map"];
 		var uploads = files.map(function (file) {
 			return sentry.releases.createFile("hearthsim", "joust", version, {
-				name: path.basename(file),
+				name: prefix + path.basename(file),
 				file: fs.createReadStream(file)
 			}).then(function (newFile) {
 				gutil.log("Uploaded", gutil.colors.green(newFile.name), "to Sentry");
