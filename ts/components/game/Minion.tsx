@@ -1,7 +1,7 @@
 import * as React from "react";
 import EntityInPlay from "./EntityInPlay";
 import {EntityInPlayProps, CardData} from "../../interfaces";
-import {MetaDataType} from "../../enums";
+import {GameTag, MetaDataType} from "../../enums";
 import InPlayCardArt from "./visuals/InPlayCardArt";
 import Attack from "./stats/Attack";
 import Health from "./stats/Health";
@@ -58,8 +58,10 @@ class Minion extends EntityInPlay<EntityInPlayProps> {
 				healing={healing}
 			/>,
 			<div key="stats" className="stats">
-				<Attack attack={entity.getAtk() } default={data.attack}/>
-				<Health health={entity.getHealth() } damage={entity.getDamage()} default={data.health}/>
+				{entity.getTag(GameTag.HIDE_STATS) == 0 ? [
+					<Attack key="attack" attack={entity.getAtk()} default={data.attack}/>,
+					<Health key="health" health={entity.getHealth()} damage={entity.getDamage()} default={data.health}/>
+				] : null}
 				{damage != 0 ? <Damage damage={damage}/> : null}
 				{healing != 0 ? <Healing healing={healing}/> : null}
 			</div>

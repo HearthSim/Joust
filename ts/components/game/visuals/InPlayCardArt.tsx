@@ -41,10 +41,17 @@ class InPlayCardArt extends React.Component<EntityProps, {}> {
 			});
 		}
 
-		images.push({
-			image: "inplay_minion.png",
-			classes: ["inplay-base"]
-		});
+		if (entity.getTag(GameTag.HIDE_STATS)) {
+			images.push({
+				image: "inplay_minion_hide_stats.png",
+				classes: ["inplay-base"]
+			});
+		} else {
+			images.push({
+				image: "inplay_minion.png",
+				classes: ["inplay-base"]
+			});
+		}
 
 		if (entity.isLegendary()) {
 			images.push({
