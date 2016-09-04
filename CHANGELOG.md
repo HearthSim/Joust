@@ -4,15 +4,15 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- Add C'Thun Rituals
-- Joust.destroy()
-- Launcher.onFullscreen(callback:(fullscreen:boolean) => void)
-- Launcher.onReady(ready:() => void)
-- Launcher.fullscreen(fullscreen: boolean)
+- Add C'Thun Rituals (@azeier)
+- Add `Joust.destroy()`
+- Add `Launcher.onFullscreen(callback:(fullscreen:boolean) => void)`
+- Add `Launcher.onReady(ready:() => void)`
+- Add `Launcher.fullscreen(fullscreen: boolean)`
 - Shrinkwrap dependencies
 - Add `gulp sentry:release`
-- Add ES2015 polyfills using babel-polyfill
-- Hide statistics for minions with HIDE\_STATS (#128)
+- Add ES2015 polyfills using `babel-polyfill`
+- Hide statistics for minions with HIDE\_STATS (#128, @jleclanche)
 
 ### Changed
 - Replace own HearthstoneJSON implementation with common one
