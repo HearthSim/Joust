@@ -12,6 +12,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Shrinkwrap dependencies
 - Add `gulp sentry:release`
 - Add ES2015 polyfills using babel-polyfill
+- Hide statistics for minions with HIDE_STATS (#128)
 
 ### Changed
 - Replace own HearthstoneJSON implementation with common one

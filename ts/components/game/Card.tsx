@@ -155,6 +155,9 @@ class Card extends React.Component<CardProps, {}> {
 		switch (cardType) {
 			case CardType.MINION:
 				classNames.push("card-minion");
+				if (entity.getTag(GameTag.HIDE_STATS)) {
+					break;
+				};
 				var attack = <Attack attack={!this.props.isHidden && !this.props.defaultStats ? entity.getAtk() : defaultAttack}
 					default={defaultAttack}/>;
 				var health = <Health health={!this.props.isHidden && !this.props.defaultStats ? entity.getHealth() : defaultHealth}
@@ -190,7 +193,9 @@ class Card extends React.Component<CardProps, {}> {
 					cardArtDirectory={this.props.cardArtDirectory}
 				    mulligan={this.props.mulligan}
 					/>
-				<Cost cost={!this.props.isHidden && !this.props.defaultStats ? entity.getCost() : defaultCost} default={defaultCost}/>
+				{entity.getTag(GameTag.HIDE_STATS) == 0 ?
+					<Cost cost={!this.props.isHidden && !this.props.defaultStats ? entity.getCost() : defaultCost} default={defaultCost}/>
+				: null}
 				<h1>{title}</h1>
 				<div className="description">
 					<p style={textStyle} dangerouslySetInnerHTML={{ __html: description }}></p>
