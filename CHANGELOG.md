@@ -20,6 +20,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - Work around HearthSim/HearthstoneJSON#36
+- Fix Shifter Zerus in hidden hand
 
 ## [0.6.0] - 2016-08-21
 ### Added

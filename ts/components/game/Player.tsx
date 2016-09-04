@@ -245,7 +245,7 @@ class Player extends React.Component<PlayerProps, {}> {
 					if (entity) {
 						let type = entity.getTag(GameTag.CARDTYPE);
 						let hidden = false;
-						if(!entity.cardId && this.props.cardOracle && this.props.cardOracle.has(+entity.id)) {
+						if ((!entity.cardId && this.props.cardOracle && this.props.cardOracle.has(+entity.id)) || entity.getTag(GameTag.SHIFTING)) {
 							let cardId = this.props.cardOracle.get(entity.id);
 							entity = new Entity(entity.id, entity.getTags(), cardId);
 							hidden = true;

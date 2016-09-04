@@ -227,11 +227,12 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle, MulliganOr
 				{
 					let id = this.resolveEntityId(node.attributes["entity"]);
 					let cardId = node.attributes["cardID"] || null;
-					this.revealEntity(id, cardId);
+					let tags = node.attributes["tags"];
+					this.revealEntity(id, cardId, tags);
 					mutator = new ShowEntityMutator(
 						id,
 						cardId,
-						node.attributes["tags"],
+						tags,
 						name == 'ChangeEntity'
 					);
 					break;
@@ -399,12 +400,19 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle, MulliganOr
 		return +id;
 	}
 
-	protected revealEntity(id: number, cardId: string): void {
+	protected revealEntity(id: number, cardId: string, tags?: Immutable.Map<string, number>): void {
 		if (!cardId || !id) {
 			return;
 		}
 		id = +id;
 		cardId = '' + cardId;
+		if (this.cardIds.has(id)) {
+			// do not overwrite entities
+			return;
+		}
+		if (tags && tags.has("" + GameTag.SHIFTING)) {
+			cardId = "OG_123"; // Shifter Zerus
+		}
 		let newCardIds = this.cardIds.set(id, cardId);
 		if (newCardIds === this.cardIds) {
 			return;
