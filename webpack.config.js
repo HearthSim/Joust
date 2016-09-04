@@ -1,5 +1,5 @@
 module.exports = {
-	entry: __dirname + "/ts/run.tsx",
+	entry: ["babel-polyfill", __dirname + "/ts/run.tsx"],
 	output: {
 		path: __dirname + "/dist",
 		filename: "joust.js",

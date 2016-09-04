@@ -11,6 +11,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Launcher.fullscreen(fullscreen: boolean)
 - Shrinkwrap dependencies
 - Add `gulp sentry:release`
+- Add ES2015 polyfills using babel-polyfill
 
 ### Changed
 - Replace own HearthstoneJSON implementation with common one
