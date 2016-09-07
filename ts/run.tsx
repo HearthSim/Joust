@@ -1,7 +1,7 @@
 /// <reference path="../typings/index.d.ts"/>
 /// <reference path="./global.d.ts"/>
 
-import {GameWidgetProps, CardData, JoustEventHandler, QueryCardMetadata} from "./interfaces";
+import {GameWidgetProps, JoustEventHandler, QueryCardMetadata} from "./interfaces";
 import Application from "./components/Joust";
 import GameWidget from "./components/GameWidget";
 import GameStateSink from "./state/GameStateSink";
@@ -29,6 +29,7 @@ class Launcher {
 	protected shouldStartPaused:boolean;
 	protected ref:GameWidget;
 	protected metadataSourceCb: (build: number|"latest", locale: string) => string;
+	protected ready: boolean;
 
 	constructor(target:any) {
 		this.target = target;
@@ -42,6 +43,7 @@ class Launcher {
 		} as any;
 		this.opts.assetDirectory = (asset) => "assets/" + asset;
 		this.opts.cardArtDirectory = (cardId) => "https://art.hearthstonejson.com/v1/256x/" + cardId + ".jpg";
+		this.ready = false;
 	}
 
 	public width(width:number):Launcher {
@@ -318,6 +320,7 @@ class Launcher {
 				decoder.pipe(preloader);
 			}
 		});
+
 		decoder
 			.on("error", this.log.bind(this))
 			.once("error", () => this.track("decoder_error", {count: 1}));
@@ -327,13 +330,17 @@ class Launcher {
 		this.opts.cardOracle = decoder;
 		this.opts.mulliganOracle = decoder;
 
+		this.opts.startupTime = +Date.now();
+		this.ready = true;
 		this.render();
 
 		this.track("starting_from_turn", {fromTurn: this.startFromTurn ? "t" : "f", turn: this.startFromTurn | null});
 	}
 
 	protected render():void {
-		this.opts.startupTime = +Date.now();
+		if (!this.ready) {
+			return;
+		}
 		this.ref = ReactDOM.render(
 			React.createElement(GameWidget, this.opts),
 			typeof this.target === 'string' ? document.getElementById(this.target as string) : this.target

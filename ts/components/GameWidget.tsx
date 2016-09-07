@@ -44,24 +44,24 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 			isLogVisible: false,
 			isLogMounted: false
 		};
+		this.props.sink.once("gamestate", () => {
+			this.track("startup", {count: 1, duration: (Date.now() - this.props.startupTime) / 1000});
+		});
 	}
 
 	public componentDidMount() {
 		this.cb = this.setGameState.bind(this);
-		this.props.sink.on('gamestate', this.cb.bind(this));
-		this.props.sink.once('gamestate', () => {
-			this.track('startup', {count: 1, duration: (Date.now() - this.props.startupTime) / 1000});
-		});
+		this.props.sink.on("gamestate", this.cb.bind(this));
 		this.fullscreen = new Fullscreen(this.ref);
-		this.fullscreen.on('attain', this.onAttainFullscreen.bind(this));
-		this.fullscreen.on('release', this.onReleaseFullscreen.bind(this));
+		this.fullscreen.on("attain", this.onAttainFullscreen.bind(this));
+		this.fullscreen.on("release", this.onReleaseFullscreen.bind(this));
 		this.cardOracleCb = this.updateCardOracle.bind(this);
 		this.mulliganOracleCb = this.updateMulliganOracle.bind(this);
 		if (this.props.cardOracle) {
-			this.props.cardOracle.on('cards', this.cardOracleCb);
+			this.props.cardOracle.on("cards", this.cardOracleCb);
 		}
 		if (this.props.cardOracle) {
-			this.props.mulliganOracle.on('mulligans', this.mulliganOracleCb);
+			this.props.mulliganOracle.on("mulligans", this.mulliganOracleCb);
 		}
 	}
 
@@ -77,11 +77,11 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 	}
 
 	protected componentWillUnmount() {
-		this.props.sink.removeListener('gamestate', this.cb);
-		this.fullscreen.removeAllListeners('attain');
-		this.fullscreen.removeAllListeners('release');
-		this.props.cardOracle.removeListener('cards', this.cardOracleCb);
-		this.props.cardOracle.removeListener('mulligans', this.mulliganOracleCb);
+		this.props.sink.removeListener("gamestate", this.cb);
+		this.fullscreen.removeAllListeners("attain");
+		this.fullscreen.removeAllListeners("release");
+		this.props.cardOracle.removeListener("cards", this.cardOracleCb);
+		this.props.cardOracle.removeListener("mulligans", this.mulliganOracleCb);
 	}
 
 	protected onClickExit(e): void {
@@ -93,7 +93,7 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 
 	protected onAttainFullscreen() {
 		this.setState({ isFullscreen: true });
-		if ('orientation' in screen) {
+		if ("orientation" in screen) {
 			screen.orientation.lock("landscape");
 		}
 		this.triggerResize();
