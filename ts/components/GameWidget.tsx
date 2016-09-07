@@ -251,7 +251,8 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 				}}
 				isLogVisible={this.state.isLogVisible}
 				toggleLog={() => this.setState({ isLogVisible: !this.state.isLogVisible, isLogMounted: true })}
-				/>);
+			    enableKeybindings={this.props.enableKeybindings}
+			/>);
 		}
 
 		var style = {};

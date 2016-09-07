@@ -160,7 +160,11 @@ export interface LocaleProps {
 	locale?: string;
 }
 
-export interface GameWidgetProps extends AssetDirectoryProps, CardArtDirectory, EventHandlerProps, LocaleProps, React.Props<any> {
+export interface KeybindingProps {
+	enableKeybindings?: boolean;
+}
+
+export interface GameWidgetProps extends AssetDirectoryProps, CardArtDirectory, EventHandlerProps, LocaleProps, KeybindingProps, React.Props<any> {
 	sink: GameStateSink;
 	startupTime: number;
 	interaction?: InteractiveBackend;

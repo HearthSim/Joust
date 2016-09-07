@@ -1,11 +1,11 @@
 import * as React from "react";
-import {StreamScrubber} from "../interfaces";
+import {StreamScrubber, KeybindingProps} from "../interfaces";
 import Timeline from "./Timeline";
 import SpeedSelector from "./SpeedSelector";
 import Tooltipper from "./Tooltipper";
 import * as cookie from "cookiejs";
 
-interface ScrubberProps extends React.Props<any> {
+interface ScrubberProps extends KeybindingProps, React.Props<any> {
 	scrubber: StreamScrubber;
 	swapPlayers?: () => void;
 	isSwapped?: boolean;
@@ -51,24 +51,30 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 		};
 		this.props.scrubber.setSpeed(this.state.speed);
 		this.onKeyDown = this.onKeyDown.bind(this);
-		this.registerListeners(this.props);
+		if(this.props.enableKeybindings) {
+			this.registerListeners(this.props);
+		}
 	}
 
 	public componentWillUpdate(nextProps: ScrubberProps, nextState: ScrubberState): void {
-		this.removeListeners(this.props);
-		this.registerListeners(nextProps);
+		if(this.props.enableKeybindings) {
+			this.removeListeners(this.props);
+		}
+		if(nextProps.enableKeybindings) {
+			this.registerListeners(nextProps);
+		}
 	}
 
 	private updateListener = () => this.updateState();
 
 	private registerListeners(props: ScrubberProps): void {
-		props.scrubber.on('update', this.updateListener);
-		document.addEventListener('keydown', this.onKeyDown);
+		props.scrubber.on("update", this.updateListener);
+		document.addEventListener("keydown", this.onKeyDown);
 	}
 
 	private removeListeners(props: ScrubberProps): void {
-		props.scrubber.removeListener('update', this.updateListener);
-		document.removeEventListener('keydown', this.onKeyDown);
+		props.scrubber.removeListener("update", this.updateListener);
+		document.removeEventListener("keydown", this.onKeyDown);
 	}
 
 	private onKeyDown(e: KeyboardEvent): void {

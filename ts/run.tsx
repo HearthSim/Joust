@@ -40,6 +40,7 @@ class Launcher {
 				console.error(message);
 			},
 			locale: "enUS",
+			enableKeybindings: true,
 		} as any;
 		this.opts.assetDirectory = (asset) => "assets/" + asset;
 		this.opts.cardArtDirectory = (cardId) => "https://art.hearthstonejson.com/v1/256x/" + cardId + ".jpg";
@@ -232,6 +233,18 @@ class Launcher {
 		if (turnState) {
 			this.opts.scrubber.seek(turnState.time);
 		}
+	}
+
+	public enableKeybindings(): Launcher {
+		this.opts.enableKeybindings = true;
+		this.render();
+		return this;
+	}
+
+	public disableKeybindings(): Launcher {
+		this.opts.enableKeybindings = false;
+		this.render();
+		return this;
 	}
 
 	public fromUrl(url:string):void {
