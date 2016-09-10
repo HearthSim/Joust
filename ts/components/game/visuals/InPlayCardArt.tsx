@@ -20,10 +20,15 @@ class InPlayCardArt extends React.Component<EntityProps, {}> {
 		var images = [];
 		var entity = this.props.entity;
 		var controller = this.props.controller;
+		var postfix = "";
+
+		if (entity.isPremium()) {
+			postfix = "_premium";
+		}
 
 		if (entity.isTaunter()) {
 			images.push({
-				image: "inplay_minion_taunt.png",
+				image: `inplay_minion_taunt${postfix}.png`,
 				classes: ["inplay-taunt"]
 			});
 		}
@@ -43,19 +48,19 @@ class InPlayCardArt extends React.Component<EntityProps, {}> {
 
 		if (entity.getTag(GameTag.HIDE_STATS)) {
 			images.push({
-				image: "inplay_minion_hide_stats.png",
+				image: `inplay_minion_hide_stats${postfix}.png`,
 				classes: ["inplay-base"]
 			});
 		} else {
 			images.push({
-				image: "inplay_minion.png",
+				image: `inplay_minion${postfix}.png`,
 				classes: ["inplay-base"]
 			});
 		}
 
 		if (entity.isLegendary()) {
 			images.push({
-				image: "inplay_minion_legendary.png",
+				image: `inplay_minion_legendary${postfix}.png`,
 				classes: ["inplay-legendary"]
 			});
 		}
