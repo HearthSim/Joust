@@ -81,10 +81,18 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 		if (!this.state.canInteract) {
 			return;
 		}
+
 		if(e.shiftKey || e.altKey || e.ctrlKey || e.metaKey) {
 			// do not trigger with modifier
 			return;
 		}
+
+		let activeTag = document.activeElement && document.activeElement.tagName;
+		if (activeTag == "TEXTAREA" || activeTag == "INPUT" || activeTag == "SELECT") {
+			// Do not trigger if an input element is focused
+			return;
+		}
+
 		switch (e.keyCode) {
 			case 32: // spacebar
 			case 75: // k
