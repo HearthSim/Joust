@@ -14,10 +14,13 @@ interface InHandCardArtProps extends EntityProps {
 
 class InHandCardArt extends React.Component<InHandCardArtProps, {}> {
 	public render(): JSX.Element {
-		var images = [];
-		var entity = this.props.entity;
-		var portraitClass = null;
-		var frame = null;
+		let images = [];
+		let entity = this.props.entity;
+		let portraitClass = null;
+		let frame = null;
+		let premiumOverlay = null;
+		let premiumOverlayClass = null;
+		let cardClass = this.cardClassToString();
 
 		if (this.props.hidden) {
 			images.push({
@@ -29,24 +32,30 @@ class InHandCardArt extends React.Component<InHandCardArtProps, {}> {
 				case CardType.MINION:
 					portraitClass = "inhand-minion";
 					if (entity.isPremium()) {
-						frame = "inhand_minion_premium.png"
+						frame = "inhand_minion_premium.png";
+						premiumOverlay = "premium-minion-overlay.png";
+						premiumOverlayClass = cardClass + "-color";
 					} else {
-						frame = "inhand_minion_" + this.cardClassToString() + ".png";
+						frame = "inhand_minion_" + cardClass + ".png";
 					}
 					break;
 				case CardType.SPELL:
 				case CardType.HERO_POWER:
 					portraitClass = "inhand-spell";
 					if (entity.isPremium()) {
-						frame = "inhand_spell_premium.png"
+						frame = "inhand_spell_premium.png";
+						premiumOverlay = "premium-spell-overlay.png";
+						premiumOverlayClass = cardClass + "-color";
 					} else {
-						frame = "inhand_spell_" + this.cardClassToString() + ".png";
+						frame = "inhand_spell_" + cardClass + ".png";
 					}
 					break;
 				case CardType.WEAPON:
 					portraitClass = "inhand-weapon";
 					if (entity.isPremium()) {
-						frame = "inhand_weapon_premium.png"
+						frame = "inhand_weapon_premium.png";
+						premiumOverlay = "premium-weapon-overlay.png";
+						premiumOverlayClass = cardClass + "-color";
 					} else {
 						frame = "inhand_weapon_neutral.png";
 					}
@@ -64,6 +73,13 @@ class InHandCardArt extends React.Component<InHandCardArtProps, {}> {
 			image: frame,
 			classes: ["inhand-base"]
 		});
+
+		if (entity.isPremium()) {
+			images.push({
+				image: premiumOverlay,
+				classes: ["inhand-base", premiumOverlayClass],
+			})
+		}
 
 		if (!this.props.hidden && entity.cardId && entity.isLegendary()) {
 			images.push({

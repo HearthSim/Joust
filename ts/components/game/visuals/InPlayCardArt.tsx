@@ -17,10 +17,10 @@ class InPlayCardArt extends React.Component<EntityProps, {}> {
 	}
 
 	public render(): JSX.Element {
-		var images = [];
-		var entity = this.props.entity;
-		var controller = this.props.controller;
-		var postfix = "";
+		let images = [];
+		let entity = this.props.entity;
+		let controller = this.props.controller;
+		let postfix = "";
 
 		if (entity.isPremium()) {
 			postfix = "_premium";

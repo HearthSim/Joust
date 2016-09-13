@@ -15,6 +15,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Hide statistics for minions with HIDE\_STATS (#128, @jleclanche)
 - Add `Launcher.enableKeybindings()` and `Launcher.disableKeybindings()`
 - Add golden inplay frames (#134, @andburn)
+- Add class borders for golden cards (#134, @andburn)
 
 ### Changed
 - Replace own HearthstoneJSON implementation with common one
