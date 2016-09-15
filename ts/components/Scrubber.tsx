@@ -27,6 +27,8 @@ interface ScrubberState {
 	canRewind?: boolean;
 	canPlay?: boolean;
 	speed?: number;
+	duration?: number;
+	currentTime?: number;
 }
 
 class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
@@ -51,30 +53,51 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 		};
 		this.props.scrubber.setSpeed(this.state.speed);
 		this.onKeyDown = this.onKeyDown.bind(this);
-		if(this.props.enableKeybindings) {
+	}
+
+	public componentDidMount(): void {
+		this.registerListeners(this.props);
+	}
+
+	public componentWillUpdate(nextProps: ScrubberProps, nextState: ScrubberState): void {
+		if(!_.isEqual(nextProps, this.props)) {
+			this.removeListeners(this.props);
+		}
+	}
+
+	public componentDidUpdate(prevProps: ScrubberProps, prevState: ScrubberState, prevContext: any): void {
+		if(!_.isEqual(prevProps, this.props)) {
 			this.registerListeners(this.props);
 		}
 	}
 
-	public componentWillUpdate(nextProps: ScrubberProps, nextState: ScrubberState): void {
-		if(this.props.enableKeybindings) {
-			this.removeListeners(this.props);
+	public shouldComponentUpdate(nextProps: ScrubberProps, nextState: ScrubberState, nextContext: any): boolean {
+		if (_.isEqual(nextState, this.state) &&
+			nextProps.isSwapped === this.props.isSwapped &&
+			nextProps.isFullscreen === this.props.isFullscreen &&
+			nextProps.isFullscreenAvailable === this.props.isFullscreenAvailable &&
+			nextProps.isRevealingCards === this.props.isRevealingCards &&
+			nextProps.canRevealCards === this.props.canRevealCards &&
+			nextProps.isLogVisible === this.props.isLogVisible) {
+			return false;
 		}
-		if(nextProps.enableKeybindings) {
-			this.registerListeners(nextProps);
-		}
+		return true;
 	}
 
 	private updateListener = () => this.updateState();
 
 	private registerListeners(props: ScrubberProps): void {
 		props.scrubber.on("update", this.updateListener);
-		document.addEventListener("keydown", this.onKeyDown);
+		if (props.enableKeybindings) {
+			document.addEventListener("keydown", this.onKeyDown);
+		}
 	}
 
 	private removeListeners(props: ScrubberProps): void {
 		props.scrubber.removeListener("update", this.updateListener);
-		document.removeEventListener("keydown", this.onKeyDown);
+		if (props.enableKeybindings) {
+			document.removeEventListener("keydown", this.onKeyDown);
+		}
 	}
 
 	private onKeyDown(e: KeyboardEvent): void {
@@ -175,7 +198,9 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 			canInteract: scrubber.canInteract(),
 			canPlay: scrubber.canPlay(),
 			canRewind: scrubber.canRewind(),
-			speed: scrubber.getSpeed()
+			speed: scrubber.getSpeed(),
+			duration: scrubber.getDuration(),
+			currentTime: scrubber.getCurrentTime(),
 		});
 	}
 
@@ -228,8 +253,8 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 							   selectSpeed={(speed: number) => this.selectSpeed(speed)}
 							   disabled={!this.state.canInteract}
 				/></Tooltipper>
-				<Timeline duration={this.props.scrubber.getDuration() }
-					at={this.props.scrubber.getCurrentTime() }
+				<Timeline duration={this.state.duration }
+					at={this.state.currentTime }
 					seek={this.props.scrubber.seek.bind(this.props.scrubber) }
 					turnMap={this.props.scrubber.getHistory().turnMap}
 					swapPlayers={this.props.isSwapped}
