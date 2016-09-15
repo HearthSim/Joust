@@ -66,6 +66,7 @@ class Joust extends React.Component<{}, JoustState> {
 						mulliganOracle={this.state.mulliganOracle}
 						assetDirectory={(asset: string) => "./assets/" + asset}
 						cardArtDirectory={null}
+						enableKeybindings={true}
 						ref={this.onMountGameWidget.bind(this) }
 						/>;
 				break;
