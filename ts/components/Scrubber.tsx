@@ -4,6 +4,7 @@ import Timeline from "./Timeline";
 import SpeedSelector from "./SpeedSelector";
 import Tooltipper from "./Tooltipper";
 import * as cookie from "cookiejs";
+import * as _ from "lodash";
 
 interface ScrubberProps extends KeybindingProps, React.Props<any> {
 	scrubber: StreamScrubber;
