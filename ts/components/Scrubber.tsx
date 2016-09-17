@@ -34,7 +34,7 @@ interface ScrubberState {
 
 class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 
-	private static SPEEDS = [1, 1.5, 2, 3, 4, 8];
+	private static SPEEDS = [0.75, 1, 1.5, 2, 3, 4, 8];
 
 	constructor(props: ScrubberProps) {
 		super(props);

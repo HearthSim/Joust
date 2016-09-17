@@ -23,7 +23,7 @@ export default class GameStateScrubber extends Stream.Duplex implements StreamSc
 		this.initialTime = null;
 		this.currentTime = 0;
 		this.speed = 1;
-		this.multiplier = 1;
+		this.multiplier = 1.5;
 		this.history = history || new GameStateHistory();
 		this.lastState = null;
 		this.endTime = null;

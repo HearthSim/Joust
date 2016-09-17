@@ -19,6 +19,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Replace own HearthstoneJSON implementation with common one
 - Tweak scrubber tooltips
 - Keybindings no longer have priority over non-joust HTML inputs
+- Rescale speeds by a factor of 1.5
 
 ### Fixed
 - Work around HearthSim/HearthstoneJSON#36
