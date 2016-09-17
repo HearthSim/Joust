@@ -100,6 +100,16 @@ class Entity {
 		return this.getTag(GameTag.ZONE_POSITION);
 	}
 
+	public isAsleep(controller?: Entity): boolean {
+		return (
+			this.getTag(GameTag.NUM_TURNS_IN_PLAY) == 0 &&
+			this.getTag(GameTag.CHARGE) >= 0 &&
+			!this.getTag(GameTag.UNTOUCHABLE) &&
+			!this.getTag(GameTag.AUTOATTACK) &&
+			(!controller || controller.getTag(GameTag.CURRENT_PLAYER) == 1)
+		);
+	}
+
 	public getTag(key:number):number {
 		return this.tags ? (+this.tags.get('' + key) || 0) : 0;
 	}

@@ -25,6 +25,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Work around HearthSim/HearthstoneJSON#36
 - Fix Shifter Zerus in hidden hand
 - Improve Scrubber performance
+- Fix minions being asleep when they shouldn't be
 
 ## [0.6.0] - 2016-08-21
 ### Added

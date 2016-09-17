@@ -96,9 +96,7 @@ class InPlayCardArt extends React.Component<EntityProps, {}> {
 			});
 		}
 
-		if (entity.getTag(GameTag.NUM_TURNS_IN_PLAY) == 0 &&
-			entity.getTag(GameTag.CHARGE) <= 0 &&
-			(!controller || controller.getTag(GameTag.CURRENT_PLAYER))) {
+		if (entity.isAsleep(controller)) {
 			images.push({
 				image: "effect_sleep.png",
 				classes: ["effect-sleep"]

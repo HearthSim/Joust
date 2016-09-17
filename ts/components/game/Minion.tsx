@@ -46,6 +46,10 @@ class Minion extends EntityInPlay<EntityInPlayProps> {
 			})
 		}
 
+		if (data.mechanics && data.mechanics.indexOf("AUTOATTACK") !== -1) {
+			entity = entity.setTag(GameTag.AUTOATTACK, 1);
+		}
+
 		let components = [
 			<InPlayCardArt
 				key="art"
