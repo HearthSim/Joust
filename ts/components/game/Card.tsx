@@ -250,14 +250,12 @@ class Card extends React.Component<CardProps, {}> {
 		// custom line breaks
 		if(description.match(/^\[x\]/)) {
 			description = description.replace(/^\[x\]/, "");
-			// renenable this when font-sizing is fixed
+			// enable this when font-sizing is optimizied
 			//description = description.replace(/\n/g, "<br>");
 		}
 
-		// non-breaking spaces - see issue at https://github.com/HearthSim/HearthstoneJSON/issues/36
-		// replace with spaces for now
-		//description = description.replace(/_/g, String.fromCharCode(160));
-		description = description.replace(/_/g, " ");
+		// remove non-breaking spaces
+		description = description.replace(String.fromCharCode(160), " ");
 
 		return description.trim();
 	}

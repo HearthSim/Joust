@@ -22,9 +22,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Tweak scrubber tooltips
 - Keybindings no longer have priority over non-joust HTML inputs
 - Rescale speeds by a factor of 1.5
+- Improve card description formatting
 
 ### Fixed
-- Work around HearthSim/HearthstoneJSON#36
 - Fix Shifter Zerus in hidden hand
 - Improve Scrubber performance
 - Fix minions being asleep when they shouldn't be
