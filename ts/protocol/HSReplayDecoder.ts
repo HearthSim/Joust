@@ -368,7 +368,8 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle, MulliganOr
 				// unused
 				break;
 			default:
-				this.emit('error', new Error('HSReplay: Unknown tag "' + node.name + '"'));
+				// don't emit error event, since that would end the stream
+				console.error(new Error('HSReplay: Unknown tag "' + node.name + '"'));
 				break;
 		}
 

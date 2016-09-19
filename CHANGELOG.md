@@ -23,6 +23,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Keybindings no longer have priority over non-joust HTML inputs
 - Rescale speeds by a factor of 1.5
 - Improve card description formatting
+- HSReplay: Don't bail when encountering unknown tags
 
 ### Fixed
 - Fix Shifter Zerus in hidden hand
