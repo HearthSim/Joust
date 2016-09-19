@@ -140,7 +140,13 @@ class Player extends React.Component<PlayerProps, {}> {
 			/>;
 		}
 
-		var name = this.props.player.name ? <div className="name" title={this.props.player.name}>{this.props.player.name}</div> : null;
+		let playername = this.props.player.name;
+		if(!playername && heroEntity) {
+			if(this.props.cards.has(heroEntity.cardId)) {
+				playername = this.props.cards.get(heroEntity.cardId).name;
+			}
+		}
+		var name = playername ? <div className="name" title={playername}>{playername}</div> : null;
 		var rank = <Rank rank={this.props.player.rank }
 			legendRank={this.props.player.legendRank }
 			assetDirectory={this.props.assetDirectory}

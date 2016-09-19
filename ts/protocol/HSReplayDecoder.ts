@@ -196,19 +196,22 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle, MulliganOr
 					let id = +node.attributes["id"];
 					let rank = +node.attributes["rank"];
 					let legendRank = +node.attributes["legendRank"];
-					let name = '' + node.attributes["name"];
-					if (!name) {
-						// this should only be happening in resumed replays
-						this.playerMap.forEach((v: PlayerDetails, k: string) => {
-							// find the old player name
-							if (v.id === id) {
-								console.warn('Transferring player name', '"' + k + '"', 'to entity #' + v.id);
-								name = k;
-								rank = v.rank;
-								legendRank = v.legendRank;
-								return false;
-							}
-						});
+					let name = null;
+					if(true || node.attributes["accountLo"] !== 0) {
+						name = "" + node.attributes["name"];
+						if (!name) {
+							// this should only be happening in resumed replays
+							this.playerMap.forEach((v: PlayerDetails, k: string) => {
+								// find the old player name
+								if (v.id === id) {
+									console.warn("Transferring player name", """ + k + """, "to entity #" + v.id);
+									name = k;
+									rank = v.rank;
+									legendRank = v.legendRank;
+									return false;
+								}
+							});
+						}
 					}
 					this.playerMap = this.playerMap.set(name, <PlayerDetails>{ id: id, rank: rank, legendRank: legendRank });
 					let player = new Player(
