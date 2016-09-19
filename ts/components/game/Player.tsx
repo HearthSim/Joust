@@ -102,6 +102,7 @@ export default class Player extends React.Component<PlayerProps, void> {
 							}
 							let types = [CardType.WEAPON, CardType.SPELL, CardType.MINION, CardType.HERO_POWER, "WEAPON", "SPELL", "MINION", "HERO_POWER"];
 							if (types.indexOf(type) != -1 || entity.getTag(GameTag.SECRET)) {
+								entity = entity.setTag(GameTag.COST, entity.getTag(GameTag.TAG_LAST_KNOWN_COST_IN_HAND));
 								action = <div className="played"><Card
 									entity={entity}
 									option={null}
