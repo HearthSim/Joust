@@ -44,9 +44,6 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 			isLogVisible: false,
 			isLogMounted: false
 		};
-		this.props.sink.once("gamestate", () => {
-			this.track("startup", {count: 1, duration: (Date.now() - this.props.startupTime) / 1000});
-		});
 	}
 
 	public componentDidMount() {

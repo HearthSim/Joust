@@ -321,6 +321,7 @@ class Launcher {
 				if (this.opts.onReady) {
 					this.opts.onReady();
 				}
+				this.track("startup", {count: 1, duration: (Date.now() - this.opts.startupTime) / 1000});
 			});
 
 			message
