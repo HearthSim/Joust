@@ -1,0 +1,14 @@
+{
+	"extends": "tslint:latest",
+	"rules": {
+		"indent": [
+			true,
+			"tabs"
+		],
+		"one-line": [
+			true,
+			"check-open-brace",
+			"check-whitespace"
+		]
+	}
+}
