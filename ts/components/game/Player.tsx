@@ -233,6 +233,10 @@ class Player extends React.Component<PlayerProps, {}> {
 								if (type == BlockType.PLAY || toCompare.getTag(GameTag.SECRET) || toCompare.getTag(GameTag.EVIL_GLOW)) {
 									entity = toCompare;
 								}
+								else if (type == BlockType.TRIGGER && toCompare.cardId == "KAR_096" && toCompare.getTag(GameTag.REVEALED)) {
+									//Prince Malchezaar
+									entity = toCompare;
+								}
 							}
 						});
 					});

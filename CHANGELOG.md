@@ -3,6 +3,7 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+- Show Prince Malchezaar at game start (#142, @azeier)
 
 ## [0.7.0] - 2016-09-19
 ### Added

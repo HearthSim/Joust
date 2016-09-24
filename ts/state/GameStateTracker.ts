@@ -84,8 +84,15 @@ export default class GameStateTracker extends Stream.Transform {
 				case BlockType.TRIGGER:
 					if (!timeStep) {
 						if (mutator.descriptor.entityId > 3) {
-							// normal entity triggers
-							timeStep = 1;
+							let entity = this.gameState.getEntity(mutator.descriptor.entityId);
+							if (entity && entity.cardId == "KAR_096" && entity.getTag(GameTag.REVEALED)) {
+								//Prince Malchezaar
+								timeStep = 3;
+							}
+							else {
+								// normal entity triggers
+								timeStep = 1;
+							}
 						}
 						else {
 							switch (gameStep) {
