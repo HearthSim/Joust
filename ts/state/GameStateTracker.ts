@@ -3,13 +3,12 @@ import * as Stream from "stream";
 import GameStateMutator from "./GameStateMutator";
 import PushDescriptorMutator from "./mutators/PushDescriptorMutator";
 import IncrementTimeMutator from "./mutators/IncrementTimeMutator";
-import {GameTag, BlockType, Step, MetaDataType} from "../enums";
+import {BlockType, GameTag, MetaDataType, Step} from "../enums";
 import PopDescriptorMutator from "./mutators/PopDescriptorMutator";
 import SetChoicesMutator from "./mutators/SetChoicesMutator";
 import EnrichDescriptorMutator from "./mutators/EnrichDescriptorMutator";
 import SetOptionsMutator from "./mutators/SetOptionsMutator";
 import TagChangeMutator from "./mutators/TagChangeMutator";
-import GameStateDescriptor from "./GameStateDescriptor";
 
 /**
  * Follows the initial game state by applying incoming mutators to the game state.
@@ -17,9 +16,9 @@ import GameStateDescriptor from "./GameStateDescriptor";
  */
 export default class GameStateTracker extends Stream.Transform {
 
-	public gameState:GameState;
+	public gameState: GameState;
 
-	constructor(initialGameState?:GameState, opts?:Stream.TransformOptions) {
+	constructor(initialGameState?: GameState, opts?: Stream.TransformOptions) {
 		opts = opts || {};
 		opts.objectMode = true;
 		super(opts);
@@ -28,8 +27,8 @@ export default class GameStateTracker extends Stream.Transform {
 		this.upcomingMetadataTargets = [];
 	}
 
-	_transform(mutator:any, encoding:string, callback:Function):void {
-		var oldState = this.gameState;
+	public _transform(mutator: any, encoding: string, callback: Function): void {
+		let oldState = this.gameState;
 		this.preTime(mutator as GameStateMutator);
 		this.gameState = this.gameState.apply(mutator);
 		if (oldState !== this.gameState) {
@@ -40,18 +39,18 @@ export default class GameStateTracker extends Stream.Transform {
 		callback();
 	}
 
-	private waitAtNextBlockOrEndOfBlock:boolean;
-	private mulliganChoicesSeen:number;
-	private lastDescriptorEntityId:number;
-	private lastDescriptorType:BlockType;
-	private upcomingMetadataTargets:number[];
-	private hasSteppedThisBlock:boolean;
+	private waitAtNextBlockOrEndOfBlock: boolean;
+	private mulliganChoicesSeen: number;
+	private lastDescriptorEntityId: number;
+	private lastDescriptorType: BlockType;
+	private upcomingMetadataTargets: number[];
+	private hasSteppedThisBlock: boolean;
 
-	protected preTime(mutator:GameStateMutator) {
+	protected preTime(mutator: GameStateMutator) {
 		let timeStep = 0;
 
-		if(mutator instanceof PopDescriptorMutator) {
-			if(this.lastDescriptorType === BlockType.RITUAL) {
+		if (mutator instanceof PopDescriptorMutator) {
+			if (this.lastDescriptorType === BlockType.RITUAL) {
 				timeStep = 2;
 			}
 		}
@@ -61,7 +60,7 @@ export default class GameStateTracker extends Stream.Transform {
 		}
 	}
 
-	protected time(mutator:GameStateMutator) {
+	protected time(mutator: GameStateMutator) {
 		let timeStep = 0;
 		let gameStep = this.gameState.game ? this.gameState.game.getTag(GameTag.STEP) : Step.INVALID;
 
@@ -85,9 +84,10 @@ export default class GameStateTracker extends Stream.Transform {
 					if (!timeStep) {
 						if (mutator.descriptor.entityId > 3) {
 							let entity = this.gameState.getEntity(mutator.descriptor.entityId);
-							if (entity && entity.cardId == "KAR_096" && entity.getTag(GameTag.REVEALED)) {
-								//Prince Malchezaar
+							if (entity && entity.cardId === "KAR_096" && entity.getTag(GameTag.REVEALED)) {
+								// Prince Malchezaar after Mulligan
 								timeStep = 3;
+								console.debug("malchezaar");
 							}
 							else {
 								// normal entity triggers
@@ -103,6 +103,8 @@ export default class GameStateTracker extends Stream.Transform {
 								case Step.MAIN_ACTION:
 									// after card is drawn
 									timeStep = 1.5;
+									break;
+								default:
 									break;
 							}
 						}
@@ -128,17 +130,17 @@ export default class GameStateTracker extends Stream.Transform {
 		if (mutator instanceof PopDescriptorMutator) {
 			if (!timeStep) {
 				if (this.lastDescriptorEntityId > 3) {
-					if(this.lastDescriptorType === BlockType.TRIGGER) {
+					if (this.lastDescriptorType === BlockType.TRIGGER) {
 						timeStep = 1;
 					}
-					else if(this.lastDescriptorType === BlockType.PLAY) {
+					else if (this.lastDescriptorType === BlockType.PLAY) {
 						// pause after playing a card
-						if(!this.gameState.descriptor) {
+						if (!this.gameState.descriptor) {
 							// ...if not in another block (Yogg-Sarron)
 							timeStep = 1;
 						}
 					}
-					else if(!this.hasSteppedThisBlock) {
+					else if (!this.hasSteppedThisBlock) {
 						timeStep = 2;
 						this.hasSteppedThisBlock = true;
 					}
