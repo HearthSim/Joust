@@ -7,6 +7,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Show Prince Malchezaar at game start (#142, @azeier)
 - Show C'Thun stats in opponent hand (#133, @azeier)
 - Show C'Thun as a minion during ritual (#137, @azeier)
+- Highlight Hero Power when it's played (#140, @azeier)
 
 ### Changed
 - Update dependencies

@@ -43,6 +43,73 @@ export default class Player extends React.Component<PlayerProps, void> {
 			};
 		};
 
+		let activatedHeroPower = false;
+
+		let action = null;
+		if(this.props.descriptors.count() > 0 && !this.props.choices) {
+			this.props.descriptors.forEach((descriptor: GameStateDescriptor, index: number) => {
+				let outer = this.props.descriptors.get(index + 1);
+				let type = descriptor.type;
+				if (type == BlockType.PLAY || type == BlockType.TRIGGER || type == BlockType.RITUAL) {
+					let entity = null;
+					// search for entity
+					this.props.entities.forEach((map:Immutable.Map<number, Entity>) => {
+						map.forEach((toCompare:Entity) => {
+							if (descriptor.entityId === toCompare.id) {
+								if (type == BlockType.PLAY || toCompare.getTag(GameTag.SECRET) || toCompare.getTag(GameTag.EVIL_GLOW)) {
+									entity = toCompare;
+								}
+								else if (type == BlockType.TRIGGER && toCompare.cardId == "KAR_096" && toCompare.getTag(GameTag.REVEALED)) {
+									//Prince Malchezaar
+									entity = toCompare;
+								}
+							}
+						});
+					});
+					if (type === BlockType.RITUAL || (type == BlockType.TRIGGER && outer && outer.type == BlockType.RITUAL)) {
+						let setAside = this.props.entities.get(Zone.SETASIDE);
+						if (setAside) {
+							entity = setAside.find(x => x.cardId == "OG_279");
+						}
+					}
+					if(entity) {
+						if (entity.getTag(GameTag.CARDTYPE) === CardType.HERO_POWER && !entity.getTag(GameTag.EXHAUSTED)) {
+							activatedHeroPower = true;
+						}
+						if (!action) {
+							let type = entity.getTag(GameTag.CARDTYPE);
+							let hidden = false;
+							if ((!entity.cardId && this.props.cardOracle && this.props.cardOracle.has(+entity.id)) || entity.getTag(GameTag.SHIFTING)) {
+								let cardId = this.props.cardOracle.get(entity.id);
+								entity = new Entity(entity.id, entity.getTags(), cardId);
+								hidden = true;
+								if(this.props.cards && this.props.cards.has(cardId)) {
+									type = this.props.cards.get(cardId).type;
+								}
+							}
+							let types = [CardType.WEAPON, CardType.SPELL, CardType.MINION, CardType.HERO_POWER, "WEAPON", "SPELL", "MINION", "HERO_POWER"];
+							if (types.indexOf(type) != -1 || entity.getTag(GameTag.SECRET)) {
+								action = <div className="played"><Card
+									entity={entity}
+									option={null}
+									optionCallback={null}
+									assetDirectory={this.props.assetDirectory}
+									cards={this.props.cards}
+									isHidden={hidden}
+									controller={this.props.player}
+									cardArtDirectory={this.props.cardArtDirectory}
+								/></div>;
+							}
+						}
+					}
+					if (action && activatedHeroPower) {
+						// terminate loop
+						return false;
+					}
+				}
+			});
+		}
+
 		let emptyEntities = Immutable.Map<number, Entity>();
 		let emptyOptions = Immutable.Map<number, Option>();
 
@@ -73,6 +140,7 @@ export default class Player extends React.Component<PlayerProps, void> {
 			assetDirectory={this.props.assetDirectory}
 			cardArtDirectory={this.props.cardArtDirectory}
 			controller={this.props.player}
+			activated={activatedHeroPower}
 			/>;
 		let weapon = <Weapon entity={playEntities.filter(filterByCardType(CardType.WEAPON)).first() }
 			cards={this.props.cards}
@@ -219,77 +287,6 @@ export default class Player extends React.Component<PlayerProps, void> {
 				}
 				classNames.push('inactive');
 				break;
-		}
-
-		let action = null;
-		if(this.props.descriptors.count() > 0 && !this.props.choices) {
-			this.props.descriptors.forEach((descriptor: GameStateDescriptor, index: number) => {
-				let outer = this.props.descriptors.get(index + 1);
-				let type = descriptor.type;
-				if (type == BlockType.PLAY || type == BlockType.TRIGGER || type == BlockType.RITUAL) {
-					let entity = null;
-					// search for entity
-					this.props.entities.forEach((map:Immutable.Map<number, Entity>) => {
-						map.forEach((toCompare:Entity) => {
-							if (descriptor.entityId === toCompare.id) {
-								if (type == BlockType.PLAY || toCompare.getTag(GameTag.SECRET) || toCompare.getTag(GameTag.EVIL_GLOW)) {
-									entity = toCompare;
-								}
-								else if (type == BlockType.TRIGGER && toCompare.cardId == "KAR_096" && toCompare.getTag(GameTag.REVEALED)) {
-									//Prince Malchezaar
-									entity = toCompare;
-								}
-							}
-						});
-					});
-					if (type === BlockType.RITUAL || (type == BlockType.TRIGGER && outer && outer.type == BlockType.RITUAL)) {
-						let setAside = this.props.entities.get(Zone.SETASIDE);
-						if (setAside) {
-							entity = setAside.find(x => x.cardId == "OG_279");
-							if (entity) {
-								entity = entity.setTag(GameTag.NUM_TURNS_IN_PLAY, 1);
-								action = <div className="played"><Minion
-									entity={entity}
-									option={null}
-									optionCallback={null}
-									assetDirectory={this.props.assetDirectory}
-									cards={this.props.cards}
-									controller={this.props.player}
-									cardArtDirectory={this.props.cardArtDirectory}
-								/></div>;
-								return false;
-							}
-						}
-					}
-					if (entity) {
-						let type = entity.getTag(GameTag.CARDTYPE);
-						let hidden = false;
-						if ((!entity.cardId && this.props.cardOracle && this.props.cardOracle.has(+entity.id)) || entity.getTag(GameTag.SHIFTING)) {
-							let cardId = this.props.cardOracle.get(entity.id);
-							entity = new Entity(entity.id, entity.getTags(), cardId);
-							hidden = true;
-							if(this.props.cards && this.props.cards.has(cardId)) {
-								type = this.props.cards.get(cardId).type;
-							}
-						}
-						let types = [CardType.WEAPON, CardType.SPELL, CardType.MINION, CardType.HERO_POWER, "WEAPON", "SPELL", "MINION", "HERO_POWER"];
-						if (types.indexOf(type) != -1 || entity.getTag(GameTag.SECRET)) {
-							action = <div className="played"><Card
-								entity={entity}
-								option={null}
-								optionCallback={null}
-								assetDirectory={this.props.assetDirectory}
-								cards={this.props.cards}
-								isHidden={hidden}
-								controller={this.props.player}
-								cardArtDirectory={this.props.cardArtDirectory}
-							/></div>;
-						}
-						// terminate loop
-						return false;
-					}
-				}
-			});
 		}
 
 		if (this.props.isTop) {

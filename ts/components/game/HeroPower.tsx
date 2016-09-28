@@ -1,5 +1,4 @@
 import * as React from "react";
-
 import {EntityInPlayProps} from "../../interfaces";
 import EntityInPlay from "./EntityInPlay";
 import Cost from "./stats/Cost";
@@ -7,13 +6,25 @@ import Card from "./Card"
 import HeroPowerArt from "./visuals/HeroPowerArt";
 import {GameTag} from "../../enums";
 
-export default class HeroPower extends EntityInPlay<EntityInPlayProps> {
+interface HeroPowerProps extends EntityInPlayProps {
+	activated?: boolean;
+}
+
+export default class HeroPower extends EntityInPlay<HeroPowerProps> {
 	constructor() {
 		super('heroPower');
 	}
 
 	protected playWithClick():boolean {
 		return true;
+	}
+
+	protected getClassNames(): string[] {
+		let classNames = super.getClassNames();
+		if (this.props.activated) {
+			classNames.push("highlight");
+		}
+		return classNames;
 	}
 
 	protected jsx() {
