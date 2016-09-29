@@ -9,6 +9,8 @@
 			true,
 			"check-open-brace",
 			"check-whitespace"
-		]
+		],
+		"interface-name": false,
+		"switch-default": false
 	}
 }
