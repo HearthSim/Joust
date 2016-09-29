@@ -155,23 +155,25 @@ export default class Card extends React.Component<CardProps, void> {
 					break;
 				}
 				let attack = <Attack
-					attack={!this.props.isHidden && !this.props.defaultStats ? entity.getAtk() : defaultAttack}
-					default={defaultAttack}/>;
+					attack={this.getStatValue(GameTag.ATK, defaultAttack)}
+					default={defaultAttack}
+				/>;
 				let health = <Health
-					health={!this.props.isHidden && !this.props.defaultStats ? entity.getHealth() : defaultHealth}
+					health={this.getStatValue(GameTag.HEALTH, defaultHealth)}
 					damage={this.props.defaultStats ? 0 : entity.getDamage()}
-					default={defaultHealth}/>;
+					default={defaultHealth}
+				/>;
 				stats = <div className="stats">{attack}{health}</div>;
 				break;
 			}
 			case CardType.WEAPON: {
 				classNames.push("card-weapon");
 				let attack = <Attack
-					attack={!this.props.isHidden && !this.props.defaultStats ? entity.getAtk() : defaultAttack}
+					attack={this.getStatValue(GameTag.ATK, defaultAttack)}
 					default={defaultAttack}
 				/>;
 				let durability = <div className="durability">
-					{!this.props.isHidden && !this.props.defaultStats ? entity.getDurability() : defaultDurability}
+					{this.getStatValue(GameTag.DURABILITY, defaultDurability)}
 				</div>;
 				stats = <div className="stats">{attack}{durability}</div>;
 				textStyle = {color: "white"};
@@ -211,6 +213,14 @@ export default class Card extends React.Component<CardProps, void> {
 			</div>
 			{stats}
 		</div>;
+	}
+
+	private getStatValue(tag: GameTag, defaultValue: number): number {
+		let value = this.props.entity.getTag(tag);
+		if (this.props.defaultStats || this.props.isHidden && !value) {
+			return defaultValue;
+		}
+		return value;
 	}
 
 	protected parseDescription(description: string): string {
