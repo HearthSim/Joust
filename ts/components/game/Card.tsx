@@ -1,15 +1,11 @@
 import * as React from "react";
 import * as _ from "lodash";
-
-import {EntityProps, OptionProps, CardDataProps} from "../../interfaces";
-
+import {EntityProps, OptionProps} from "../../interfaces";
 import Attack from "./stats/Attack";
 import Health from "./stats/Health";
 import Cost from "./stats/Cost";
-
 import InHandCardArt from "./visuals/InHandCardArt";
-import {CardType,CardClass} from "../../enums";
-import {GameTag} from "../../enums";
+import {CardType, CardClass, GameTag} from "../../enums";
 
 interface CardProps extends EntityProps, OptionProps, React.Props<any> {
 	style?: any;
@@ -20,7 +16,7 @@ interface CardProps extends EntityProps, OptionProps, React.Props<any> {
 
 class Card extends React.Component<CardProps, {}> {
 
-	public shouldComponentUpdate(nextProps:CardProps, nextState:any):boolean {
+	public shouldComponentUpdate(nextProps: CardProps, nextState: any): boolean {
 		return (
 			!_.isEqual(this.props.style, nextProps.style) ||
 			this.props.isHidden !== nextProps.isHidden ||
@@ -36,63 +32,63 @@ class Card extends React.Component<CardProps, {}> {
 	}
 
 	public render(): JSX.Element {
-		var entity = this.props.entity;
-		var classNames = ['card'];
+		let entity = this.props.entity;
+		let classNames = ["card"];
 		if (entity.getTag(GameTag.EVIL_GLOW)) {
-			classNames.push('evil-glow');
+			classNames.push("evil-glow");
 		}
-		var canBeRevealed = this.props.cards && this.props.cards.has(entity.cardId);
+		let canBeRevealed = this.props.cards && this.props.cards.has(entity.cardId);
 		if (!entity.cardId || (this.props.isHidden && !canBeRevealed)) {
 			return (
-				<div className={classNames.join(' ')}>
+				<div className={classNames.join(" ")}>
 					<InHandCardArt
 						hidden={true}
 						entity={this.props.entity}
 						assetDirectory={this.props.assetDirectory}
 						cardArtDirectory={this.props.cardArtDirectory}
 						mulligan={this.props.mulligan}
-						/>
+					/>
 				</div>
 			);
 		}
 
-		var draggable = this.props.option && this.props.optionCallback;
-		classNames.push('revealed');
+		let draggable = this.props.option && this.props.optionCallback;
+		classNames.push("revealed");
 		if (this.props.option) {
-			classNames.push('playable');
+			classNames.push("playable");
 		}
 		if (draggable) {
-			classNames.push('draggable');
+			classNames.push("draggable");
 		}
 		if (entity.getTag(GameTag.COMBO)) {
-			classNames.push('combo');
+			classNames.push("combo");
 		}
 		if (entity.getTag(GameTag.POWERED_UP)) {
-			classNames.push('powered-up');
+			classNames.push("powered-up");
 		}
 		if (entity.getTag(GameTag.SHIFTING)) {
-			classNames.push('shifting');
+			classNames.push("shifting");
 		}
 		if (entity.getTag(GameTag.CHOOSE_BOTH)) {
-			classNames.push('choose-both');
+			classNames.push("choose-both");
 		}
 		if (this.props.mulligan) {
-			classNames.push('mulligan');
+			classNames.push("mulligan");
 		}
 
-		var title = entity.cardId;
-		var description = null;
-		var defaultAttack = null;
-		var defaultCost = null;
-		var defaultHealth = null;
-		var defaultDurability = null;
-		var cardType = entity.getCardType();
+		let title = entity.cardId;
+		let description = null;
+		let defaultAttack = null;
+		let defaultCost = null;
+		let defaultHealth = null;
+		let defaultDurability = null;
+		let cardType = entity.getCardType();
 		if (!cardType && entity.getTag(GameTag.SECRET)) {
 			cardType = CardType.SPELL;
 		}
-		var cardClass = entity.getClass();
+		let cardClass = entity.getClass();
 		if (canBeRevealed) {
-			var data = this.props.cards && this.props.cards.get(entity.cardId);
+			let data = this.props.cards && this.props.cards.get(entity.cardId);
 			title = data.name;
 			description = this.parseDescription(data.text);
 			defaultAttack = data.attack;
@@ -101,47 +97,47 @@ class Card extends React.Component<CardProps, {}> {
 			defaultDurability = data.durability;
 			if (this.props.isHidden) {
 				switch (data.type) {
-					case 'MINION':
+					case "MINION":
 						cardType = CardType.MINION;
 						break;
-					case 'WEAPON':
+					case "WEAPON":
 						cardType = CardType.WEAPON;
 						break;
-					case 'SPELL':
+					case "SPELL":
 						cardType = CardType.SPELL;
 						break;
-					case 'HERO_POWER':
+					case "HERO_POWER":
 						cardType = CardType.HERO_POWER;
 						break;
 				}
 			}
 			switch (data.playerClass) {
-				case 'DRUID':
+				case "DRUID":
 					cardClass = CardClass.DRUID;
 					break;
-				case 'DREAM':
-				case 'HUNTER':
+				case "DREAM":
+				case "HUNTER":
 					cardClass = CardClass.HUNTER;
 					break;
-				case 'MAGE':
+				case "MAGE":
 					cardClass = CardClass.MAGE;
 					break;
-				case 'PALADIN':
+				case "PALADIN":
 					cardClass = CardClass.PALADIN;
 					break;
-				case 'PRIEST':
+				case "PRIEST":
 					cardClass = CardClass.PRIEST;
 					break;
-				case 'ROGUE':
+				case "ROGUE":
 					cardClass = CardClass.ROGUE;
 					break;
-				case 'SHAMAN':
+				case "SHAMAN":
 					cardClass = CardClass.SHAMAN;
 					break;
-				case 'WARLOCK':
+				case "WARLOCK":
 					cardClass = CardClass.WARLOCK;
 					break;
-				case 'WARRIOR':
+				case "WARRIOR":
 					cardClass = CardClass.WARRIOR;
 					break;
 				default:
@@ -149,31 +145,38 @@ class Card extends React.Component<CardProps, {}> {
 			}
 		}
 
-		var stats = null;
-		var textStyle = { color: entity.isPremium() ? "white" : "black" };
-
+		let stats = null;
+		let textStyle = {color: entity.isPremium() ? "white" : "black"};
 
 		switch (cardType) {
-			case CardType.MINION:
+			case CardType.MINION: {
 				classNames.push("card-minion");
 				if (entity.getTag(GameTag.HIDE_STATS)) {
 					break;
-				};
-				var attack = <Attack attack={!this.props.isHidden && !this.props.defaultStats ? entity.getAtk() : defaultAttack}
+				}
+				let attack = <Attack
+					attack={!this.props.isHidden && !this.props.defaultStats ? entity.getAtk() : defaultAttack}
 					default={defaultAttack}/>;
-				var health = <Health health={!this.props.isHidden && !this.props.defaultStats ? entity.getHealth() : defaultHealth}
+				let health = <Health
+					health={!this.props.isHidden && !this.props.defaultStats ? entity.getHealth() : defaultHealth}
 					damage={this.props.defaultStats ? 0 : entity.getDamage()}
 					default={defaultHealth}/>;
 				stats = <div className="stats">{attack}{health}</div>;
 				break;
-			case CardType.WEAPON:
+			}
+			case CardType.WEAPON: {
 				classNames.push("card-weapon");
-				var attack = <Attack attack={!this.props.isHidden && !this.props.defaultStats ? entity.getAtk() : defaultAttack}
-					default={defaultAttack}/>;
-				var durability = <div
-					className="durability">{!this.props.isHidden && !this.props.defaultStats ? entity.getDurability() : defaultDurability}</div>;
+				let attack = <Attack
+					attack={!this.props.isHidden && !this.props.defaultStats ? entity.getAtk() : defaultAttack}
+					default={defaultAttack}
+				/>;
+				let durability = <div className="durability">
+					{!this.props.isHidden && !this.props.defaultStats ? entity.getDurability() : defaultDurability}
+				</div>;
 				stats = <div className="stats">{attack}{durability}</div>;
-				textStyle = { color: "white" };
+				textStyle = {color: "white"};
+				break;
+			}
 			case CardType.SPELL:
 				classNames.push("card-spell");
 				break;
@@ -183,42 +186,47 @@ class Card extends React.Component<CardProps, {}> {
 		}
 
 		if (this.props.isHidden) {
-			classNames.push('hidden-card');
+			classNames.push("hidden-card");
 		}
 
-		return <div className={classNames.join(' ') } style={this.props.style}>
-				<InHandCardArt entity={entity} hidden={false}
-					cardType={cardType} cardClass={cardClass}
-					cards={this.props.cards}
-					assetDirectory={this.props.assetDirectory}
-					cardArtDirectory={this.props.cardArtDirectory}
-				    mulligan={this.props.mulligan}
-					/>
-				{entity.getTag(GameTag.HIDE_STATS) == 0 ?
-					<Cost cost={!this.props.isHidden && !this.props.defaultStats ? entity.getCost() : defaultCost} default={defaultCost}/>
-				: null}
-				<h1>{title}</h1>
-				<div className="description">
-					<p style={textStyle} dangerouslySetInnerHTML={{ __html: description }}></p>
-				</div>
-				{stats}
-			</div>;
+		return <div className={classNames.join(" ") } style={this.props.style}>
+			<InHandCardArt
+				entity={entity} hidden={false}
+				cardType={cardType} cardClass={cardClass}
+				cards={this.props.cards}
+				assetDirectory={this.props.assetDirectory}
+				cardArtDirectory={this.props.cardArtDirectory}
+				mulligan={this.props.mulligan}
+			/>
+			{entity.getTag(GameTag.HIDE_STATS) !== 0 ?
+				null :
+				<Cost
+					cost={!this.props.isHidden && !this.props.defaultStats ? entity.getCost() : defaultCost}
+					default={defaultCost}
+				/>
+			}
+			<h1>{title}</h1>
+			<div className="description">
+				<p style={textStyle} dangerouslySetInnerHTML={{ __html: description }}></p>
+			</div>
+			{stats}
+		</div>;
 	}
 
 	protected parseDescription(description: string): string {
 		if (!description) {
-			return '';
+			return "";
 		}
 
 		let modifier = (bonus: number, double: number) => {
 			return (match: string, part1: string) => {
-				let number = +part1;
+				let value = +part1;
 				if (+bonus !== 0 || +double !== 0) {
-					number += bonus;
-					number *= Math.pow(2, double);
-					return '*' + number + '*'
+					value += bonus;
+					value *= Math.pow(2, double);
+					return "*" + value + "*";
 				}
-				return '' + number;
+				return "" + value;
 			};
 		};
 
@@ -248,7 +256,7 @@ class Card extends React.Component<CardProps, {}> {
 		description = description.replace(/#(\d+)/g, modifier(0, healingDoubling));
 
 		// custom line breaks
-		if(description.match(/^\[x\]/)) {
+		if (description.match(/^\[x\]/)) {
 			description = description.replace(/^\[x\]/, "");
 			// enable this when font-sizing is optimizied
 			//description = description.replace(/\n/g, "<br>");
