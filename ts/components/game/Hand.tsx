@@ -8,7 +8,18 @@ import {GameTag} from "../../enums";
 import {CardType} from "../../enums";
 import {EntityListProps} from "../../interfaces";
 
-export default class Hand extends EntityList<EntityListProps> {
+interface HandProps extends EntityListProps {
+	setAside?: Immutable.Iterable<number, Entity>;
+}
+
+export default class Hand extends EntityList<HandProps> {
+
+	public shouldComponentUpdate(nextProps: HandProps, nextState) {
+		return (
+			this.props.setAside !== nextProps.setAside ||
+			super.shouldComponentUpdate(nextProps, nextState)
+		);
+	}
 
 	protected className(): string {
 		return 'hand';
@@ -40,6 +51,13 @@ export default class Hand extends EntityList<EntityListProps> {
 		else if (!entity.cardId && this.props.cardOracle && this.props.cardOracle.has(+entity.id)) {
 			let cardId = this.props.cardOracle.get(entity.id);
 			entity = new Entity(entity.id, entity.getTags(), cardId);
+			if (cardId === "OG_280") {
+				let proxyId = this.props.cardOracle.findKey(x => x === "OG_279");
+				let proxy = proxyId && this.props.setAside.get(proxyId);
+				if (proxy) {
+					entity = entity.setTag(GameTag.ATK, proxy.getAtk()).setTag(GameTag.HEALTH, proxy.getHealth());
+				}
+			}
 			wasHidden = true;
 		}
 

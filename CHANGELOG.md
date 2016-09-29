@@ -4,6 +4,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 - Show Prince Malchezaar at game start (#142, @azeier)
+- Show C'Thun stats in opponent hand (#133, @azeier)
 
 ### Fixed
 - Malchezaar causing delay before Mulligan (#136, @azeier)

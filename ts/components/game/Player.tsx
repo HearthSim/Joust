@@ -107,6 +107,7 @@ export default class Player extends React.Component<PlayerProps, void> {
 			cardArtDirectory={this.props.cardArtDirectory}
 			controller={this.props.player}
 			hideCards={this.props.hideCards}
+			setAside={this.props.entities.get(Zone.SETASIDE) || emptyEntities}
 			/>;
 
 		let choices = null;
