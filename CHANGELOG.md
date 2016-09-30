@@ -5,6 +5,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - Show Prince Malchezaar at game start (#142, @azeier)
 
+### Fixed
+- Malchezaar causing delay before Mulligan (#136, @azeier)
+
 ## [0.7.0] - 2016-09-19
 ### Added
 - Add C'Thun Rituals (@azeier)

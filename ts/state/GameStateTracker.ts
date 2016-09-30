@@ -82,12 +82,11 @@ export default class GameStateTracker extends Stream.Transform {
 					break;
 				case BlockType.TRIGGER:
 					if (!timeStep) {
-						if (mutator.descriptor.entityId > 3) {
+						if (mutator.descriptor.entityId > 3 && gameStep !== Step.INVALID) {
 							let entity = this.gameState.getEntity(mutator.descriptor.entityId);
 							if (entity && entity.cardId === "KAR_096" && entity.getTag(GameTag.REVEALED)) {
 								// Prince Malchezaar after Mulligan
 								timeStep = 3;
-								console.debug("malchezaar");
 							}
 							else {
 								// normal entity triggers
@@ -129,7 +128,7 @@ export default class GameStateTracker extends Stream.Transform {
 
 		if (mutator instanceof PopDescriptorMutator) {
 			if (!timeStep) {
-				if (this.lastDescriptorEntityId > 3) {
+				if (this.lastDescriptorEntityId > 3 && gameStep !== Step.INVALID) {
 					if (this.lastDescriptorType === BlockType.TRIGGER) {
 						timeStep = 1;
 					}
