@@ -1,28 +1,25 @@
-import * as React from "react";
-import MouseEvent = __React.MouseEvent;
-import MouseEventHandler = __React.MouseEventHandler;
 import * as bowser from "bowser";
-
+import * as React from "react";
 
 interface TooltipperProps extends React.Props<any> {
-	title?:string;
-	align?:"left" | "center" | "right";
-	desktop?:string;
-	mobile?:string;
+	title?: string;
+	align?: "left" | "center" | "right";
+	desktop?: string;
+	mobile?: string;
 }
 
 interface TooltipperState {
-	isHovering?:boolean;
-	mobile?:boolean;
+	isHovering?: boolean;
+	mobile?: boolean;
 }
 
 export default class Tooltipper extends React.Component<TooltipperProps, TooltipperState> {
-	constructor(props:TooltipperProps, context:any) {
+	constructor(props: TooltipperProps, context: any) {
 		super(props, context);
 		this.state = {
 			isHovering: false,
 			mobile: bowser.ios || bowser.android || bowser.windowsphone,
-		}
+		};
 	}
 
 	protected get mobile() {
@@ -44,15 +41,15 @@ export default class Tooltipper extends React.Component<TooltipperProps, Tooltip
 		return tooltip;
 	}
 
-	protected startHovering(e) {
+	protected startHovering(e: any) {
 		this.setState({isHovering: true});
 	}
 
-	protected stopHovering(e) {
+	protected stopHovering(e: any) {
 		this.setState({isHovering: false});
 	}
 
-	render():JSX.Element {
+	public render(): JSX.Element {
 		let classNames = ["joust-tooltipper-tooltip"];
 		if (this.props.align) {
 			classNames.push(this.props.align);
