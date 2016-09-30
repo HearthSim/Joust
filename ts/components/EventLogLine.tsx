@@ -2,19 +2,19 @@ import * as React from "react";
 import {CardDataProps, CardOracleProps, CardData, EventLogItemData, LineType} from "../interfaces";
 import EventLogCard from "./EventLogCard";
 
-interface LogItemProps extends CardDataProps, CardOracleProps, EventLogItemData, React.Props<any> {
+interface EventLogLineProps extends CardDataProps, CardOracleProps, EventLogItemData, React.ClassAttributes<EventLogLine> {
 	inactive:boolean;
 	first?:boolean;
 }
 
-interface LogItemState {
+interface EventLogLineState {
 	entityData?:CardData;
 	targetData?:CardData;
 }
 
-class EventLogLine extends React.Component<LogItemProps, LogItemState> {
+export default class EventLogLine extends React.Component<EventLogLineProps, EventLogLineState> {
 
-	constructor(props:LogItemProps) {
+	constructor(props:EventLogLineProps) {
 		super(props);
 		this.state = {
 			entityData: this.lookupEntity(this.props.entityId),
@@ -22,7 +22,7 @@ class EventLogLine extends React.Component<LogItemProps, LogItemState> {
 		}
 	}
 
-	public shouldComponentUpdate(nextProps:LogItemProps) {
+	public shouldComponentUpdate(nextProps:EventLogLineProps) {
 		let hasEntity = nextProps.entityId || nextProps.targetId;
 		return (
 			this.props.inactive !== nextProps.inactive ||
@@ -39,8 +39,8 @@ class EventLogLine extends React.Component<LogItemProps, LogItemState> {
 		);
 	}
 
-	public componentWillReceiveProps(nextProps:LogItemProps):void {
-		let changes = {} as LogItemState;
+	public componentWillReceiveProps(nextProps:EventLogLineProps):void {
+		let changes = {} as EventLogLineState;
 		if (this.props.entityId !== nextProps.entityId) {
 			changes.entityData = this.lookupEntity(nextProps.entityId);
 		}
@@ -236,5 +236,3 @@ class EventLogLine extends React.Component<LogItemProps, LogItemState> {
 		return this.props.cards.get(cardId);
 	}
 }
-
-export default EventLogLine;

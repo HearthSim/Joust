@@ -1,11 +1,11 @@
 import * as React from "react";
 import {CardDataProps} from "../interfaces";
 
-interface EventLogCardProps extends CardDataProps, React.Props<any> {
+interface EventLogCardProps extends CardDataProps, React.ClassAttributes<EventLogCard> {
 	cardId:string;
 }
 
-class EventLogCard extends React.Component<EventLogCardProps, {}> {
+export default class EventLogCard extends React.Component<EventLogCardProps, void> {
 
 	public shouldComponentUpdate(nextProps:EventLogCardProps, nextState:any):boolean {
 		return (
@@ -30,5 +30,3 @@ class EventLogCard extends React.Component<EventLogCardProps, {}> {
 		return <span className={classNames.join(' ')}>{description}</span>;
 	}
 }
-
-export default EventLogCard;

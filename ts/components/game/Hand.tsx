@@ -8,7 +8,7 @@ import {GameTag} from "../../enums";
 import {CardType} from "../../enums";
 import {EntityListProps} from "../../interfaces";
 
-class Hand extends EntityList<EntityListProps> {
+export default class Hand extends EntityList<EntityListProps> {
 
 	protected className(): string {
 		return 'hand';
@@ -55,5 +55,3 @@ class Hand extends EntityList<EntityListProps> {
 			/>);
 	}
 }
-
-export default Hand;

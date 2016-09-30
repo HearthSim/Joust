@@ -4,7 +4,7 @@ import ReplaceEntityMutator from "./ReplaceEntityMutator";
 import AddDiffsMutator from "./AddDiffsMutator";
 import {GameStateDiff} from "../../interfaces";
 
-class TagChangeMutator implements GameStateMutator {
+export default class TagChangeMutator implements GameStateMutator {
 	public id: number;
 	public tag: number;
 	public value: number;
@@ -41,5 +41,3 @@ class TagChangeMutator implements GameStateMutator {
 			.apply(new AddDiffsMutator([diff]));
 	}
 }
-
-export default TagChangeMutator;

@@ -15,7 +15,7 @@ import Choice from "../../Choice";
 import Choices from "../../Choices";
 
 interface TwoPlayerGameProps extends EntityProps, CardDataProps, CardOracleProps, MulliganOracleProps, OptionCallbackProps,
-	AssetDirectoryProps,GameStateDescriptorStackProps, HideCardsProps, React.Props<any> {
+	AssetDirectoryProps, GameStateDescriptorStackProps, HideCardsProps, React.ClassAttributes<TwoPlayerGame> {
 	player1: PlayerEntity;
 	player2: PlayerEntity;
 	entities: Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Entity>>>;
@@ -24,7 +24,7 @@ interface TwoPlayerGameProps extends EntityProps, CardDataProps, CardOracleProps
 	endTurnOption?: Option;
 }
 
-class TwoPlayerGame extends React.Component<TwoPlayerGameProps, {}> {
+export default class TwoPlayerGame extends React.Component<TwoPlayerGameProps, void> {
 
 	public render(): JSX.Element {
 		var entities = this.props.entities;
@@ -89,5 +89,3 @@ class TwoPlayerGame extends React.Component<TwoPlayerGameProps, {}> {
 	);
 	}
 }
-
-export default TwoPlayerGame;

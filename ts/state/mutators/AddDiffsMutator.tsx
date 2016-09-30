@@ -3,7 +3,7 @@ import GameStateMutator from "../GameStateMutator";
 import * as _ from "lodash";
 import {GameStateDiff} from "../../interfaces";
 
-class AddDiffsMutator implements GameStateMutator {
+export default class AddDiffsMutator implements GameStateMutator {
 
 	constructor(public diffs: GameStateDiff[]) {
 	}
@@ -16,5 +16,3 @@ class AddDiffsMutator implements GameStateMutator {
 		return new GameState(state.entities, state.entityTree, state.options, state.optionTree, state.time, state.choices, state.descriptors, diffs);
 	}
 }
-
-export default AddDiffsMutator;

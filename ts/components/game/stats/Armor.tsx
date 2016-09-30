@@ -1,13 +1,11 @@
 import * as React from "react";
 
-interface ArmorProps extends React.Props<any> {
+interface ArmorProps extends React.ClassAttributes<Armor> {
 	armor: number;
 }
 
-class Armor extends React.Component<ArmorProps, {}> {
+export default class Armor extends React.Component<ArmorProps, void> {
 	public render(): JSX.Element {
 		return <div className="armor">{this.props.armor}</div>;
 	}
 }
-
-export default Armor;

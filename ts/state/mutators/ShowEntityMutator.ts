@@ -5,7 +5,7 @@ import ReplaceEntityMutator from "./ReplaceEntityMutator";
 import AddDiffsMutator from "./AddDiffsMutator";
 import {GameStateDiff} from "../../interfaces";
 
-class ShowEntityMutator implements GameStateMutator {
+export default class ShowEntityMutator implements GameStateMutator {
 
 	constructor(public entityId: number, public cardId: string, public tags: Immutable.Map<string, number>, public replaceTags: boolean = false) {
 	}
@@ -40,5 +40,3 @@ class ShowEntityMutator implements GameStateMutator {
 			.apply(new AddDiffsMutator(diffs));
 	}
 }
-
-export default ShowEntityMutator;

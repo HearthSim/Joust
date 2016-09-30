@@ -1,10 +1,10 @@
 import * as React from "react";
 
-interface DamageProps extends React.Props<any> {
+interface DamageProps extends React.ClassAttributes<Damage> {
 	damage:number;
 }
 
-export default class Damage extends React.Component<DamageProps, {}> {
+export default class Damage extends React.Component<DamageProps, void> {
 
 	shouldComponentUpdate(nextProps:DamageProps):boolean {
 		return nextProps.damage !== this.props.damage;

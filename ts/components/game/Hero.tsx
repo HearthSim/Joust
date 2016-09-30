@@ -18,7 +18,7 @@ interface HeroProps extends EntityInPlayProps, CardOracleProps {
 	secrets: Immutable.Map<number, Entity>;
 }
 
-class Hero extends EntityInPlay<HeroProps> {
+export default class Hero extends EntityInPlay<HeroProps> {
 	constructor() {
 		super('hero');
 	}
@@ -88,5 +88,3 @@ class Hero extends EntityInPlay<HeroProps> {
 		];
 	}
 }
-
-export default Hero;

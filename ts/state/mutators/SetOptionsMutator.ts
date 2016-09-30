@@ -4,7 +4,7 @@ import GameState from "../GameState";
 import GameStateMutator from "../GameStateMutator";
 import Option from "../../Option";
 
-class SetOptionsMutator implements GameStateMutator {
+export default class SetOptionsMutator implements GameStateMutator {
 	constructor(public options: Immutable.Map<number, Option>) {
 	}
 
@@ -33,5 +33,3 @@ class SetOptionsMutator implements GameStateMutator {
 		return optionTree;
 	}
 }
-
-export default SetOptionsMutator;

@@ -18,7 +18,7 @@ import LoadingScreen from "./LoadingScreen";
 import * as bowser from "bowser";
 import * as cookie from "cookiejs";
 
-interface GameWrapperProps extends CardDataProps, CardOracleProps, MulliganOracleProps, AssetDirectoryProps, CardArtDirectory, HideCardsProps, React.Props<any> {
+interface GameWrapperProps extends CardDataProps, CardOracleProps, MulliganOracleProps, AssetDirectoryProps, CardArtDirectory, HideCardsProps, React.ClassAttributes<GameWrapper> {
 	state:GameState;
 	interaction?:InteractiveBackend;
 	swapPlayers?:boolean;
@@ -33,7 +33,7 @@ interface GameWrapperState {
  * This component wraps around the /actual/ game component (such as TwoPlayerGame).
  * It extracts the game entities.
  */
-class GameWrapper extends React.Component<GameWrapperProps, GameWrapperState> {
+export default class GameWrapper extends React.Component<GameWrapperProps, GameWrapperState> {
 
 	constructor(props:GameWrapperProps, context:any) {
 		super(props, context);
@@ -150,5 +150,3 @@ class GameWrapper extends React.Component<GameWrapperProps, GameWrapperState> {
 		};
 	};
 }
-
-export default GameWrapper;

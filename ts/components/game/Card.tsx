@@ -7,14 +7,14 @@ import Cost from "./stats/Cost";
 import InHandCardArt from "./visuals/InHandCardArt";
 import {CardType, CardClass, GameTag} from "../../enums";
 
-interface CardProps extends EntityProps, OptionProps, React.Props<any> {
+interface CardProps extends EntityProps, OptionProps, React.ClassAttributes<Card> {
 	style?: any;
 	isHidden?: boolean;
 	defaultStats?: boolean;
 	mulligan?: boolean;
 }
 
-class Card extends React.Component<CardProps, {}> {
+export default class Card extends React.Component<CardProps, void> {
 
 	public shouldComponentUpdate(nextProps: CardProps, nextState: any): boolean {
 		return (
@@ -268,5 +268,3 @@ class Card extends React.Component<CardProps, {}> {
 		return description.trim();
 	}
 }
-
-export default Card;

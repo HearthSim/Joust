@@ -1,7 +1,7 @@
 import GameState from "../GameState";
 import GameStateMutator from "../GameStateMutator";
 
-class SetTimeMutator implements GameStateMutator {
+export default class SetTimeMutator implements GameStateMutator {
 	constructor(public time: number) {
 	}
 
@@ -9,5 +9,3 @@ class SetTimeMutator implements GameStateMutator {
 		return new GameState(state.entities, state.entityTree, state.options, state.optionTree, this.time, state.choices, state.descriptors, state.diffs);
 	}
 }
-
-export default SetTimeMutator;

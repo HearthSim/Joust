@@ -1,12 +1,12 @@
 import * as React from "react";
 
-interface HealthProps extends React.Props<any> {
+interface HealthProps extends React.ClassAttributes<Health> {
 	health: number;
 	damage: number;
 	default?: number;
 }
 
-class Health extends React.Component<HealthProps, {}> {
+export default class Health extends React.Component<HealthProps, void> {
 	public render(): JSX.Element {
 		var classNames = ['health'];
 		if (this.props.health !== null) {
@@ -20,5 +20,3 @@ class Health extends React.Component<HealthProps, {}> {
 		return <div className={classNames.join(' ') }>{this.props.health !== null ? (this.props.health - this.props.damage) : '?'}</div>;
 	}
 }
-
-export default Health;

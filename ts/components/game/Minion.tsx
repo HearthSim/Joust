@@ -11,7 +11,7 @@ import MetaData from "../../MetaData";
 import GameStateDescriptor from "../../state/GameStateDescriptor";
 import Card from "./Card";
 
-class Minion extends EntityInPlay<EntityInPlayProps> {
+export default class Minion extends EntityInPlay<EntityInPlayProps> {
 
 	constructor() {
 		super('minion');
@@ -87,5 +87,3 @@ class Minion extends EntityInPlay<EntityInPlayProps> {
 		return components;
 	}
 }
-
-export default Minion;

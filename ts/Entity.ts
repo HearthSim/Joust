@@ -1,6 +1,6 @@
 import {GameTag, Rarity} from "./enums";
 
-class Entity {
+export default class Entity {
 	constructor(protected _id:number, protected tags:Immutable.Map<string, number>, protected _cardId?:string) {
 	}
 
@@ -175,5 +175,3 @@ class Entity {
 		return string;
 	}
 }
-
-export default Entity;

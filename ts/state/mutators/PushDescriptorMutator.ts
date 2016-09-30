@@ -2,7 +2,7 @@ import GameState from "../GameState";
 import GameStateMutator from "../GameStateMutator";
 import GameStateDescriptor from "../GameStateDescriptor";
 
-class PushDescriptorMutator implements GameStateMutator {
+export default class PushDescriptorMutator implements GameStateMutator {
 	constructor(public descriptor: GameStateDescriptor) {
 	}
 
@@ -11,5 +11,3 @@ class PushDescriptorMutator implements GameStateMutator {
 		return new GameState(state.entities, state.entityTree, state.options, state.optionTree, state.time, state.choices, descriptors, state.diffs);
 	}
 }
-
-export default PushDescriptorMutator;

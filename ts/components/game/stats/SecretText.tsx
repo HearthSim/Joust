@@ -1,14 +1,12 @@
 import * as React from "react";
 
-interface SecretTextProps extends React.Props<any> {
+interface SecretTextProps extends React.ClassAttributes<SecretText> {
 	text: string;
 	title?: string;
 }
 
-class SecretText extends React.Component<SecretTextProps, {}> {
+export default class SecretText extends React.Component<SecretTextProps, void> {
 	public render(): JSX.Element {
 		return <div className="secret-text" title={this.props.title}>{this.props.text}</div>;
 	}
 }
-
-export default SecretText;

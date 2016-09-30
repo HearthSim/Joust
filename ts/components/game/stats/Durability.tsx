@@ -1,12 +1,12 @@
 import * as React from "react";
 
-interface DurabilityProps extends React.Props<any> {
+interface DurabilityProps extends React.ClassAttributes<Durability> {
 	durability: number;
 	damage: number;
 	default?: number;
 }
 
-class Durability extends React.Component<DurabilityProps, {}> {
+export default class Durability extends React.Component<DurabilityProps, void> {
 	public render(): JSX.Element {
 		var classNames = ['durability'];
 		if (this.props.damage > 0) {
@@ -18,5 +18,3 @@ class Durability extends React.Component<DurabilityProps, {}> {
 		return <div className={classNames.join(' ') }>{this.props.durability - this.props.damage}</div>;
 	}
 }
-
-export default Durability;

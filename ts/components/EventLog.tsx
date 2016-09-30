@@ -7,7 +7,7 @@ import {Zone, CardType, GameTag, BlockType, MetaDataType, Mulligan, PlayState, S
 import Player from "../Player";
 import Entity from "../Entity";
 
-interface EventLogProps extends CardDataProps, CardOracleProps, React.Props<any> {
+interface EventLogProps extends CardDataProps, CardOracleProps, React.ClassAttributes<EventLog> {
 	state:GameState;
 	tail:HistoryEntry;
 	currentTime:number;
@@ -18,7 +18,7 @@ interface EventLogState {
 	lines:EventLogItemData[];
 }
 
-class EventLog extends React.Component<EventLogProps, EventLogState> {
+export default class EventLog extends React.Component<EventLogProps, EventLogState> {
 
 	constructor(props:EventLogProps) {
 		super(props);
@@ -431,5 +431,3 @@ class EventLog extends React.Component<EventLogProps, EventLogState> {
 		} as EventLogItemData;
 	}
 }
-
-export default EventLog;

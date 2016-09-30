@@ -6,7 +6,7 @@ import Tooltipper from "./Tooltipper";
 import * as cookie from "cookiejs";
 import * as _ from "lodash";
 
-interface ScrubberProps extends KeybindingProps, React.Props<any> {
+interface ScrubberProps extends KeybindingProps, React.ClassAttributes<Scrubber> {
 	scrubber: StreamScrubber;
 	swapPlayers?: () => void;
 	isSwapped?: boolean;
@@ -32,7 +32,7 @@ interface ScrubberState {
 	currentTime?: number;
 }
 
-class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
+export default class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 
 	private static SPEEDS = [0.75, 1, 1.5, 2, 3, 4, 8];
 
@@ -298,5 +298,3 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 		this.props.scrubber.setSpeed(speed);
 	}
 }
-
-export default Scrubber;

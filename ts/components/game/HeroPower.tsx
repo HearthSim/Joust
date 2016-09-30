@@ -7,7 +7,7 @@ import Card from "./Card"
 import HeroPowerArt from "./visuals/HeroPowerArt";
 import {GameTag} from "../../enums";
 
-class HeroPower extends EntityInPlay<EntityInPlayProps> {
+export default class HeroPower extends EntityInPlay<EntityInPlayProps> {
 	constructor() {
 		super('heroPower');
 	}
@@ -59,5 +59,3 @@ class HeroPower extends EntityInPlay<EntityInPlayProps> {
 		return components;
 	}
 }
-
-export default HeroPower;

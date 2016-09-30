@@ -2,7 +2,7 @@ import * as Stream from "stream";
 import {CardData} from "./interfaces";
 import Entity from "./Entity";
 
-class TexturePreloader extends Stream.Writable {
+export default class TexturePreloader extends Stream.Writable {
 	protected fired = {};
 	protected cardArtQueue: string[] = ['GAME_005'];
 	protected images: HTMLImageElement[] = [];
@@ -91,5 +91,3 @@ class TexturePreloader extends Stream.Writable {
 		return this.cardArtQueue.length + this.assetQueue.length + this.working == 0;
 	}
 }
-
-export default TexturePreloader;

@@ -7,7 +7,7 @@ import EntityInPlay from "./EntityInPlay";
 import Card from "./Card"
 import {GameTag} from "../../enums";
 
-class Weapon extends EntityInPlay<EntityInPlayProps> {
+export default class Weapon extends EntityInPlay<EntityInPlayProps> {
 
 	constructor() {
 		super('weapon');
@@ -54,5 +54,3 @@ class Weapon extends EntityInPlay<EntityInPlayProps> {
 		return components;
 	}
 }
-
-export default Weapon;

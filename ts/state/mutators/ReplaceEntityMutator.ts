@@ -3,7 +3,7 @@ import GameStateMutator from "../GameStateMutator";
 import Entity from "../../Entity";
 import {GameStateDiff} from "../../interfaces";
 
-class ReplaceEntityMutator implements GameStateMutator {
+export default class ReplaceEntityMutator implements GameStateMutator {
 	constructor(public entity: Entity) {
 	}
 
@@ -39,5 +39,3 @@ class ReplaceEntityMutator implements GameStateMutator {
 		return new GameState(entities, entityTree, state.options, state.optionTree, state.time, state.choices, state.descriptors, state.diffs);
 	}
 }
-
-export default ReplaceEntityMutator;

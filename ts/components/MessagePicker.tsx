@@ -1,6 +1,6 @@
 import * as React from "react";
 
-interface MessagePickerProps extends React.Props<any> {
+interface MessagePickerProps extends React.ClassAttributes<MessagePicker> {
 	messages: string[];
 	interval: number;
 	random?: boolean;
@@ -11,7 +11,7 @@ interface MessagePickerState {
 	sequence?: number[];
 }
 
-class MessagePicker extends React.Component<MessagePickerProps, MessagePickerState> {
+export default class MessagePicker extends React.Component<MessagePickerProps, MessagePickerState> {
 
 	private interval: number;
 
@@ -71,5 +71,3 @@ class MessagePicker extends React.Component<MessagePickerProps, MessagePickerSta
 		this.setState({message: (this.state.message + 1) % this.props.messages.length});
 	}
 }
-
-export default MessagePicker;

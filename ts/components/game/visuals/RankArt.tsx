@@ -2,7 +2,7 @@ import * as React from "react";
 import CardArt from "./CardArt";
 import {RankProps} from "../../../interfaces";
 
-class RankArt extends React.Component<RankProps, {}> {
+export default class RankArt extends React.Component<RankProps, void> {
 	public render(): JSX.Element {
 		var images = [];
 		if (this.props.rank > 0 && this.props.rank <= 25) {
@@ -29,5 +29,3 @@ class RankArt extends React.Component<RankProps, {}> {
 		);
 	}
 }
-
-export default RankArt;

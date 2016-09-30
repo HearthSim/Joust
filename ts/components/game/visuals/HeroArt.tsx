@@ -8,7 +8,7 @@ interface HeroArtProps extends EntityProps {
 	secrets:Immutable.Map<number, Entity>;
 }
 
-class HeroArt extends React.Component<HeroArtProps, {}> {
+export default class HeroArt extends React.Component<HeroArtProps, void> {
 
 
 	shouldComponentUpdate(nextProps:HeroArtProps, nextState:{}, nextContext:any):boolean {
@@ -103,5 +103,3 @@ class HeroArt extends React.Component<HeroArtProps, {}> {
 		);
 	}
 }
-
-export default HeroArt;

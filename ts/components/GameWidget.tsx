@@ -22,7 +22,7 @@ interface GameWidgetState {
 	isLogMounted?: boolean;
 }
 
-class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
+export default class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 	private cb;
 	private cardOracleCb;
 	private mulliganOracleCb;
@@ -283,5 +283,3 @@ class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
 		return true;
 	}
 }
-
-export default GameWidget;

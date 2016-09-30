@@ -13,7 +13,7 @@ import {CardOracle} from "../interfaces";
 import * as Stream from "stream";
 import * as async from "async";
 
-interface SetupWidgetProps extends React.Props<any> {
+interface SetupWidgetProps extends React.ClassAttributes<SetupWidget> {
 	defaultHostname: string;
 	defaultPort: number;
 	onSetup: (sink: GameStateSink, interaction?: InteractiveBackend, scrubber?: GameStateScrubber, cardOracle?: CardOracle, mulliganOracle?: MulliganOracle) => void;
@@ -27,7 +27,7 @@ interface SetupWidgetState {
 	secureWebsocket?: boolean;
 }
 
-class SetupWidget extends React.Component<SetupWidgetProps, SetupWidgetState> {
+export default class SetupWidget extends React.Component<SetupWidgetProps, SetupWidgetState> {
 	private forceWebsocket: boolean;
 
 	constructor(props: SetupWidgetProps) {
@@ -178,5 +178,3 @@ class SetupWidget extends React.Component<SetupWidgetProps, SetupWidgetState> {
 	}
 
 }
-
-export default SetupWidget;

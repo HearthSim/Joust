@@ -24,7 +24,7 @@ import {
 import GameStateDescriptor from "../../state/GameStateDescriptor";
 
 interface PlayerProps extends OptionCallbackProps, CardDataProps, CardOracleProps, MulliganOracleProps, AssetDirectoryProps,
-	CardArtDirectory,GameStateDescriptorStackProps, HideCardsProps, React.Props<any> {
+	CardArtDirectory,GameStateDescriptorStackProps, HideCardsProps, React.ClassAttributes<Player> {
 	player: PlayerEntity;
 	entities: Immutable.Map<number, Immutable.Map<number, Entity>>;
 	options: Immutable.Map<number, Immutable.Map<number, Option>>;
@@ -33,7 +33,7 @@ interface PlayerProps extends OptionCallbackProps, CardDataProps, CardOracleProp
 	isCurrent: boolean;
 }
 
-class Player extends React.Component<PlayerProps, {}> {
+export default class Player extends React.Component<PlayerProps, void> {
 
 	public render(): JSX.Element {
 		var filterByCardType = function(cardType: number) {
@@ -316,5 +316,3 @@ class Player extends React.Component<PlayerProps, {}> {
 		);
 	}
 }
-
-export default Player;

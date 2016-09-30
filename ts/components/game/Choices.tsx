@@ -14,7 +14,7 @@ interface ChoicesProps extends EntityListProps, MulliganOracleProps {
 	choices: Immutable.Map<number, Choice>;
 }
 
-class Choices extends EntityList<ChoicesProps> {
+export default class Choices extends EntityList<ChoicesProps> {
 
 	protected className(): string {
 		return 'choices';
@@ -69,5 +69,3 @@ class Choices extends EntityList<ChoicesProps> {
 			/>);
 	}
 }
-
-export default Choices;

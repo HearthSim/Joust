@@ -7,7 +7,7 @@ import Minion from "./Minion";
 
 import {EntityInPlayProps, EntityListProps} from "../../interfaces";
 
-class Field extends EntityList<EntityListProps> {
+export default class Field extends EntityList<EntityListProps> {
 
 	protected className(): string {
 		return 'field';
@@ -25,5 +25,3 @@ class Field extends EntityList<EntityListProps> {
 			/>);
 	}
 }
-
-export default Field;

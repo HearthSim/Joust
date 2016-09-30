@@ -2,7 +2,7 @@ import * as React from "react";
 import GameState from "../state/GameState";
 import {GameTag} from "../enums";
 
-interface TurnProps extends React.Props<any> {
+interface TurnProps extends React.ClassAttributes<Turn> {
 	state?:GameState;
 	mulligan?:boolean;
 	totalDuration:number;
@@ -11,7 +11,7 @@ interface TurnProps extends React.Props<any> {
 	invert?:boolean;
 }
 
-class Turn extends React.Component<TurnProps, {}> {
+export default class Turn extends React.Component<TurnProps, void> {
 	public render():JSX.Element {
 		if (!this.props.totalDuration) {
 			return null;
@@ -54,5 +54,3 @@ class Turn extends React.Component<TurnProps, {}> {
 		);
 	}
 }
-
-export default Turn;

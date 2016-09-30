@@ -20,7 +20,7 @@ interface KettlePacket {
 	Entities: any[]
 }
 
-class KettleDecoder extends Stream.Transform {
+export default class KettleDecoder extends Stream.Transform {
 
 	private buffer: Immutable.List<number>;
 	private ready;
@@ -163,5 +163,3 @@ class KettleDecoder extends Stream.Transform {
 		}
 	}
 }
-
-export default KettleDecoder;

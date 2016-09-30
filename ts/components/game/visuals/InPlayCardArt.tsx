@@ -3,7 +3,7 @@ import {CardType, GameTag} from "../../../enums";
 import CardArt from "./CardArt";
 import {EntityProps, CardData} from "../../../interfaces";
 
-class InPlayCardArt extends React.Component<EntityProps, {}> {
+export default class InPlayCardArt extends React.Component<EntityProps, void> {
 
 	shouldComponentUpdate(nextProps:EntityProps):boolean {
 		return (
@@ -135,5 +135,3 @@ class InPlayCardArt extends React.Component<EntityProps, {}> {
 		);
 	}
 }
-
-export default InPlayCardArt;

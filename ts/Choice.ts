@@ -1,4 +1,4 @@
-class Choice {
+export default class Choice {
 	constructor(protected _index: number, protected _entityId: number) {
 	}
 
@@ -10,5 +10,3 @@ class Choice {
 		return this._entityId;
 	}
 }
-
-export default Choice;

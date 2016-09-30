@@ -6,7 +6,7 @@ interface DeckProps extends EntityListProps {
 	fatigue: number;
 }
 
-class Deck extends EntityList<DeckProps> {
+export default class Deck extends EntityList<DeckProps> {
 
 	protected className(): string {
 		return 'deck';
@@ -43,5 +43,3 @@ class Deck extends EntityList<DeckProps> {
 		);
 	}
 }
-
-export default Deck;

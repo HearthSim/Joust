@@ -6,8 +6,8 @@
     "jasmine": "github:DefinitelyTyped/DefinitelyTyped/jasmine/jasmine.d.ts#d594ef506d1efe2fea15f8f39099d19b39436b71",
     "lodash": "github:DefinitelyTyped/DefinitelyTyped/lodash/lodash.d.ts#ad1c4f411a9ad949c0c73de4d190be1b2bf08a6f",
     "node": "github:DefinitelyTyped/DefinitelyTyped/node/node.d.ts#aee0039a2d6686ec78352125010ebb38a7a7d743",
-    "react": "github:DefinitelyTyped/DefinitelyTyped/react/react.d.ts#83b88a031cc8f2006fd361bf0a0b548c3bcc8259",
-    "react-dom": "github:DefinitelyTyped/DefinitelyTyped/react/react-dom.d.ts#ca5bfe76d2d9bf6852cbc712d9f3e0047c93486e",
+    "react": "registry:dt/react#0.14.0+20160927082313",
+    "react-dom": "registry:dt/react-dom#0.14.0+20160412154040",
     "sax": "github:DefinitelyTyped/DefinitelyTyped/sax/sax.d.ts#5a3ca5378be2f4975508c6d5a6fef5caba69046d"
   }
 }

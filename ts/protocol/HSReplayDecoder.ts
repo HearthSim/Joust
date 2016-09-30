@@ -29,7 +29,7 @@ interface PlayerDetails {
 	legendRank?: number;
 }
 
-class HSReplayDecoder extends Stream.Transform implements CardOracle, MulliganOracle {
+export default class HSReplayDecoder extends Stream.Transform implements CardOracle, MulliganOracle {
 
 	private sax: Sax.SAXStream;
 	private gameId: number;
@@ -431,5 +431,3 @@ class HSReplayDecoder extends Stream.Transform implements CardOracle, MulliganOr
 		return this.mulligans;
 	}
 }
-
-export default HSReplayDecoder;

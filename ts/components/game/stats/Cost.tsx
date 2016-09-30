@@ -1,11 +1,11 @@
 import * as React from "react";
 
-interface HealthProps extends React.Props<any> {
+interface CostProps extends React.ClassAttributes<Cost> {
 	cost: number;
 	default?: number;
 }
 
-class Cost extends React.Component<HealthProps, {}> {
+export default class Cost extends React.Component<CostProps, void> {
 	public render(): JSX.Element {
 		var classNames = ['cost'];
 		if (this.props.default !== null && this.props.cost !== null) {
@@ -19,5 +19,3 @@ class Cost extends React.Component<HealthProps, {}> {
 		return <div className={classNames.join(' ') }>{this.props.cost !== null ? this.props.cost : '?'}</div>;
 	}
 }
-
-export default Cost;

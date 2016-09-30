@@ -5,7 +5,7 @@ import {StreamScrubberInhibitor} from "../interfaces";
 import GameState from "../state/GameState";
 import Turn from "./Turn";
 
-interface TimelineProps extends React.Props<any> {
+interface TimelineProps extends React.ClassAttributes<Timeline> {
 	at: number;
 	duration: number;
 	seek: (time: number) => void;
@@ -18,7 +18,7 @@ interface TimelineState {
 	isDragging?: boolean;
 }
 
-class Timeline extends React.Component<TimelineProps, TimelineState> implements StreamScrubberInhibitor {
+export default class Timeline extends React.Component<TimelineProps, TimelineState> implements StreamScrubberInhibitor {
 	private ref: HTMLDivElement;
 	private mouseMove: (e) => void;
 	private mouseUp: (e) => void;
@@ -173,5 +173,3 @@ class Timeline extends React.Component<TimelineProps, TimelineState> implements 
 		return this.state.isDragging;
 	}
 }
-
-export default Timeline;

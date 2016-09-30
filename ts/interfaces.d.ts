@@ -1,18 +1,16 @@
 import * as React from "react";
 import Entity from "./Entity";
 import Option from "./Option";
-import GameStateMutator from "./state/GameStateMutator";
 import GameState from "./state/GameState";
 import {EventEmitter} from "events";
-import * as Stream from "stream";
 import GameStateSink from "./state/GameStateSink";
-import GameStateScrubber from "./state/GameStateScrubber";
 import GameStateHistory from "./state/GameStateHistory";
 import Player from "./Player";
 import GameStateDescriptor from "./state/GameStateDescriptor";
-import {MetaDataType} from "./enums";
+import GameWidget from "./components/GameWidget";
+import Rank from "./components/game/Rank";
 
-export interface EntityInPlayProps extends EntityProps, OptionProps, GameStateDescriptorStackProps, React.Props<any> {
+export interface EntityInPlayProps extends EntityProps, OptionProps, GameStateDescriptorStackProps, React.ClassAttributes<any> {
 	isTarget?: boolean;
 }
 
@@ -21,7 +19,7 @@ export interface EntityInPlayState {
 }
 
 export interface EntityListProps extends OptionCallbackProps, ControllerProps, CardDataProps,
-	CardOracleProps, AssetDirectoryProps, CardArtDirectory, GameStateDescriptorStackProps, HideCardsProps, React.Props<any> {
+	CardOracleProps, AssetDirectoryProps, CardArtDirectory, GameStateDescriptorStackProps, HideCardsProps, React.ClassAttributes<any> {
 	entities: Immutable.Iterable<number, Entity>;
 	options?: Immutable.Iterable<number, Option>;
 	isTop?: boolean;
@@ -164,7 +162,7 @@ export interface KeybindingProps {
 	enableKeybindings?: boolean;
 }
 
-export interface GameWidgetProps extends AssetDirectoryProps, CardArtDirectory, EventHandlerProps, LocaleProps, KeybindingProps, React.Props<any> {
+export interface GameWidgetProps extends AssetDirectoryProps, CardArtDirectory, EventHandlerProps, LocaleProps, KeybindingProps, React.ClassAttributes<GameWidget> {
 	sink: GameStateSink;
 	startupTime: number;
 	interaction?: InteractiveBackend;
@@ -189,7 +187,7 @@ export interface StreamScrubberInhibitor {
 	isInhibiting: () => boolean;
 }
 
-export interface RankProps extends AssetDirectoryProps, CardArtDirectory, React.Props<any> {
+export interface RankProps extends AssetDirectoryProps, CardArtDirectory, React.ClassAttributes<any> {
 	rank?: number;
 	legendRank?: number;
 }
@@ -275,4 +273,3 @@ export const enum LineType {
 	Weapon,
 	TurnEnd,
 }
-

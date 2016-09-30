@@ -1,7 +1,7 @@
 import GameState from "../GameState";
 import GameStateMutator from "../GameStateMutator";
 
-class IncrementTimeMutator implements GameStateMutator {
+export default class IncrementTimeMutator implements GameStateMutator {
 	constructor(public time: number = 1) {
 	}
 
@@ -25,5 +25,3 @@ class IncrementTimeMutator implements GameStateMutator {
 		return new GameState(state.entities, state.entityTree, state.options, state.optionTree, time, state.choices, state.descriptors, state.diffs.clear());
 	}
 }
-
-export default IncrementTimeMutator;

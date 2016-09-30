@@ -1,7 +1,7 @@
 import * as bowser from "bowser";
 import * as React from "react";
 
-interface TooltipperProps extends React.Props<any> {
+interface TooltipperProps extends React.ClassAttributes<Tooltipper> {
 	title?: string;
 	align?: "left" | "center" | "right";
 	desktop?: string;

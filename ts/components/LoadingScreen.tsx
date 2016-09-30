@@ -1,11 +1,11 @@
 import * as React from "react";
 import MessagePicker from "./MessagePicker";
 
-interface LoadingScreenProps extends React.Props<any> {
+interface LoadingScreenProps extends React.ClassAttributes<LoadingScreen> {
 	players?: string[];
 }
 
-class LoadingScreen extends React.Component<LoadingScreenProps, {}> {
+export default class LoadingScreen extends React.Component<LoadingScreenProps, void> {
 	private messages = [
 		"Spinning up...",
 		"Sorting decks...",
@@ -83,5 +83,3 @@ class LoadingScreen extends React.Component<LoadingScreenProps, {}> {
 		</div>;
 	}
 }
-
-export default LoadingScreen;

@@ -1,4 +1,4 @@
-class Option {
+export default class Option {
 
 	constructor(protected _index: number, protected _type: number, protected _entityId: number, protected _targets: number[]) {
 		if(!this._targets) {
@@ -32,5 +32,3 @@ class Option {
 		return this._targets;
 	}
 }
-
-export default Option;

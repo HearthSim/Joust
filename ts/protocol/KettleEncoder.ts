@@ -5,7 +5,7 @@ import Entity from "../Entity";
 import ClearOptionsMutator from "../state/mutators/ClearOptionsMutator";
 import GameStateTracker from "../state/GameStateTracker";
 
-class KettleEncoder extends Stream.Readable implements InteractiveBackend {
+export default class KettleEncoder extends Stream.Readable implements InteractiveBackend {
 
 	private tracker: GameStateTracker;
 	private gameStarted: boolean;
@@ -102,5 +102,3 @@ class KettleEncoder extends Stream.Readable implements InteractiveBackend {
 		this.push(buffer.toString('utf-8'));
 	}
 }
-
-export default KettleEncoder;

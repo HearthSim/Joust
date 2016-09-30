@@ -3,12 +3,12 @@ import * as React from "react";
 import {OptionProps} from "../../interfaces";
 import Player from "../../Player";
 
-interface EndTurnButtonProps extends OptionProps, React.Props<any> {
+interface EndTurnButtonProps extends OptionProps, React.ClassAttributes<EndTurnButton> {
 	onlyOption?: boolean;
 	currentPlayer: Player;
 }
 
-class EndTurnButton extends React.Component<EndTurnButtonProps, {}> {
+export default class EndTurnButton extends React.Component<EndTurnButtonProps, void> {
 
 	public endTurn() {
 		if (!this.props.option || !this.props.optionCallback) {
@@ -32,5 +32,3 @@ class EndTurnButton extends React.Component<EndTurnButtonProps, {}> {
 		);
 	}
 }
-
-export default EndTurnButton;

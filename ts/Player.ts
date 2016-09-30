@@ -1,7 +1,7 @@
 import Entity from "./Entity";
 import {GameTag, PlayState} from "./enums";
 
-class Player extends Entity {
+export default class Player extends Entity {
 	protected _name:string;
 	protected _playerId:number;
 	protected _rank:number;
@@ -48,5 +48,3 @@ class Player extends Entity {
 		return new Player(this.id, tags, this.playerId, this.name, this.rank, this.legendRank, this.conceded);
 	}
 }
-
-export default Player;

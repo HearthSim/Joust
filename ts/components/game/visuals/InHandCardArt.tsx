@@ -1,18 +1,16 @@
 import * as React from "react";
-import {CardType,CardClass,GameTag} from "../../../enums";
-import Entity from "../../../Entity";
+import {CardType,CardClass} from "../../../enums";
 import CardArt from "./CardArt";
 import {EntityProps} from "../../../interfaces";
-import InPlayCardArt from "./InPlayCardArt";
 
-interface InHandCardArtProps extends EntityProps {
+interface InHandCardArtProps extends EntityProps, React.ClassAttributes<InHandCardArt> {
 	hidden: boolean;
 	cardType?: number;
 	cardClass?: number;
 	mulligan?: boolean;
 }
 
-class InHandCardArt extends React.Component<InHandCardArtProps, {}> {
+export default class InHandCardArt extends React.Component<InHandCardArtProps, void> {
 	public render(): JSX.Element {
 		let images = [];
 		let entity = this.props.entity;
@@ -127,5 +125,3 @@ class InHandCardArt extends React.Component<InHandCardArtProps, {}> {
 		}
 	}
 }
-
-export default InHandCardArt;

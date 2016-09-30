@@ -24,7 +24,7 @@ interface JoustState {
 	mulliganOracle?: MulliganOracle;
 }
 
-class Joust extends React.Component<{}, JoustState> {
+export default class Joust extends React.Component<{}, JoustState> {
 
 	private gameWidget: GameWidget;
 
@@ -123,5 +123,3 @@ class Joust extends React.Component<{}, JoustState> {
 		});
 	}
 }
-
-export default Joust;

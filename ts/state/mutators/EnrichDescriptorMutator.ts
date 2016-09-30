@@ -3,7 +3,7 @@ import GameStateMutator from "../GameStateMutator";
 import GameStateDescriptor from "../GameStateDescriptor";
 import MetaData from "../../MetaData";
 
-class EnrichDescriptorMutator implements GameStateMutator {
+export default class EnrichDescriptorMutator implements GameStateMutator {
 	constructor(public metaData: MetaData) {
 
 	}
@@ -19,5 +19,3 @@ class EnrichDescriptorMutator implements GameStateMutator {
 		return new GameState(state.entities, state.entityTree, state.options, state.optionTree, state.time, state.choices, descriptors, state.diffs);
 	}
 }
-
-export default EnrichDescriptorMutator;

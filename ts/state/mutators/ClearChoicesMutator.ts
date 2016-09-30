@@ -2,7 +2,7 @@ import GameState from "../GameState";
 import GameStateMutator from "../GameStateMutator";
 import Option from "../../Option";
 
-class ClearChoicesMutator implements GameStateMutator {
+export default class ClearChoicesMutator implements GameStateMutator {
 	constructor(public player: number) {
 
 	}
@@ -23,5 +23,3 @@ class ClearChoicesMutator implements GameStateMutator {
 		return new GameState(state.entities, state.entityTree, state.options, state.optionTree.clear(), state.time, newChoices, state.descriptors, state.diffs);
 	}
 }
-
-export default ClearChoicesMutator;

@@ -1,14 +1,14 @@
 import * as React from "react";
 import * as _ from "lodash";
 
-interface SpeedSelectorProps extends React.Props<any> {
+interface SpeedSelectorProps extends React.ClassAttributes<SpeedSelector> {
 	speed: number;
 	speeds: number[];
 	selectSpeed: (speed: number) => void;
 	disabled?: boolean;
 }
 
-class SpeedSelector extends React.Component<SpeedSelectorProps, {}> {
+export default class SpeedSelector extends React.Component<SpeedSelectorProps, void> {
 
 	protected changeSpeed(e): void {
 		this.props.selectSpeed(+e.target.value);
@@ -35,5 +35,3 @@ class SpeedSelector extends React.Component<SpeedSelectorProps, {}> {
 
 	}
 }
-
-export default SpeedSelector;

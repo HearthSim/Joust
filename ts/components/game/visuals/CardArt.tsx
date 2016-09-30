@@ -9,7 +9,7 @@ interface CardArtItem {
 	classes:Array<String>;
 }
 
-interface CardArtProps extends AssetDirectoryProps, CardArtDirectory {
+interface CardArtProps extends AssetDirectoryProps, CardArtDirectory, React.ClassAttributes<CardArt> {
 	layers:Array<CardArtItem>;
 	scale:number;
 	square:boolean;
@@ -18,7 +18,7 @@ interface CardArtProps extends AssetDirectoryProps, CardArtDirectory {
 	containerHeight:number;
 }
 
-class CardArt extends React.Component<CardArtProps, {}> {
+class CardArt extends React.Component<CardArtProps, void> {
 
 	shouldComponentUpdate(nextProps:CardArtProps):boolean {
 		return (

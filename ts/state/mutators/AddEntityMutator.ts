@@ -5,7 +5,7 @@ import Entity from "../../Entity";
 import AddDiffsMutator from "./AddDiffsMutator";
 import {GameStateDiff} from "../../interfaces";
 
-class AddEntityMutator implements GameStateMutator {
+export default class AddEntityMutator implements GameStateMutator {
 	constructor(public entity: Entity) {
 	}
 
@@ -48,5 +48,3 @@ class AddEntityMutator implements GameStateMutator {
 		return state.apply(new AddDiffsMutator(diffs));
 	}
 }
-
-export default AddEntityMutator;

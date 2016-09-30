@@ -1,6 +1,6 @@
 import Choice from "./Choice";
 
-class Choices {
+export default class Choices {
 
 	constructor(protected _choices:Immutable.Map<number, Choice>, protected _type:number) {
 	}
@@ -13,5 +13,3 @@ class Choices {
 		return this._type;
 	}
 }
-
-export default Choices;
