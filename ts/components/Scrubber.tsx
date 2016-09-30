@@ -193,7 +193,7 @@ export default class Scrubber extends React.Component<ScrubberProps, ScrubberSta
 	}
 
 	protected updateState(): void {
-		var scrubber = this.props.scrubber;
+		let scrubber = this.props.scrubber;
 		this.setState({
 			playing: scrubber.isPlaying(),
 			canInteract: scrubber.canInteract(),
@@ -210,7 +210,7 @@ export default class Scrubber extends React.Component<ScrubberProps, ScrubberSta
 	}
 
 	public render(): JSX.Element {
-		var playpause = this.state.playing ?
+		let playpause = this.state.playing ?
 			<Tooltipper title="Pause" align="left">
 				<button onClick={() => this.pause()} disabled={!this.state.canInteract} className="joust-scrubber-button-wide"><i className="joust-fa joust-fa-pause"></i></button>
 			</Tooltipper> :
@@ -218,11 +218,11 @@ export default class Scrubber extends React.Component<ScrubberProps, ScrubberSta
 				<button onClick={() => this.play()} disabled={!this.state.canPlay} className="joust-scrubber-button-wide"><i className="joust-fa joust-fa-play"></i></button>
 			</Tooltipper>;
 
-		var restart = <Tooltipper title="Restart" align="left">
+		let restart = <Tooltipper title="Restart" align="left">
 			<button onClick={() => this.rewind()} disabled={!this.state.canRewind} className="joust-scrubber-button-wide"><i className="joust-fa joust-fa-fast-backward"></i></button>
 		</Tooltipper>;
 
-		var fullscreen = this.props.isFullscreen ?
+		let fullscreen = this.props.isFullscreen ?
 			<Tooltipper title="Minimize" align="right">
 				<button onClick={this.props.onClickMinimize}><i className="joust-fa joust-fa-compress"></i></button>
 			</Tooltipper> :
@@ -230,7 +230,7 @@ export default class Scrubber extends React.Component<ScrubberProps, ScrubberSta
 				<button onClick={() => this.props.isFullscreenAvailable && this.props.onClickFullscreen()} disabled={!this.props.isFullscreenAvailable}><i className="joust-fa joust-fa-expand"></i></button>
 			</Tooltipper>;
 
-		var reveal = this.props.isRevealingCards ?
+		let reveal = this.props.isRevealingCards ?
 			<Tooltipper title="Hide cards" desktop="%s (X)">
 				<button onClick={this.props.onClickHideCards}><i className="joust-fa joust-fa-eye-slash"></i></button>
 			</Tooltipper> :
@@ -238,11 +238,11 @@ export default class Scrubber extends React.Component<ScrubberProps, ScrubberSta
 				<button onClick={this.props.onClickRevealCards} disabled={!this.props.canRevealCards}><i className="joust-fa joust-fa-eye"></i></button>
 			</Tooltipper>;
 
-		var swap = <Tooltipper title="Swap players" desktop="%s (C)">
+		let swap = <Tooltipper title="Swap players" desktop="%s (C)">
 			<button onClick={this.props.swapPlayers} disabled={!this.state.canInteract}><i className="joust-fa joust-fa-unsorted"></i></button>
 		</Tooltipper>;
 
-		var log = <Tooltipper title={this.props.isLogVisible ? "Hide event log" : "Show event log"}>
+		let log = <Tooltipper title={this.props.isLogVisible ? "Hide event log" : "Show event log"}>
 			<button onClick={this.props.toggleLog} disabled={!this.state.canInteract}><i className="joust-fa joust-fa-bars"></i></button>
 		</Tooltipper>;
 

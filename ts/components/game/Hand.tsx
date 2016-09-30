@@ -22,7 +22,7 @@ export default class Hand extends EntityList<EntityListProps> {
 
 	protected renderEntity(entity: Entity, option: Option, index?: number) {
 
-		var style = {};
+		let style = {};
 
 		/*if (typeof index === 'number' && this.totalEntities > 0) {
 		 let total = this.totalEntities * 1 + 10;
@@ -32,7 +32,7 @@ export default class Hand extends EntityList<EntityListProps> {
 		 style['transform'] = 'rotate(' + deg + 'deg) translateY(' + '-' + px + '%)';
 		 }*/
 
-		var wasHidden = false;
+		let wasHidden = false;
 
 		if (this.props.hideCards) {
 			entity = new Entity(entity.id, entity.getTags());

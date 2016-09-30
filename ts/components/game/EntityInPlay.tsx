@@ -23,7 +23,7 @@ abstract class EntityInPlay<P extends EntityInPlayProps> extends React.Component
 	}
 
 	protected getClassNames(): string[] {
-		var classNames = ['entity', 'in-play'];
+		let classNames = ['entity', 'in-play'];
 		classNames.push(this.baseClassName);
 		if (this.props.isTarget) {
 			classNames.push('target');
@@ -108,10 +108,10 @@ abstract class EntityInPlay<P extends EntityInPlayProps> extends React.Component
 			return <div className={this.getClassNames().concat(['no-entity']).join(' ') }></div>;
 		}
 
-		var playable = !!this.props.option;
-		var requiresTarget = this.props.option && this.props.option.hasTargets();
+		let playable = !!this.props.option;
+		let requiresTarget = this.props.option && this.props.option.hasTargets();
 
-		var jsx = null;
+		let jsx = null;
 		/*if (playable && !requiresTarget && this.playWithClick()) {
 			jsx = <div className={this.getClassNames().join(' ') }
 					   onClick={(playable && this.props.optionCallback) ? this.click.bind(this) : null}>

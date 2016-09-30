@@ -17,9 +17,9 @@ export default class HeroPower extends EntityInPlay<EntityInPlayProps> {
 	}
 
 	protected jsx() {
-		var defaultCost = null;
+		let defaultCost = null;
 		if (this.props.cards && this.props.cards.has(this.props.entity.cardId)) {
-			var data = this.props.cards.get(this.props.entity.cardId);
+			let data = this.props.cards.get(this.props.entity.cardId);
 			defaultCost = data.cost;
 		}
 

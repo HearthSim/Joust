@@ -11,13 +11,13 @@ export default class ShowEntityMutator implements GameStateMutator {
 	}
 
 	public applyTo(state: GameState): GameState {
-		var oldEntity = state.getEntity(this.entityId);
+		let oldEntity = state.getEntity(this.entityId);
 		if (!oldEntity) {
 			console.error('Cannot show non-existent entity #' + this.entityId);
 			return state;
 		}
 
-		var newEntity = oldEntity.setCardId(this.cardId);
+		let newEntity = oldEntity.setCardId(this.cardId);
 
 		if(this.replaceTags) {
 			newEntity = newEntity.setTags(Immutable.Map<string, number>());

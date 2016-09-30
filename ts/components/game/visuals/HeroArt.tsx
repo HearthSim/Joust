@@ -24,8 +24,8 @@ export default class HeroArt extends React.Component<HeroArtProps, void> {
 	}
 
 	public render():JSX.Element {
-		var images = [];
-		var entity = this.props.entity;
+		let images = [];
+		let entity = this.props.entity;
 
 		images.push({
 			image: entity.cardId,
@@ -52,10 +52,10 @@ export default class HeroArt extends React.Component<HeroArtProps, void> {
 			});
 		}
 
-		var secretCount = this.props.secrets.count();
+		let secretCount = this.props.secrets.count();
 		if (secretCount > 0) {
-			var image = "secret_sheathed.png";
-			var secret = this.props.secrets.first();
+			let image = "secret_sheathed.png";
+			let secret = this.props.secrets.first();
 			if (!secret.getTag(GameTag.EXHAUSTED)) {
 				switch (secret.getClass()) {
 					case CardClass.HUNTER:

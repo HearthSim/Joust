@@ -13,8 +13,8 @@ export default class Deck extends EntityList<DeckProps> {
 	}
 
 	public render(): JSX.Element {
-		var tooltip = null;
-		var classNames = [this.className()];
+		let tooltip = null;
+		let classNames = [this.className()];
 		switch (this.props.entities.size) {
 			case 0:
 				tooltip = this.props.fatigue + ' damage dealt by next card draw';

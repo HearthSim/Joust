@@ -7,8 +7,8 @@ import InPlayCardArt from "./InPlayCardArt";
 
 export default class HeroPowerArt extends React.Component<EntityProps, void> {
 	public render(): JSX.Element {
-		var images = [];
-		var entity = this.props.entity;
+		let images = [];
+		let entity = this.props.entity;
 
 		images.push({
 			image: entity.cardId,
@@ -16,7 +16,7 @@ export default class HeroPowerArt extends React.Component<EntityProps, void> {
 			classes: ["hero-power-portrait"]
 		});
 
-		var frame = "hero_power.png";
+		let frame = "hero_power.png";
 		if (entity.isExhausted())
 			frame = "hero_power_exhausted.png";
 

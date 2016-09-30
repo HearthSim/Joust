@@ -36,24 +36,24 @@ interface PlayerProps extends OptionCallbackProps, CardDataProps, CardOracleProp
 export default class Player extends React.Component<PlayerProps, void> {
 
 	public render(): JSX.Element {
-		var filterByCardType = function(cardType: number) {
+		let filterByCardType = function(cardType: number) {
 			return function(entity: Entity): boolean {
 				return !!entity && entity.getCardType() === cardType;
 			};
 		};
 
-		var emptyEntities = Immutable.Map<number, Entity>();
-		var emptyOptions = Immutable.Map<number, Option>();
+		let emptyEntities = Immutable.Map<number, Entity>();
+		let emptyOptions = Immutable.Map<number, Option>();
 
-		var playEntities = this.props.entities.get(Zone.PLAY) || Immutable.Map<number, Entity>();
-		var playOptions = this.props.options.get(Zone.PLAY) || Immutable.Map<number, Option>();
+		let playEntities = this.props.entities.get(Zone.PLAY) || Immutable.Map<number, Entity>();
+		let playOptions = this.props.options.get(Zone.PLAY) || Immutable.Map<number, Option>();
 
 		/* Equipment */
-		var heroEntity = playEntities.filter(filterByCardType(CardType.HERO)).first();
+		let heroEntity = playEntities.filter(filterByCardType(CardType.HERO)).first();
 		if (!heroEntity) {
 			heroEntity = (this.props.entities.get(Zone.GRAVEYARD) || Immutable.Map<number, Entity>()).filter(filterByCardType(CardType.HERO)).first();
 		}
-		var hero = <Hero entity={heroEntity}
+		let hero = <Hero entity={heroEntity}
 			option={heroEntity ? playOptions.get(heroEntity.id) : null}
 			secrets={this.props.entities.get(Zone.SECRET) || Immutable.Map<number, Entity>() }
 			optionCallback={this.props.optionCallback}
@@ -64,8 +64,8 @@ export default class Player extends React.Component<PlayerProps, void> {
 			descriptors={this.props.descriptors}
 			cardOracle={this.props.cardOracle}
 			/>;
-		var heroPowerEntity = playEntities.filter(filterByCardType(CardType.HERO_POWER)).first();
-		var heroPower = <HeroPower entity={heroPowerEntity}
+		let heroPowerEntity = playEntities.filter(filterByCardType(CardType.HERO_POWER)).first();
+		let heroPower = <HeroPower entity={heroPowerEntity}
 			option={heroPowerEntity ? playOptions.get(heroPowerEntity.id) : null}
 			optionCallback={this.props.optionCallback}
 			cards={this.props.cards}
@@ -73,14 +73,14 @@ export default class Player extends React.Component<PlayerProps, void> {
 			cardArtDirectory={this.props.cardArtDirectory}
 			controller={this.props.player}
 			/>;
-		var weapon = <Weapon entity={playEntities.filter(filterByCardType(CardType.WEAPON)).first() }
+		let weapon = <Weapon entity={playEntities.filter(filterByCardType(CardType.WEAPON)).first() }
 			cards={this.props.cards}
 			assetDirectory={this.props.assetDirectory}
 			cardArtDirectory={this.props.cardArtDirectory}
 			controller={this.props.player}
 			/>;
 
-		var field = <Field entities={playEntities.filter(filterByCardType(CardType.MINION)) || emptyEntities}
+		let field = <Field entities={playEntities.filter(filterByCardType(CardType.MINION)) || emptyEntities}
 			options={playOptions || emptyOptions}
 			optionCallback={this.props.optionCallback}
 			cards={this.props.cards}
@@ -89,7 +89,7 @@ export default class Player extends React.Component<PlayerProps, void> {
 			controller={this.props.player}
 			descriptors={this.props.descriptors}
 			/>;
-		var deck = <Deck entities={this.props.entities.get(Zone.DECK) || emptyEntities}
+		let deck = <Deck entities={this.props.entities.get(Zone.DECK) || emptyEntities}
 			options={this.props.options.get(Zone.DECK) || emptyOptions}
 			cards={this.props.cards}
 			assetDirectory={this.props.assetDirectory}
@@ -97,7 +97,7 @@ export default class Player extends React.Component<PlayerProps, void> {
 			controller={this.props.player}
 			fatigue={this.props.player.getTag(GameTag.FATIGUE) + 1}
 			/>;
-		var hand = <Hand entities={((!this.props.choices || this.props.choices.type !== ChoiceType.MULLIGAN) && this.props.entities.get(Zone.HAND)) || emptyEntities}
+		let hand = <Hand entities={((!this.props.choices || this.props.choices.type !== ChoiceType.MULLIGAN) && this.props.entities.get(Zone.HAND)) || emptyEntities}
 			options={this.props.options.get(Zone.HAND) || emptyOptions}
 			optionCallback={this.props.optionCallback}
 			cards={this.props.cards}
@@ -109,10 +109,10 @@ export default class Player extends React.Component<PlayerProps, void> {
 			hideCards={this.props.hideCards}
 			/>;
 
-		var choices = null;
+		let choices = null;
 		if(this.props.choices) {
 			let choiceEntities = this.props.choices.choices.map((choice:Choice) => {
-				var entity = null;
+				let entity = null;
 				// search for the entity in all player zones
 				let id = choice.entityId;
 				this.props.entities.forEach((zoneEntities:Immutable.Map<number, Entity>) => {
@@ -140,8 +140,8 @@ export default class Player extends React.Component<PlayerProps, void> {
 			/>;
 		}
 
-		var name = this.props.player.name ? <div className="name" title={this.props.player.name}>{this.props.player.name}</div> : null;
-		var rank = <Rank rank={this.props.player.rank }
+		let name = this.props.player.name ? <div className="name" title={this.props.player.name}>{this.props.player.name}</div> : null;
+		let rank = <Rank rank={this.props.player.rank }
 			legendRank={this.props.player.legendRank }
 			assetDirectory={this.props.assetDirectory}
 			cardArtDirectory={this.props.cardArtDirectory}
@@ -162,7 +162,7 @@ export default class Player extends React.Component<PlayerProps, void> {
 				crystalClassNames.push('empty');
 			}
 		}
-		var tray = (
+		let tray = (
 			<div className="tray">
 				<span>{available}/{resources}</span>
 				<img src={this.props.assetDirectory("images/mana_crystal.png")} className={crystalClassNames.join(' ') }></img>
@@ -205,7 +205,7 @@ export default class Player extends React.Component<PlayerProps, void> {
 			classNames.push('current');
 		}
 
-		var gameresult = null;
+		let gameresult = null;
 		switch (this.props.player.getTag(GameTag.PLAYSTATE)) {
 			case PlayState.WON:
 				gameresult = <div className="gameresult">{this.props.player.name} wins!</div>;
@@ -219,7 +219,7 @@ export default class Player extends React.Component<PlayerProps, void> {
 				break;
 		}
 
-		var action = null;
+		let action = null;
 		if(this.props.descriptors.count() > 0 && !this.props.choices) {
 			this.props.descriptors.forEach((descriptor: GameStateDescriptor, index: number) => {
 				let outer = this.props.descriptors.get(index + 1);

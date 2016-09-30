@@ -82,8 +82,8 @@ export default class EventLogLine extends React.Component<EventLogLineProps, Eve
 			'data': this.props.data,
 		} as any;
 
-		var words = this.parseLine(strings).split(' ');
-		var parts = words.map((word) => {
+		let words = this.parseLine(strings).split(' ');
+		let parts = words.map((word) => {
 			let parts = word.match(/^(.*)%(\w+)%(.*)$/);
 			if (parts === null) {
 				return word;

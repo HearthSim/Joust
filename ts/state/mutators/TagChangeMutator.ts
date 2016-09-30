@@ -16,13 +16,13 @@ export default class TagChangeMutator implements GameStateMutator {
 	}
 
 	public applyTo(state: GameState): GameState {
-		var oldEntity = state.getEntity(this.id);
+		let oldEntity = state.getEntity(this.id);
 		if (!oldEntity) {
 			console.error('Cannot change tag on non-existent entity #' + this.id);
 			return state;
 		}
 
-		var newEntity = oldEntity.setTag(this.tag, this.value);
+		let newEntity = oldEntity.setTag(this.tag, this.value);
 
 		if (newEntity === oldEntity) {
 			// tag value did not change

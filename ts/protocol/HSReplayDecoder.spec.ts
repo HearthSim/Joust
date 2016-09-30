@@ -8,7 +8,7 @@ import ClearChoicesMutator from "../state/mutators/ClearChoicesMutator";
 
 describe("HSReplayDecoder", () => {
 
-	var decoder;
+	let decoder;
 
 	beforeEach(() => {
 		decoder = new HSReplayDecoder();

@@ -115,7 +115,7 @@ export default class Entity {
 	}
 
 	public setTag(key:number, value:number):Entity {
-		var strkey = '' + key;
+		let strkey = '' + key;
 		value = +value;
 		// verify parameters
 		if (strkey === null) {
@@ -126,7 +126,7 @@ export default class Entity {
 			value = 0;
 		}
 
-		var tags = this.tags;
+		let tags = this.tags;
 
 		// delete value 0 tags
 		if (value === 0) {
@@ -155,7 +155,7 @@ export default class Entity {
 	}
 
 	public setTags(tags:Immutable.Map<string, number>):Entity {
-		var mergedTags = this.tags.merge(tags);
+		let mergedTags = this.tags.merge(tags);
 		if (mergedTags === this.tags) {
 			return this;
 		}

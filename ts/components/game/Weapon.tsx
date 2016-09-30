@@ -18,7 +18,7 @@ export default class Weapon extends EntityInPlay<EntityInPlayProps> {
 		let defaultAttack = null;
 		let defaultDurability = null;
 		if (this.props.cards && this.props.cards.has(entity.cardId)) {
-			var data = this.props.cards.get(entity.cardId);
+			let data = this.props.cards.get(entity.cardId);
 			defaultAttack = data.attack;
 			defaultDurability = data.durability;
 		}

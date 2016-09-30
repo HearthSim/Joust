@@ -24,11 +24,11 @@ export default class Hero extends EntityInPlay<HeroProps> {
 	}
 
 	protected jsx() {
-		var entity = this.props.entity;
+		let entity = this.props.entity;
 
-		var secretCount = this.props.secrets.count();
-		var secretText = secretCount > 1 ? secretCount.toString() : "?";
-		var secretTitle = this.props.secrets.reduce((title, entity: Entity): string => {
+		let secretCount = this.props.secrets.count();
+		let secretText = secretCount > 1 ? secretCount.toString() : "?";
+		let secretTitle = this.props.secrets.reduce((title, entity: Entity): string => {
 			let name = entity.cardId;
 			if(!entity.revealed) {
 				if(this.props.cardOracle && this.props.cardOracle.has(entity.id)) {
@@ -47,8 +47,8 @@ export default class Hero extends EntityInPlay<HeroProps> {
 			return title += name;
 		}, "");
 
-		var damage = 0;
-		var healing = 0;
+		let damage = 0;
+		let healing = 0;
 
 		if (this.props.descriptors) {
 			this.props.descriptors.forEach((descriptor: GameStateDescriptor) => {

@@ -7,7 +7,7 @@ import Option from "../../Option";
 abstract class EntityList<T extends EntityListProps> extends React.Component<T, void> {
 
 	protected renderEntity(entity: Entity, option: Option, index?: number) {
-		var id = entity.cardId ? (' (CardID=' + entity.cardId + ')') : '';
+		let id = entity.cardId ? (' (CardID=' + entity.cardId + ')') : '';
 		return (<span>Entity #{entity.id }{id}</span>);
 	}
 
@@ -20,12 +20,12 @@ abstract class EntityList<T extends EntityListProps> extends React.Component<T, 
 	protected abstract className(): string;
 
 	public render(): JSX.Element {
-		var elements = [];
+		let elements = [];
 		if (this.props.entities) {
-			var entities = this.props.entities.toList().sortBy(this.sort.bind(this));
+			let entities = this.props.entities.toList().sortBy(this.sort.bind(this));
 			this.beforeRender(entities.count());
 			entities.forEach(function(entity, i) {
-				var option = this.props.options ? this.props.options.get(entity.id) : null;
+				let option = this.props.options ? this.props.options.get(entity.id) : null;
 				let rendered = this.renderEntity(entity, option, i);
 				if(!rendered) {
 					return;

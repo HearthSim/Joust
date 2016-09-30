@@ -157,7 +157,7 @@ export default class HSReplayDecoder extends Stream.Transform implements CardOra
 
 	private onCloseTag(name: string): void {
 
-		var node = this.nodeStack.pop() as any;
+		let node = this.nodeStack.pop() as any;
 
 		// sanity check for our stack
 		if (node.name !== name) {
@@ -169,7 +169,7 @@ export default class HSReplayDecoder extends Stream.Transform implements CardOra
 			return;
 		}
 
-		var mutator: GameStateMutator = null;
+		let mutator: GameStateMutator = null;
 		switch (name) {
 			case 'Game':
 				if (this.currentGame === null) {
@@ -383,7 +383,7 @@ export default class HSReplayDecoder extends Stream.Transform implements CardOra
 			return +id;
 		}
 
-		var str = '' + id;
+		let str = '' + id;
 
 		if (str === 'UNKNOWN HUMAN PLAYER') {
 			console.warn('Cannot resolve entity for ' + str);

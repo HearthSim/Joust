@@ -103,13 +103,13 @@ export default class Timeline extends React.Component<TimelineProps, TimelineSta
 	}
 
 	protected seek(x: number): void {
-		var rect = this.ref.getBoundingClientRect();
-		var offset = Math.min(Math.max(rect.left, x), rect.right);
+		let rect = this.ref.getBoundingClientRect();
+		let offset = Math.min(Math.max(rect.left, x), rect.right);
 
-		var width = rect.right - rect.left;
+		let width = rect.right - rect.left;
 		offset = offset - rect.left;
 
-		var seek = this.props.duration / width * offset;
+		let seek = this.props.duration / width * offset;
 		this.props.seek(seek);
 	}
 

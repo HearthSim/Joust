@@ -32,7 +32,7 @@ export default class Choices extends EntityList<ChoicesProps> {
 
 	protected renderEntity(entity: Entity, option: Option, index?: number): JSX.Element {
 
-		var hidden = false;
+		let hidden = false;
 
 		if(this.props.hideCards) {
 			entity = new Entity(entity.id, entity.getTags());

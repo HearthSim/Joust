@@ -72,28 +72,28 @@ export default class GameWrapper extends React.Component<GameWrapperProps, GameW
 		}
 
 		// check if we even have a game state
-		var gameState = this.props.state;
+		let gameState = this.props.state;
 		if (!gameState) {
 			return this.renderLoadingScreen();
 		}
 
-		var entityTree = gameState.entityTree;
-		var optionTree = gameState.optionTree;
+		let entityTree = gameState.entityTree;
+		let optionTree = gameState.optionTree;
 
 		// check if any entities are present
-		var allEntities = gameState.entities;
+		let allEntities = gameState.entities;
 		if (!allEntities) {
 			return this.renderLoadingScreen();
 		}
 
 		// find the game entity
-		var game = allEntities.filter(GameWrapper.filterByCardType(CardType.GAME)).first();
+		let game = allEntities.filter(GameWrapper.filterByCardType(CardType.GAME)).first();
 		if (!game) {
 			return this.renderLoadingScreen();
 		}
 
 		// find the players
-		var players = allEntities.filter(GameWrapper.filterByCardType(CardType.PLAYER)) as Immutable.Map<number, PlayerEntity>;
+		let players = allEntities.filter(GameWrapper.filterByCardType(CardType.PLAYER)) as Immutable.Map<number, PlayerEntity>;
 		if (players.count() == 0) {
 			return this.renderLoadingScreen();
 		}
@@ -106,11 +106,11 @@ export default class GameWrapper extends React.Component<GameWrapperProps, GameW
 		}
 
 		// find an end turn option
-		var endTurnOption = gameState.options.filter(function (option:Option):boolean {
+		let endTurnOption = gameState.options.filter(function (option:Option):boolean {
 			return !!option && option.type === OptionType.END_TURN;
 		}).first();
 
-		var playerCount = players.count();
+		let playerCount = players.count();
 		switch (playerCount) {
 			case 2:
 				let player1 = players.first();

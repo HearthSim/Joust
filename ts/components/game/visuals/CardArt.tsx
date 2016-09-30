@@ -36,13 +36,13 @@ class CardArt extends React.Component<CardArtProps, void> {
 
 	private createStyle():any {
 		// keep proportions with scale
-		var width = Math.round(this.props.containerHeight * this.props.scale);
-		var height = Math.round(this.props.containerHeight);
+		let width = Math.round(this.props.containerHeight * this.props.scale);
+		let height = Math.round(this.props.containerHeight);
 		if (this.props.square) {
 			height = width;
 		}
-		var margin = Math.round(this.props.containerHeight * (1 - this.props.scale));
-		var style = {width: width + 'px', height: height + 'px', marginTop: '0px'};
+		let margin = Math.round(this.props.containerHeight * (1 - this.props.scale));
+		let style = {width: width + 'px', height: height + 'px', marginTop: '0px'};
 		if (this.props.margin) {
 			style.marginTop = margin + 'px';
 		}
@@ -54,7 +54,7 @@ class CardArt extends React.Component<CardArtProps, void> {
 			return null;
 		}
 
-		var imgSrc = null;
+		let imgSrc = null;
 		if (item.isArt) {
 			if (item.image !== null && this.props.cardArtDirectory && this.props.cardArtDirectory.length > 0) {
 				imgSrc = this.props.cardArtDirectory(item.image);
@@ -76,7 +76,7 @@ class CardArt extends React.Component<CardArtProps, void> {
 	}
 
 	public render():JSX.Element {
-		var style = this.createStyle();
+		let style = this.createStyle();
 		return (
 			<div className="visuals" style={style}>
 				{ this.props.layers.map(this.createImageItem.bind(this)) }

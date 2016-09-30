@@ -7,7 +7,7 @@
  *
  */
 
-declare var JOUST_RELEASE: string;
+declare let JOUST_RELEASE: string;
 
 declare interface Screen extends EventTarget {
 	orientation;

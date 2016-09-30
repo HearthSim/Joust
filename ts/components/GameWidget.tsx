@@ -127,7 +127,7 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 	}
 
 	public setCards(cards: CardData[]) {
-		var cardMap = null;
+		let cardMap = null;
 		if (cards) {
 			if (!cards.length) {
 				console.error('Got invalid card data to metadata callback (expected card data array)');
@@ -150,7 +150,7 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 	 */
 	protected triggerResize() {
 		try {
-			var event = document.createEvent('UIEvents');
+			let event = document.createEvent('UIEvents');
 			event.initUIEvent('resize', true, false, window, 0);
 			window.dispatchEvent(event);
 		} catch (e) {
@@ -184,7 +184,7 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 			this.checkForSwap();
 		}
 
-		var parts = [];
+		let parts = [];
 
 		if (this.props.exitGame) {
 			parts.push(<div id="joust-quit" key="exit"><a href="#" onClick={this.onClickExit.bind(this) }>Exit Game</a></div>);
@@ -252,7 +252,7 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 			/>);
 		}
 
-		var style = {};
+		let style = {};
 		if (!this.state.isFullscreen) {
 			if (this.props.width) {
 				style['width'] = this.props.width;
@@ -262,7 +262,7 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 			}
 		}
 
-		var classes = ['joust-widget', 'game-widget'];
+		let classes = ['joust-widget', 'game-widget'];
 		if(this.state.isFullscreen) {
 			classes.push('joust-fullscreen');
 		}

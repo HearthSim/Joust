@@ -26,8 +26,8 @@ export default class Minion extends EntityInPlay<EntityInPlayProps> {
 			data = this.props.cards.get(cardId);
 		}
 
-		var damage = 0;
-		var healing = 0;
+		let damage = 0;
+		let healing = 0;
 
 		if (this.props.descriptors) {
 			this.props.descriptors.forEach((descriptor:GameStateDescriptor) => {

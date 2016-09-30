@@ -10,7 +10,7 @@ export default class IncrementTimeMutator implements GameStateMutator {
 			return state;
 		}
 
-		var time = state.time;
+		let time = state.time;
 		if (time === null) {
 			time = 0;
 		}

@@ -90,7 +90,7 @@ export default class SetupWidget extends React.Component<SetupWidgetProps, Setup
 
 
 	protected onSelectFile(e): void {
-		var file = e.target.files[0];
+		let file = e.target.files[0];
 		if (!file || this.state.working) {
 			return;
 		}
@@ -99,11 +99,11 @@ export default class SetupWidget extends React.Component<SetupWidgetProps, Setup
 	}
 
 	protected loadFile(file: any): void {
-		var filestream = FileReaderStream(file);
+		let filestream = FileReaderStream(file);
 
 		/* HSReplay -> Joust */
 
-		var scrubber = new GameStateScrubber();
+		let scrubber = new GameStateScrubber();
 
 		async.parallel([
 			(cb) => {
@@ -114,8 +114,8 @@ export default class SetupWidget extends React.Component<SetupWidgetProps, Setup
 			},
 		], () => scrubber.play());
 
-		var decoder = new HSReplayDecoder();
-		var sink = filestream // sink is returned by the last .pipe()
+		let decoder = new HSReplayDecoder();
+		let sink = filestream // sink is returned by the last .pipe()
 			.pipe(decoder) // json -> mutators
 			.pipe(new GameStateTracker()) // mutators -> latest gamestate
 			.pipe(scrubber) // gamestate -> gamestate emit on scrub past
@@ -132,13 +132,13 @@ export default class SetupWidget extends React.Component<SetupWidgetProps, Setup
 		}
 		this.setState({ working: true });
 
-		var hostname = this.state.hostname || this.props.defaultHostname;
-		var port = this.state.port || this.props.defaultPort;
+		let hostname = this.state.hostname || this.props.defaultHostname;
+		let port = this.state.port || this.props.defaultPort;
 
-		var socket: Stream.Duplex = null;
+		let socket: Stream.Duplex = null;
 
 		if (this.state.websocket) {
-			var protocol = this.state.secureWebsocket ? 'wss' : 'ws';
+			let protocol = this.state.secureWebsocket ? 'wss' : 'ws';
 			socket = new Websocket(protocol + '://' + hostname + ':' + port, 'binary');
 		}
 		else {
@@ -150,15 +150,15 @@ export default class SetupWidget extends React.Component<SetupWidgetProps, Setup
 
 		/* Kettle -> Joust */
 
-		var tracker = new GameStateTracker();
-		var sink = socket // sink is returned by the last .pipe()
+		let tracker = new GameStateTracker();
+		let sink = socket // sink is returned by the last .pipe()
 			.pipe(new KettleDecoder()) // json -> mutators
 			.pipe(tracker) // mutators -> latest gamestate
 			.pipe(new GameStateSink());
 
 		/* Joust -> Kettle */
 
-		var interaction = new KettleEncoder(tracker);
+		let interaction = new KettleEncoder(tracker);
 		interaction
 			.pipe(socket);
 

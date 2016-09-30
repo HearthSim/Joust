@@ -15,13 +15,13 @@ export default class AddEntityMutator implements GameStateMutator {
 			return state;
 		}
 
-		var id = +this.entity.id;
+		let id = +this.entity.id;
 		if (id < 1) {
 			console.error('Cannot add entity: Invalid entity id');
 			return state;
 		}
 
-		var entities = state.entities;
+		let entities = state.entities;
 		if (entities.has(id)) {
 			console.warn('Overwriting entity with id #' + id);
 			// we might have a stale entity at the old location in the entity tree
@@ -29,7 +29,7 @@ export default class AddEntityMutator implements GameStateMutator {
 
 		entities = entities.set(id, this.entity);
 
-		var entityTree = state.entityTree;
+		let entityTree = state.entityTree;
 		entityTree = entityTree.setIn([this.entity.getController(), this.entity.getZone(), id], this.entity);
 
 		let diffs: GameStateDiff[] = [];

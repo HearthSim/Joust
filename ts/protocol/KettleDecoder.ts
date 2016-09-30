@@ -60,20 +60,20 @@ export default class KettleDecoder extends Stream.Transform {
 				return;
 			}
 			// parse length
-			var lengthBytes = [];
-			var temporary = this.buffer;
+			let lengthBytes = [];
+			let temporary = this.buffer;
 			for (let i = 0; i < 4; i++) {
 				lengthBytes[i] = temporary.first();
 				temporary = temporary.shift();
 			}
-			var length = new Buffer(lengthBytes).readInt32LE(0);
+			let length = new Buffer(lengthBytes).readInt32LE(0);
 			if (temporary.count() < length) {
 				// wait for more data
 				return;
 			}
 			// decode data and shift buffer
-			var decoded = new Buffer(temporary.slice(0, length).toArray()).toString('utf-8');
-			var packets: any[] = JSON.parse(decoded);
+			let decoded = new Buffer(temporary.slice(0, length).toArray()).toString('utf-8');
+			let packets: any[] = JSON.parse(decoded);
 			packets.forEach(this.handlePacket.bind(this));
 			this.buffer = temporary.slice(length).toList();
 		}
@@ -86,30 +86,31 @@ export default class KettleDecoder extends Stream.Transform {
 	}
 
 	private handlePacket(packet: KettlePacket) {
-		var type = packet.Type;
+		let type = packet.Type;
 		packet = packet[type];
 		console.debug(type + ':', packet);
-		var mutator: GameStateMutator = null;
+		let mutator: GameStateMutator = null;
 		switch (type) {
 			case 'GameEntity':
-			case 'FullEntity':
-				var tags: { [s: string]: number; } = {};
-				Object.keys(packet.Tags).forEach(function(key) {
+			case 'FullEntity': {
+				let tags: { [s: string]: number; } = {};
+				Object.keys(packet.Tags).forEach(function (key) {
 					tags['' + key] = packet.Tags[key];
 				});
-				var entity = new Entity(
+				let entity = new Entity(
 					+packet.EntityID,
 					Immutable.Map<number>(tags),
 					packet.CardID || null
 				);
 				mutator = new AddEntityMutator(entity);
 				break;
-			case 'Player':
-				var tags: { [s: string]: number; } = {};
-				Object.keys(packet.Tags).forEach(function(key) {
+			}
+			case 'Player': {
+				let tags: { [s: string]: number; } = {};
+				Object.keys(packet.Tags).forEach(function (key) {
 					tags['' + key] = packet.Tags[key];
 				});
-				var player = new Player(
+				let player = new Player(
 					+packet.EntityID,
 					Immutable.Map<number>(tags),
 					+packet.PlayerID || +packet.EntityID, // default to EntityID until Kettle is changed
@@ -117,6 +118,7 @@ export default class KettleDecoder extends Stream.Transform {
 				);
 				mutator = new AddEntityMutator(player);
 				break;
+			}
 			case 'TagChange':
 				mutator = new TagChangeMutator(
 					+packet.EntityID,
@@ -125,10 +127,10 @@ export default class KettleDecoder extends Stream.Transform {
 				);
 				break;
 			case 'Options':
-				var options = Immutable.Map<number, Option>();
+				let options = Immutable.Map<number, Option>();
 				options = options.withMutations(function(map) {
 					(packet as any).forEach(function(optionObject: any, index: number) {
-						var option = new Option(
+						let option = new Option(
 							index,
 							optionObject.Type,
 							optionObject.MainOption ? optionObject.MainOption.ID : null,
@@ -140,7 +142,7 @@ export default class KettleDecoder extends Stream.Transform {
 				mutator = new SetOptionsMutator(options);
 				break;
 			case 'EntityChoices':
-				var entities = packet.Entities;
+				let entities = packet.Entities;
 				switch ((packet as any).Type) {
 					case ChoiceType.GENERAL:
 						console.log('Choose between the following entities:', entities);

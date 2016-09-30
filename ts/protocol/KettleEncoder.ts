@@ -19,8 +19,8 @@ export default class KettleEncoder extends Stream.Readable implements Interactiv
 	}
 
 	public startGame(): void {
-		var repeat = function(array: any[], times: number): any[] {
-			var result = array;
+		let repeat = function(array: any[], times: number): any[] {
+			let result = array;
 			for (let i = 0; i < times; i++) {
 				result = result.concat(array)
 			}
@@ -54,7 +54,7 @@ export default class KettleEncoder extends Stream.Readable implements Interactiv
 		if (this.tracker) {
 			this.tracker.write(new ClearOptionsMutator());
 		}
-		var sendOption = null;
+		let sendOption = null;
 		target = target || null;
 		switch (option.type) {
 			case 2: // end turn
@@ -78,7 +78,7 @@ export default class KettleEncoder extends Stream.Readable implements Interactiv
 	}
 
 	public chooseEntities(entities: Entity[]): void {
-		var ids = entities.map(function(entity: Entity) {
+		let ids = entities.map(function(entity: Entity) {
 			return entity.id;
 		});
 		this.queueMessage({
@@ -92,10 +92,10 @@ export default class KettleEncoder extends Stream.Readable implements Interactiv
 	}
 
 	protected queueMessage(payload) {
-		var message = JSON.stringify(payload);
-		var length = message.length;
+		let message = JSON.stringify(payload);
+		let length = message.length;
 		// todo: we need to properly encode the length (see onData)
-		var buffer = new Buffer(function(number: number, length: number) {
+		let buffer = new Buffer(function(number: number, length: number) {
 			return Array(length - (number + '').length + 1).join('0') + number;
 		} (length, 4) + message, 'utf-8');
 

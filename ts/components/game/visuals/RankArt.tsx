@@ -4,7 +4,7 @@ import {RankProps} from "../../../interfaces";
 
 export default class RankArt extends React.Component<RankProps, void> {
 	public render(): JSX.Element {
-		var images = [];
+		let images = [];
 		if (this.props.rank > 0 && this.props.rank <= 25) {
 			images.push({
 				image: "Medal_Ranked_" + this.props.rank,

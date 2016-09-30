@@ -41,7 +41,7 @@ export default class GameStateScrubber extends Stream.Duplex implements StreamSc
 	protected startFromTurn: number;
 
 	_write(gameState: any, encoding: string, callback: Function): void {
-		var time = gameState.time;
+		let time = gameState.time;
 
 		let ready = false;
 
@@ -149,7 +149,7 @@ export default class GameStateScrubber extends Stream.Duplex implements StreamSc
 			}
 		}
 
-		var latest = this.history.getLatest(this.currentTime + this.initialTime);
+		let latest = this.history.getLatest(this.currentTime + this.initialTime);
 		if (latest !== this.lastState) {
 			this.lastState = latest;
 			this.push(latest);

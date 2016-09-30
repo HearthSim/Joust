@@ -16,8 +16,8 @@ import {EventEmitter} from "events";
 import * as async from "async";
 import HearthstoneJSON from "hearthstonejson";
 
-var React = require('react');
-var ReactDOM = require('react-dom');
+let React = require('react');
+let ReactDOM = require('react-dom');
 
 class Launcher {
 
@@ -99,7 +99,7 @@ class Launcher {
 	}
 
 	public setOptions(opts:any):Launcher {
-		for (var prop in opts) {
+		for (let prop in opts) {
 			this.opts[prop] = opts[prop];
 		}
 		return this;
@@ -248,15 +248,15 @@ class Launcher {
 	}
 
 	public fromUrl(url:string):void {
-		var decoder = new HSReplayDecoder();
+		let decoder = new HSReplayDecoder();
 		decoder.debug = this.opts.debug;
-		var tracker = new GameStateTracker();
-		var scrubber = new GameStateScrubber(null, this.startFromTurn);
+		let tracker = new GameStateTracker();
+		let scrubber = new GameStateScrubber(null, this.startFromTurn);
 		if (this.turnCb) {
 			scrubber.on("turn", this.turnCb);
 		}
-		var sink = new GameStateSink();
-		var preloader = new TexturePreloader(this.opts.cardArtDirectory, this.opts.assetDirectory);
+		let sink = new GameStateSink();
+		let preloader = new TexturePreloader(this.opts.cardArtDirectory, this.opts.assetDirectory);
 		if (preloader.canPreload()) {
 			preloader.consume();
 		}

@@ -27,14 +27,14 @@ interface TwoPlayerGameProps extends EntityProps, CardDataProps, CardOracleProps
 export default class TwoPlayerGame extends React.Component<TwoPlayerGameProps, void> {
 
 	public render(): JSX.Element {
-		var entities = this.props.entities;
-		var options = this.props.options;
-		var player1 = this.props.player1 as PlayerEntity;
-		var player2 = this.props.player2 as PlayerEntity;
-		var currentPlayer = player1.getTag(GameTag.CURRENT_PLAYER) ? player1 : player2;
+		let entities = this.props.entities;
+		let options = this.props.options;
+		let player1 = this.props.player1 as PlayerEntity;
+		let player2 = this.props.player2 as PlayerEntity;
+		let currentPlayer = player1.getTag(GameTag.CURRENT_PLAYER) ? player1 : player2;
 
-		var emptyEntities = Immutable.Map<number, Immutable.Map<number, Entity>>();
-		var emptyOptions = Immutable.Map<number, Immutable.Map<number, Option>>();
+		let emptyEntities = Immutable.Map<number, Immutable.Map<number, Entity>>();
+		let emptyOptions = Immutable.Map<number, Immutable.Map<number, Option>>();
 		return (
 			<div className="game">
 				<Player player={player1 as PlayerEntity} isTop={true}

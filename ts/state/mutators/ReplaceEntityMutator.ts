@@ -8,14 +8,14 @@ export default class ReplaceEntityMutator implements GameStateMutator {
 	}
 
 	public applyTo(state: GameState): GameState {
-		var newEntity = this.entity;
+		let newEntity = this.entity;
 		if (!newEntity) {
 			console.error('Cannot replace null entity');
 			return state;
 		}
 
-		var id = this.entity.id;
-		var oldEntity = state.getEntity(id);
+		let id = this.entity.id;
+		let oldEntity = state.getEntity(id);
 		if (!oldEntity) {
 			console.error('Cannot update non-existent entity #' + id);
 			return state;
@@ -27,10 +27,10 @@ export default class ReplaceEntityMutator implements GameStateMutator {
 			return state;
 		}
 
-		var entities = state.entities;
+		let entities = state.entities;
 		entities = entities.set(id, newEntity);
 
-		var entityTree = state.entityTree;
+		let entityTree = state.entityTree;
 		entityTree = entityTree.withMutations(function(map) {
 			map.deleteIn([oldEntity.getController(), oldEntity.getZone(), id])
 				.setIn([newEntity.getController(), newEntity.getZone(), id], newEntity);
