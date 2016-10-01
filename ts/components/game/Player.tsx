@@ -20,7 +20,7 @@ import Minion from "./Minion";
 import {Zone, CardType, GameTag, ChoiceType, Mulligan, PlayState, BlockType} from "../../enums"
 import {
 	OptionCallbackProps, CardDataProps, CardOracleProps, AssetDirectoryProps, CardArtDirectory,
-	GameStateDescriptorStackProps, HideCardsProps, MulliganOracleProps
+	GameStateDescriptorStackProps, HideCardsProps, MulliganOracleProps, GameStateDiff
 } from "../../interfaces";
 import GameStateDescriptor from "../../state/GameStateDescriptor";
 
@@ -32,6 +32,7 @@ interface PlayerProps extends OptionCallbackProps, CardDataProps, CardOracleProp
 	choices: ChoiceList;
 	isTop: boolean;
 	isCurrent: boolean;
+	diffs?: Immutable.Set<GameStateDiff>;
 }
 
 export default class Player extends React.Component<PlayerProps, void> {
@@ -46,7 +47,30 @@ export default class Player extends React.Component<PlayerProps, void> {
 		let activatedHeroPower = false;
 
 		let action = null;
-		if(this.props.descriptors.count() > 0 && !this.props.choices) {
+
+		if (this.props.diffs && this.props.diffs.count() > 0) {
+			this.props.diffs.forEach(diff => {
+				if (diff.tag === GameTag.ZONE && diff.current === Zone.GRAVEYARD && diff.previous === Zone.DECK) {
+					let entity = this.props.entities.get(Zone.GRAVEYARD).get(diff.entity);
+					if (entity) {
+						action = <div className="played"><Card
+							entity={entity}
+							option={null}
+							optionCallback={null}
+							assetDirectory={this.props.assetDirectory}
+							cards={this.props.cards}
+							isHidden={false}
+							controller={this.props.player}
+							cardArtDirectory={this.props.cardArtDirectory}
+							discarded={true}
+						/></div>;
+						return false;
+					}
+				}
+			});
+		}
+
+		if(!action && this.props.descriptors.count() > 0 && !this.props.choices) {
 			this.props.descriptors.forEach((descriptor: GameStateDescriptor, index: number) => {
 				let outer = this.props.descriptors.get(index + 1);
 				let type = descriptor.type;

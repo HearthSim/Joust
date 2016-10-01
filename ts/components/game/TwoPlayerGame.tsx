@@ -3,7 +3,7 @@ import * as Immutable from "immutable";
 
 import {
 	EntityProps, OptionCallbackProps, CardDataProps, CardOracleProps, AssetDirectoryProps,
-	GameStateDescriptorStackProps, HideCardsProps, MulliganOracleProps
+	GameStateDescriptorStackProps, HideCardsProps, MulliganOracleProps, GameStateDiff
 } from "../../interfaces";
 import Entity from "../../Entity";
 import Player from "./Player";
@@ -22,6 +22,7 @@ interface TwoPlayerGameProps extends EntityProps, CardDataProps, CardOracleProps
 	options: Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Option>>>;
 	choices: Immutable.Map<number, Choices>;
 	endTurnOption?: Option;
+	diffs?: Immutable.Set<GameStateDiff>;
 }
 
 export default class TwoPlayerGame extends React.Component<TwoPlayerGameProps, void> {
@@ -50,6 +51,7 @@ export default class TwoPlayerGame extends React.Component<TwoPlayerGameProps, v
 					assetDirectory={this.props.assetDirectory}
 					cardArtDirectory={this.props.cardArtDirectory}
 					hideCards={this.props.hideCards}
+					diffs={this.props.diffs}
 					/>
 				{this.props.optionCallback && <EndTurnButton option={this.props.endTurnOption}
 					optionCallback={this.props.optionCallback} onlyOption={options.count() === 0}
@@ -67,6 +69,7 @@ export default class TwoPlayerGame extends React.Component<TwoPlayerGameProps, v
 					descriptors={this.props.descriptors}
 					assetDirectory={this.props.assetDirectory}
 					cardArtDirectory={this.props.cardArtDirectory}
+					diffs={this.props.diffs}
 					/>
 			</div>
 		);
