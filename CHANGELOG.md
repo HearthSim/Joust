@@ -10,6 +10,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - Malchezaar causing delay before Mulligan (#136, @azeier)
+- Fix Mulligan X loading in late
 
 ## [0.7.0] - 2016-09-19
 ### Added

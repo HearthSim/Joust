@@ -7,7 +7,7 @@ export default class TexturePreloader extends Stream.Writable {
 	protected cardArtQueue: string[] = ['GAME_005'];
 	protected images: HTMLImageElement[] = [];
 	private working = 0;
-	protected assetQueue = ['cardback', 'hero_frame', 'hero_power',
+	protected assetQueue = ['cardback', 'hero_frame', 'hero_power', 'inhand_mulligan',
 							'inhand_minion_neutral', 'inhand_spell_neutral', 'inhand_weapon_neutral',
 							'inhand_minion_legendary', 'mana_crystal', 'inplay_minion', 'effect_sleep',
 							'hero_power_exhausted', 'hero_armor', 'hero_attack', 'icon_deathrattle', 'icon_inspire',
