@@ -1,5 +1,6 @@
 # Joust
 [![Travis](https://img.shields.io/travis/HearthSim/joust.svg)](https://travis-ci.org/HearthSim/joust)
+[![Coveralls](https://img.shields.io/coveralls/HearthSim/joust.svg)](https://coveralls.io/github/HearthSim/joust)
 [![GitHub release](https://img.shields.io/github/release/HearthSim/joust.svg)](https://github.com/HearthSim/joust/releases)
 
 HearthStone replays in your browser, written in Typescript with React.

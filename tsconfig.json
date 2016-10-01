@@ -9,7 +9,8 @@
     "removeComments": true,
     "noLib": false,
     "suppressImplicitAnyIndexErrors": true,
-    "sourceMap": true
+    "sourceMap": false,
+    "inlineSourceMap": true
   },
   "filesGlob": [
     "ts/**/*.ts",
