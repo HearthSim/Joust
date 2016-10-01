@@ -8,6 +8,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Show C'Thun stats in opponent hand (#133, @azeier)
 - Show C'Thun as a minion during ritual (#137, @azeier)
 
+### Changed
+- Update dependencies
+
 ### Fixed
 - Malchezaar causing delay before Mulligan (#136, @azeier)
 - Fix Mulligan X loading in late
