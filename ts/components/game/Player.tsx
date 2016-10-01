@@ -50,7 +50,7 @@ export default class Player extends React.Component<PlayerProps, void> {
 
 		if (this.props.diffs && this.props.diffs.count() > 0) {
 			this.props.diffs.forEach(diff => {
-				if (diff.tag === GameTag.ZONE && diff.current === Zone.GRAVEYARD && diff.previous === Zone.DECK) {
+				if (diff.tag === GameTag.ZONE && diff.current === Zone.GRAVEYARD && (diff.previous === Zone.DECK || diff.previous === Zone.HAND)) {
 					let entity = this.props.entities.get(Zone.GRAVEYARD).get(diff.entity);
 					if (entity) {
 						action = <div className="played"><Card

@@ -178,6 +178,10 @@ export default class GameStateTracker extends Stream.Transform {
 					timeStep = 1;
 				}
 			}
+			if(mutator.tag === GameTag.ZONE && mutator.value === Zone.GRAVEYARD
+				&& (mutator.getPrevious() === Zone.DECK || mutator.getPrevious() === Zone.HAND)) {
+				timeStep = 2;
+			}
 		}
 
 		//discards
