@@ -70,6 +70,19 @@ export default class Player extends React.Component<PlayerProps, void> {
 						let setAside = this.props.entities.get(Zone.SETASIDE);
 						if (setAside) {
 							entity = setAside.find(x => x.cardId == "OG_279");
+							if (entity) {
+								entity = entity.setTag(GameTag.NUM_TURNS_IN_PLAY, 1);
+								action = <div className="played"><Minion
+									entity={entity}
+									option={null}
+									optionCallback={null}
+									assetDirectory={this.props.assetDirectory}
+									cards={this.props.cards}
+									controller={this.props.player}
+									cardArtDirectory={this.props.cardArtDirectory}
+								/></div>;
+								return false;
+							}
 						}
 					}
 					if(entity) {
