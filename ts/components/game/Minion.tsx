@@ -60,6 +60,7 @@ export default class Minion extends EntityInPlay<EntityInPlayProps> {
 				cardArtDirectory={this.props.cardArtDirectory}
 				damage={damage}
 				healing={healing}
+				buffed={this.props.buffed}
 			/>,
 			<div key="stats" className="stats">
 				{entity.getTag(GameTag.HIDE_STATS) == 0 ? [

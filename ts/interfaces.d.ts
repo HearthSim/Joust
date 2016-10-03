@@ -33,6 +33,7 @@ export interface EntityProps extends CardDataProps, ControllerProps, AssetDirect
 	entity: Entity;
 	damage?: number;
 	healing?: number;
+	buffed?: boolean;
 }
 
 export interface OptionCallbackProps {

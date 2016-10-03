@@ -12,7 +12,8 @@ export default class InPlayCardArt extends React.Component<EntityProps, void> {
 			nextProps.healing !== this.props.healing ||
 			nextProps.controller !== this.props.controller ||
 			nextProps.assetDirectory !== this.props.assetDirectory ||
-			nextProps.cardArtDirectory !== this.props.cardArtDirectory
+			nextProps.cardArtDirectory !== this.props.cardArtDirectory ||
+			nextProps.buffed !== this.props.buffed
 		);
 	}
 
@@ -46,6 +47,13 @@ export default class InPlayCardArt extends React.Component<EntityProps, void> {
 			});
 		}
 
+		if (entity.cantBeTargeted()) {
+			images.push({
+				image: "inplay_minion_untargetable.png",
+				classes: ["inplay-untargetable"]
+			});
+		}
+
 		if (entity.getTag(GameTag.HIDE_STATS)) {
 			images.push({
 				image: `inplay_minion_hide_stats${postfix}.png`,
@@ -76,6 +84,34 @@ export default class InPlayCardArt extends React.Component<EntityProps, void> {
 			images.push({
 				image: "inplay_minion_divine_shield.png",
 				classes: ["inplay-divine-shield"]
+			});
+		}
+
+		if (entity.isImmune()) {
+			images.push({
+				image: "inplay_minion_immune.png",
+				classes: ["inplay-immune"]
+			});
+		}
+
+		if (entity.isSilenced()) {
+			images.push({
+				image: "inplay_minion_silenced.png",
+				classes: ["inplay-silenced"]
+			});
+		}
+
+		if (entity.isEnraged()) {
+			images.push({
+				image: "inplay_minion_enraged.png",
+				classes: ["inplay-enraged"]
+			});
+		}
+
+		if (this.props.buffed) {
+			images.push({
+				image: "inplay_minion_buffed.png",
+				classes: ["inplay-buffed"]
 			});
 		}
 

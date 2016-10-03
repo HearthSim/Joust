@@ -13,7 +13,9 @@ export default class TexturePreloader extends Stream.Writable {
 							'hero_power_exhausted', 'hero_armor', 'hero_attack', 'icon_deathrattle', 'icon_inspire',
 							'icon_poisonous', 'icon_trigger', 'inplay_minion_frozen', 'inplay_minion_legendary',
 							'inplay_minion_taunt', 'inplay_minion_divine_shield', 'inplay_minion_stealth',
-							'inplay_weapon', 'inplay_weapon_dome', 'healing', 'damage', 'skull'];
+							'inplay_weapon', 'inplay_weapon_dome', 'healing', 'damage', 'skull',
+							'inplay_hero_frozen', 'inplay_hero_immune', 'inplay_minion_buffed', 'inplay_minion_enraged',
+							'inplay_minion_immune', 'inplay_minion_silenced', 'inplay_minion_untargetable'];
 
 	constructor(public cardArt?: (cardId: string) => string, public assets?: (asset: string) => string) {
 		super({objectMode: true});

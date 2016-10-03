@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- Add several character states (#7, @azeier)
 
 ## [0.8.0] - 2016-10-10
 ### Added
