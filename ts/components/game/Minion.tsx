@@ -99,4 +99,12 @@ export default class Minion extends EntityInPlay<EntityInPlayProps> {
 
 		return components;
 	}
+
+	protected getClassNames(): string[] {
+		let classNames = super.getClassNames();
+		if (this.props.entity.cardId === "OG_279") {
+			classNames.push("cthun")
+		}
+		return classNames;
+	}
 }
