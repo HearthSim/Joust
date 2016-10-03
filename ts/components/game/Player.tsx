@@ -129,6 +129,14 @@ export default class Player extends React.Component<PlayerProps, void> {
 		let playEntities = this.props.entities.get(Zone.PLAY) || Immutable.Map<number, Entity>();
 		let playOptions = this.props.options.get(Zone.PLAY) || Immutable.Map<number, Option>();
 
+		let buffedEntities = [];
+		playEntities.forEach(entity => {
+			let attached = entity.getTag(GameTag.ATTACHED);
+			if (attached && buffedEntities.indexOf(attached) === -1) {
+				buffedEntities.push(attached);
+			}
+		});
+
 		/* Equipment */
 		let heroEntity = playEntities.filter(filterByCardType(CardType.HERO)).first();
 		if (!heroEntity) {
@@ -170,6 +178,7 @@ export default class Player extends React.Component<PlayerProps, void> {
 			cardArtDirectory={this.props.cardArtDirectory}
 			controller={this.props.player}
 			descriptors={this.props.descriptors}
+			buffedEntities={buffedEntities}
 			/>;
 		let deck = <Deck entities={this.props.entities.get(Zone.DECK) || emptyEntities}
 			options={this.props.options.get(Zone.DECK) || emptyOptions}

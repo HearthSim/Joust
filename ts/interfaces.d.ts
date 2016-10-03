@@ -12,6 +12,7 @@ import Rank from "./components/game/Rank";
 
 export interface EntityInPlayProps extends EntityProps, OptionProps, GameStateDescriptorStackProps, React.ClassAttributes<any> {
 	isTarget?: boolean;
+	buffed?: boolean;
 }
 
 export interface EntityInPlayState {
@@ -23,6 +24,7 @@ export interface EntityListProps extends OptionCallbackProps, ControllerProps, C
 	entities: Immutable.Iterable<number, Entity>;
 	options?: Immutable.Iterable<number, Option>;
 	isTop?: boolean;
+	buffedEntities?: number[];
 }
 
 export interface ControllerProps {
@@ -34,6 +36,7 @@ export interface EntityProps extends CardDataProps, ControllerProps, AssetDirect
 	damage?: number;
 	healing?: number;
 	isTarget?: boolean;
+	buffed?: boolean;
 }
 
 export interface OptionCallbackProps {

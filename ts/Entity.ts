@@ -108,6 +108,10 @@ export default class Entity {
 		return this.getTag(GameTag.ENRAGED) > 0;
 	}
 
+	public cantBeTargeted():boolean {
+		return this.getTag(GameTag.CANT_BE_TARGETED_BY_ABILITIES) > 0;
+	}
+
 	public getZonePosition():number {
 		return this.getTag(GameTag.ZONE_POSITION);
 	}

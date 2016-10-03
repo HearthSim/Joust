@@ -13,7 +13,8 @@ export default class InPlayCardArt extends React.Component<EntityProps, void> {
 			nextProps.controller !== this.props.controller ||
 			nextProps.assetDirectory !== this.props.assetDirectory ||
 			nextProps.cardArtDirectory !== this.props.cardArtDirectory ||
-			nextProps.isTarget !== this.props.isTarget
+			nextProps.isTarget !== this.props.isTarget ||
+			nextProps.buffed !== this.props.buffed
 		);
 	}
 
@@ -44,6 +45,13 @@ export default class InPlayCardArt extends React.Component<EntityProps, void> {
 			images.push({
 				image: "inplay_minion_stealth.png",
 				classes: ["inplay-stealth"]
+			});
+		}
+
+		if (entity.cantBeTargeted()) {
+			images.push({
+				image: "inplay_minion_untargetable.png",
+				classes: ["inplay-untargetable"]
 			});
 		}
 
@@ -98,6 +106,13 @@ export default class InPlayCardArt extends React.Component<EntityProps, void> {
 			images.push({
 				image: "inplay_minion_enraged.png",
 				classes: ["inplay-enraged"]
+			});
+		}
+
+		if (this.props.buffed) {
+			images.push({
+				image: "inplay_minion_buffed.png",
+				classes: ["inplay-buffed"]
 			});
 		}
 

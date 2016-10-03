@@ -22,6 +22,7 @@ export default class Field extends EntityList<EntityListProps> {
 			cards={this.props.cards}
 			controller={this.props.controller}
 			descriptors={this.props.descriptors}
+			buffed={entity && this.props.buffedEntities && this.props.buffedEntities.indexOf(entity.id) !== -1}
 			/>);
 	}
 }
