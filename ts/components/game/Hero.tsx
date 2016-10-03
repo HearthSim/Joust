@@ -10,7 +10,7 @@ import Health from "./stats/Health";
 import Armor from "./stats/Armor";
 import SecretText from "./stats/SecretText"
 import HeroArt from "./visuals/HeroArt";
-import {MetaDataType} from "../../enums";
+import {MetaDataType, BlockType} from "../../enums";
 import MetaData from "../../MetaData";
 import GameStateDescriptor from "../../state/GameStateDescriptor";
 
@@ -49,9 +49,13 @@ export default class Hero extends EntityInPlay<HeroProps> {
 
 		let damage = 0;
 		let healing = 0;
+		let isTarget = false;
 
 		if (this.props.descriptors) {
 			this.props.descriptors.forEach((descriptor: GameStateDescriptor) => {
+				if (descriptor.type === BlockType.ATTACK && descriptor.target === entity.id) {
+					isTarget = true;
+				}
 				descriptor.metaData.forEach((metaData: MetaData) => {
 					if (metaData.entities.has(entity.id)) {
 						switch(metaData.type) {
@@ -66,6 +70,9 @@ export default class Hero extends EntityInPlay<HeroProps> {
 				})
 			})
 		}
+		if (isTarget && (damage || healing)) {
+			isTarget = false;
+		}
 
 		return [
 			<HeroArt key="art"
@@ -76,6 +83,7 @@ export default class Hero extends EntityInPlay<HeroProps> {
 				cardArtDirectory={this.props.cardArtDirectory}
 				damage={damage}
 				healing={healing}
+				isTarget={isTarget}
 				/>,
 			<div key="stats" className="stats">
 				{entity.getAtk() ? <Attack attack={entity.getAtk()}/> : null}

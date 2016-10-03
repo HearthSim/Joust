@@ -12,7 +12,8 @@ export default class InPlayCardArt extends React.Component<EntityProps, void> {
 			nextProps.healing !== this.props.healing ||
 			nextProps.controller !== this.props.controller ||
 			nextProps.assetDirectory !== this.props.assetDirectory ||
-			nextProps.cardArtDirectory !== this.props.cardArtDirectory
+			nextProps.cardArtDirectory !== this.props.cardArtDirectory ||
+			nextProps.isTarget !== this.props.isTarget
 		);
 	}
 
@@ -105,6 +106,13 @@ export default class InPlayCardArt extends React.Component<EntityProps, void> {
 			images.push({
 				image: "effect_sleep.png",
 				classes: ["effect-sleep"]
+			});
+		}
+
+		if (this.props.isTarget) {
+			images.push({
+				image: "rectile.png",
+				classes: ["inplay-target"]
 			});
 		}
 

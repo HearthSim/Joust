@@ -19,7 +19,8 @@ export default class HeroArt extends React.Component<HeroArtProps, void> {
 			nextProps.controller !== this.props.controller ||
 			nextProps.assetDirectory !== this.props.assetDirectory ||
 			nextProps.cardArtDirectory !== this.props.cardArtDirectory ||
-			nextProps.secrets !== this.props.secrets
+			nextProps.secrets !== this.props.secrets ||
+			nextProps.isTarget !== this.props.isTarget
 		);
 	}
 
@@ -79,6 +80,13 @@ export default class HeroArt extends React.Component<HeroArtProps, void> {
 			images.push({
 				image: "skull.png",
 				classes: ["skull"]
+			});
+		}
+
+		if (this.props.isTarget) {
+			images.push({
+				image: "rectile.png",
+				classes: ["inplay-target"]
 			});
 		}
 
