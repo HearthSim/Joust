@@ -1,8 +1,13 @@
+const path = require("path");
+
 module.exports = {
-	entry: ["babel-polyfill", __dirname + "/ts/run.tsx"],
+	entry: {
+		joust: ["babel-polyfill", __dirname + "/ts/run.ts"],
+		joust_debug: ["babel-polyfill", __dirname + "/ts/debug.tsx"],
+	},
 	output: {
-		path: __dirname + "/dist",
-		filename: "joust.js",
+		path: path.resolve(__dirname, "dist"),
+		filename: "[name].js",
 		library: "Joust",
 		libraryTarget: "var",
 	},

@@ -1,8 +1,6 @@
-/// <reference path="../typings/index.d.ts"/>
-/// <reference path="./global.d.ts"/>
-
-import {GameWidgetProps, JoustEventHandler, QueryCardMetadata} from "./interfaces";
-import Application from "./components/Joust";
+import * as React from "react";
+import * as ReactDOM from "react-dom";
+import {GameWidgetProps, JoustEventHandler} from "./interfaces";
 import GameWidget from "./components/GameWidget";
 import GameStateSink from "./state/GameStateSink";
 import GameStateTracker from "./state/GameStateTracker";
@@ -16,26 +14,22 @@ import {EventEmitter} from "events";
 import * as async from "async";
 import HearthstoneJSON from "hearthstonejson";
 
-let React = require('react');
-let ReactDOM = require('react-dom');
+export default class Launcher {
 
-class Launcher {
-
-	protected target:string | HTMLElement;
-	protected opts:GameWidgetProps;
-	protected queryCardMetadata:QueryCardMetadata;
-	protected startFromTurn:number;
-	protected turnCb:(turn:number) => void;
-	protected shouldStartPaused:boolean;
-	protected ref:GameWidget;
+	protected target: string | HTMLElement;
+	protected opts: GameWidgetProps;
+	protected startFromTurn: number;
+	protected turnCb: (turn: number) => void;
+	protected shouldStartPaused: boolean;
+	protected ref: GameWidget;
 	protected metadataSourceCb: (build: number|"latest", locale: string) => string;
 	protected ready: boolean;
 
-	constructor(target:any) {
+	constructor(target: any) {
 		this.target = target;
 		this.opts = {
 			debug: false,
-			logger: (error:Error):void => {
+			logger: (error: Error): void => {
 				let message = error.message ? error.message : error;
 				console.error(message);
 			},
@@ -47,20 +41,20 @@ class Launcher {
 		this.ready = false;
 	}
 
-	public width(width:number):Launcher {
+	public width(width: number): Launcher {
 		this.opts.width = width;
 		return this;
 	}
 
-	public height(height:number):Launcher {
+	public height(height: number): Launcher {
 		this.opts.height = height;
 		return this;
 	}
 
-	public assets(assets:string|((asset:string) => string)):Launcher {
+	public assets(assets: string|((asset: string) => string)): Launcher {
 		let cb = null;
 		if (typeof assets === "string") {
-			cb = (asset:string) => assets + asset;
+			cb = (asset: string) => assets + asset;
 		}
 		else {
 			cb = assets;
@@ -69,15 +63,15 @@ class Launcher {
 		return this;
 	}
 
-	public textures(a:any):Launcher {
+	public textures(a: any): Launcher {
 		console.warn('Launcher.textures() is no longer in use, use .cardArt() instead');
 		return this;
 	}
 
-	public cardArt(url:string|((cardId:string) => string)):Launcher {
+	public cardArt(url: string|((cardId: string) => string)): Launcher {
 		let cb = null;
 		if (typeof url === "string") {
-			cb = (cardId:string) => url + cardId + ".jpg";
+			cb = (cardId: string) => url + cardId + ".jpg";
 		}
 		else {
 			cb = url;
@@ -89,63 +83,63 @@ class Launcher {
 	/**
 	 * @deprecated
 	 */
-	public metadata(any: any):Launcher {
+	public metadata(any: any): Launcher {
 		return this;
 	}
 
-	public metadataSource(metadataSource: (build: number|"latest", locale: string) => string):Launcher {
+	public metadataSource(metadataSource: (build: number|"latest", locale: string) => string): Launcher {
 		this.metadataSourceCb = metadataSource;
 		return this;
 	}
 
-	public setOptions(opts:any):Launcher {
+	public setOptions(opts: any): Launcher {
 		for (let prop in opts) {
 			this.opts[prop] = opts[prop];
 		}
 		return this;
 	}
 
-	public onTurn(callback:(turn:number) => void):Launcher {
+	public onTurn(callback: (turn: number) => void): Launcher {
 		this.turnCb = callback;
 		return this;
 	}
 
-	public onToggleReveal(callback:(reveal:boolean) => void):Launcher {
+	public onToggleReveal(callback: (reveal: boolean) => void): Launcher {
 		this.opts.onToggleReveal = callback;
 		return this;
 	}
 
-	public onToggleSwap(callback:(swap:boolean) => void):Launcher {
+	public onToggleSwap(callback: (swap: boolean) => void): Launcher {
 		this.opts.onToggleSwap = callback;
 		return this;
 	}
 
-	public onFullscreen(callback:(fullscreen:boolean) => void):Launcher {
+	public onFullscreen(callback: (fullscreen: boolean) => void): Launcher {
 		this.opts.onFullscreen = callback;
 		return this;
 	}
 
-	public startPaused(paused?:boolean):Launcher {
+	public startPaused(paused?: boolean): Launcher {
 		this.shouldStartPaused = typeof paused === "undefined" ? true : !!paused;
 		return this;
 	}
 
-	public onReady(ready:() => void):Launcher {
+	public onReady(ready: () => void): Launcher {
 		this.opts.onReady = ready;
 		return this;
 	}
 
-	public startAtTurn(turn:number):Launcher {
+	public startAtTurn(turn: number): Launcher {
 		this.startFromTurn = turn;
 		return this;
 	}
 
-	public startRevealed(reveal:boolean):Launcher {
+	public startRevealed(reveal: boolean): Launcher {
 		this.opts.startRevealed = reveal;
 		return this;
 	}
 
-	public startSwapped(swap:boolean):Launcher {
+	public startSwapped(swap: boolean): Launcher {
 		this.opts.startSwapped = swap;
 		return this;
 	}
@@ -162,18 +156,18 @@ class Launcher {
 		return this;
 	}
 
-	public logger(logger:(message:string | Error) => void):Launcher {
+	public logger(logger: (message: string | Error) => void): Launcher {
 		this.opts.logger = logger;
 		return this;
 	}
 
-	public events(cb:JoustEventHandler):Launcher {
+	public events(cb: JoustEventHandler): Launcher {
 		this.opts.events = cb;
 		this.track("init", {count: 1});
 		return this;
 	}
 
-	public debug(enable?:boolean):Launcher {
+	public debug(enable?: boolean): Launcher {
 		if (typeof enable === 'undefined' || enable === null) {
 			enable = true;
 		}
@@ -181,16 +175,16 @@ class Launcher {
 		return this;
 	}
 
-	public locale(locale?:string):Launcher {
+	public locale(locale?: string): Launcher {
 		this.opts.locale = locale;
 		return this;
 	}
 
-	protected log(message:any):void {
+	protected log(message: any): void {
 		this.opts.logger(message);
 	}
 
-	protected track(event:string, values:Object, tags?:Object):void {
+	protected track(event: string, values: Object, tags?: Object): void {
 		if (!this.opts.events) {
 			return;
 		}
@@ -200,35 +194,35 @@ class Launcher {
 		this.opts.events(event, values, tags);
 	}
 
-	public get replayDuration():number {
+	public get replayDuration(): number {
 		return this.opts.scrubber.getDuration();
 	}
 
-	public get secondsWatched():number {
+	public get secondsWatched(): number {
 		return (this.opts.scrubber as GameStateScrubber).secondsWatched;
 	}
 
-	public get percentageWatched():number {
+	public get percentageWatched(): number {
 		return (this.opts.scrubber as GameStateScrubber).percentageWatched;
 	}
 
-	public play():void {
+	public play(): void {
 		this.opts.scrubber.play();
 	}
 
-	public pause():void {
+	public pause(): void {
 		this.opts.scrubber.pause();
 	}
 
-	public toggle():void {
+	public toggle(): void {
 		this.opts.scrubber.toggle();
 	}
 
-	public get turn():number {
+	public get turn(): number {
 		return this.opts.scrubber.getCurrentTurn();
 	}
 
-	public set turn(turn:number) {
+	public set turn(turn: number) {
 		let turnState = this.opts.scrubber.getHistory().turnMap.get(turn);
 		if (turnState) {
 			this.opts.scrubber.seek(turnState.time);
@@ -247,7 +241,7 @@ class Launcher {
 		return this;
 	}
 
-	public fromUrl(url:string):void {
+	public fromUrl(url: string): void {
 		let decoder = new HSReplayDecoder();
 		decoder.debug = this.opts.debug;
 		let tracker = new GameStateTracker();
@@ -274,7 +268,7 @@ class Launcher {
 		}
 		let opts = URL.parse(url) as any;
 		opts.withCredentials = false;
-		((opts.protocol == 'https:' ? https : http) as any).get(opts, (message:http.IncomingMessage) => {
+		((opts.protocol == 'https:' ? https : http) as any).get(opts, (message: http.IncomingMessage) => {
 			let success = (message.statusCode == 200);
 			this.track("replay_load_error", {error: success ? "f" : "t"}, {statusCode: message.statusCode});
 			if (!success) {
@@ -283,7 +277,7 @@ class Launcher {
 			}
 
 			let components = [decoder, tracker, scrubber, preloader];
-			components.forEach((component:EventEmitter) => {
+			components.forEach((component: EventEmitter) => {
 				component.on('error', this.log.bind(this));
 			});
 
@@ -292,7 +286,7 @@ class Launcher {
 					scrubber.once("ready", () => cb());
 				},
 				(cb) => {
-					decoder.once("build", (buildNumber?:number) => {
+					decoder.once("build", (buildNumber?: number) => {
 						let build = buildNumber || "latest";
 						let queryTime = Date.now();
 						hsjson.get(buildNumber, this.opts.locale, (cards: any[]) => {
@@ -307,7 +301,7 @@ class Launcher {
 							});
 							cb();
 						});
-					})
+					});
 				},
 
 				(cb) => {
@@ -351,38 +345,17 @@ class Launcher {
 		this.track("starting_from_turn", {fromTurn: this.startFromTurn ? "t" : "f", turn: this.startFromTurn | null});
 	}
 
-	protected render():void {
+	protected render(): void {
 		if (!this.ready) {
 			return;
 		}
 		this.ref = ReactDOM.render(
-			React.createElement(GameWidget, this.opts),
+			React.createElement(GameWidget as any, this.opts),
 			typeof this.target === 'string' ? document.getElementById(this.target as string) : this.target
 		);
 	}
-}
 
-module.exports = {
-	renderApplication: (target:string) => {
-		ReactDOM.render(
-			React.createElement(Application),
-			document.getElementById(target)
-		);
-	},
-
-	renderHSReplay: (target:string, url:string, opts?:GameWidgetProps) => {
-		new Launcher(target).setOptions(opts).fromUrl(url);
-	},
-
-	launcher: (target:string | HTMLElement) => {
-		return new Launcher(target);
-	},
-
-	release: ():string => {
-		return JOUST_RELEASE;
-	},
-
-	destroy(target: any):void {
+	public static destroy(target: any): void {
 		ReactDOM.unmountComponentAtNode(target);
 	}
 }
