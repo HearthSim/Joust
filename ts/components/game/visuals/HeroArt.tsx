@@ -53,6 +53,13 @@ export default class HeroArt extends React.Component<HeroArtProps, void> {
 			});
 		}
 
+		if (entity.hasWindfury()) {
+			images.push({
+				image: "inplay_minion_windfury.png",
+				classes: ["hero-windfury"]
+			});
+		}
+
 		if (entity.getAtk() > 0) {
 			images.push({
 				image: "hero_attack.png",

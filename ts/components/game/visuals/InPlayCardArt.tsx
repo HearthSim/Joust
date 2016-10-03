@@ -102,6 +102,13 @@ export default class InPlayCardArt extends React.Component<EntityProps, void> {
 			});
 		}
 
+		if (entity.hasWindfury()) {
+			images.push({
+				image: "inplay_minion_windfury.png",
+				classes: ["inplay-windfury"]
+			});
+		}
+
 		if (entity.isEnraged()) {
 			images.push({
 				image: "inplay_minion_enraged.png",
