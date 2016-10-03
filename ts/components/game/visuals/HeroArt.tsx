@@ -39,6 +39,20 @@ export default class HeroArt extends React.Component<HeroArtProps, void> {
 			classes: ["hero-frame"]
 		});
 
+		if (entity.isFrozen()) {
+			images.push({
+				image: "inplay_hero_frozen.png",
+				classes: ["hero-frozen"]
+			});
+		}
+
+		if (entity.isImmune()) {
+			images.push({
+				image: "inplay_hero_immune.png",
+				classes: ["hero-immune"]
+			});
+		}
+
 		if (entity.getAtk() > 0) {
 			images.push({
 				image: "hero_attack.png",

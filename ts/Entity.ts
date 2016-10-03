@@ -80,6 +80,14 @@ export default class Entity {
 		return this.getTag(GameTag.STEALTH) > 0;
 	}
 
+	public isImmune():boolean {
+		return this.getTag(GameTag.IMMUNE) > 0;
+	}
+
+	public isSilenced():boolean {
+		return this.getTag(GameTag.SILENCED) > 0;
+	}
+
 	public isDivineShielded():boolean {
 		return this.getTag(GameTag.DIVINE_SHIELD) > 0;
 	}
@@ -94,6 +102,10 @@ export default class Entity {
 
 	public isFrozen():boolean {
 		return this.getTag(GameTag.FROZEN) > 0;
+	}
+
+	public isEnraged():boolean {
+		return this.getTag(GameTag.ENRAGED) > 0;
 	}
 
 	public getZonePosition():number {
