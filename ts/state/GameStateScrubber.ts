@@ -295,7 +295,7 @@ export default class GameStateScrubber extends Stream.Duplex implements StreamSc
 		}
 		let turnStart = turnStartState.time;
 		let timeElapsed = this.currentTime - turnStart;
-		if (timeElapsed > 1.5 * this.speed * this.multiplier) {
+		if (!this.isPlaying() || timeElapsed > 1.5 * this.speed * this.multiplier) {
 			this.currentTime = turnStart;
 			this.update();
 		}
