@@ -12,6 +12,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Update dependencies
 - Improve skip back behaviour when replay is paused
+- Replace react-dimensions with a custom implementation (#121)
 
 ### Fixed
 - Malchezaar causing delay before Mulligan (#136, @azeier)
