@@ -35,6 +35,7 @@ gulp.task("compile:scripts", ["compile:scripts:web"]);
 
 gulp.task("compile:scripts:web", ["env:set-release"], function () {
 	var config = require("./webpack.config.js");
+	config.entry = {joust: config.entry.joust}; // remove all bundles but joust
 	config.target = "web";
 	config.plugins = config.plugins.concat([
 		new webpack.optimize.UglifyJsPlugin({
