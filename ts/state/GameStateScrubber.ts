@@ -1,8 +1,7 @@
 import GameState from "./GameState";
 import * as Stream from "stream";
-import {StreamScrubber} from "../interfaces";
+import {StreamScrubber, StreamScrubberInhibitor} from "../interfaces";
 import GameStateHistory from "./GameStateHistory";
-import {StreamScrubberInhibitor} from "../interfaces";
 import {GameTag} from "../enums";
 
 /**
@@ -55,14 +54,14 @@ export default class GameStateScrubber extends Stream.Duplex implements StreamSc
 			// track game state
 			this.history.push(gameState);
 
-			if(this.endTime === null || time > this.endTime) {
+			if (this.endTime === null || time > this.endTime) {
 				this.endTime = time;
 			}
 		}
 
 		if (!this.hasStarted && this.currentTime === 0 && this.startFromTurn) {
 			ready = false;
-			if(this.history.turnMap.has(this.startFromTurn)) {
+			if (this.history.turnMap.has(this.startFromTurn)) {
 				this.currentTime = this.history.turnMap.get(this.startFromTurn).time;
 				ready = true;
 			}
@@ -82,7 +81,7 @@ export default class GameStateScrubber extends Stream.Duplex implements StreamSc
 	}
 
 	end(): void {
-		if(!this.hasEmittedReady) {
+		if (!this.hasEmittedReady) {
 			// this might happen if a initial turn is requested that we never found
 			this.emit("ready");
 			this.hasEmittedReady = true;
@@ -156,7 +155,7 @@ export default class GameStateScrubber extends Stream.Duplex implements StreamSc
 		}
 
 		let currentTurn = this.currentTurn;
-		if(lastTurn !== currentTurn) {
+		if (lastTurn !== currentTurn) {
 			this.emit("turn", currentTurn);
 		}
 
@@ -240,23 +239,26 @@ export default class GameStateScrubber extends Stream.Duplex implements StreamSc
 	}
 
 	get currentTurn(): number {
-		if(!this.lastState) {
+		if (!this.lastState) {
 			return null;
 		}
 		let game = this.lastState.game;
-		if(!game) {
+		if (!game) {
 			return null;
 		}
-		if(!this.history.turnMap.has(1)) {
+		if (!this.history.turnMap.has(1)) {
 			return 0;
 		}
 		let turnOne = this.history.turnMap.get(1);
-		if(this.lastState.time < turnOne.time) {
+		if (this.lastState.time < turnOne.time) {
 			return 0;
 		}
 		return game.getTag(GameTag.TURN) || 0;
 	}
 
+	/**
+	 * Skips forward to the beginning of the previous turn.
+	 */
 	public nextTurn(): void {
 		let nextTurn = this.endTime - this.initialTime;
 		let currentTurn = this.currentTurn;
@@ -274,6 +276,9 @@ export default class GameStateScrubber extends Stream.Duplex implements StreamSc
 		this.update();
 	}
 
+	/**
+	 * Skips back to the beginning of the previous turn.
+	 */
 	public previousTurn(): void {
 		let previousTurn = this.initialTime;
 		let turn = this.currentTurn - 1;
@@ -287,9 +292,14 @@ export default class GameStateScrubber extends Stream.Duplex implements StreamSc
 		this.update();
 	}
 
+	/**
+	 * Skips back to the beginning of either the current turn or the last turn.
+	 * Behaviour depends on the playback progress of the current turn and the playback speed.
+	 * Always skips to the previous turn if playback is paused.
+	 */
 	public skipBack(): void {
 		let turnStartState = this.history.turnMap.get(this.currentTurn);
-		if(!turnStartState) {
+		if (!turnStartState) {
 			this.previousTurn();
 			return;
 		}
@@ -304,7 +314,7 @@ export default class GameStateScrubber extends Stream.Duplex implements StreamSc
 		}
 	}
 
-	public get secondsWatched():number {
+	public get secondsWatched(): number {
 		let count = -1; // 0 is always set
 		for (let i = 0; i < this.timeSeen.length; i++) {
 			if (this.timeSeen[i]) {
@@ -314,9 +324,9 @@ export default class GameStateScrubber extends Stream.Duplex implements StreamSc
 		return count;
 	}
 
-	public get percentageWatched():number {
+	public get percentageWatched(): number {
 		let percentage = 100 / Math.floor(this.getDuration()) * this.secondsWatched;
-		if(!isFinite(percentage)) {
+		if (!isFinite(percentage)) {
 			percentage = 0;
 		}
 		return percentage;
