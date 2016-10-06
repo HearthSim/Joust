@@ -106,7 +106,11 @@ class CardArt extends React.Component<CardArtProps, CardArtState> {
 
 	protected updateRef(ref: HTMLDivElement) {
 		this.ref = ref;
-		this.measureHeight();
+		if (!this.state.height) {
+			// only measure if we haven't got a height yet
+			// style change will trigger a new ref
+			this.measureHeight();
+		}
 	}
 
 	private request: number;
