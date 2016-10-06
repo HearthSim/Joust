@@ -51,6 +51,8 @@ declare module "fullscreen" {
 		dispose(): void;
 
 		static available(): boolean;
+
+		static enabled(): boolean;
 	}
 
 	export default fullscreen;

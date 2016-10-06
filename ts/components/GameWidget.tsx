@@ -39,7 +39,7 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 			gameState: null,
 			swapPlayers: !!this.props.startSwapped,
 			isFullscreen: false,
-			isFullscreenAvailable: Fullscreen.available(),
+			isFullscreenAvailable: Fullscreen.available() && Fullscreen.enabled(),
 			fullscreenError: false,
 			isRevealingCards: typeof this.props.startRevealed === "undefined" ? true : this.props.startRevealed,
 			cardOracle: null,
