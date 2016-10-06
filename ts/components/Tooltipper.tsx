@@ -6,6 +6,7 @@ interface TooltipperProps extends React.ClassAttributes<Tooltipper> {
 	align?: "left" | "center" | "right";
 	desktop?: string;
 	mobile?: string;
+	forceShow?: boolean;
 }
 
 interface TooltipperState {
@@ -49,6 +50,10 @@ export default class Tooltipper extends React.Component<TooltipperProps, Tooltip
 		this.setState({isHovering: false});
 	}
 
+	public shouldShow() {
+		return this.state.isHovering || this.props.forceShow;
+	}
+
 	public render(): JSX.Element {
 		let classNames = ["joust-tooltipper-tooltip"];
 		if (this.props.align) {
@@ -59,7 +64,7 @@ export default class Tooltipper extends React.Component<TooltipperProps, Tooltip
 					onTouchStart={(e) => {this.startHovering(e)}}
 					onMouseOut={(e) => {this.stopHovering(e)}}
 					onTouchEnd={(e) => {this.stopHovering(e)}}>
-			{this.state.isHovering ? <div className={classNames.join(" ")}><span>{this.tooltip}</span></div> : null}
+			{this.shouldShow() ? <div className={classNames.join(" ")}><span>{this.tooltip}</span></div> : null}
 			{this.props.children}
 		</div>;
 	}
