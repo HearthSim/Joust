@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import EntityInPlay from "./EntityInPlay";
-import {EntityInPlayProps, CardOracleProps} from "../../interfaces";
+import {EntityInPlayProps, CardOracleProps, TargetInfo} from "../../interfaces";
 import Entity from "../../Entity";
 import Attack from "./stats/Attack";
 import Damage from "./stats/Damage";
@@ -49,12 +49,13 @@ export default class Hero extends EntityInPlay<HeroProps> {
 
 		let damage = 0;
 		let healing = 0;
-		let isTarget = false;
+		let targetInfo: TargetInfo = {isTarget: false};
 
 		if (this.props.descriptors) {
 			this.props.descriptors.forEach((descriptor: GameStateDescriptor) => {
-				if (descriptor.type === BlockType.ATTACK && descriptor.target === entity.id) {
-					isTarget = true;
+				if (descriptor.target === entity.id) {
+					targetInfo.isTarget = true;
+					targetInfo.isFriendly = descriptor.isFriendlyTarget;
 				}
 				descriptor.metaData.forEach((metaData: MetaData) => {
 					if (metaData.entities.has(entity.id)) {
@@ -70,8 +71,8 @@ export default class Hero extends EntityInPlay<HeroProps> {
 				})
 			})
 		}
-		if (isTarget && (damage || healing)) {
-			isTarget = false;
+		if (targetInfo.isTarget && (damage || healing)) {
+			targetInfo.isTarget = false;
 		}
 
 		return [
@@ -83,7 +84,7 @@ export default class Hero extends EntityInPlay<HeroProps> {
 				cardArtDirectory={this.props.cardArtDirectory}
 				damage={damage}
 				healing={healing}
-				isTarget={isTarget}
+				targetInfo={targetInfo}
 				/>,
 			<div key="stats" className="stats">
 				{entity.getAtk() ? <Attack attack={entity.getAtk()}/> : null}

@@ -1,6 +1,6 @@
 import * as React from "react";
 import EntityInPlay from "./EntityInPlay";
-import {EntityInPlayProps, CardData} from "../../interfaces";
+import {EntityInPlayProps, CardData, TargetInfo} from "../../interfaces";
 import {GameTag, MetaDataType, BlockType} from "../../enums";
 import InPlayCardArt from "./visuals/InPlayCardArt";
 import Attack from "./stats/Attack";
@@ -28,17 +28,13 @@ export default class Minion extends EntityInPlay<EntityInPlayProps> {
 
 		let damage = 0;
 		let healing = 0;
-		let isTarget = false;
+		let targetInfo: TargetInfo = {isTarget: false};
 
 		if (this.props.descriptors) {
 			this.props.descriptors.forEach((descriptor:GameStateDescriptor) => {
 				if (descriptor.target === entity.id) {
-					if (descriptor.type === BlockType.ATTACK) {
-						isTarget = true;
-					}
-					else {
-						descriptor.entityId
-					}
+					targetInfo.isTarget = true;
+					targetInfo.isFriendly = descriptor.isFriendlyTarget;
 				}
 				descriptor.metaData.forEach((metaData:MetaData) => {
 					if (metaData.entities.has(entity.id)) {
@@ -54,8 +50,8 @@ export default class Minion extends EntityInPlay<EntityInPlayProps> {
 				})
 			})
 		}
-		if (isTarget && (damage || healing)) {
-			isTarget = false;
+		if (targetInfo.isTarget && (damage || healing)) {
+			targetInfo.isTarget = false;
 		}
 
 		if (data.mechanics && data.mechanics.indexOf("AUTOATTACK") !== -1) {
@@ -72,7 +68,7 @@ export default class Minion extends EntityInPlay<EntityInPlayProps> {
 				cardArtDirectory={this.props.cardArtDirectory}
 				damage={damage}
 				healing={healing}
-				isTarget={isTarget}
+				targetInfo={targetInfo}
 				buffed={this.props.buffed}
 			/>,
 			<div key="stats" className="stats">

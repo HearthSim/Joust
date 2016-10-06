@@ -13,7 +13,7 @@ export default class InPlayCardArt extends React.Component<EntityProps, void> {
 			nextProps.controller !== this.props.controller ||
 			nextProps.assetDirectory !== this.props.assetDirectory ||
 			nextProps.cardArtDirectory !== this.props.cardArtDirectory ||
-			nextProps.isTarget !== this.props.isTarget ||
+			nextProps.targetInfo !== this.props.targetInfo ||
 			nextProps.buffed !== this.props.buffed
 		);
 	}
@@ -152,13 +152,6 @@ export default class InPlayCardArt extends React.Component<EntityProps, void> {
 			});
 		}
 
-		if (this.props.isTarget) {
-			images.push({
-				image: "rectile.png",
-				classes: ["inplay-target"]
-			});
-		}
-
 		if(this.props.damage && this.props.damage > 0) {
 			images.push({
 				image: "damage.png",
@@ -175,6 +168,12 @@ export default class InPlayCardArt extends React.Component<EntityProps, void> {
 			images.push({
 				image: "skull.png",
 				classes: ["skull"]
+			});
+		}
+		else if (this.props.targetInfo.isTarget) {
+			images.push({
+				image: "rectile.png",
+				classes: ["inplay-target", this.props.targetInfo.isFriendly ? "friendly-target" : "enemy-target"]
 			});
 		}
 

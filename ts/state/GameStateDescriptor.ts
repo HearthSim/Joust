@@ -4,7 +4,7 @@ import MetaData from "../MetaData";
 
 export default class GameStateDescriptor {
 
-	constructor(private _entityId: number, private _target: number, private _action: BlockType, private _metaData?: Immutable.Set<MetaData>) {
+	constructor(private _entityId: number, private _target: number, private _action: BlockType, private _metaData?: Immutable.Set<MetaData>, private _isFriendlyTarget?: boolean) {
 		if(!this._metaData) {
 			this._metaData = Immutable.Set<MetaData>();
 		}
@@ -24,5 +24,9 @@ export default class GameStateDescriptor {
 
 	get metaData(): Immutable.Set<MetaData> {
 		return this._metaData;
+	}
+
+	get isFriendlyTarget(): boolean {
+		return this._isFriendlyTarget;
 	}
 }

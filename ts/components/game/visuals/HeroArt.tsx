@@ -20,7 +20,7 @@ export default class HeroArt extends React.Component<HeroArtProps, void> {
 			nextProps.assetDirectory !== this.props.assetDirectory ||
 			nextProps.cardArtDirectory !== this.props.cardArtDirectory ||
 			nextProps.secrets !== this.props.secrets ||
-			nextProps.isTarget !== this.props.isTarget
+			nextProps.targetInfo !== this.props.targetInfo
 		);
 	}
 
@@ -103,11 +103,10 @@ export default class HeroArt extends React.Component<HeroArtProps, void> {
 				classes: ["skull"]
 			});
 		}
-
-		if (this.props.isTarget) {
+		else if (this.props.targetInfo.isTarget) {
 			images.push({
 				image: "rectile.png",
-				classes: ["inplay-target"]
+				classes: ["inplay-target", this.props.targetInfo.isFriendly ? "friendly-target" : "enemy-target"]
 			});
 		}
 

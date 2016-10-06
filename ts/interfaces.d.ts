@@ -35,7 +35,7 @@ export interface EntityProps extends CardDataProps, ControllerProps, AssetDirect
 	entity: Entity;
 	damage?: number;
 	healing?: number;
-	isTarget?: boolean;
+	targetInfo?: TargetInfo;
 	buffed?: boolean;
 }
 
@@ -198,6 +198,11 @@ export interface RankProps extends AssetDirectoryProps, CardArtDirectory, React.
 
 export interface GameStateDescriptorStackProps {
 	descriptors?: Immutable.Stack<GameStateDescriptor>;
+}
+
+export interface TargetInfo {
+	isTarget: boolean;
+	isFriendly?: boolean;
 }
 
 export interface HideCardsProps {
