@@ -12,6 +12,7 @@ interface ScrubberProps extends KeybindingProps, React.ClassAttributes<Scrubber>
 	isSwapped?: boolean;
 	isFullscreen?: boolean;
 	isFullscreenAvailable?: boolean;
+	fullscreenError?: boolean;
 	onClickFullscreen?: () => void;
 	onClickMinimize?: () => void;
 	isRevealingCards?: boolean;
@@ -77,6 +78,7 @@ export default class Scrubber extends React.Component<ScrubberProps, ScrubberSta
 			nextProps.isSwapped === this.props.isSwapped &&
 			nextProps.isFullscreen === this.props.isFullscreen &&
 			nextProps.isFullscreenAvailable === this.props.isFullscreenAvailable &&
+			nextProps.fullscreenError === this.props.fullscreenError &&
 			nextProps.isRevealingCards === this.props.isRevealingCards &&
 			nextProps.canRevealCards === this.props.canRevealCards &&
 			nextProps.isLogVisible === this.props.isLogVisible) {
@@ -226,7 +228,7 @@ export default class Scrubber extends React.Component<ScrubberProps, ScrubberSta
 			<Tooltipper title="Minimize" align="right">
 				<button onClick={this.props.onClickMinimize}><i className="joust-fa joust-fa-compress"></i></button>
 			</Tooltipper> :
-			<Tooltipper title="Fullscreen" align="right">
+			<Tooltipper title={this.props.fullscreenError ? "Error entering fullscreen." : "Fullscreen"} align="right" forceShow={this.props.fullscreenError}>
 				<button onClick={() => this.props.isFullscreenAvailable && this.props.onClickFullscreen()} disabled={!this.props.isFullscreenAvailable}><i className="joust-fa joust-fa-expand"></i></button>
 			</Tooltipper>;
 
