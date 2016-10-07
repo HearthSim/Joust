@@ -24,7 +24,7 @@ abstract class EntityList<T extends EntityListProps> extends React.Component<T, 
 		if (this.props.entities) {
 			let entities = this.props.entities.toList().sortBy(this.sort.bind(this));
 			this.beforeRender(entities.count());
-			entities.forEach(function(entity, i) {
+			entities.forEach((entity, i) => {
 				let option = this.props.options ? this.props.options.get(entity.id) : null;
 				let rendered = this.renderEntity(entity, option, i);
 				if(!rendered) {
@@ -34,7 +34,7 @@ abstract class EntityList<T extends EntityListProps> extends React.Component<T, 
 					<li key={entity.id }>
 						{rendered}
 					</li>);
-			}.bind(this));
+			});
 		}
 		let classNames = ['entity-list'];
 		classNames.push(this.className());

@@ -162,19 +162,19 @@ export default class SetupWidget extends React.Component<SetupWidgetProps, Setup
 		interaction
 			.pipe(socket);
 
-		socket.on('connect', function() {
+		socket.on('connect', () => {
 			interaction.startGame();
 			this.props.onSetup(sink, interaction);
-		}.bind(this));
+		});
 
-		socket.on('error', function(e) {
+		socket.on('error', (e) => {
 			console.error(e);
 		});
 
-		socket.on('close', function() {
+		socket.on('close', () => {
 			this.setState({ working: false });
 			console.log('Connection closed');
-		}.bind(this));
+		});
 	}
 
 }

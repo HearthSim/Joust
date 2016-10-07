@@ -37,8 +37,8 @@ interface PlayerProps extends OptionCallbackProps, CardDataProps, CardOracleProp
 export default class Player extends React.Component<PlayerProps, void> {
 
 	public render(): JSX.Element {
-		let filterByCardType = function(cardType: number) {
-			return function(entity: Entity): boolean {
+		let filterByCardType = (cardType: number) => {
+			return (entity: Entity) => {
 				return !!entity && entity.getCardType() === cardType;
 			};
 		};

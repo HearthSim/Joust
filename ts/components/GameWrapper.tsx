@@ -106,7 +106,7 @@ export default class GameWrapper extends React.Component<GameWrapperProps, GameW
 		}
 
 		// find an end turn option
-		let endTurnOption = gameState.options.filter(function (option:Option):boolean {
+		let endTurnOption = gameState.options.filter((option:Option) => {
 			return !!option && option.type === OptionType.END_TURN;
 		}).first();
 
@@ -145,7 +145,7 @@ export default class GameWrapper extends React.Component<GameWrapperProps, GameW
 	}
 
 	public static filterByCardType(cardType:CardType):(entity:Entity) => boolean {
-		return function (entity:Entity):boolean {
+		return (entity:Entity) => {
 			return !!entity && entity.getCardType() === cardType;
 		};
 	};

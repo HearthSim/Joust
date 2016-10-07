@@ -21,8 +21,8 @@ export default class SetOptionsMutator implements GameStateMutator {
 
 	protected buildOptionTree(options: Immutable.Map<number, Option>, entities: Immutable.Map<number, Entity>): Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Option>>> {
 		let optionTree = Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Option>>>();
-		optionTree = optionTree.withMutations(function(map) {
-			options.forEach(function(option: Option) {
+		optionTree = optionTree.withMutations((map) => {
+			options.forEach((option: Option) => {
 				if (!option.entityId) {
 					return;
 				}

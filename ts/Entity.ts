@@ -130,7 +130,7 @@ export default class Entity {
 
 		// delete value 0 tags
 		if (value === 0) {
-			tags = tags.withMutations(function (map) {
+			tags = tags.withMutations((map) => {
 				// set to 0 to ensure it is really deleted
 				map.set(strkey, 0).delete(strkey);
 			});

@@ -23,7 +23,7 @@ export default class Option {
 	}
 
 	public isTarget(target: number): boolean {
-		return this.targets.filter(function(proposedTarget) {
+		return this.targets.filter((proposedTarget) => {
 			return proposedTarget === target;
 		}).length == 1;
 	}

@@ -22,12 +22,12 @@ export default class SpeedSelector extends React.Component<SpeedSelectorProps, v
 	}
 
 	public render(): JSX.Element {
-		let speeds = this.props.speeds.map(function(val) {
+		let speeds = this.props.speeds.map((val) => {
 			return <option key={val} value={'' + val}>{val}&times; </option>;
-		}.bind(this));
+		});
 
 		return (
-			<select onChange={this.changeSpeed.bind(this) } value={'' + this.props.speed}
+			<select onChange={(e) => this.changeSpeed(e)} value={'' + this.props.speed}
 				disabled={this.props.disabled}>
 				{speeds}
 			</select>

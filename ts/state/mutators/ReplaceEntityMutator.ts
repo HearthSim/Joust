@@ -31,7 +31,7 @@ export default class ReplaceEntityMutator implements GameStateMutator {
 		entities = entities.set(id, newEntity);
 
 		let entityTree = state.entityTree;
-		entityTree = entityTree.withMutations(function(map) {
+		entityTree = entityTree.withMutations((map) => {
 			map.deleteIn([oldEntity.getController(), oldEntity.getZone(), id])
 				.setIn([newEntity.getController(), newEntity.getZone(), id], newEntity);
 		});

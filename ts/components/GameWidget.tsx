@@ -153,8 +153,8 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 			}
 			cardMap = Immutable.Map<string, CardData>();
 
-			cardMap = cardMap.withMutations(function(map) {
-				cards.forEach(function(card: CardData) {
+			cardMap = cardMap.withMutations((map) => {
+				cards.forEach((card: CardData) => {
 					map = map.set(card.id, card);
 				});
 			});

@@ -37,7 +37,7 @@ export default class KettleDecoder extends Stream.Transform {
 
 	_write(chunk: number[], encoding: string, callback: Function): void {
 		// fill the buffer with any incoming message
-		this.buffer = this.buffer.withMutations(function(list) {
+		this.buffer = this.buffer.withMutations((list) => {
 			for (let i = 0; i < chunk.length; i++) { // this will call buffer.values() and iterate
 				let byte = chunk[i];
 				list = list.push(byte);
@@ -94,7 +94,7 @@ export default class KettleDecoder extends Stream.Transform {
 			case 'GameEntity':
 			case 'FullEntity': {
 				let tags: { [s: string]: number; } = {};
-				Object.keys(packet.Tags).forEach(function (key) {
+				Object.keys(packet.Tags).forEach((key) => {
 					tags['' + key] = packet.Tags[key];
 				});
 				let entity = new Entity(
@@ -107,7 +107,7 @@ export default class KettleDecoder extends Stream.Transform {
 			}
 			case 'Player': {
 				let tags: { [s: string]: number; } = {};
-				Object.keys(packet.Tags).forEach(function (key) {
+				Object.keys(packet.Tags).forEach((key) => {
 					tags['' + key] = packet.Tags[key];
 				});
 				let player = new Player(
@@ -128,8 +128,8 @@ export default class KettleDecoder extends Stream.Transform {
 				break;
 			case 'Options':
 				let options = Immutable.Map<number, Option>();
-				options = options.withMutations(function(map) {
-					(packet as any).forEach(function(optionObject: any, index: number) {
+				options = options.withMutations((map) => {
+					(packet as any).forEach((optionObject: any, index: number) => {
 						let option = new Option(
 							index,
 							optionObject.Type,
