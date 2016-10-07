@@ -6,7 +6,8 @@ import {
 	CardOracleProps,
 	AssetDirectoryProps,
 	CardArtDirectory,
-	MulliganOracleProps
+	MulliganOracleProps,
+	GameStateDiff
 } from "../interfaces";
 import GameState from "../state/GameState";
 import TwoPlayerGame from "./game/TwoPlayerGame";
@@ -23,6 +24,7 @@ interface GameWrapperProps extends CardDataProps, CardOracleProps, MulliganOracl
 	interaction?:InteractiveBackend;
 	swapPlayers?:boolean;
 	hasStarted?:boolean;
+	diffs?: Immutable.Set<GameStateDiff>;
 }
 
 interface GameWrapperState {
@@ -134,6 +136,7 @@ export default class GameWrapper extends React.Component<GameWrapperProps, GameW
 					assetDirectory={this.props.assetDirectory}
 					cardArtDirectory={this.props.cardArtDirectory}
 					hideCards={this.props.hideCards}
+					diffs={this.props.diffs}
 				/>;
 			default:
 				return <div>Unsupported player count ({playerCount}).</div>

@@ -3,12 +3,13 @@ import * as Stream from "stream";
 import GameStateMutator from "./GameStateMutator";
 import PushDescriptorMutator from "./mutators/PushDescriptorMutator";
 import IncrementTimeMutator from "./mutators/IncrementTimeMutator";
-import {BlockType, GameTag, MetaDataType, Step} from "../enums";
+import {BlockType, GameTag, MetaDataType, Step, Zone} from "../enums";
 import PopDescriptorMutator from "./mutators/PopDescriptorMutator";
 import SetChoicesMutator from "./mutators/SetChoicesMutator";
 import EnrichDescriptorMutator from "./mutators/EnrichDescriptorMutator";
 import SetOptionsMutator from "./mutators/SetOptionsMutator";
 import TagChangeMutator from "./mutators/TagChangeMutator";
+import ShowEntityMutator from "./mutators/ShowEntityMutator";
 
 /**
  * Follows the initial game state by applying incoming mutators to the game state.
@@ -176,6 +177,17 @@ export default class GameStateTracker extends Stream.Transform {
 				if (mutator.tag === GameTag.PROPOSED_DEFENDER && mutator.value === 0) {
 					timeStep = 1;
 				}
+			}
+			if(mutator.tag === GameTag.ZONE && mutator.value === Zone.GRAVEYARD
+				&& (mutator.getPrevious() === Zone.DECK || mutator.getPrevious() === Zone.HAND)) {
+				timeStep = 2;
+			}
+		}
+
+		//discards
+		if(mutator instanceof ShowEntityMutator) {
+			if(mutator.tags.get(''+GameTag.ZONE) === Zone.GRAVEYARD) {
+				timeStep = 2;
 			}
 		}
 

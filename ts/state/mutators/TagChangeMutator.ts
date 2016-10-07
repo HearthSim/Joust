@@ -8,6 +8,7 @@ export default class TagChangeMutator implements GameStateMutator {
 	public id: number;
 	public tag: number;
 	public value: number;
+	private previous: number;
 
 	constructor(id: number, tag: number, value: number) {
 		this.id = +id;
@@ -22,6 +23,8 @@ export default class TagChangeMutator implements GameStateMutator {
 			return state;
 		}
 
+		this.previous = oldEntity.getTag(this.tag);
+
 		let newEntity = oldEntity.setTag(this.tag, this.value);
 
 		if (newEntity === oldEntity) {
@@ -32,12 +35,16 @@ export default class TagChangeMutator implements GameStateMutator {
 		let diff: GameStateDiff = {
 			entity: this.id,
 			tag: this.tag,
-			previous: oldEntity.getTag(this.tag),
+			previous: this.previous,
 			current: this.value,
 		};
 
 		return state
 			.apply(new ReplaceEntityMutator(newEntity))
 			.apply(new AddDiffsMutator([diff]));
+	}
+
+	public getPrevious(): number {
+		return this.previous;
 	}
 }

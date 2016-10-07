@@ -220,7 +220,8 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 						hasStarted={this.props.scrubber.canInteract()}
 						cardOracle={this.state.cardOracle}
 						mulliganOracle={this.state.mulliganOracle}
-						hideCards={!this.state.isRevealingCards} />;
+						hideCards={!this.state.isRevealingCards}
+						diffs={this.state.gameState && this.state.gameState.diffs} />;
 		let log = <EventLog key="log"
 							state={this.state.gameState}
 							cards={this.state.cards}

@@ -12,6 +12,7 @@ interface CardProps extends EntityProps, OptionProps, React.ClassAttributes<Card
 	isHidden?: boolean;
 	defaultStats?: boolean;
 	mulligan?: boolean;
+	discarded?: boolean;
 }
 
 export default class Card extends React.Component<CardProps, void> {
@@ -74,6 +75,9 @@ export default class Card extends React.Component<CardProps, void> {
 		}
 		if (this.props.mulligan) {
 			classNames.push("mulligan");
+		}
+		if (this.props.discarded) {
+			classNames.push("discarded");
 		}
 
 		let title = entity.cardId;
