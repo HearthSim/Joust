@@ -105,7 +105,7 @@ export default class Entity {
 	}
 
 	public isEnraged():boolean {
-		return this.getTag(GameTag.ENRAGED) > 0;
+		return this.getTag(GameTag.ENRAGED) > 0 && this.getDamage() > 0;
 	}
 
 	public hasWindfury():boolean {
