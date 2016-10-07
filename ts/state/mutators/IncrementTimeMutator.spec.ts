@@ -1,5 +1,5 @@
-import IncrementTimeMutator from "./IncrementTimeMutator";
 import GameState from "../GameState";
+import IncrementTimeMutator from "./IncrementTimeMutator";
 
 describe("IncrementTimeMutator", () => {
 

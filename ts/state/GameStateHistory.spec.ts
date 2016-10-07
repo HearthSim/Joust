@@ -18,44 +18,61 @@ describe("GameStateHistory", () => {
 		history = new GameStateHistory();
 	});
 
-	it("should be initialized with an empty turn map", () => {
-		expect(history.turnMap.count()).toBe(0);
+	describe("has a turnMap that", () => {
+
+		it("should be initialized as empty", () => {
+			expect(history.turnMap.count()).toBe(0);
+		});
+
+		it("should track states with distinct turns", () => {
+			history.push(stateTurnOne);
+			expect(history.turnMap.count()).toBe(1);
+			expect(history.turnMap.get(1)).toBe(stateTurnOne);
+			history.push(stateTurnTwo);
+			expect(history.turnMap.count()).toBe(2);
+			expect(history.turnMap.get(2)).toBe(stateTurnTwo);
+		});
+
+		it("should not track states without a turn", () => {
+			history.push(stateOne);
+			expect(history.turnMap.count()).toBe(0);
+		});
+
+		it("shoulöd not track states with duplicate turns", () => {
+			history.push(stateTurnOne);
+			expect(history.turnMap.count()).toBe(1);
+			expect(history.turnMap.get(1)).toBe(stateTurnOne);
+			history.push(stateTurnOnePointFive);
+			expect(history.turnMap.count()).toBe(1);
+			expect(history.turnMap.get(1)).toBe(stateTurnOne);
+		});
+
 	});
 
-	it("should not add a state without turn to the turn map", () => {
-		history.push(stateOne);
-		expect(history.turnMap.count()).toBe(0);
-	});
-
-	it("should not add duplicate turns to the turn map", () => {
-		history.push(stateTurnOne);
-		expect(history.turnMap.count()).toBe(1);
-		expect(history.turnMap.get(1)).toBe(stateTurnOne);
-		history.push(stateTurnOnePointFive);
-		expect(history.turnMap.count()).toBe(1);
-		expect(history.turnMap.get(1)).toBe(stateTurnOne);
-	});
-
-	it("should add states with turn to the turn map", () => {
-		history.push(stateTurnOne);
-		expect(history.turnMap.count()).toBe(1);
-		expect(history.turnMap.get(1)).toBe(stateTurnOne);
-		history.push(stateTurnTwo);
-		expect(history.turnMap.count()).toBe(2);
-		expect(history.turnMap.get(2)).toBe(stateTurnTwo);
-	});
-
-	it("should set the first element as head", () => {
+	it("should set the first state as its head", () => {
 		history.push(stateOne);
 		expect(history.head.state).toBe(stateOne);
 	});
 
-	it("should set the first element as tail", () => {
+	it("should set the last state as its head", () => {
+		history.push(stateOne);
+		history.push(stateTwo);
+		expect(history.head.state).toBe(stateTwo);
+	});
+
+	it("should set the first state as its tail", () => {
 		history.push(stateOne);
 		expect(history.tail.state).toBe(stateOne);
 	});
 
+	it("should not move its tail", () => {
+		history.push(stateOne);
+		history.push(stateTwo);
+		expect(history.tail.state).toBe(stateOne);
+	});
+
 	describe("with two states", () => {
+
 		beforeEach(() => {
 			history.push(stateOne);
 			history.push(stateTwo);
@@ -69,12 +86,12 @@ describe("GameStateHistory", () => {
 			expect(history.head.state).toBe(stateTwo);
 		});
 
-		it("should exactly fetch the latest element if possible", () => {
+		it("should exactly fetch the latest state", () => {
 			expect(history.getLatest(1)).toBe(stateOne);
 			expect(history.getLatest(2)).toBe(stateTwo);
 		});
 
-		it("should fetch the latest element", () => {
+		it("should fetch the latest state", () => {
 			expect(history.getLatest(1.5)).toBe(stateOne);
 			expect(history.getLatest(1.99)).toBe(stateOne);
 			expect(history.getLatest(3)).toBe(stateTwo);
@@ -84,16 +101,18 @@ describe("GameStateHistory", () => {
 			expect(history.getLatest(0)).toBe(stateOne);
 			expect(history.getLatest(0.9)).toBe(stateOne);
 		});
+
 	});
 
 	describe("with three states", () => {
+
 		beforeEach(() => {
 			history.push(stateOne);
 			history.push(stateTwo);
 			history.push(stateFour);
 		});
 
-		it("should fetch the latest element", () => {
+		it("should fetch the latest state", () => {
 			expect(history.getLatest(1.9)).toBe(stateOne);
 			expect(history.getLatest(2)).toBe(stateTwo);
 			expect(history.getLatest(3)).toBe(stateTwo);
@@ -101,19 +120,23 @@ describe("GameStateHistory", () => {
 			expect(history.getLatest(4)).toBe(stateFour);
 			expect(history.getLatest(10)).toBe(stateFour);
 		});
+
 	});
 
-	describe("with a zero state", () => {
+	describe("with a state", () => {
+
 		beforeEach(() => {
 			history.push(stateZero);
 			history.push(stateOne);
 		});
 
-		it("should fetch the latest element", () => {
+		it("should fetch the latest state", () => {
 			expect(history.getLatest(0.9)).toBe(stateZero);
 			expect(history.getLatest(1)).toBe(stateOne);
 			expect(history.getLatest(1.1)).toBe(stateOne);
 			expect(history.getLatest(10)).toBe(stateOne);
 		});
+
 	});
+
 });

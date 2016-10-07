@@ -7,5 +7,4 @@ describe("GameState", () => {
 		expect(state.time).toBeNull();
 	});
 
-
 });
