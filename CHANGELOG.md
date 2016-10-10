@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [0.8.0] - 2016-10-10
 ### Added
 - Show Prince Malchezaar at game start (#142, @azeier)
 - Show C'Thun stats in opponent hand (#133, @azeier)
@@ -143,7 +145,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Code for initial development release
 
-[Unreleased]: https://github.com/HearthSim/joust/compare/0.7.0...HEAD
+[Unreleased]: https://github.com/HearthSim/joust/compare/0.8.0...HEAD
+[0.8.0]: https://github.com/HearthSim/joust/compare/0.7.0...0.8.0
 [0.7.0]: https://github.com/HearthSim/joust/compare/0.6.0...0.7.0
 [0.6.0]: https://github.com/HearthSim/joust/compare/0.5.0...0.6.0
 [0.5.0]: https://github.com/HearthSim/joust/compare/0.4.0...0.5.0
