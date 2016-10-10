@@ -100,7 +100,7 @@ gulp.task("env:set-release", function (cb) {
 	});
 });
 
-gulp.task("sentry:release", ["env:set-release"], function (cb) {
+gulp.task("sentry:release", ["env:set-release"], function () {
 	var version = process.env.JOUST_RELEASE;
 	var key = "SENTRY_TOKEN";
 	var token = process.env[key];
@@ -110,7 +110,7 @@ gulp.task("sentry:release", ["env:set-release"], function (cb) {
 	var sentry = new Sentry({token: token});
 	var prefix = process.env.SENTRY_FILE_PREFIX ? process.env.SENTRY_FILE_PREFIX : "";
 
-	sentry.releases.create("hearthsim", "joust", {
+	return sentry.releases.create("hearthsim", "joust", {
 		version: version,
 		ref: version,
 	}).then(function (release) {
@@ -124,16 +124,19 @@ gulp.task("sentry:release", ["env:set-release"], function (cb) {
 			}).then(function (newFile) {
 				gutil.log("Uploaded", gutil.colors.green(newFile.name), "to Sentry");
 			}).catch(function (error) {
-				gutil.log(gutil.colors.red("Error uploading file to Sentry", error));
+				throw new Error("Error uploading file " + file + ": " + error.message);
 			});
 		});
 
 		return Promise.all(uploads);
 	}).then(function () {
 		gutil.log("Release successful");
-	})
-	.catch(function (error) {
-		gutil.log(gutil.colors.red("Error creating Sentry release", error));
+	}).catch(function (error) {
+		if (error.message === "Release with version already exists") {
+			gutil.log(gutil.colors.yellow("Warning: Sentry release already exists, skipping upload"));
+			return;
+		}
+		throw new Error("Error creating Sentry release: " + error.message);
 	});
 });
 
