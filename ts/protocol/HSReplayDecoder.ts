@@ -22,6 +22,7 @@ import EnrichDescriptorMutator from "../state/mutators/EnrichDescriptorMutator";
 import MetaData from "../MetaData";
 import GameStateMutator from "../state/GameStateMutator";
 import {Tag} from "sax";
+import HideEntityMutator from "../state/mutators/HideEntityMutator";
 
 interface PlayerDetails {
 	id: number;
@@ -238,9 +239,8 @@ export default class HSReplayDecoder extends Stream.Transform implements CardOra
 					break;
 				}
 			case 'HideEntity':
-				mutator = new TagChangeMutator(
+				mutator = new HideEntityMutator(
 					this.resolveEntityId(node.attributes["entity"]),
-					GameTag.ZONE, // zone
 					+node.attributes["zone"]
 				);
 				break;

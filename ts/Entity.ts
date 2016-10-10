@@ -163,6 +163,14 @@ export default class Entity {
 		return this.factory(mergedTags, this.cardId);
 	}
 
+	public replaceTags(tags:Immutable.Map<string, number>):Entity {
+		if (tags === this.tags) {
+			return this;
+		}
+
+		return this.factory(tags, this.cardId);
+	}
+
 	public setCardId(cardId:string):Entity {
 		return this.factory(this.tags, cardId);
 	}
