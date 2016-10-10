@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Show C'Thun stats in opponent hand (#133, @azeier)
 - Show C'Thun as a minion during ritual (#137, @azeier)
 - Highlight Hero Power when it's played (#140, @azeier)
+- Add `GameState.getPlayer(playerId: number): Player`
 
 ### Changed
 - Update dependencies

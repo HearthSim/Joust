@@ -63,6 +63,12 @@ export default class GameState {
 		return this.entities.get(1);
 	}
 
+	public getPlayer(playerId: number): Player {
+		return this.entities.filter((entity: Entity):boolean => {
+			return !!entity && entity.getCardType() === CardType.PLAYER && (entity as Player).playerId === playerId;
+		}).first() as Player;
+	}
+
 	public getPlayers(): Player[] {
 		return this.entities.filter((entity: Entity):boolean => {
 			return !!entity && entity.getCardType() === CardType.PLAYER;
