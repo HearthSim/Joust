@@ -24,12 +24,6 @@ export default class Choices extends EntityList<ChoicesProps> {
 		return this.props.choices.get(entity.id).index;
 	}
 
-	private count: number = 0;
-
-	protected beforeRender() {
-		this.count = 0;
-	}
-
 	protected renderEntity(entity: Entity, option: Option, index?: number): JSX.Element {
 
 		let hidden = false;
@@ -43,9 +37,8 @@ export default class Choices extends EntityList<ChoicesProps> {
 			hidden = true;
 		}
 
-		// hard limit mulligan cards to 4, see issue #85
-		this.count++;
-		if(this.props.isMulligan && (entity.cardId === 'GAME_005' || (!entity.revealed && this.count > 4))) {
+		// hide the coin, see initial change in #85 and simpler check after #163
+		if(this.props.isMulligan && entity.cardId === "GAME_005") {
 			return null;
 		}
 

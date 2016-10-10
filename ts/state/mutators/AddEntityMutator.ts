@@ -1,9 +1,9 @@
-import * as Immutable from "immutable";
 import GameState from "../GameState";
 import GameStateMutator from "../GameStateMutator";
 import Entity from "../../Entity";
 import AddDiffsMutator from "./AddDiffsMutator";
 import {GameStateDiff} from "../../interfaces";
+import {Zone, GameTag, Mulligan, Step} from "../../enums";
 
 export default class AddEntityMutator implements GameStateMutator {
 	constructor(public entity: Entity) {
@@ -15,10 +15,16 @@ export default class AddEntityMutator implements GameStateMutator {
 			return state;
 		}
 
-		let id = +this.entity.id;
+		let entity = this.entity;
+
+		let id = +entity.id;
 		if (id < 1) {
 			console.error('Cannot add entity: Invalid entity id');
 			return state;
+		}
+
+		if (this.isCoin(entity, state)) {
+			entity = entity.setCardId("GAME_005");
 		}
 
 		let entities = state.entities;
@@ -27,13 +33,13 @@ export default class AddEntityMutator implements GameStateMutator {
 			// we might have a stale entity at the old location in the entity tree
 		}
 
-		entities = entities.set(id, this.entity);
+		entities = entities.set(id, entity);
 
 		let entityTree = state.entityTree;
-		entityTree = entityTree.setIn([this.entity.getController(), this.entity.getZone(), id], this.entity);
+		entityTree = entityTree.setIn([entity.getController(), entity.getZone(), id], entity);
 
 		let diffs: GameStateDiff[] = [];
-		this.entity.getTags().forEach((value: number, tag: string) => {
+		entity.getTags().forEach((value: number, tag: string) => {
 			diffs.push({
 				entity: id,
 				tag: +tag,
@@ -46,5 +52,15 @@ export default class AddEntityMutator implements GameStateMutator {
 		state = new GameState(entities, entityTree, state.options, state.optionTree, state.time, state.choices, state.descriptors, state.diffs);
 
 		return state.apply(new AddDiffsMutator(diffs));
+	}
+
+	private isCoin(potentialCoin: Entity, state: GameState): boolean {
+		return (
+			potentialCoin.getTag(GameTag.ZONE) === Zone.HAND &&
+			potentialCoin.getTag(GameTag.ZONE_POSITION) === 5 &&
+			state.game.getTag(GameTag.MULLIGAN_STATE) === Mulligan.INVALID &&
+			state.game.getTag(GameTag.STEP) === Step.INVALID &&
+			!state.getPlayer(potentialCoin.getTag(GameTag.CONTROLLER)).getTag(GameTag.FIRST_PLAYER)
+		);
 	}
 }
