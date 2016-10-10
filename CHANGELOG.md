@@ -21,6 +21,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Fix Mulligan X loading in late
 - Attempt to reveal the coin even when not played (#163)
 - Fix bounced cards retaining stat buffs for the opponent
+- Fix cookies immediately expiring
 
 ## [0.7.0] - 2016-09-19
 ### Added

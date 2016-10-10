@@ -294,7 +294,7 @@ export default class Scrubber extends React.Component<ScrubberProps, ScrubberSta
 	protected selectSpeed(speed: number): void {
 		speed = Math.max(speed, 0);
 		cookie.set("joust_speed", "" + speed, {
-			exires: 365, // one year
+			expires: 365, // one year
 			path: "/",
 		});
 		this.props.scrubber.setSpeed(speed);

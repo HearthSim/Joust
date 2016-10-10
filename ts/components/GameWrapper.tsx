@@ -55,7 +55,7 @@ export default class GameWrapper extends React.Component<GameWrapperProps, GameW
 				e.preventDefault();
 				this.setState({warnAboutBrowser: false});
 				cookie.set("joust_ludicrous", "1", {
-					exires: 365, // one year
+					expires: 365, // one year
 					path: "/",
 				});
 			};
