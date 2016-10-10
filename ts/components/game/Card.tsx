@@ -95,7 +95,7 @@ export default class Card extends React.Component<CardProps, void> {
 			defaultCost = data.cost;
 			defaultHealth = data.health;
 			defaultDurability = data.durability;
-			if (this.props.isHidden) {
+			if (!cardType) {
 				switch (data.type) {
 					case "MINION":
 						cardType = CardType.MINION;
@@ -111,37 +111,39 @@ export default class Card extends React.Component<CardProps, void> {
 						break;
 				}
 			}
-			switch (data.playerClass) {
-				case "DRUID":
-					cardClass = CardClass.DRUID;
-					break;
-				case "DREAM":
-				case "HUNTER":
-					cardClass = CardClass.HUNTER;
-					break;
-				case "MAGE":
-					cardClass = CardClass.MAGE;
-					break;
-				case "PALADIN":
-					cardClass = CardClass.PALADIN;
-					break;
-				case "PRIEST":
-					cardClass = CardClass.PRIEST;
-					break;
-				case "ROGUE":
-					cardClass = CardClass.ROGUE;
-					break;
-				case "SHAMAN":
-					cardClass = CardClass.SHAMAN;
-					break;
-				case "WARLOCK":
-					cardClass = CardClass.WARLOCK;
-					break;
-				case "WARRIOR":
-					cardClass = CardClass.WARRIOR;
-					break;
-				default:
-					cardClass = CardClass.NEUTRAL;
+			if(!cardClass) {
+				switch (data.playerClass) {
+					case "DRUID":
+						cardClass = CardClass.DRUID;
+						break;
+					case "DREAM":
+					case "HUNTER":
+						cardClass = CardClass.HUNTER;
+						break;
+					case "MAGE":
+						cardClass = CardClass.MAGE;
+						break;
+					case "PALADIN":
+						cardClass = CardClass.PALADIN;
+						break;
+					case "PRIEST":
+						cardClass = CardClass.PRIEST;
+						break;
+					case "ROGUE":
+						cardClass = CardClass.ROGUE;
+						break;
+					case "SHAMAN":
+						cardClass = CardClass.SHAMAN;
+						break;
+					case "WARLOCK":
+						cardClass = CardClass.WARLOCK;
+						break;
+					case "WARRIOR":
+						cardClass = CardClass.WARRIOR;
+						break;
+					default:
+						cardClass = CardClass.NEUTRAL;
+				}
 			}
 		}
 
