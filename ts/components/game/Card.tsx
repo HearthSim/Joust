@@ -1,11 +1,9 @@
 import * as React from "react";
 import * as _ from "lodash";
+import * as Sunwell from "sunwell";
 import {EntityProps, OptionProps} from "../../interfaces";
-import Attack from "./stats/Attack";
-import Health from "./stats/Health";
-import Cost from "./stats/Cost";
 import InHandCardArt from "./visuals/InHandCardArt";
-import {CardType, CardClass, GameTag} from "../../enums";
+import {CardType, GameTag} from "../../enums";
 
 interface CardProps extends EntityProps, OptionProps, React.ClassAttributes<Card> {
 	style?: any;
@@ -15,6 +13,72 @@ interface CardProps extends EntityProps, OptionProps, React.ClassAttributes<Card
 }
 
 export default class Card extends React.Component<CardProps, void> {
+
+	private img: HTMLImageElement;
+
+	private sunwell(): void {
+		if (!this.img) {
+			return;
+		}
+
+		let entity = this.props.entity;
+		let settings = {} as any;
+
+		if (!entity.cardId || !this.props.cards || !this.props.cards.has(entity.cardId)) {
+			return;
+		}
+
+		let data = this.props.cards.get(entity.cardId);
+
+		settings = data;
+		settings.cost = entity.getTag(GameTag.COST) || data.cost;
+		settings.health = entity.getTag(GameTag.HEALTH) - entity.getTag(GameTag.DAMAGE) || data.health;
+		settings.attack = entity.getTag(GameTag.ATK) || data.attack;
+		settings.texture = entity.cardId;
+		if (!settings.text) {
+			settings.text = "";
+		}
+
+		if (entity.getTag(GameTag.DAMAGE) > 0) {
+			settings.healthStyle = "-";
+		}
+		else if (entity.getTag(GameTag.HEALTH) > data.health) {
+			settings.healthStyle = "+";
+		}
+
+		if (settings.attack > data.attack) {
+			settings.attackStyle = "+";
+		}
+
+		if (settings.cost > data.cost) {
+			settings.costStyle = "-";
+		}
+		else if (settings.cost < data.cost) {
+			settings.costStyle = "+";
+		}
+
+		if (entity.getTag(GameTag.SILENCED)) {
+			settings.silenced = true;
+		}
+
+		if (this.props.controller.getTag(GameTag.SPELLS_COST_HEALTH)) {
+			settings.costHealth = true;
+		}
+
+		if (!settings.playerClass) {
+			settings.playerClass = "Neutral";
+		}
+
+		Sunwell.createCard(settings, 512, this.img);
+	}
+
+	public componentDidMount() {
+		this.sunwell();
+	}
+
+	public componentDidUpdate() {
+		this.sunwell();
+	}
 
 	public shouldComponentUpdate(nextProps: CardProps, nextState: any): boolean {
 		return (
@@ -33,14 +97,10 @@ export default class Card extends React.Component<CardProps, void> {
 
 	public render(): JSX.Element {
 		let entity = this.props.entity;
-		let classNames = ["card"];
-		if (entity.getTag(GameTag.EVIL_GLOW)) {
-			classNames.push("evil-glow");
-		}
 		let canBeRevealed = this.props.cards && this.props.cards.has(entity.cardId);
-		if (!entity.cardId || (this.props.isHidden && !canBeRevealed)) {
+		if (entity.cardId === null || (this.props.isHidden && !canBeRevealed)) {
 			return (
-				<div className={classNames.join(" ")}>
+				<div className={"card"}>
 					<InHandCardArt
 						hidden={true}
 						entity={this.props.entity}
@@ -52,13 +112,9 @@ export default class Card extends React.Component<CardProps, void> {
 			);
 		}
 
-		let draggable = this.props.option && this.props.optionCallback;
-		classNames.push("revealed");
+		let classNames = ["card", "revealed"];
 		if (this.props.option) {
 			classNames.push("playable");
-		}
-		if (draggable) {
-			classNames.push("draggable");
 		}
 		if (entity.getTag(GameTag.COMBO)) {
 			classNames.push("combo");
@@ -76,145 +132,8 @@ export default class Card extends React.Component<CardProps, void> {
 			classNames.push("mulligan");
 		}
 
-		let title = entity.cardId;
-		let description = null;
-		let defaultAttack = null;
-		let defaultCost = null;
-		let defaultHealth = null;
-		let defaultDurability = null;
-		let cardType = entity.getCardType();
-		if (!cardType && entity.getTag(GameTag.SECRET)) {
-			cardType = CardType.SPELL;
-		}
-		let cardClass = entity.getClass();
-		if (canBeRevealed) {
-			let data = this.props.cards && this.props.cards.get(entity.cardId);
-			title = data.name;
-			description = this.parseDescription(data.text);
-			defaultAttack = data.attack;
-			defaultCost = data.cost;
-			defaultHealth = data.health;
-			defaultDurability = data.durability;
-			if (!cardType) {
-				switch (data.type) {
-					case "MINION":
-						cardType = CardType.MINION;
-						break;
-					case "WEAPON":
-						cardType = CardType.WEAPON;
-						break;
-					case "SPELL":
-						cardType = CardType.SPELL;
-						break;
-					case "HERO_POWER":
-						cardType = CardType.HERO_POWER;
-						break;
-				}
-			}
-			if(!cardClass) {
-				switch (data.playerClass) {
-					case "DRUID":
-						cardClass = CardClass.DRUID;
-						break;
-					case "DREAM":
-					case "HUNTER":
-						cardClass = CardClass.HUNTER;
-						break;
-					case "MAGE":
-						cardClass = CardClass.MAGE;
-						break;
-					case "PALADIN":
-						cardClass = CardClass.PALADIN;
-						break;
-					case "PRIEST":
-						cardClass = CardClass.PRIEST;
-						break;
-					case "ROGUE":
-						cardClass = CardClass.ROGUE;
-						break;
-					case "SHAMAN":
-						cardClass = CardClass.SHAMAN;
-						break;
-					case "WARLOCK":
-						cardClass = CardClass.WARLOCK;
-						break;
-					case "WARRIOR":
-						cardClass = CardClass.WARRIOR;
-						break;
-					default:
-						cardClass = CardClass.NEUTRAL;
-				}
-			}
-		}
+		return <div className={classNames.join(" ")}><img ref={(ref) => (this.img = ref)} className="card" /></div>;
 
-		let stats = null;
-		let textStyle = {color: entity.isPremium() ? "white" : "black"};
-
-		switch (cardType) {
-			case CardType.MINION: {
-				classNames.push("card-minion");
-				if (entity.getTag(GameTag.HIDE_STATS)) {
-					break;
-				}
-				let attack = <Attack
-					attack={this.getStatValue(GameTag.ATK, defaultAttack)}
-					default={defaultAttack}
-				/>;
-				let health = <Health
-					health={this.getStatValue(GameTag.HEALTH, defaultHealth)}
-					damage={this.props.defaultStats ? 0 : entity.getDamage()}
-					default={defaultHealth}
-				/>;
-				stats = <div className="stats">{attack}{health}</div>;
-				break;
-			}
-			case CardType.WEAPON: {
-				classNames.push("card-weapon");
-				let attack = <Attack
-					attack={this.getStatValue(GameTag.ATK, defaultAttack)}
-					default={defaultAttack}
-				/>;
-				let durability = <div className="durability">
-					{this.getStatValue(GameTag.DURABILITY, defaultDurability)}
-				</div>;
-				stats = <div className="stats">{attack}{durability}</div>;
-				textStyle = {color: "white"};
-				break;
-			}
-			case CardType.SPELL:
-				classNames.push("card-spell");
-				break;
-			case CardType.HERO_POWER:
-				classNames.push("card-hero-power");
-				break;
-		}
-
-		if (this.props.isHidden) {
-			classNames.push("hidden-card");
-		}
-
-		return <div className={classNames.join(" ") } style={this.props.style}>
-			<InHandCardArt
-				entity={entity} hidden={false}
-				cardType={cardType} cardClass={cardClass}
-				cards={this.props.cards}
-				assetDirectory={this.props.assetDirectory}
-				cardArtDirectory={this.props.cardArtDirectory}
-				mulligan={this.props.mulligan}
-			/>
-			{entity.getTag(GameTag.HIDE_STATS) !== 0 ?
-				null :
-				<Cost
-					cost={!this.props.isHidden && !this.props.defaultStats ? entity.getCost() : defaultCost}
-					default={defaultCost}
-				/>
-			}
-			<h1>{title}</h1>
-			<div className="description">
-				<p style={textStyle} dangerouslySetInnerHTML={{ __html: description }}></p>
-			</div>
-			{stats}
-		</div>;
 	}
 
 	private getStatValue(tag: GameTag, defaultValue: number): number {

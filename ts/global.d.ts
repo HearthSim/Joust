@@ -63,3 +63,7 @@ declare module "react-dimensions" {
 
 	export default Dimensions;
 }
+
+declare module "sunwell" {
+	function createCard(cardData: any, width: number, renderTarget?: any): any;
+}
