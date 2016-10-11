@@ -1,11 +1,9 @@
 import * as React from "react";
-
 import EntityList from "./EntityList";
 import Entity from "../../Entity";
 import Option from "../../Option";
 import Card from "./Card";
 import {GameTag} from "../../enums";
-import {CardType} from "../../enums";
 import {EntityListProps} from "../../interfaces";
 
 interface HandProps extends EntityListProps {
@@ -45,6 +43,10 @@ export default class Hand extends EntityList<HandProps> {
 
 		let wasHidden = false;
 
+		let customHealth = undefined;
+		let customAtk = undefined;
+		let customCost = undefined;
+
 		if (this.props.hideCards) {
 			entity = new Entity(entity.id, entity.getTags());
 		}
@@ -55,13 +57,15 @@ export default class Hand extends EntityList<HandProps> {
 				let proxyId = this.props.cardOracle.findKey(x => x === "OG_279");
 				let proxy = proxyId && this.props.setAside.get(proxyId);
 				if (proxy) {
-					entity = entity.setTag(GameTag.ATK, proxy.getAtk()).setTag(GameTag.HEALTH, proxy.getHealth());
+					customHealth = proxy.getHealth();
+					customAtk = proxy.getAtk();
 				}
 			}
 			wasHidden = true;
 		}
 
-		return (<Card entity={entity}
+		return <Card
+			entity={entity}
 			option={option}
 			style={style}
 			optionCallback={this.props.optionCallback}
@@ -70,6 +74,9 @@ export default class Hand extends EntityList<HandProps> {
 			isHidden={wasHidden}
 			controller={this.props.controller}
 			cardArtDirectory={this.props.cardArtDirectory}
-			/>);
+			customHealth={customHealth}
+			customAtk={customAtk}
+			customCost={customCost}
+		/>;
 	}
 }

@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Add several character states (#7, @azeier)
 
+### Fixed
+- Fix previously hidden entities with 0/0 stats (e.g. Prince Malchezaar)
+
 ## [0.8.0] - 2016-10-10
 ### Added
 - Show Prince Malchezaar at game start (#142, @azeier)

@@ -16,8 +16,12 @@ export default class Entity {
 		return this._cardId;
 	}
 
+	get hidden():boolean {
+		return !this.cardId;
+	}
+
 	get revealed():boolean {
-		return !!this.cardId;
+		return !this.hidden;
 	}
 
 	public getResourcesUsed():number {

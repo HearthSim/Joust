@@ -12,6 +12,9 @@ interface CardProps extends EntityProps, OptionProps, React.ClassAttributes<Card
 	isHidden?: boolean;
 	defaultStats?: boolean;
 	mulligan?: boolean;
+	customHealth?: number;
+	customAtk?: number;
+	customCost?: number;
 }
 
 export default class Card extends React.Component<CardProps, void> {
@@ -218,8 +221,25 @@ export default class Card extends React.Component<CardProps, void> {
 	}
 
 	private getStatValue(tag: GameTag, defaultValue: number): number {
+		switch(tag) {
+			case GameTag.HEALTH:
+				if (typeof this.props.customHealth !== "undefined") {
+					return this.props.customHealth;
+				}
+				break;
+			case GameTag.ATK:
+				if (typeof this.props.customAtk !== "undefined") {
+					return this.props.customAtk;
+				}
+				break;
+			case GameTag.COST:
+				if (typeof this.props.customCost !== "undefined") {
+					return this.props.customCost;
+				}
+				break;
+		}
 		let value = this.props.entity.getTag(tag);
-		if (this.props.defaultStats || this.props.isHidden && !value) {
+		if (this.props.defaultStats || this.props.isHidden) {
 			return defaultValue;
 		}
 		return value;
