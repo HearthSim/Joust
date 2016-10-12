@@ -5,7 +5,7 @@
   "main": "main.js",
   "scripts": {
     "test": "karma start --single-run --no-auto-watch karma.conf.js",
-    "install": "concurrently 'typings install' 'gulp enums:download'"
+    "postinstall": "concurrently 'typings install' 'gulp enums:download'"
   },
   "author": "Benedict Etzel <developer@beheh.de>",
   "license": "UNLICENSED",
