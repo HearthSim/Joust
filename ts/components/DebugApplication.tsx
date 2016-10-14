@@ -14,7 +14,7 @@ const enum Widget {
 	GAME
 }
 
-interface JoustState {
+interface DebugState {
 	currentWidget?: Widget;
 	cards?: CardData[];
 	sink?: GameStateSink;
@@ -24,7 +24,7 @@ interface JoustState {
 	mulliganOracle?: MulliganOracle;
 }
 
-export default class Joust extends React.Component<{}, JoustState> {
+export default class DebugApplication extends React.Component<void, DebugState> {
 
 	private gameWidget: GameWidget;
 
@@ -91,7 +91,7 @@ export default class Joust extends React.Component<{}, JoustState> {
 		}
 	}
 
-	public componentDidUpdate(prevProps: any, prevState: JoustState): void {
+	public componentDidUpdate(prevProps: any, prevState: DebugState): void {
 		if (!_.isEqual(prevState.cards, this.state.cards) && this.gameWidget) {
 			this.gameWidget.setCards(this.state.cards);
 		}
