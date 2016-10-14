@@ -65,7 +65,7 @@ export default class DebugApplication extends React.Component<void, DebugState> 
 						cardOracle={this.state.cardOracle}
 						mulliganOracle={this.state.mulliganOracle}
 						assetDirectory={(asset: string) => "./assets/" + asset}
-						cardArtDirectory={null}
+						cardArtDirectory = {navigator.onLine || typeof navigator.onLine === "undefined" ? (cardId) => "https://art.hearthstonejson.com/v1/256x/" + cardId + ".jpg" : null}
 						enableKeybindings={true}
 						ref={this.onMountGameWidget.bind(this) }
 						/>;
