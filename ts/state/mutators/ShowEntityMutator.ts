@@ -11,9 +11,11 @@ export default class ShowEntityMutator implements GameStateMutator {
 	}
 
 	public applyTo(state: GameState): GameState {
-		let oldEntity = state.getEntity(this.entityId);
+		const id = +this.entityId;
+		const oldEntity = state.getEntity(id);
+
 		if (!oldEntity) {
-			console.error("Cannot show non-existent entity #" + this.entityId);
+			console.error("Cannot show non-existent entity #" + id);
 			return state;
 		}
 
@@ -28,7 +30,7 @@ export default class ShowEntityMutator implements GameStateMutator {
 		let diffs: GameStateDiff[] = [];
 		this.tags.forEach((value: number, tag: string) => {
 			diffs.push({
-				entity: this.entityId,
+				entity: id,
 				tag: +tag,
 				previous: this.replaceTags ? null : (oldEntity.getTags().has(tag) ? oldEntity.getTag(+tag) : null),
 				current: value,
