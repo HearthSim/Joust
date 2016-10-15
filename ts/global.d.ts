@@ -68,3 +68,9 @@ declare module "cookie_js" {
 	import * as cookiejs from "cookiejs";
 	export {cookiejs as cookie};
 }
+
+declare module "byline" {
+	import * as Stream from "stream";
+
+	export function createStream(stream?): Stream.Duplex;
+}

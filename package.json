@@ -61,6 +61,7 @@
     "websocket-stream": "^3.3.3"
   },
   "devDependencies": {
+    "byline": "^5.0.0",
     "jasmine": "^2.5.2",
     "karma": "^1.3.0",
     "karma-jasmine": "^1.0.2",

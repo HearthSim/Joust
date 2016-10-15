@@ -12,6 +12,7 @@ import GameStateSink from "../state/GameStateSink";
 import {CardOracle} from "../interfaces";
 import * as Stream from "stream";
 import * as async from "async";
+import PowerLogDecoder from "../protocol/PowerLogDecoder";
 
 interface SetupWidgetProps extends React.ClassAttributes<SetupWidget> {
 	defaultHostname: string;
@@ -25,6 +26,7 @@ interface SetupWidgetState {
 	port?: number;
 	websocket?: boolean;
 	secureWebsocket?: boolean;
+	powerlog?: boolean;
 }
 
 export default class SetupWidget extends React.Component<SetupWidgetProps, SetupWidgetState> {
@@ -37,7 +39,8 @@ export default class SetupWidget extends React.Component<SetupWidgetProps, Setup
 			hostname: null,
 			port: null,
 			websocket: true,
-			secureWebsocket: true
+			secureWebsocket: true,
+			powerlog: true,
 		}
 		this.forceWebsocket = (typeof Socket === 'undefined');
 	}
@@ -47,6 +50,7 @@ export default class SetupWidget extends React.Component<SetupWidgetProps, Setup
 			<h2>HSReplay</h2>
 			<input type="file" accept="application/vnd.hearthsim-hsreplay+xml,application/xml"
 				   onChange={this.onSelectFile.bind(this) } disabled={this.state.working}/>
+			<label><input type="checkbox" checked={this.state.powerlog} onChange={(e: any) => this.setState({powerlog: e.target.checked})} />Power.log</label>
 		</section>;
 
 		let kettle = <section>
@@ -114,13 +118,16 @@ export default class SetupWidget extends React.Component<SetupWidgetProps, Setup
 			},
 		], () => scrubber.play());
 
-		let decoder = new HSReplayDecoder();
+		let decoder = this.state.powerlog ? new PowerLogDecoder() : new HSReplayDecoder();
 		let sink = filestream // sink is returned by the last .pipe()
 			.pipe(decoder) // json -> mutators
 			.pipe(new GameStateTracker()) // mutators -> latest gamestate
 			.pipe(scrubber) // gamestate -> gamestate emit on scrub past
 			.pipe(new GameStateSink()); // gamestate
 
+		decoder.on("error", (e) => {
+			console.error(e);
+		});
 
 		this.props.onSetup(sink, null, scrubber, decoder, decoder);
 	}

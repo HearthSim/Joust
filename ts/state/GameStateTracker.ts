@@ -19,7 +19,7 @@ export default class GameStateTracker extends Stream.Transform {
 		super(opts);
 		this.gameState = initialGameState || new GameState(undefined, undefined, undefined, undefined, 0);
 		this.plugins = [];
-		this.registerPlugin(new Timer());
+		this.registerPlugin(new DebugTimer());
 		this.registerPlugin(new CoinDetector());
 	}
 
