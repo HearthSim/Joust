@@ -251,9 +251,6 @@ export default class Launcher {
 		}
 		let sink = new GameStateSink();
 		let preloader = new TexturePreloader(this.opts.cardArtDirectory, this.opts.assetDirectory);
-		if (preloader.canPreload()) {
-			preloader.consume();
-		}
 
 		let hsjson = null;
 		if (this.metadataSourceCb) {
@@ -291,6 +288,7 @@ export default class Launcher {
 						let queryTime = Date.now();
 						hsjson.get(buildNumber, this.opts.locale, (cards: any[]) => {
 							this.ref.setCards(cards);
+							preloader.cardData = this.ref.state.cards;
 							this.track("metadata", {duration: (Date.now() - queryTime) / 1000}, {
 								cards: cards.length,
 								build: build,
