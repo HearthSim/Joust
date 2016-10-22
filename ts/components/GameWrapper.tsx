@@ -19,14 +19,14 @@ import * as bowser from "bowser";
 import * as cookie from "cookiejs";
 
 interface GameWrapperProps extends CardDataProps, CardOracleProps, MulliganOracleProps, AssetDirectoryProps, CardArtDirectory, HideCardsProps, React.ClassAttributes<GameWrapper> {
-	state:GameState;
-	interaction?:InteractiveBackend;
-	swapPlayers?:boolean;
-	hasStarted?:boolean;
+	state: GameState;
+	interaction?: InteractiveBackend;
+	swapPlayers?: boolean;
+	hasStarted?: boolean;
 }
 
 interface GameWrapperState {
-	warnAboutBrowser?:boolean;
+	warnAboutBrowser?: boolean;
 }
 
 /**
@@ -35,11 +35,11 @@ interface GameWrapperState {
  */
 export default class GameWrapper extends React.Component<GameWrapperProps, GameWrapperState> {
 
-	constructor(props:GameWrapperProps, context:any) {
+	constructor(props: GameWrapperProps, context: any) {
 		super(props, context);
 		let shouldWarn = false;
 		let ignoreWarning = !!(+cookie.get("joust_ludicrous", "0"));
-		if(!ignoreWarning) {
+		if (!ignoreWarning) {
 			shouldWarn = !(bowser.webkit || (bowser as any).blink || bowser.gecko)
 		}
 		this.state = {
@@ -47,7 +47,7 @@ export default class GameWrapper extends React.Component<GameWrapperProps, GameW
 		};
 	}
 
-	public render():JSX.Element {
+	public render(): JSX.Element {
 
 		// warn about unsupported browsers
 		if (this.state.warnAboutBrowser) {
@@ -62,7 +62,8 @@ export default class GameWrapper extends React.Component<GameWrapperProps, GameW
 			return (
 				<LoadingScreen>
 					<p>
-						<small>Sorry, your browser is out of standard right now.<br/>Please consider using Chrome or Firefox instead.</small>
+						<small>Sorry, your browser is out of standard right now.<br />Please consider using Chrome or Firefox instead.
+						</small>
 					</p>
 					<p>
 						<a href="#" onClick={ignoreBrowser} onTouchStart={ignoreBrowser}>Continue anyway</a>
@@ -87,26 +88,26 @@ export default class GameWrapper extends React.Component<GameWrapperProps, GameW
 		}
 
 		// find the game entity
-		let game = allEntities.filter(GameWrapper.filterByCardType(CardType.GAME)).first();
+		let game = gameState.game;
 		if (!game) {
 			return this.renderLoadingScreen();
 		}
 
 		// find the players
-		let players = allEntities.filter(GameWrapper.filterByCardType(CardType.PLAYER)) as Immutable.Map<number, PlayerEntity>;
-		if (players.count() == 0) {
+		if (gameState.getPlayerCount() === 0) {
 			return this.renderLoadingScreen();
 		}
+		let players = allEntities.filter(GameWrapper.filterByCardType(CardType.PLAYER)) as Immutable.Map<number, PlayerEntity>;
 
 		// wait for start
 		if (typeof this.props.hasStarted !== "undefined" && !this.props.hasStarted) {
-			return this.renderLoadingScreen(players.map((player:PlayerEntity) => {
+			return this.renderLoadingScreen(players.map((player: PlayerEntity) => {
 				return player.name;
 			}).toArray());
 		}
 
 		// find an end turn option
-		let endTurnOption = gameState.options.filter((option:Option) => {
+		let endTurnOption = gameState.options.filter((option: Option) => {
 			return !!option && option.type === OptionType.END_TURN;
 		}).first();
 
@@ -140,12 +141,12 @@ export default class GameWrapper extends React.Component<GameWrapperProps, GameW
 		}
 	}
 
-	private renderLoadingScreen(players?:string[]) {
-		return <LoadingScreen players={players}/>;
+	private renderLoadingScreen(players?: string[]) {
+		return <LoadingScreen players={players} />;
 	}
 
-	public static filterByCardType(cardType:CardType):(entity:Entity) => boolean {
-		return (entity:Entity) => {
+	public static filterByCardType(cardType: CardType): (entity: Entity) => boolean {
+		return (entity: Entity) => {
 			return !!entity && entity.getCardType() === cardType;
 		};
 	};
