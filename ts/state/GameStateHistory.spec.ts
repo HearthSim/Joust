@@ -2,6 +2,7 @@ import GameStateHistory from "./GameStateHistory";
 import GameState from "./GameState";
 import Entity from "../Entity";
 import * as Immutable from "immutable";
+import {GameTag, Step} from "../enums";
 
 describe("GameStateHistory", () => {
 
@@ -10,9 +11,22 @@ describe("GameStateHistory", () => {
 	let stateOne = new GameState(undefined, undefined, undefined, undefined, 1);
 	let stateTwo = new GameState(undefined, undefined, undefined, undefined, 2);
 	let stateFour = new GameState(undefined, undefined, undefined, undefined, 4);
-	let stateTurnOne = new GameState(Immutable.Map<number, Entity>().set(1, new Entity(1, Immutable.Map<number>({19: 9, 20: 1}))), undefined, undefined, undefined, 20);
-	let stateTurnOnePointFive = new GameState(Immutable.Map<number, Entity>().set(1, new Entity(1, Immutable.Map<number>({19: 9, 20: 1}))), undefined, undefined, undefined, 22);
-	let stateTurnTwo = new GameState(Immutable.Map<number, Entity>().set(1, new Entity(1, Immutable.Map<number>({19: 9, 20: 2}))), undefined, undefined, undefined, 25);
+	let stateTurnOne = new GameState(Immutable.Map<number, Entity>().set(1, new Entity(1, Immutable.Map<number>({
+		[GameTag.STEP]: Step.MAIN_START,
+		[GameTag.TURN]: 1,
+	}))), undefined, undefined, undefined, 20);
+	let stateTurnOne2 = new GameState(Immutable.Map<number, Entity>().set(1, new Entity(1, Immutable.Map<number>({
+		[GameTag.STEP]: Step.MAIN_START,
+		[GameTag.TURN]: 1,
+	}))), undefined, undefined, undefined, 22);
+	let stateTurnTwoDraw = new GameState(Immutable.Map<number, Entity>().set(1, new Entity(1, Immutable.Map<number>({
+		[GameTag.STEP]: Step.MAIN_DRAW,
+		[GameTag.TURN]: 2,
+	}))), undefined, undefined, undefined, 24);
+	let stateTurnTwo = new GameState(Immutable.Map<number, Entity>().set(1, new Entity(1, Immutable.Map<number>({
+		[GameTag.STEP]: Step.MAIN_START,
+		[GameTag.TURN]: 2,
+	}))), undefined, undefined, undefined, 25);
 
 	beforeEach(() => {
 		history = new GameStateHistory();
@@ -38,13 +52,25 @@ describe("GameStateHistory", () => {
 			expect(history.turnMap.count()).toBe(0);
 		});
 
-		it("shoulöd not track states with duplicate turns", () => {
+		it("should not track states with duplicate turns", () => {
 			history.push(stateTurnOne);
 			expect(history.turnMap.count()).toBe(1);
 			expect(history.turnMap.get(1)).toBe(stateTurnOne);
-			history.push(stateTurnOnePointFive);
+			history.push(stateTurnOne2);
 			expect(history.turnMap.count()).toBe(1);
 			expect(history.turnMap.get(1)).toBe(stateTurnOne);
+		});
+
+		it("should not track states where the step is not MAIN_START", () => {
+			history.push(stateTurnOne);
+			expect(history.turnMap.count()).toBe(1);
+			expect(history.turnMap.get(1)).toBe(stateTurnOne);
+			history.push(stateTurnTwoDraw);
+			expect(history.turnMap.count()).toBe(1);
+			expect(history.turnMap.get(1)).toBe(stateTurnOne);
+			history.push(stateTurnTwo);
+			expect(history.turnMap.count()).toBe(2);
+			expect(history.turnMap.get(2)).toBe(stateTurnTwo);
 		});
 
 	});
