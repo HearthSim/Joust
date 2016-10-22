@@ -1,6 +1,5 @@
 import GameState from "./GameState";
-import {GameTag} from "../enums";
-import {Step} from "../enums";
+import {GameTag, Step} from "../enums";
 import * as Immutable from "immutable";
 import {HistoryEntry} from "../interfaces";
 
@@ -22,16 +21,21 @@ export default class GameStateHistory {
 
 		let game = gameState.game;
 		if (game) {
-			let turn = +game.getTag(GameTag.TURN);
-			if (!this.turnMap.has(turn)) {
-				if (game.getTag(GameTag.STEP) === Step.MAIN_START) {
+			let turn = game.getTag(GameTag.TURN);
+			// no duplicates or turn 0
+			if (!this.turnMap.has(turn) && turn > 0) {
+				let step = game.getTag(GameTag.STEP);
+				// any turn is real once mulligan is done and we have game and players
+				let real = !(step === Step.INVALID || step === Step.BEGIN_MULLIGAN) && gameState.getPlayerCount() > 0;
+				// only add once MAIN_START occurs, or if we haven't had any turn yet and see a real turn
+				if (step === Step.MAIN_START || (this.turnMap.isEmpty() && real)) {
 					this.turnMap = this.turnMap.set(turn, gameState);
 				}
 			}
 		}
 
 		if (!this.tail && !this.head) {
-			let element = { state: gameState };
+			let element = {state: gameState};
 			this.tail = element;
 			this.head = element;
 			this.pointer = element;
@@ -39,7 +43,7 @@ export default class GameStateHistory {
 		}
 
 		if (time > this.head.state.time) {
-			let element = { state: gameState, prev: this.head };
+			let element = {state: gameState, prev: this.head};
 			this.head.next = element;
 			this.head = element;
 		}

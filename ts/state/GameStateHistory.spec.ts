@@ -11,6 +11,11 @@ describe("GameStateHistory", () => {
 	let stateOne = new GameState(undefined, undefined, undefined, undefined, 1);
 	let stateTwo = new GameState(undefined, undefined, undefined, undefined, 2);
 	let stateFour = new GameState(undefined, undefined, undefined, undefined, 4);
+	let onePlayerEntityTree = Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Entity>>>().set(1, null);
+	let stateMulligan = new GameState(Immutable.Map<number, Entity>().set(1, new Entity(1, Immutable.Map<number>({
+		[GameTag.STEP]: Step.BEGIN_MULLIGAN,
+		[GameTag.TURN]: 1,
+	}))), undefined, undefined, undefined, 15);
 	let stateTurnOne = new GameState(Immutable.Map<number, Entity>().set(1, new Entity(1, Immutable.Map<number>({
 		[GameTag.STEP]: Step.MAIN_START,
 		[GameTag.TURN]: 1,
@@ -22,7 +27,7 @@ describe("GameStateHistory", () => {
 	let stateTurnTwoDraw = new GameState(Immutable.Map<number, Entity>().set(1, new Entity(1, Immutable.Map<number>({
 		[GameTag.STEP]: Step.MAIN_DRAW,
 		[GameTag.TURN]: 2,
-	}))), undefined, undefined, undefined, 24);
+	}))), onePlayerEntityTree, undefined, undefined, 24);
 	let stateTurnTwo = new GameState(Immutable.Map<number, Entity>().set(1, new Entity(1, Immutable.Map<number>({
 		[GameTag.STEP]: Step.MAIN_START,
 		[GameTag.TURN]: 2,
@@ -73,6 +78,16 @@ describe("GameStateHistory", () => {
 			expect(history.turnMap.get(2)).toBe(stateTurnTwo);
 		});
 
+		it("should not track mulligan states", () => {
+			history.push(stateMulligan);
+			expect(history.turnMap.count()).toBe(0);
+		});
+
+		it("should track the first state past mulligan, even if it's step is not MAIN_START", () => {
+			history.push(stateTurnTwoDraw);
+			expect(history.turnMap.count()).toBe(1);
+			expect(history.turnMap.get(2)).toBe(stateTurnTwoDraw);
+		});
 	});
 
 	it("should set the first state as its head", () => {
