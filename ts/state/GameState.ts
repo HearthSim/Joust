@@ -76,7 +76,7 @@ export default class GameState {
 	}
 
 	public getPlayerCount(): number {
-		return this._entityTree.count();
+		return this._entityTree.count() - (+this._entityTree.has(0));
 	}
 
 	get options(): Immutable.Map<number, Option> {

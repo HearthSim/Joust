@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - Fix previously hidden entities with 0/0 stats (e.g. Prince Malchezaar)
+- Fix `GameState.getPlayerCount()`
 
 ## [0.8.0] - 2016-10-10
 ### Added
