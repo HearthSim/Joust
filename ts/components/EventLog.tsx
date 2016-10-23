@@ -172,7 +172,7 @@ export default class EventLog extends React.Component<EventLogProps, EventLogSta
 				push(LineType.Attack);
 			}
 			else if ((type == BlockType.POWER || type == BlockType.TRIGGER) && lid.entityId) {
-				if (d.type == BlockType.TRIGGER && entity.getTag(GameTag.SECRET)) {
+				if (d.type == BlockType.TRIGGER && entity && entity.getTag(GameTag.SECRET)) {
 					push(LineType.Trigger);
 				}
 				let damages = new Map();
@@ -197,7 +197,7 @@ export default class EventLog extends React.Component<EventLogProps, EventLogSta
 					push(LineType.Healing);
 				});
 			}
-			else if (type == BlockType.PLAY) {
+			else if (type == BlockType.PLAY && entity) {
 				this.setLidPlayer(lid, curr, p => p.playerId == entity.getController());
 				push(LineType.Play);
 			}
