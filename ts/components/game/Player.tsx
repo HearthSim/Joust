@@ -46,46 +46,50 @@ export default class Player extends React.Component<PlayerProps, void> {
 		let activatedHeroPower = false;
 
 		let action = null;
-		if(this.props.descriptors.count() > 0 && !this.props.choices) {
+		if (this.props.descriptors.count() > 0 && !this.props.choices) {
 			this.props.descriptors.forEach((descriptor: GameStateDescriptor, index: number) => {
 				let outer = this.props.descriptors.get(index + 1);
 				let type = descriptor.type;
-				if (type == BlockType.PLAY || type == BlockType.TRIGGER || type == BlockType.RITUAL) {
+				if (type === BlockType.PLAY || type == BlockType.TRIGGER || type === BlockType.RITUAL) {
 					let entity = null;
 					// search for entity
-					this.props.entities.forEach((map:Immutable.Map<number, Entity>) => {
-						map.forEach((toCompare:Entity) => {
+					this.props.entities.forEach((map: Immutable.Map<number, Entity>) => {
+						map.forEach((toCompare: Entity) => {
 							if (descriptor.entityId === toCompare.id) {
-								if (type == BlockType.PLAY || toCompare.getTag(GameTag.SECRET) || toCompare.getTag(GameTag.EVIL_GLOW)) {
+								if (type === BlockType.PLAY || toCompare.getTag(GameTag.SECRET) || toCompare.getTag(GameTag.EVIL_GLOW)) {
 									entity = toCompare;
 								}
-								else if (type == BlockType.TRIGGER && toCompare.cardId == "KAR_096" && toCompare.getTag(GameTag.REVEALED)) {
+								else if (type === BlockType.TRIGGER && toCompare.cardId === "KAR_096" && toCompare.getTag(GameTag.REVEALED)) {
 									//Prince Malchezaar
+									entity = toCompare;
+								}
+								else if (type === BlockType.RITUAL) {
+									// search for ritual minion ("...give your C'Thun...")
 									entity = toCompare;
 								}
 							}
 						});
 					});
-					if (type === BlockType.RITUAL || (type == BlockType.TRIGGER && outer && outer.type == BlockType.RITUAL)) {
-						let setAside = this.props.entities.get(Zone.SETASIDE);
-						if (setAside) {
-							entity = setAside.find(x => x.cardId == "OG_279");
-							if (entity) {
-								entity = entity.setTag(GameTag.NUM_TURNS_IN_PLAY, 1);
-								action = <div className="played"><Minion
-									entity={entity}
-									option={null}
-									optionCallback={null}
-									assetDirectory={this.props.assetDirectory}
-									cards={this.props.cards}
-									controller={this.props.player}
-									cardArtDirectory={this.props.cardArtDirectory}
-								/></div>;
-								return false;
+					if (entity) {
+						if (type === BlockType.RITUAL) {
+							let setAside = this.props.entities.get(Zone.SETASIDE);
+							if (setAside) {
+								let cthun = setAside.find(x => x.cardId === "OG_279");
+								if (cthun) {
+									cthun = cthun.setTag(GameTag.NUM_TURNS_IN_PLAY, 1);
+									action = <div className="played"><Minion
+										entity={cthun}
+										option={null}
+										optionCallback={null}
+										assetDirectory={this.props.assetDirectory}
+										cards={this.props.cards}
+										controller={this.props.player}
+										cardArtDirectory={this.props.cardArtDirectory}
+									/></div>;
+									return false;
+								}
 							}
 						}
-					}
-					if(entity) {
 						if (entity.getTag(GameTag.CARDTYPE) === CardType.HERO_POWER && !entity.getTag(GameTag.EXHAUSTED)) {
 							activatedHeroPower = true;
 						}

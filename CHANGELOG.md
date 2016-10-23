@@ -13,6 +13,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Fix previously hidden entities with 0/0 stats (e.g. Prince Malchezaar)
 - Fix `GameState.getPlayerCount()`
 - Fix missing turns in reconnected replays
+- Fix multiple C'Thuns appearing at the same time (#175)
 
 ## [0.8.0] - 2016-10-10
 ### Added
