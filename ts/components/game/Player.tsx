@@ -1,5 +1,4 @@
 import * as React from "react";
-
 import * as Immutable from "immutable";
 import PlayerEntity from "../../Player";
 import Entity from "../../Entity";
@@ -16,11 +15,16 @@ import Choices from "./Choices";
 import Rank from "./Rank";
 import Card from "./Card";
 import Minion from "./Minion";
-
-import {Zone, CardType, GameTag, ChoiceType, Mulligan, PlayState, BlockType} from "../../enums"
+import {Zone, CardType, GameTag, ChoiceType, Mulligan, PlayState, BlockType} from "../../enums";
 import {
-	OptionCallbackProps, CardDataProps, CardOracleProps, AssetDirectoryProps, CardArtDirectory,
-	GameStateDescriptorStackProps, HideCardsProps, MulliganOracleProps
+	OptionCallbackProps,
+	CardDataProps,
+	CardOracleProps,
+	AssetDirectoryProps,
+	CardArtDirectory,
+	GameStateDescriptorStackProps,
+	HideCardsProps,
+	MulliganOracleProps
 } from "../../interfaces";
 import GameStateDescriptor from "../../state/GameStateDescriptor";
 
@@ -50,7 +54,7 @@ export default class Player extends React.Component<PlayerProps, void> {
 			this.props.descriptors.forEach((descriptor: GameStateDescriptor, index: number) => {
 				let outer = this.props.descriptors.get(index + 1);
 				let type = descriptor.type;
-				if (type === BlockType.PLAY || type == BlockType.TRIGGER || type === BlockType.RITUAL) {
+				if (type === BlockType.PLAY || type === BlockType.TRIGGER || type === BlockType.RITUAL) {
 					let entity = null;
 					// search for entity
 					this.props.entities.forEach((map: Immutable.Map<number, Entity>) => {
@@ -64,7 +68,7 @@ export default class Player extends React.Component<PlayerProps, void> {
 									entity = toCompare;
 								}
 								else if (type === BlockType.RITUAL) {
-									// search for ritual minion ("...give your C'Thun...")
+									// search for ritual minion ("...give your C"Thun...")
 									entity = toCompare;
 								}
 							}
@@ -100,7 +104,7 @@ export default class Player extends React.Component<PlayerProps, void> {
 								let cardId = this.props.cardOracle.get(entity.id);
 								entity = new Entity(entity.id, entity.getTags(), cardId);
 								hidden = true;
-								if(this.props.cards && this.props.cards.has(cardId)) {
+								if (this.props.cards && this.props.cards.has(cardId)) {
 									type = this.props.cards.get(cardId).type;
 								}
 							}
@@ -146,7 +150,8 @@ export default class Player extends React.Component<PlayerProps, void> {
 		if (!heroEntity) {
 			heroEntity = (this.props.entities.get(Zone.GRAVEYARD) || Immutable.Map<number, Entity>()).filter(filterByCardType(CardType.HERO)).first();
 		}
-		let hero = <Hero entity={heroEntity}
+		let hero = <Hero
+			entity={heroEntity}
 			option={heroEntity ? playOptions.get(heroEntity.id) : null}
 			secrets={this.props.entities.get(Zone.SECRET) || Immutable.Map<number, Entity>() }
 			optionCallback={this.props.optionCallback}
@@ -156,9 +161,10 @@ export default class Player extends React.Component<PlayerProps, void> {
 			controller={this.props.player}
 			descriptors={this.props.descriptors}
 			cardOracle={this.props.cardOracle}
-			/>;
+		/>;
 		let heroPowerEntity = playEntities.filter(filterByCardType(CardType.HERO_POWER)).first();
-		let heroPower = <HeroPower entity={heroPowerEntity}
+		let heroPower = <HeroPower
+			entity={heroPowerEntity}
 			option={heroPowerEntity ? playOptions.get(heroPowerEntity.id) : null}
 			optionCallback={this.props.optionCallback}
 			cards={this.props.cards}
@@ -166,15 +172,17 @@ export default class Player extends React.Component<PlayerProps, void> {
 			cardArtDirectory={this.props.cardArtDirectory}
 			controller={this.props.player}
 			activated={activatedHeroPower}
-			/>;
-		let weapon = <Weapon entity={playEntities.filter(filterByCardType(CardType.WEAPON)).first() }
+		/>;
+		let weapon = <Weapon
+			entity={playEntities.filter(filterByCardType(CardType.WEAPON)).first() }
 			cards={this.props.cards}
 			assetDirectory={this.props.assetDirectory}
 			cardArtDirectory={this.props.cardArtDirectory}
 			controller={this.props.player}
-			/>;
+		/>;
 
-		let field = <Field entities={playEntities.filter(filterByCardType(CardType.MINION)) || emptyEntities}
+		let field = <Field
+			entities={playEntities.filter(filterByCardType(CardType.MINION)) || emptyEntities}
 			options={playOptions || emptyOptions}
 			optionCallback={this.props.optionCallback}
 			cards={this.props.cards}
@@ -183,16 +191,18 @@ export default class Player extends React.Component<PlayerProps, void> {
 			controller={this.props.player}
 			descriptors={this.props.descriptors}
 			buffedEntities={buffedEntities}
-			/>;
-		let deck = <Deck entities={this.props.entities.get(Zone.DECK) || emptyEntities}
+		/>;
+		let deck = <Deck
+			entities={this.props.entities.get(Zone.DECK) || emptyEntities}
 			options={this.props.options.get(Zone.DECK) || emptyOptions}
 			cards={this.props.cards}
 			assetDirectory={this.props.assetDirectory}
 			cardArtDirectory={this.props.cardArtDirectory}
 			controller={this.props.player}
 			fatigue={this.props.player.getTag(GameTag.FATIGUE) + 1}
-			/>;
-		let hand = <Hand entities={((!this.props.choices || this.props.choices.type !== ChoiceType.MULLIGAN) && this.props.entities.get(Zone.HAND)) || emptyEntities}
+		/>;
+		let hand = <Hand
+			entities={((!this.props.choices || this.props.choices.type !== ChoiceType.MULLIGAN) && this.props.entities.get(Zone.HAND)) || emptyEntities}
 			options={this.props.options.get(Zone.HAND) || emptyOptions}
 			optionCallback={this.props.optionCallback}
 			cards={this.props.cards}
@@ -203,65 +213,71 @@ export default class Player extends React.Component<PlayerProps, void> {
 			controller={this.props.player}
 			hideCards={this.props.hideCards}
 			setAside={this.props.entities.get(Zone.SETASIDE) || emptyEntities}
-			/>;
+		/>;
 
 		let choices = null;
-		if(this.props.choices) {
-			let choiceEntities = this.props.choices.choices.map((choice:Choice) => {
+		if (this.props.choices) {
+			let choiceEntities = this.props.choices.choices.map((choice: Choice) => {
 				let entity = null;
 				// search for the entity in all player zones
 				let id = choice.entityId;
-				this.props.entities.forEach((zoneEntities:Immutable.Map<number, Entity>) => {
+				this.props.entities.forEach((zoneEntities: Immutable.Map<number, Entity>) => {
 					if (zoneEntities.has(id)) {
 						entity = zoneEntities.get(id);
 						return false;
 					}
 				});
-				if(entity === null) {
-					console.error('Entity #' + id + ' from choice could not be found for player #' + this.props.player.id + ' (playerId=' + this.props.player.playerId + ')');
+				if (entity === null) {
+					console.error("Entity #" + id + " from choice could not be found for player #" + this.props.player.id + " (playerId=" + this.props.player.playerId + ")");
 				}
 				return entity;
-			}).filter((entity: Entity) => { return !!entity; });
-			choices = <Choices entities={choiceEntities}
-							   cards={this.props.cards}
-							   cardOracle={this.props.cardOracle}
-							   mulliganOracle={this.props.mulliganOracle}
-							   isTop={this.props.isTop}
-							   assetDirectory={this.props.assetDirectory}
-							   cardArtDirectory={this.props.cardArtDirectory}
-							   controller={this.props.player}
-							   isMulligan={this.props.choices.type === ChoiceType.MULLIGAN}
-							   choices={this.props.choices && this.props.choices.choices}
-							   hideCards={this.props.hideCards}
+			}).filter((entity: Entity) => {
+				return !!entity;
+			});
+			choices = <Choices
+				entities={choiceEntities}
+				cards={this.props.cards}
+				cardOracle={this.props.cardOracle}
+				mulliganOracle={this.props.mulliganOracle}
+				isTop={this.props.isTop}
+				assetDirectory={this.props.assetDirectory}
+				cardArtDirectory={this.props.cardArtDirectory}
+				controller={this.props.player}
+				isMulligan={this.props.choices.type === ChoiceType.MULLIGAN}
+				choices={this.props.choices && this.props.choices.choices}
+				hideCards={this.props.hideCards}
 			/>;
 		}
 
-		let name = this.props.player.name ? <div className="name" title={this.props.player.name}>{this.props.player.name}</div> : null;
-		let rank = <Rank rank={this.props.player.rank }
+		let name = this.props.player.name ?
+			<div className="name" title={this.props.player.name}>{this.props.player.name}</div> : null;
+		let rank = <Rank
+			rank={this.props.player.rank }
 			legendRank={this.props.player.legendRank }
 			assetDirectory={this.props.assetDirectory}
 			cardArtDirectory={this.props.cardArtDirectory}
-			/>;
+		/>;
 
 		let crystals = [];
 		let resources = this.props.player.getTag(GameTag.RESOURCES) + this.props.player.getTag(GameTag.TEMP_RESOURCES);
 		let available = resources - this.props.player.getTag(GameTag.RESOURCES_USED);
-		let crystalClassNames = ['crystal'];
-		if(available > 0) {
-			crystalClassNames.push('full');
+		let crystalClassNames = ["crystal"];
+		if (available > 0) {
+			crystalClassNames.push("full");
 		}
 		else {
-			if(this.props.player.getTag(GameTag.OVERLOAD_LOCKED) > 0) {
-				crystalClassNames.push('locked');
+			if (this.props.player.getTag(GameTag.OVERLOAD_LOCKED) > 0) {
+				crystalClassNames.push("locked");
 			}
 			else {
-				crystalClassNames.push('empty');
+				crystalClassNames.push("empty");
 			}
 		}
 		let tray = (
 			<div className="tray">
 				<span>{available}/{resources}</span>
-				<img src={this.props.assetDirectory("images/mana_crystal.png")} className={crystalClassNames.join(' ') }></img>
+				<img src={this.props.assetDirectory("images/mana_crystal.png")}
+					 className={crystalClassNames.join(" ") }></img>
 			</div>
 		);
 
@@ -287,37 +303,37 @@ export default class Player extends React.Component<PlayerProps, void> {
 			{field}
 		</section>;
 
-		let classNames = ['player'];
+		let classNames = ["player"];
 
-		if(this.props.isTop) {
-			classNames.push('top');
+		if (this.props.isTop) {
+			classNames.push("top");
 		}
 
 		if (this.props.choices) {
-			classNames.push('inactive');
+			classNames.push("inactive");
 		}
 
-		if (this.props.isCurrent && this.props.player.getTag(GameTag.MULLIGAN_STATE) == Mulligan.DONE) {
-			classNames.push('current');
+		if (this.props.isCurrent && this.props.player.getTag(GameTag.MULLIGAN_STATE) === Mulligan.DONE) {
+			classNames.push("current");
 		}
 
 		let gameresult = null;
 		switch (this.props.player.getTag(GameTag.PLAYSTATE)) {
 			case PlayState.WON:
 				gameresult = <div className="gameresult">{this.props.player.name} wins!</div>;
-				classNames.push('inactive-colored');
+				classNames.push("inactive-colored");
 				break;
 			case PlayState.LOST:
 				if (this.props.player.conceded) {
 					gameresult = <div className="gameresult">{this.props.player.name} concedes</div>;
 				}
-				classNames.push('inactive');
+				classNames.push("inactive");
 				break;
 		}
 
 		if (this.props.isTop) {
 			return (
-				<div className={classNames.join(' ')}>
+				<div className={classNames.join(" ")}>
 					{gameresult}
 					{choices}
 					{action}
@@ -328,7 +344,7 @@ export default class Player extends React.Component<PlayerProps, void> {
 		}
 		else {
 			return (
-				<div className={classNames.join(' ')}>
+				<div className={classNames.join(" ")}>
 					{gameresult}
 					{choices}
 					{action}
