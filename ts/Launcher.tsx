@@ -309,7 +309,7 @@ export default class Launcher {
 				},
 			], () => {
 				scrubber.play();
-				if (this.shouldStartPaused || (typeof this.shouldStartPaused === "undefined" && this.startFromTurn)) {
+				if (this.shouldStartPaused) {
 					scrubber.pause();
 				}
 				if (this.opts.onReady) {
