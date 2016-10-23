@@ -68,7 +68,7 @@ export default class Player extends React.Component<PlayerProps, void> {
 									entity = toCompare;
 								}
 								else if (type === BlockType.RITUAL) {
-									// search for ritual minion ("...give your C"Thun...")
+									// search for ritual minion ("...give your C'Thun...")
 									entity = toCompare;
 								}
 							}
