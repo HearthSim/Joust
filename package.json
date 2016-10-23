@@ -55,7 +55,8 @@
     "karma-phantomjs-launcher": "^1.0.2",
     "karma-webpack": "^1.8.0",
     "phantomjs-prebuilt": "^2.1.12",
-    "tslint": "^3.15.1"
+    "tslint": "^3.15.1",
+    "tslint-react": "^1.1.0"
   },
   "private": true
 }

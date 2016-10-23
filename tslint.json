@@ -1,5 +1,5 @@
 {
-	"extends": "tslint:latest",
+	"extends": ["tslint:latest", "tslint-react"],
 	"rules": {
 		"indent": [
 			true,
@@ -11,6 +11,9 @@
 			"check-whitespace"
 		],
 		"interface-name": false,
-		"switch-default": false
+		"switch-default": false,
+    "ordered-imports": false,
+    "object-literal-sort-keys": false,
+    "object-literal-shorthand": false
 	}
 }
