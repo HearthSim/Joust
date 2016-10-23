@@ -7,7 +7,7 @@ import DebugApplication from "./components/DebugApplication";
 import * as run from "./run.ts";
 
 module.exports = run;
-module.exports.renderApplication = (target:string) => {
+module.exports.renderApplication = (target: string) => {
 	ReactDOM.render(
 		<DebugApplication />,
 		document.getElementById(target)

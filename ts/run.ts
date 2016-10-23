@@ -6,19 +6,19 @@ import {GameWidgetProps} from "./interfaces";
 
 module.exports = {
 
-	renderHSReplay: (target:string, url:string, opts?:GameWidgetProps) => {
+	renderHSReplay: (target: string, url: string, opts?: GameWidgetProps) => {
 		new Launcher(target).setOptions(opts).fromUrl(url);
 	},
 
-	launcher: (target:string | HTMLElement) => {
+	launcher: (target: string | HTMLElement) => {
 		return new Launcher(target);
 	},
 
-	release: ():string => {
+	release: (): string => {
 		return JOUST_RELEASE;
 	},
 
-	destroy(target: any):void {
+	destroy(target: any): void {
 		Launcher.destroy(target);
-	}
-}
+	},
+};

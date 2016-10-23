@@ -1,20 +1,24 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
-import {GameWidgetProps, JoustEventHandler} from "./interfaces";
-import GameWidget from "./components/GameWidget";
-import GameStateSink from "./state/GameStateSink";
-import GameStateTracker from "./state/GameStateTracker";
-import HSReplayDecoder from "./protocol/HSReplayDecoder";
-import GameStateScrubber from "./state/GameStateScrubber";
+import * as async from "async";
+import {EventEmitter} from "events";
+import HearthstoneJSON from "hearthstonejson";
 import * as http from "http";
 import * as https from "https";
+import * as React from "react";
+import * as ReactDOM from "react-dom";
 import * as URL from "url";
+import GameWidget from "./components/GameWidget";
+import {GameWidgetProps, JoustEventHandler} from "./interfaces";
+import HSReplayDecoder from "./protocol/HSReplayDecoder";
+import GameStateScrubber from "./state/GameStateScrubber";
+import GameStateSink from "./state/GameStateSink";
+import GameStateTracker from "./state/GameStateTracker";
 import TexturePreloader from "./TexturePreloader";
-import {EventEmitter} from "events";
-import * as async from "async";
-import HearthstoneJSON from "hearthstonejson";
 
 export default class Launcher {
+
+	public static destroy(target: any): void {
+		ReactDOM.unmountComponentAtNode(target);
+	}
 
 	protected target: string | HTMLElement;
 	protected opts: GameWidgetProps;
@@ -63,11 +67,6 @@ export default class Launcher {
 		return this;
 	}
 
-	public textures(a: any): Launcher {
-		console.warn('Launcher.textures() is no longer in use, use .cardArt() instead');
-		return this;
-	}
-
 	public cardArt(url: string|((cardId: string) => string)): Launcher {
 		let cb = null;
 		if (typeof url === "string") {
@@ -80,13 +79,6 @@ export default class Launcher {
 		return this;
 	}
 
-	/**
-	 * @deprecated
-	 */
-	public metadata(any: any): Launcher {
-		return this;
-	}
-
 	public metadataSource(metadataSource: (build: number|"latest", locale: string) => string): Launcher {
 		this.metadataSourceCb = metadataSource;
 		return this;
@@ -94,7 +86,9 @@ export default class Launcher {
 
 	public setOptions(opts: any): Launcher {
 		for (let prop in opts) {
-			this.opts[prop] = opts[prop];
+			if (prop) {
+				this.opts[prop] = opts[prop];
+			}
 		}
 		return this;
 	}
@@ -168,30 +162,16 @@ export default class Launcher {
 	}
 
 	public debug(enable?: boolean): Launcher {
-		if (typeof enable === 'undefined' || enable === null) {
+		if (typeof enable === "undefined" || enable === null) {
 			enable = true;
 		}
-		this.opts['debug'] = enable;
+		this.opts.debug = enable;
 		return this;
 	}
 
 	public locale(locale?: string): Launcher {
 		this.opts.locale = locale;
 		return this;
-	}
-
-	protected log(message: any): void {
-		this.opts.logger(message);
-	}
-
-	protected track(event: string, values: Object, tags?: Object): void {
-		if (!this.opts.events) {
-			return;
-		}
-		if (!tags) {
-			tags = {};
-		}
-		this.opts.events(event, values, tags);
 	}
 
 	public get replayDuration(): number {
@@ -268,17 +248,17 @@ export default class Launcher {
 		}
 		let opts = URL.parse(url) as any;
 		opts.withCredentials = false;
-		((opts.protocol == 'https:' ? https : http) as any).get(opts, (message: http.IncomingMessage) => {
-			let success = (message.statusCode == 200);
+		((opts.protocol === "https:" ? https : http) as any).get(opts, (message: http.IncomingMessage) => {
+			let success = (+message.statusCode === 200);
 			this.track("replay_load_error", {error: success ? "f" : "t"}, {statusCode: message.statusCode});
 			if (!success) {
-				this.log(new Error('Could not load replay (status code ' + message.statusCode + ')'));
+				this.log(new Error("Could not load replay (status code " + message.statusCode + ")"));
 				return;
 			}
 
 			let components = [decoder, tracker, scrubber, preloader];
 			components.forEach((component: EventEmitter) => {
-				component.on('error', this.log.bind(this));
+				component.on("error", this.log.bind(this));
 			});
 
 			async.parallel([
@@ -342,7 +322,21 @@ export default class Launcher {
 		this.ready = true;
 		this.render();
 
-		this.track("starting_from_turn", {fromTurn: this.startFromTurn ? "t" : "f", turn: this.startFromTurn | null});
+		this.track("starting_from_turn", {fromTurn: this.startFromTurn ? "t" : "f", turn: this.startFromTurn || null});
+	}
+
+	protected log(message: any): void {
+		this.opts.logger(message);
+	}
+
+	protected track(event: string, values: Object, tags?: Object): void {
+		if (!this.opts.events) {
+			return;
+		}
+		if (!tags) {
+			tags = {};
+		}
+		this.opts.events(event, values, tags);
 	}
 
 	protected render(): void {
@@ -351,11 +345,7 @@ export default class Launcher {
 		}
 		this.ref = ReactDOM.render(
 			React.createElement(GameWidget as any, this.opts),
-			typeof this.target === 'string' ? document.getElementById(this.target as string) : this.target
+			typeof this.target === "string" ? document.getElementById(this.target as string) : this.target
 		);
-	}
-
-	public static destroy(target: any): void {
-		ReactDOM.unmountComponentAtNode(target);
 	}
 }
