@@ -246,11 +246,11 @@ export default class GameStateScrubber extends Stream.Duplex implements StreamSc
 		if (!game) {
 			return null;
 		}
-		if (!this.history.turnMap.has(1)) {
+		if (this.history.turnMap.isEmpty()) {
 			return 0;
 		}
 		let turnOne = this.history.turnMap.get(1);
-		if (this.lastState.time < turnOne.time) {
+		if (turnOne && this.lastState.time < turnOne.time) {
 			return 0;
 		}
 		return game.getTag(GameTag.TURN) || 0;
