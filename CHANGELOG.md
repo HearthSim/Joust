@@ -17,6 +17,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Fix multiple C'Thuns appearing at the same time (#175)
 - Fix a null pointer in EventLog
 - Fix jumping to start/end of turn in reconnected games (#172)
+- Fix minions with charge being shown as asleep
 
 ## [0.8.0] - 2016-10-10
 ### Added
