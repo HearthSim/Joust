@@ -21,7 +21,7 @@ export default class HideEntityMutator implements GameStateMutator {
 
 		// reset various tags
 		let tags = oldEntity.getTags();
-		tags = tags.set("" + GameTag.ZONE, this.zone);
+		tags = tags.set(GameTag.ZONE, this.zone);
 		let newEntity = oldEntity.replaceTags(tags).setCardId(null);
 
 		return state.apply(new ReplaceEntityMutator(newEntity));

@@ -7,7 +7,7 @@ import {GameStateDiff} from "../../interfaces";
 
 export default class ShowEntityMutator implements GameStateMutator {
 
-	constructor(public entityId: number, public cardId: string, public tags: Immutable.Map<string, number>, public replaceTags: boolean = false) {
+	constructor(public entityId: number, public cardId: string, public tags: Immutable.Map<number, number>, public replaceTags: boolean = false) {
 	}
 
 	public applyTo(state: GameState): GameState {
@@ -20,16 +20,16 @@ export default class ShowEntityMutator implements GameStateMutator {
 		let newEntity = oldEntity.setCardId(this.cardId);
 
 		if(this.replaceTags) {
-			newEntity = newEntity.setTags(Immutable.Map<string, number>());
+			newEntity = newEntity.setTags(Immutable.Map<number, number>());
 		}
 
 		newEntity = newEntity.setTags(this.tags);
 
 		let diffs: GameStateDiff[] = [];
-		this.tags.forEach((value: number, tag: string) => {
+		this.tags.forEach((value: number, tag: number) => {
 			diffs.push({
 				entity: this.entityId,
-				tag: +tag,
+				tag: tag,
 				previous: this.replaceTags ? null : (oldEntity.getTags().has(tag) ? oldEntity.getTag(+tag) : null),
 				current: value
 			});

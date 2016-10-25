@@ -1,10 +1,10 @@
 import {GameTag, Rarity} from "./enums";
 
 export default class Entity {
-	constructor(protected _id:number, protected tags:Immutable.Map<string, number>, protected _cardId?:string) {
+	constructor(protected _id:number, protected tags:Immutable.Map<number, number>, protected _cardId?:string) {
 	}
 
-	protected factory(tags:Immutable.Map<string, number>, cardId:string):Entity {
+	protected factory(tags:Immutable.Map<number, number>, cardId:string):Entity {
 		return new Entity(this.id, tags, cardId);
 	}
 
@@ -131,14 +131,14 @@ export default class Entity {
 	}
 
 	public getTag(key:number):number {
-		return this.tags ? (+this.tags.get('' + key) || 0) : 0;
+		return this.tags ? (+this.tags.get(+key) || 0) : 0;
 	}
 
 	public setTag(key:number, value:number):Entity {
-		let strkey = '' + key;
+		key = +key;
 		value = +value;
 		// verify parameters
-		if (strkey === null) {
+		if (key === null) {
 			console.warn('Cannot set invalid tag on entity #' + this.id);
 			return this;
 		}
@@ -152,14 +152,14 @@ export default class Entity {
 		if (value === 0) {
 			tags = tags.withMutations((map) => {
 				// set to 0 to ensure it is really deleted
-				map.set(strkey, 0).delete(strkey);
+				map.set(key, 0).delete(key);
 			});
-			if (tags.has(strkey)) {
-				console.error('Entity could not remove tag ' + strkey + ' (it is still ' + tags.get(strkey) + ')');
+			if (tags.has(key)) {
+				console.error('Entity could not remove tag ' + key + ' (it is still ' + tags.get(key) + ')');
 			}
 		}
 		else {
-			tags = tags.set(strkey, value);
+			tags = tags.set(key, value);
 		}
 
 		// verify tags have actually changed
@@ -170,11 +170,11 @@ export default class Entity {
 		return this.factory(tags, this.cardId);
 	}
 
-	public getTags():Immutable.Map<string, number> {
+	public getTags():Immutable.Map<number, number> {
 		return this.tags;
 	}
 
-	public setTags(tags:Immutable.Map<string, number>):Entity {
+	public setTags(tags:Immutable.Map<number, number>):Entity {
 		let mergedTags = this.tags.merge(tags);
 		if (mergedTags === this.tags) {
 			return this;
@@ -183,7 +183,7 @@ export default class Entity {
 		return this.factory(mergedTags, this.cardId);
 	}
 
-	public replaceTags(tags:Immutable.Map<string, number>):Entity {
+	public replaceTags(tags:Immutable.Map<number, number>):Entity {
 		if (tags === this.tags) {
 			return this;
 		}

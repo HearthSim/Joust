@@ -247,7 +247,7 @@ export default class HSReplayDecoder extends Stream.Transform implements CardOra
 			case 'Tag':
 				{
 					let parent = this.nodeStack.pop() as any;
-					parent.attributes["tags"] = parent.attributes["tags"].set('' + node.attributes["tag"], +node.attributes["value"]);
+					parent.attributes["tags"] = parent.attributes["tags"].set(+node.attributes["tag"], +node.attributes["value"]);
 					this.nodeStack.push(parent);
 					break;
 				}

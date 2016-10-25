@@ -39,10 +39,10 @@ export default class AddEntityMutator implements GameStateMutator {
 		entityTree = entityTree.setIn([entity.getController(), entity.getZone(), id], entity);
 
 		let diffs: GameStateDiff[] = [];
-		entity.getTags().forEach((value: number, tag: string) => {
+		entity.getTags().forEach((value: number, tag: number) => {
 			diffs.push({
 				entity: id,
-				tag: +tag,
+				tag: tag,
 				previous: null,
 				current: value
 			});
