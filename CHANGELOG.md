@@ -8,7 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Removed
 - Remove autoplay behaviour if `Launcher.startFromTurn` is set
-- Removed deprecated methods `Launcher.metadata` and `.textures`
+- Remove deprecated methods `Launcher.metadata` and `.textures`
 
 ### Fixed
 - Fix previously hidden entities with 0/0 stats (e.g. Prince Malchezaar)
