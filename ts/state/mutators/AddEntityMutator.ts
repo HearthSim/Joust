@@ -23,10 +23,6 @@ export default class AddEntityMutator implements GameStateMutator {
 			return state;
 		}
 
-		if (this.isCoin(entity, state)) {
-			entity = entity.setCardId("GAME_005");
-		}
-
 		let entities = state.entities;
 		if (entities.has(id)) {
 			console.warn("Overwriting entity with id #" + id);
@@ -61,15 +57,5 @@ export default class AddEntityMutator implements GameStateMutator {
 		);
 
 		return state.apply(new AddDiffsMutator(diffs));
-	}
-
-	private isCoin(potentialCoin: Entity, state: GameState): boolean {
-		return (
-			potentialCoin.getTag(GameTag.ZONE) === Zone.HAND &&
-			potentialCoin.getTag(GameTag.ZONE_POSITION) === 5 &&
-			state.game.getTag(GameTag.MULLIGAN_STATE) === Mulligan.INVALID &&
-			state.game.getTag(GameTag.STEP) === Step.INVALID &&
-			!state.getPlayer(potentialCoin.getTag(GameTag.CONTROLLER)).getTag(GameTag.FIRST_PLAYER)
-		);
 	}
 }

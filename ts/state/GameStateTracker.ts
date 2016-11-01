@@ -2,6 +2,7 @@ import GameState from "./GameState";
 import * as Stream from "stream";
 import GameStateTrackerPlugin from "./GameStateTrackerPlugin";
 import Timer from "./plugins/Timer";
+import CoinDetector from "./plugins/CoinDetector";
 
 /**
  * Follows the initial game state by applying incoming mutators to the game state.
@@ -19,6 +20,7 @@ export default class GameStateTracker extends Stream.Transform {
 		this.gameState = initialGameState || new GameState(undefined, undefined, undefined, undefined, 0);
 		this.plugins = [];
 		this.registerPlugin(new Timer());
+		this.registerPlugin(new CoinDetector());
 	}
 
 	public registerPlugin(plugin: GameStateTrackerPlugin) {
