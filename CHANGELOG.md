@@ -19,6 +19,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Fix jumping to start/end of turn in reconnected games (#172)
 - Fix minions with charge being shown as asleep
 - Fix Windows build
+- Fix cards with invalid data having no frame
 
 ## [0.8.0] - 2016-10-10
 ### Added

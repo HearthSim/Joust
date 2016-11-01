@@ -37,17 +37,6 @@ export default class InHandCardArt extends React.Component<InHandCardArtProps, v
 						frame = "inhand_minion_" + cardClass + ".png";
 					}
 					break;
-				case CardType.SPELL:
-				case CardType.HERO_POWER:
-					portraitClass = "inhand-spell";
-					if (entity.isPremium()) {
-						frame = "inhand_spell_premium.png";
-						premiumOverlay = "premium-spell-overlay.png";
-						premiumOverlayClass = cardClass + "-color";
-					} else {
-						frame = "inhand_spell_" + cardClass + ".png";
-					}
-					break;
 				case CardType.WEAPON:
 					portraitClass = "inhand-weapon";
 					if (entity.isPremium()) {
@@ -56,6 +45,18 @@ export default class InHandCardArt extends React.Component<InHandCardArtProps, v
 						premiumOverlayClass = cardClass + "-color";
 					} else {
 						frame = "inhand_weapon_neutral.png";
+					}
+					break;
+				case CardType.SPELL:
+				case CardType.HERO_POWER:
+				default:
+					portraitClass = "inhand-spell";
+					if (entity.isPremium()) {
+						frame = "inhand_spell_premium.png";
+						premiumOverlay = "premium-spell-overlay.png";
+						premiumOverlayClass = cardClass + "-color";
+					} else {
+						frame = "inhand_spell_" + cardClass + ".png";
 					}
 					break;
 			}
