@@ -16,6 +16,15 @@ export default class EnrichDescriptorMutator implements GameStateMutator {
 		descriptor = new GameStateDescriptor(descriptor.entityId, descriptor.target, descriptor.type, meta);
 		descriptors = descriptors.push(descriptor);
 
-		return new GameState(state.entities, state.entityTree, state.options, state.optionTree, state.time, state.choices, descriptors, state.diffs);
+		return new GameState(
+			state.entities,
+			state.entityTree,
+			state.options,
+			state.optionTree,
+			state.time,
+			state.choices,
+			descriptors,
+			state.diffs
+		);
 	}
 }

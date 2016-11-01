@@ -13,6 +13,15 @@ export default class AddDiffsMutator implements GameStateMutator {
 		_.forEach(this.diffs, (diff: GameStateDiff) => {
 			diffs = diffs.add(diff);
 		});
-		return new GameState(state.entities, state.entityTree, state.options, state.optionTree, state.time, state.choices, state.descriptors, diffs);
+		return new GameState(
+			state.entities,
+			state.entityTree,
+			state.options,
+			state.optionTree,
+			state.time,
+			state.choices,
+			state.descriptors,
+			diffs
+		);
 	}
 }

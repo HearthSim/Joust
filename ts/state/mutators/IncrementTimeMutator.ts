@@ -18,10 +18,19 @@ export default class IncrementTimeMutator implements GameStateMutator {
 			time += this.time;
 		}
 
-		if(time === state.time) {
+		if (time === state.time) {
 			return state;
 		}
 
-		return new GameState(state.entities, state.entityTree, state.options, state.optionTree, time, state.choices, state.descriptors, state.diffs.clear());
+		return new GameState(
+			state.entities,
+			state.entityTree,
+			state.options,
+			state.optionTree,
+			time,
+			state.choices,
+			state.descriptors,
+			state.diffs.clear()
+		);
 	}
 }

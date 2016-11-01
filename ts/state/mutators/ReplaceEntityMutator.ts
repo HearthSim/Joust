@@ -1,7 +1,6 @@
 import GameState from "../GameState";
 import GameStateMutator from "../GameStateMutator";
 import Entity from "../../Entity";
-import {GameStateDiff} from "../../interfaces";
 
 export default class ReplaceEntityMutator implements GameStateMutator {
 	constructor(public entity: Entity) {
@@ -10,20 +9,20 @@ export default class ReplaceEntityMutator implements GameStateMutator {
 	public applyTo(state: GameState): GameState {
 		let newEntity = this.entity;
 		if (!newEntity) {
-			console.error('Cannot replace null entity');
+			console.error("Cannot replace null entity");
 			return state;
 		}
 
 		let id = this.entity.id;
 		let oldEntity = state.getEntity(id);
 		if (!oldEntity) {
-			console.error('Cannot update non-existent entity #' + id);
+			console.error("Cannot update non-existent entity #" + id);
 			return state;
 		}
 
 		// verify entity has actually changed
 		if (newEntity === oldEntity) {
-			console.warn('Update has no effect on entity #' + id);
+			console.warn("Update has no effect on entity #" + id);
 			return state;
 		}
 
@@ -36,6 +35,15 @@ export default class ReplaceEntityMutator implements GameStateMutator {
 				.setIn([newEntity.getController(), newEntity.getZone(), id], newEntity);
 		});
 
-		return new GameState(entities, entityTree, state.options, state.optionTree, state.time, state.choices, state.descriptors, state.diffs);
+		return new GameState(
+			entities,
+			entityTree,
+			state.options,
+			state.optionTree,
+			state.time,
+			state.choices,
+			state.descriptors,
+			state.diffs
+		);
 	}
 }

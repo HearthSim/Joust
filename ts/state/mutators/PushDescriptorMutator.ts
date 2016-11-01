@@ -8,6 +8,15 @@ export default class PushDescriptorMutator implements GameStateMutator {
 
 	public applyTo(state: GameState): GameState {
 		let descriptors = state.descriptors.push(this.descriptor);
-		return new GameState(state.entities, state.entityTree, state.options, state.optionTree, state.time, state.choices, descriptors, state.diffs);
+		return new GameState(
+			state.entities,
+			state.entityTree,
+			state.options,
+			state.optionTree,
+			state.time,
+			state.choices,
+			descriptors,
+			state.diffs
+		);
 	}
 }

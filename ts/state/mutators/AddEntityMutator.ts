@@ -11,7 +11,7 @@ export default class AddEntityMutator implements GameStateMutator {
 
 	public applyTo(state: GameState): GameState {
 		if (!this.entity) {
-			console.error('Cannot add null entity');
+			console.error("Cannot add null entity");
 			return state;
 		}
 
@@ -19,7 +19,7 @@ export default class AddEntityMutator implements GameStateMutator {
 
 		let id = +entity.id;
 		if (id < 1) {
-			console.error('Cannot add entity: Invalid entity id');
+			console.error("Cannot add entity: Invalid entity id");
 			return state;
 		}
 
@@ -29,7 +29,7 @@ export default class AddEntityMutator implements GameStateMutator {
 
 		let entities = state.entities;
 		if (entities.has(id)) {
-			console.warn('Overwriting entity with id #' + id);
+			console.warn("Overwriting entity with id #" + id);
 			// we might have a stale entity at the old location in the entity tree
 		}
 
@@ -44,12 +44,21 @@ export default class AddEntityMutator implements GameStateMutator {
 				entity: id,
 				tag: +tag,
 				previous: null,
-				current: value
+				current: value,
 			});
 		});
 
 		// we always mutate the GameState when we add an entity
-		state = new GameState(entities, entityTree, state.options, state.optionTree, state.time, state.choices, state.descriptors, state.diffs);
+		state = new GameState(
+			entities,
+			entityTree,
+			state.options,
+			state.optionTree,
+			state.time,
+			state.choices,
+			state.descriptors,
+			state.diffs
+		);
 
 		return state.apply(new AddDiffsMutator(diffs));
 	}
