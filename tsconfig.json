@@ -1,20 +1,20 @@
 {
-  "compilerOptions": {
-    "declaration": false,
-    "target": "es6",
-    "moduleResolution": "node",
-    "isolatedModules": false,
-    "jsx": "react",
-    "noImplicitAny": false,
-    "removeComments": true,
-    "noLib": false,
-    "suppressImplicitAnyIndexErrors": true,
-    "sourceMap": true
-  },
-  "filesGlob": [
-    "ts/**/*.ts",
-    "ts/**/*.tsx"
-  ],
-  "files": [
-  ]
+	"compilerOptions": {
+		"declaration": false,
+		"target": "es6",
+		"moduleResolution": "node",
+		"isolatedModules": false,
+		"jsx": "react",
+		"noImplicitAny": false,
+		"removeComments": true,
+		"noLib": false,
+		"suppressImplicitAnyIndexErrors": true,
+		"sourceMap": true
+	},
+	"filesGlob": [
+		"ts/**/*.ts",
+		"ts/**/*.tsx"
+	],
+	"files": [
+	]
 }
