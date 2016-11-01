@@ -3,7 +3,7 @@ import {MetaDataType} from "./enums";
 
 export default class MetaData {
 	constructor(private _type: MetaDataType, private _data: number, private _entities?: Immutable.Set<number>) {
-		if(!this._entities) {
+		if (!this._entities) {
 			this._entities = Immutable.Set<number>();
 		}
 	}
