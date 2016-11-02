@@ -7,7 +7,7 @@ HearthStone replays in your browser, written in Typescript with React.
 
 ## Requirements
 
-- Node.js ~v6.6 (v4.5 should also work, but is not officially supported)
+- Node.js ~v7 (v4.5 should also work, but is not officially supported)
 - Compiling: `npm install -g gulp webpack`
 - Development: `npm install -g electron-prebuilt gulp webpack`
 
