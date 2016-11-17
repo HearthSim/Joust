@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 - Add several character states (#7, @azeier)
+- Add up/down keybindings to skip to previous/next action (#177)
 
 ### Removed
 - Remove autoplay behaviour if `Launcher.startFromTurn` is set

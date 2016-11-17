@@ -87,6 +87,8 @@ export interface StreamScrubber extends EventEmitter {
 	nextTurn(): void;
 	previousTurn(): void;
 	skipBack(): void;
+	nextAction(): void;
+	previousAction(): void;
 	hasEnded(): boolean;
 }
 

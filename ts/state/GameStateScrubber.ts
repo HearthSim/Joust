@@ -314,6 +314,39 @@ export default class GameStateScrubber extends Stream.Duplex implements StreamSc
 		}
 	}
 
+	/**
+	 * Skips directly to the next action.
+	 */
+	public nextAction(): void {
+		// ensure the history pointer is at the current timestamp
+		this.history.getLatest(this.currentTime);
+
+		const next = this.history.pointer.next;
+
+		if (!next) {
+			return;
+		}
+
+		this.currentTime = next.state.time;
+		this.update();
+	}
+
+	/**
+	 * Skips directly to the action before the currently displayed one.
+	 */
+	public previousAction(): void {
+		this.history.getLatest(this.currentTime);
+
+		const prev = this.history.pointer.prev;
+
+		if (!prev) {
+			return;
+		}
+
+		this.currentTime = prev.state.time;
+		this.update();
+	}
+
 	public get secondsWatched(): number {
 		let count = -1; // 0 is always set
 		for (let i = 0; i < this.timeSeen.length; i++) {
