@@ -55,7 +55,7 @@ export default class Player extends React.Component<PlayerProps, void> {
 				let outer = this.props.descriptors.get(index + 1);
 				let type = descriptor.type;
 				if (type === BlockType.PLAY || type === BlockType.TRIGGER || type === BlockType.RITUAL) {
-					let entity = null;
+					let entity: Entity|null = null;
 					// search for entity
 					this.props.entities.forEach((map: Immutable.Map<number, Entity>) => {
 						map.forEach((toCompare: Entity) => {
@@ -98,7 +98,7 @@ export default class Player extends React.Component<PlayerProps, void> {
 							activatedHeroPower = true;
 						}
 						if (!action) {
-							let type = entity.getTag(GameTag.CARDTYPE);
+							let type: number|string = entity.getTag(GameTag.CARDTYPE);
 							let hidden = false;
 							if ((!entity.cardId && this.props.cardOracle && this.props.cardOracle.has(+entity.id)) || entity.getTag(GameTag.SHIFTING)) {
 								let cardId = this.props.cardOracle.get(entity.id);

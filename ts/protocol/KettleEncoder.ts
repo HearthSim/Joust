@@ -22,7 +22,7 @@ export default class KettleEncoder extends Stream.Readable implements Interactiv
 		let repeat = (array: any[], times: number): any[] => {
 			let result = array;
 			for (let i = 0; i < times; i++) {
-				result = result.concat(array)
+				result = result.concat(array);
 			}
 			return result;
 		};
@@ -34,12 +34,12 @@ export default class KettleEncoder extends Stream.Readable implements Interactiv
 					{
 						Name: 'Player 1',
 						Hero: 'HERO_08',
-						Cards: repeat(['GVG_003'], 30)
+						Cards: repeat(['GVG_003'], 30),
 					},
 					{
 						Name: 'Player 2',
 						Hero: 'HERO_08',
-						Cards: repeat(['GVG_003'], 30)
+						Cards: repeat(['GVG_003'], 30),
 					}
 				]
 			}
@@ -54,7 +54,7 @@ export default class KettleEncoder extends Stream.Readable implements Interactiv
 		if (this.tracker) {
 			this.tracker.write(new ClearOptionsMutator());
 		}
-		let sendOption = null;
+		let sendOption: any = null;
 		target = target || null;
 		switch (option.type) {
 			case 2: // end turn

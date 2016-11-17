@@ -10,11 +10,5 @@
 		"noLib": false,
 		"suppressImplicitAnyIndexErrors": true,
 		"sourceMap": true
-	},
-	"filesGlob": [
-		"ts/**/*.ts",
-		"ts/**/*.tsx"
-	],
-	"files": [
-	]
+	}
 }
