@@ -119,32 +119,28 @@ export default class Scrubber extends React.Component<ScrubberProps, ScrubberSta
 			return;
 		}
 
+		let preventDefault = true;
+
 		switch (e.keyCode) {
 			case 32: // spacebar
 			case 75: // k
-				e.preventDefault();
 				this.props.scrubber.toggle();
 				break;
 			case 37: // left arrow
 			case 74: // j
-				e.preventDefault();
 				this.props.scrubber.skipBack();
 				break;
 			case 39: // right arrow
 			case 76: // l
-				e.preventDefault();
 				this.props.scrubber.nextTurn();
 				break;
 			case 36: // home
-				e.preventDefault();
 				this.props.scrubber.rewind();
 				break;
 			case 35: // end
-				e.preventDefault();
 				this.props.scrubber.fastForward();
 				break;
 			case 88: // x
-				e.preventDefault();
 				if (!this.props.canRevealCards) {
 					return;
 				}
@@ -157,30 +153,26 @@ export default class Scrubber extends React.Component<ScrubberProps, ScrubberSta
 				break;
 			case 87: // w
 			case 187: // +
-				e.preventDefault();
-				{
-					let index = Scrubber.SPEEDS.indexOf(this.state.speed) + 1;
-					if (Scrubber.SPEEDS[index]) {
-						this.selectSpeed(Scrubber.SPEEDS[index]);
-					}
+			{
+				let index = Scrubber.SPEEDS.indexOf(this.state.speed) + 1;
+				if (Scrubber.SPEEDS[index]) {
+					this.selectSpeed(Scrubber.SPEEDS[index]);
 				}
+			}
 				break;
 			case 83: // s
 			case 189: // -
-				e.preventDefault();
-				{
-					let index = Scrubber.SPEEDS.indexOf(this.state.speed) - 1;
-					if (Scrubber.SPEEDS[index]) {
-						this.selectSpeed(Scrubber.SPEEDS[index]);
-					}
+			{
+				let index = Scrubber.SPEEDS.indexOf(this.state.speed) - 1;
+				if (Scrubber.SPEEDS[index]) {
+					this.selectSpeed(Scrubber.SPEEDS[index]);
 				}
+			}
 				break;
 			case 67: // c
-				e.preventDefault();
 				this.props.swapPlayers();
 				break;
 			case 70: // f
-				e.preventDefault();
 				if (!this.props.isFullscreenAvailable) {
 					return;
 				}
@@ -191,11 +183,18 @@ export default class Scrubber extends React.Component<ScrubberProps, ScrubberSta
 					this.props.onClickFullscreen();
 				}
 				break;
+			default:
+				preventDefault = false;
+				break;
+		}
+
+		if (preventDefault) {
+			e.preventDefault();
 		}
 	}
 
 	protected updateState(): void {
-		let scrubber = this.props.scrubber;
+		const scrubber = this.props.scrubber;
 		this.setState({
 			playing: scrubber.isPlaying(),
 			canInteract: scrubber.canInteract(),
@@ -212,7 +211,7 @@ export default class Scrubber extends React.Component<ScrubberProps, ScrubberSta
 	}
 
 	public render(): JSX.Element {
-		let playpause = this.state.playing ?
+		const playpause = this.state.playing ?
 			<Tooltipper title="Pause" align="left">
 				<button onClick={() => this.pause()} disabled={!this.state.canInteract} className="joust-scrubber-button-wide"><i className="joust-fa joust-fa-pause"></i></button>
 			</Tooltipper> :
@@ -220,11 +219,11 @@ export default class Scrubber extends React.Component<ScrubberProps, ScrubberSta
 				<button onClick={() => this.play()} disabled={!this.state.canPlay} className="joust-scrubber-button-wide"><i className="joust-fa joust-fa-play"></i></button>
 			</Tooltipper>;
 
-		let restart = <Tooltipper title="Restart" align="left">
+		const restart = <Tooltipper title="Restart" align="left">
 			<button onClick={() => this.rewind()} disabled={!this.state.canRewind} className="joust-scrubber-button-wide"><i className="joust-fa joust-fa-fast-backward"></i></button>
 		</Tooltipper>;
 
-		let fullscreen = this.props.isFullscreen ?
+		const fullscreen = this.props.isFullscreen ?
 			<Tooltipper title="Minimize" align="right">
 				<button onClick={this.props.onClickMinimize}><i className="joust-fa joust-fa-compress"></i></button>
 			</Tooltipper> :
@@ -232,7 +231,7 @@ export default class Scrubber extends React.Component<ScrubberProps, ScrubberSta
 				<button onClick={() => this.props.isFullscreenAvailable && this.props.onClickFullscreen()} disabled={!this.props.isFullscreenAvailable}><i className="joust-fa joust-fa-expand"></i></button>
 			</Tooltipper>;
 
-		let reveal = this.props.isRevealingCards ?
+		const reveal = this.props.isRevealingCards ?
 			<Tooltipper title="Hide cards" desktop="%s (X)">
 				<button onClick={this.props.onClickHideCards}><i className="joust-fa joust-fa-eye-slash"></i></button>
 			</Tooltipper> :
@@ -240,11 +239,11 @@ export default class Scrubber extends React.Component<ScrubberProps, ScrubberSta
 				<button onClick={this.props.onClickRevealCards} disabled={!this.props.canRevealCards}><i className="joust-fa joust-fa-eye"></i></button>
 			</Tooltipper>;
 
-		let swap = <Tooltipper title="Swap players" desktop="%s (C)">
+		const swap = <Tooltipper title="Swap players" desktop="%s (C)">
 			<button onClick={this.props.swapPlayers} disabled={!this.state.canInteract}><i className="joust-fa joust-fa-unsorted"></i></button>
 		</Tooltipper>;
 
-		let log = <Tooltipper title={this.props.isLogVisible ? "Hide event log" : "Show event log"}>
+		const log = <Tooltipper title={this.props.isLogVisible ? "Hide event log" : "Show event log"}>
 			<button onClick={this.props.toggleLog} disabled={!this.state.canInteract}><i className="joust-fa joust-fa-bars"></i></button>
 		</Tooltipper>;
 
