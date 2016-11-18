@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Fixed
 - Fix intermediate game states getting lost
+- Fix The Coin showing up as a mulligan card
 
 ## [0.9.0] - 2016-11-17
 ### Added

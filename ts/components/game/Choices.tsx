@@ -1,11 +1,8 @@
 import * as React from "react";
-
 import EntityList from "./EntityList";
 import Entity from "../../Entity";
 import Option from "../../Option";
 import Card from "./Card";
-import {GameTag} from "../../enums";
-import {CardType} from "../../enums";
 import {EntityListProps, MulliganOracleProps} from "../../interfaces";
 import Choice from "../../Choice";
 
@@ -24,27 +21,36 @@ export default class Choices extends EntityList<ChoicesProps> {
 		return this.props.choices.get(entity.id).index;
 	}
 
+	private lookup(id: number): string|null {
+		if (!this.props.cardOracle) {
+			return null;
+		}
+		return this.props.cardOracle.get(id) || null;
+	}
+
 	protected renderEntity(entity: Entity, option: Option, index?: number): JSX.Element {
 
 		let hidden = false;
 
-		if(this.props.hideCards) {
+		const cardId = entity.cardId || this.lookup(entity.id);
+
+		// hide the coin, see initial change in #85 and simpler check after #163
+		if (this.props.isMulligan && cardId === "GAME_005") {
+			return null;
+		}
+
+		// reveal or hide entity
+		if (this.props.hideCards) {
 			entity = new Entity(entity.id, entity.getTags());
 		}
-		else if (!entity.cardId && this.props.cardOracle && this.props.cardOracle.has(entity.id)) {
-			let cardId = this.props.cardOracle.get(entity.id);
+		else if (!entity.cardId && cardId) {
 			entity = new Entity(entity.id, entity.getTags(), cardId);
 			hidden = true;
 		}
 
-		// hide the coin, see initial change in #85 and simpler check after #163
-		if(this.props.isMulligan && entity.cardId === "GAME_005") {
-			return null;
-		}
-
 		// mulligan cards
 		let mulligan = false;
-		if(this.props.isMulligan && this.props.mulliganOracle && this.props.mulliganOracle.get(entity.id) === true) {
+		if (this.props.isMulligan && this.props.mulliganOracle && this.props.mulliganOracle.get(entity.id) === true) {
 			mulligan = true;
 		}
 
