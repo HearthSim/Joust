@@ -33,12 +33,14 @@ export default class GameStateTracker extends Stream.Transform {
 			return plugin.onBeforeMutate(mutator, state) || state;
 		}, oldState);
 		this.gameState = this.gameState.apply(mutator);
-		if (oldState !== this.gameState) {
-			this.gameState = this.plugins.reduce((state: GameState, plugin: GameStateTrackerPlugin): GameState => {
-				return plugin.onAfterMutate(mutator, this.gameState) || state;
-			}, this.gameState);
-			this.push(this.gameState);
-		}
+		this.push(this.gameState);
+		this.gameState = this.plugins.reduce((state: GameState, plugin: GameStateTrackerPlugin): GameState => {
+			return plugin.onAfterMutate(mutator, this.gameState) || state;
+		}, this.gameState);
+		this.push(this.gameState);
 		callback();
+	}
+
+	private _push(state: GameState) {
 	}
 }
