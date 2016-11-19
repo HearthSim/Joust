@@ -170,14 +170,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Code for initial development release
 
-[Unreleased]: https://github.com/HearthSim/joust/compare/0.9.1...HEAD
-[0.9.1]: https://github.com/HearthSim/joust/compare/0.9.0...0.9.1
-[0.9.0]: https://github.com/HearthSim/joust/compare/0.8.0...0.9.0
-[0.8.0]: https://github.com/HearthSim/joust/compare/0.7.0...0.8.0
-[0.7.0]: https://github.com/HearthSim/joust/compare/0.6.0...0.7.0
-[0.6.0]: https://github.com/HearthSim/joust/compare/0.5.0...0.6.0
-[0.5.0]: https://github.com/HearthSim/joust/compare/0.4.0...0.5.0
-[0.4.0]: https://github.com/HearthSim/joust/compare/0.3.1...0.4.0
-[0.3.1]: https://github.com/HearthSim/joust/compare/0.3.0...0.3.1
-[0.3.0]: https://github.com/HearthSim/joust/compare/0.2.0...0.3.0
-[0.2.0]: https://github.com/HearthSim/joust/compare/0.1.0...0.2.0
+[Unreleased]: https://github.com/HearthSim/Joust/compare/0.9.1...HEAD
+[0.9.1]: https://github.com/HearthSim/Joust/compare/0.9.0...0.9.1
+[0.9.0]: https://github.com/HearthSim/Joust/compare/0.8.0...0.9.0
+[0.8.0]: https://github.com/HearthSim/Joust/compare/0.7.0...0.8.0
+[0.7.0]: https://github.com/HearthSim/Joust/compare/0.6.0...0.7.0
+[0.6.0]: https://github.com/HearthSim/Joust/compare/0.5.0...0.6.0
+[0.5.0]: https://github.com/HearthSim/Joust/compare/0.4.0...0.5.0
+[0.4.0]: https://github.com/HearthSim/Joust/compare/0.3.1...0.4.0
+[0.3.1]: https://github.com/HearthSim/Joust/compare/0.3.0...0.3.1
+[0.3.0]: https://github.com/HearthSim/Joust/compare/0.2.0...0.3.0
+[0.2.0]: https://github.com/HearthSim/Joust/compare/0.1.0...0.2.0

@@ -48,7 +48,7 @@ gulp.task("compile:scripts:web", ["env:set-release"], function () {
 		new webpack.DefinePlugin({
 			JOUST_RELEASE: JSON.stringify(process.env.JOUST_RELEASE)
 		}),
-		new webpack.BannerPlugin("Joust " + process.env.JOUST_RELEASE + "\n" + "https://github.com/HearthSim/joust"),
+		new webpack.BannerPlugin("Joust " + process.env.JOUST_RELEASE + "\n" + "https://github.com/HearthSim/Joust"),
 	]);
 	config.devtool = "#source-map";
 	return gulp.src("ts/run.tsx")

@@ -1,6 +1,6 @@
 # Joust
-[![Travis](https://img.shields.io/travis/HearthSim/joust/master.svg)](https://travis-ci.org/HearthSim/joust)
-[![GitHub release](https://img.shields.io/github/release/HearthSim/joust.svg)](https://github.com/HearthSim/joust/releases)
+[![Travis](https://img.shields.io/travis/HearthSim/Joust/master.svg)](https://travis-ci.org/HearthSim/Joust)
+[![GitHub release](https://img.shields.io/github/release/HearthSim/Joust.svg)](https://github.com/HearthSim/Joust/releases)
 
 HearthStone replays in your browser, written in Typescript with React.
 
@@ -38,7 +38,7 @@ gulp compile
 </script>
 ```
 
-[Full documentation](https://github.com/HearthSim/joust/wiki/Embedding).
+[Full documentation](https://github.com/HearthSim/Joust/wiki/Embedding).
 
 Don't forget to include the stylesheet and the assets.
 
