@@ -40,7 +40,4 @@ export default class GameStateTracker extends Stream.Transform {
 		this.push(this.gameState);
 		callback();
 	}
-
-	private _push(state: GameState) {
-	}
 }
