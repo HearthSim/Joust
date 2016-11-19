@@ -1,14 +1,23 @@
 {
-  "name": "Joust",
+  "name": "joust",
   "version": "0.9.1",
   "description": "Hearthstone replays in your browser",
+  "keywords": ["hearthstone", "hsreplay"],
+  "homepage": "https://hearthsim.info/joust/",
+  "bugs": {
+    "url": "https://github.com/HearthSim/Joust/issues"
+  },
+  "license": "UNLICENSED",
+  "author": "Benedict Etzel <benedict@hearthsim.net>",
   "main": "main.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/HearthSim/Joust.git"
+  },
   "scripts": {
     "test": "karma start --single-run --no-auto-watch karma.conf.js",
     "postinstall": "concurrently \"typings install\" \"gulp enums:download\""
   },
-  "author": "Benedict Etzel <developer@beheh.de>",
-  "license": "UNLICENSED",
   "dependencies": {
     "async": "^2.0.1",
     "autoprefixer": "^6.5.0",
