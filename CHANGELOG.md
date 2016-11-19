@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [0.9.1] - 2016-11-19
 ### Fixed
 - Fix intermediate game states getting lost
 - Fix The Coin showing up as a mulligan card
@@ -168,7 +170,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Code for initial development release
 
-[Unreleased]: https://github.com/HearthSim/joust/compare/0.9.0...HEAD
+[Unreleased]: https://github.com/HearthSim/joust/compare/0.9.1...HEAD
+[0.9.1]: https://github.com/HearthSim/joust/compare/0.9.0...0.9.1
 [0.9.0]: https://github.com/HearthSim/joust/compare/0.8.0...0.9.0
 [0.8.0]: https://github.com/HearthSim/joust/compare/0.7.0...0.8.0
 [0.7.0]: https://github.com/HearthSim/joust/compare/0.6.0...0.7.0

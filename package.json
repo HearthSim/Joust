@@ -1,6 +1,6 @@
 {
   "name": "Joust",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "Hearthstone replays in your browser",
   "main": "main.js",
   "scripts": {
