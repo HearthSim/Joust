@@ -184,6 +184,7 @@ export interface GameWidgetProps extends AssetDirectoryProps, CardArtDirectory, 
 	onToggleSwap?: (swap: boolean) => void;
 	onFullscreen?: (fullscreen: boolean) => void;
 	onReady?: () => void;
+	playerNames?: string[];
 }
 
 export interface StreamScrubberInhibitor {

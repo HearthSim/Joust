@@ -221,6 +221,14 @@ export default class Launcher {
 		return this;
 	}
 
+	public addPlayerName(playerName: string): Launcher {
+		if (!this.opts.playerNames) {
+			this.opts.playerNames = [];
+		}
+		this.opts.playerNames[this.opts.playerNames.length] = playerName;
+		return this;
+	}
+
 	public fromUrl(url: string): void {
 		let decoder = new HSReplayDecoder();
 		decoder.debug = this.opts.debug;

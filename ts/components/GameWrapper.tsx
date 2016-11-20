@@ -23,6 +23,7 @@ interface GameWrapperProps extends CardDataProps, CardOracleProps, MulliganOracl
 	interaction?: InteractiveBackend;
 	swapPlayers?: boolean;
 	hasStarted?: boolean;
+	playerNames?: string[]|null;
 }
 
 interface GameWrapperState {
@@ -75,7 +76,7 @@ export default class GameWrapper extends React.Component<GameWrapperProps, GameW
 		// check if we even have a game state
 		let gameState = this.props.state;
 		if (!gameState) {
-			return this.renderLoadingScreen();
+			return this.renderLoadingScreen(this.props.playerNames);
 		}
 
 		let entityTree = gameState.entityTree;
@@ -84,18 +85,18 @@ export default class GameWrapper extends React.Component<GameWrapperProps, GameW
 		// check if any entities are present
 		let allEntities = gameState.entities;
 		if (!allEntities) {
-			return this.renderLoadingScreen();
+			return this.renderLoadingScreen(this.props.playerNames);
 		}
 
 		// find the game entity
 		let game = gameState.game;
 		if (!game) {
-			return this.renderLoadingScreen();
+			return this.renderLoadingScreen(this.props.playerNames);
 		}
 
 		// find the players
 		if (gameState.getPlayerCount() === 0) {
-			return this.renderLoadingScreen();
+			return this.renderLoadingScreen(this.props.playerNames);
 		}
 		let players = allEntities.filter(GameWrapper.filterByCardType(CardType.PLAYER)) as Immutable.Map<number, PlayerEntity>;
 

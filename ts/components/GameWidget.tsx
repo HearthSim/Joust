@@ -220,14 +220,17 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 						hasStarted={this.props.scrubber.canInteract()}
 						cardOracle={this.state.cardOracle}
 						mulliganOracle={this.state.mulliganOracle}
-						hideCards={!this.state.isRevealingCards} />;
+						hideCards={!this.state.isRevealingCards}
+						playerNames={this.props.playerNames || null}
+		/>;
 		let log = <EventLog key="log"
 							state={this.state.gameState}
 							cards={this.state.cards}
 							cardOracle={this.state.cardOracle}
 							tail={this.props.scrubber.getHistory().tail}
 							currentTime={this.props.scrubber.getCurrentTime()}
-							isHidden={!this.state.isLogVisible} />;
+							isHidden={!this.state.isLogVisible}
+		/>;
 
 		parts.push(
 			<div key="game-wrapper" className="game-wrapper">

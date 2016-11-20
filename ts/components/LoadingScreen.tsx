@@ -66,7 +66,7 @@ export default class LoadingScreen extends React.Component<LoadingScreenProps, v
 	public render() {
 		let players = String.fromCharCode(160); // &nbsp;
 
-		if(this.props.players) {
+		if(this.props.players && this.props.players.length) {
 			switch(this.props.players.length) {
 				case 1:
 					players = this.props.players[0];
