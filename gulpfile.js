@@ -28,8 +28,8 @@ const path = require("path");
 gulp.task("default", ["watch"]);
 
 gulp.task("compile", ["compile:web"]);
-gulp.task("compile:web", ["compile:scripts:web", "compile:styles", "html", "assets"]);
-gulp.task("compile:dev", ["compile:scripts:dev", "compile:styles", "html", "assets"]);
+gulp.task("compile:web", ["compile:scripts:web", "compile:styles", "html:web", "assets"]);
+gulp.task("compile:dev", ["compile:scripts:dev", "compile:styles", "html:dev", "assets"]);
 
 gulp.task("compile:scripts", ["compile:scripts:web"]);
 
@@ -140,8 +140,15 @@ gulp.task("sentry:release", ["env:set-release"], function () {
 	});
 });
 
-gulp.task("html", function () {
+gulp.task("html", ["html:dev"]);
+
+gulp.task("html:dev", function () {
 	return gulp.src("html/**/*.html")
+		.pipe(gulp.dest("dist/"));
+});
+
+gulp.task("html:web", function () {
+	return gulp.src("html/index.html")
 		.pipe(gulp.dest("dist/"));
 });
 
