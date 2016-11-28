@@ -2,7 +2,10 @@
   "name": "joust",
   "version": "0.9.1",
   "description": "Hearthstone replays in your browser",
-  "keywords": ["hearthstone", "hsreplay"],
+  "keywords": [
+    "hearthstone",
+    "hsreplay"
+  ],
   "homepage": "https://hearthsim.info/joust/",
   "bugs": {
     "url": "https://github.com/HearthSim/Joust/issues"
