@@ -4,7 +4,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import DebugApplication from "./components/DebugApplication";
-import * as run from "./run.ts";
+import * as run from "./run";
 
 module.exports = run;
 module.exports.renderApplication = (target: string) => {

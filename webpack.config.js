@@ -2,8 +2,8 @@ const path = require("path");
 
 module.exports = {
 	entry: {
-		joust: ["babel-polyfill", __dirname + "/ts/run.ts"],
-		joust_debug: ["babel-polyfill", __dirname + "/ts/debug.tsx"],
+		joust: ["babel-polyfill", __dirname + "/ts/run"],
+		joust_debug: ["babel-polyfill", __dirname + "/ts/debug"],
 	},
 	output: {
 		path: path.resolve(__dirname, "dist"),
