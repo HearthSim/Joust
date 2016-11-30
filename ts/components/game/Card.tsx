@@ -250,6 +250,19 @@ export default class Card extends React.Component<CardProps, void> {
 			return "";
 		}
 
+		if (description.indexOf("@") > -1) {
+			// Jade Golem card text formatting
+			// The first part (before @ token) is the "in-collection" text
+			// Second part is the formatting template
+
+			let values = description.split("@");
+			let descTemplate = values[0];
+			let collectionText = values[1];
+
+			// TODO
+			description = collectionText;
+		}
+
 		let modifier = (bonus: number, double: number) => {
 			return (match: string, part1: string) => {
 				let value = +part1;
@@ -290,7 +303,7 @@ export default class Card extends React.Component<CardProps, void> {
 		// custom line breaks
 		if (description.match(/^\[x\]/)) {
 			description = description.replace(/^\[x\]/, "");
-			// enable this when font-sizing is optimizied
+			// enable this when font-sizing is optimized
 			//description = description.replace(/\n/g, "<br>");
 		}
 

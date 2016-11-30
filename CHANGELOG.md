@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Add `Launcher.addPlayerName(playerName: string)`
 
+### Fixed
+- Scrub Jade Golem formatting out of the card text
+
 ## [0.9.1] - 2016-11-19
 ### Fixed
 - Fix intermediate game states getting lost
