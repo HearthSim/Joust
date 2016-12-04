@@ -252,6 +252,10 @@ export default class Card extends React.Component<CardProps, void> {
 
 		let description = data.collectionText || data.text;
 
+		if (data.mechanics && data.mechanics.indexOf("JADE_GOLEM") !== -1) {
+			description = this.formatJadeGolemText(data.text);
+		}
+
 		let modifier = (bonus: number, double: number) => {
 			return (match: string, part1: string) => {
 				let value = +part1;
@@ -300,5 +304,15 @@ export default class Card extends React.Component<CardProps, void> {
 		description = description.replace(String.fromCharCode(160), " ");
 
 		return description.trim();
+	}
+
+	private formatJadeGolemText(text: string): string {
+		if (!this.props.controller) {
+			return text;
+		}
+		let value = this.props.controller.getTag(GameTag.JADE_GOLEM) + 1;
+		//arg1 is only used in the english localization. It's used to print "an 8/8.." instead of "a 8/8".
+		let arg1 = [8, 11, 18].indexOf(value) !== -1 ? "n" : "";
+		return text.replace("{0}", value + "/" + value).replace("{1}", arg1);
 	}
 }
