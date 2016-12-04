@@ -77,6 +77,7 @@ export default class Hand extends EntityList<HandProps> {
 			customHealth={customHealth}
 			customAtk={customAtk}
 			customCost={customCost}
+			setAside={this.props.setAside}
 		/>;
 	}
 }
