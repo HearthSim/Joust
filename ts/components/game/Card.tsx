@@ -2,6 +2,7 @@ import * as React from "react";
 import * as _ from "lodash";
 import {CardData, EntityProps, OptionProps} from "../../interfaces";
 import Attack from "./stats/Attack";
+import Entity from "../../Entity";
 import Health from "./stats/Health";
 import Cost from "./stats/Cost";
 import InHandCardArt from "./visuals/InHandCardArt";
@@ -15,6 +16,7 @@ interface CardProps extends EntityProps, OptionProps, React.ClassAttributes<Card
 	customHealth?: number;
 	customAtk?: number;
 	customCost?: number;
+	setAside?: Immutable.Iterable<number, Entity>;
 }
 
 export default class Card extends React.Component<CardProps, void> {
@@ -255,6 +257,9 @@ export default class Card extends React.Component<CardProps, void> {
 		if (data.mechanics && data.mechanics.indexOf("JADE_GOLEM") !== -1) {
 			description = this.formatJadeGolemText(data.text);
 		}
+		else if (this.props.entity.getTag(GameTag.KAZAKUS_POTION_POWER_1)) {
+			description = this.formatKazakusPotionText(data.text);
+		}
 
 		let modifier = (bonus: number, double: number) => {
 			return (match: string, part1: string) => {
@@ -314,5 +319,39 @@ export default class Card extends React.Component<CardProps, void> {
 		//arg1 is only used in the english localization. It's used to print "an 8/8.." instead of "a 8/8".
 		let arg1 = [8, 11, 18].indexOf(value) !== -1 ? "n" : "";
 		return text.replace("{0}", value + "/" + value).replace("{1}", arg1);
+	}
+
+	private formatKazakusPotionText(text: string): string {
+		if (!this.props.setAside) {
+			return text;
+		}
+		let data1 = this.props.entity.getTag(GameTag.TAG_SCRIPT_DATA_NUM_1);
+		let data2 = this.props.entity.getTag(GameTag.TAG_SCRIPT_DATA_NUM_2);
+		let arg1 = "";
+		let arg2 = "";
+		this.props.setAside.forEach(e => {
+			let tagScriptData = e.getTag(GameTag.TAG_SCRIPT_DATA_NUM_1);
+			if (tagScriptData) {
+				if (tagScriptData === data1) {
+					let data = this.props.cards.get(e.cardId);
+					if (data) {
+						arg1 = data.text;
+					}
+					if (arg2) {
+						return;
+					}
+				}
+				else if (tagScriptData === data2) {
+					let data = this.props.cards.get(e.cardId);
+					if (data) {
+						arg2 = data.text;
+					}
+					if (arg1) {
+						return;
+					}
+				}
+			}
+		});
+		return text.replace("{0}", arg1).replace("{1}", arg2);
 	}
 }
