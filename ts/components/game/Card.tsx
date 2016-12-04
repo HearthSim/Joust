@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as _ from "lodash";
-import {EntityProps, OptionProps} from "../../interfaces";
+import {CardData, EntityProps, OptionProps} from "../../interfaces";
 import Attack from "./stats/Attack";
 import Health from "./stats/Health";
 import Cost from "./stats/Cost";
@@ -93,7 +93,7 @@ export default class Card extends React.Component<CardProps, void> {
 		if (canBeRevealed) {
 			let data = this.props.cards && this.props.cards.get(entity.cardId);
 			title = data.name;
-			description = this.parseDescription(data.text);
+			description = this.parseDescription(data);
 			defaultAttack = data.attack;
 			defaultCost = data.cost;
 			defaultHealth = data.health;
@@ -245,23 +245,12 @@ export default class Card extends React.Component<CardProps, void> {
 		return value;
 	}
 
-	protected parseDescription(description: string): string {
-		if (!description) {
+	protected parseDescription(data: CardData): string {
+		if (!data || !(data.text || data.collectionText)) {
 			return "";
 		}
 
-		if (description.indexOf("@") > -1) {
-			// Jade Golem card text formatting
-			// The first part (before @ token) is the "in-collection" text
-			// Second part is the formatting template
-
-			let values = description.split("@");
-			let descTemplate = values[0];
-			let collectionText = values[1];
-
-			// TODO
-			description = collectionText;
-		}
+		let description = data.collectionText || data.text;
 
 		let modifier = (bonus: number, double: number) => {
 			return (match: string, part1: string) => {

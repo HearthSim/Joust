@@ -106,6 +106,7 @@ export interface CardData {
 	// localized
 	name?: string;
 	text?: string;
+	collectionText?: string;
 	flavor?: string;
 	howToEarn?: string;
 	howToEarnGolden?: string;
