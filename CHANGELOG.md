@@ -5,9 +5,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 - Add `Launcher.addPlayerName(playerName: string)`
-
-### Fixed
-- Scrub Jade Golem formatting out of the card text
+- Implement Kazakus Potion text formatting (@azeier)
+- Implement Jade Golem text formatting (@azeier)
 
 ## [0.9.1] - 2016-11-19
 ### Fixed
