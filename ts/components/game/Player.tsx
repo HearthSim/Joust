@@ -49,6 +49,12 @@ export default class Player extends React.Component<PlayerProps, void> {
 
 		let activatedHeroPower = false;
 
+
+		const emptyEntities = Immutable.Map<number, Entity>();
+		const emptyOptions = Immutable.Map<number, Option>();
+
+		const setAside = this.props.entities.get(Zone.SETASIDE) || emptyEntities;
+
 		let action = null;
 		if (this.props.descriptors.count() > 0 && !this.props.choices) {
 			this.props.descriptors.forEach((descriptor: GameStateDescriptor, index: number) => {
@@ -119,6 +125,7 @@ export default class Player extends React.Component<PlayerProps, void> {
 									isHidden={hidden}
 									controller={this.props.player}
 									cardArtDirectory={this.props.cardArtDirectory}
+									setAside={setAside}
 								/></div>;
 							}
 						}
@@ -131,13 +138,10 @@ export default class Player extends React.Component<PlayerProps, void> {
 			});
 		}
 
-		let emptyEntities = Immutable.Map<number, Entity>();
-		let emptyOptions = Immutable.Map<number, Option>();
+		const playEntities = this.props.entities.get(Zone.PLAY) || Immutable.Map<number, Entity>();
+		const playOptions = this.props.options.get(Zone.PLAY) || Immutable.Map<number, Option>();
 
-		let playEntities = this.props.entities.get(Zone.PLAY) || Immutable.Map<number, Entity>();
-		let playOptions = this.props.options.get(Zone.PLAY) || Immutable.Map<number, Option>();
-
-		let buffedEntities = [];
+		const buffedEntities = [];
 		playEntities.forEach(entity => {
 			let attached = entity.getTag(GameTag.ATTACHED);
 			if (attached && buffedEntities.indexOf(attached) === -1) {
@@ -212,7 +216,7 @@ export default class Player extends React.Component<PlayerProps, void> {
 			cardArtDirectory={this.props.cardArtDirectory}
 			controller={this.props.player}
 			hideCards={this.props.hideCards}
-			setAside={this.props.entities.get(Zone.SETASIDE) || emptyEntities}
+			setAside={setAside}
 		/>;
 
 		let choices = null;
