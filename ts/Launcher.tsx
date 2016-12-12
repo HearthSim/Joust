@@ -229,7 +229,7 @@ export default class Launcher {
 		return this;
 	}
 
-	public fromUrl(url: string): void {
+	public fromUrl(url: string): Launcher {
 		let decoder = new HSReplayDecoder();
 		decoder.debug = this.opts.debug;
 		let tracker = new GameStateTracker();
@@ -331,6 +331,8 @@ export default class Launcher {
 		this.render();
 
 		this.track("starting_from_turn", {fromTurn: this.startFromTurn ? "t" : "f", turn: this.startFromTurn || null});
+
+		return this;
 	}
 
 	protected log(message: any): void {
