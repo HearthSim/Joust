@@ -1975,9 +1975,9 @@
       "resolved": "https://registry.npmjs.org/hawk/-/hawk-3.1.3.tgz"
     },
     "hearthstonejson": {
-      "version": "0.0.12",
-      "from": "hearthstonejson@0.0.12",
-      "resolved": "https://registry.npmjs.org/hearthstonejson/-/hearthstonejson-0.0.12.tgz"
+      "version": "0.1.1",
+      "from": "hearthstonejson@0.1.1",
+      "resolved": "https://registry.npmjs.org/hearthstonejson/-/hearthstonejson-0.1.1.tgz"
     },
     "hoek": {
       "version": "2.16.3",

@@ -27,6 +27,7 @@ export default class Launcher {
 	protected shouldStartPaused: boolean;
 	protected ref: GameWidget;
 	protected metadataSourceCb: (build: number|"latest", locale: string) => string;
+	protected build: number;
 	protected ready: boolean;
 
 	constructor(target: any) {
@@ -42,6 +43,7 @@ export default class Launcher {
 		} as any;
 		this.opts.assetDirectory = (asset) => "assets/" + asset;
 		this.opts.cardArtDirectory = (cardId) => "https://art.hearthstonejson.com/v1/256x/" + cardId + ".jpg";
+		this.build = null;
 		this.ready = false;
 	}
 
@@ -169,8 +171,15 @@ export default class Launcher {
 		return this;
 	}
 
-	public locale(locale?: string): Launcher {
+	public locale(locale?: string, cb?: () => void): Launcher {
 		this.opts.locale = locale;
+		if (this.ready) {
+			this.fetchLocale(cb);
+			this.render();
+		}
+		else {
+			cb && cb();
+		}
 		return this;
 	}
 
@@ -243,14 +252,6 @@ export default class Launcher {
 			preloader.consume();
 		}
 
-		let hsjson = null;
-		if (this.metadataSourceCb) {
-			hsjson = new HearthstoneJSON(this.metadataSourceCb);
-		}
-		else {
-			hsjson = new HearthstoneJSON();
-		}
-
 		if (url.match(/^\//) && location && location.protocol) {
 			url = location.protocol + url;
 		}
@@ -275,20 +276,8 @@ export default class Launcher {
 				},
 				(cb) => {
 					decoder.once("build", (buildNumber?: number) => {
-						let build = buildNumber || "latest";
-						let queryTime = Date.now();
-						hsjson.get(buildNumber, this.opts.locale, (cards: any[]) => {
-							this.ref.setCards(cards);
-							this.track("metadata", {duration: (Date.now() - queryTime) / 1000}, {
-								cards: cards.length,
-								build: build,
-								has_build: build !== "latest",
-								cached: (hsjson as any).cached,
-								fetched: (hsjson as any).fetched,
-								fallback: (hsjson as any).fallback,
-							});
-							cb();
-						});
+						this.build = buildNumber;
+						this.fetchLocale(cb);
 					});
 				},
 
@@ -347,6 +336,32 @@ export default class Launcher {
 			tags = {};
 		}
 		this.opts.events(event, values, tags);
+	}
+
+	protected fetchLocale(cb?: () => void): void {
+		const build = this.build || "latest";
+
+		let hsjson = null;
+		if (this.metadataSourceCb) {
+			hsjson = new HearthstoneJSON(this.metadataSourceCb);
+		}
+		else {
+			hsjson = new HearthstoneJSON();
+		}
+
+		let queryTime = Date.now();
+		hsjson.get(build, this.opts.locale, (cards: any[]) => {
+			this.ref.setCards(cards);
+			this.track("metadata", {duration: (Date.now() - queryTime) / 1000}, {
+				cards: cards.length,
+				build: build,
+				has_build: build !== "latest",
+				cached: (hsjson as any).cached,
+				fetched: (hsjson as any).fetched,
+				fallback: (hsjson as any).fallback,
+			});
+			cb && cb();
+		});
 	}
 
 	protected render(): void {
