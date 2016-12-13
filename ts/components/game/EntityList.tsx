@@ -48,6 +48,7 @@ abstract class EntityList<T extends EntityListProps> extends React.Component<T, 
 	public shouldComponentUpdate(nextProps: EntityListProps, nextState) {
 		return (
 			this.props.entities !== nextProps.entities ||
+			this.props.controller !== nextProps.controller ||
 			this.props.options !== nextProps.options ||
 			this.props.optionCallback !== nextProps.optionCallback ||
 			this.props.cardOracle !== nextProps.cardOracle ||

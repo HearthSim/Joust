@@ -12,6 +12,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Change `Launcher.fromUrl` to return launcher instance
 
+### Fixed
+- Fix spellpower changes not updating cards in hand (#182)
+
 ## [0.9.1] - 2016-11-19
 ### Fixed
 - Fix intermediate game states getting lost
