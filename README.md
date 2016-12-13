@@ -8,30 +8,28 @@ Hearthstone replays in your browser, written in Typescript with React.
 ## Requirements
 
 - Node.js ~v7 (v4.5 should also work, but is not officially supported)
-- Compiling: `npm install -g gulp webpack`
+- Build system: `npm install -g gulp webpack`
 - Development: `npm install -g electron-prebuilt gulp webpack`
 
 
-## Compiling
+## Building
 
 ```
 npm install
-```
-
-```
 gulp compile
 ```
 
 
-## Embedding
+## Usage
 
 ```html
-<div id="container"></div>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/react/15.3.0/react.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/react/15.3.0/react-dom.min.js"></script>
+<div id="joust-container"></div>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.0/react.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.0/react-dom.min.js"></script>
+<link rel="stylesheet" href="joust.css"></link>
 <script type="text/javascript" src="joust.js"></script>
 <script type="text/javascript">
-	Joust.launcher("container")
+	Joust.launcher("joust-container")
 		.height(500)
 		.width(500)
 		.fromUrl("//example.org/brawl.hsreplay");
@@ -40,18 +38,16 @@ gulp compile
 
 [Full documentation](https://github.com/HearthSim/Joust/wiki/Embedding).
 
-Don't forget to include the stylesheet and the assets.
-
 
 ## Development
 
-Watch TypeScript with webpack:
+Watch TypeScript with Webpack:
 
 ```
 webpack -d --watch
 ```
 
-Watch HTML/LESS:
+Watch HTML and LESS:
 
 ```
 gulp watch
