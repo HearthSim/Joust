@@ -29,6 +29,7 @@ export default class Launcher {
 	protected metadataSourceCb: (build: number|"latest", locale: string) => string;
 	protected build: number;
 	protected ready: boolean;
+	protected hsjson: HearthstoneJSON;
 
 	constructor(target: any) {
 		this.target = target;
@@ -44,6 +45,7 @@ export default class Launcher {
 		this.opts.assetDirectory = (asset) => "assets/" + asset;
 		this.opts.cardArtDirectory = (cardId) => "https://art.hearthstonejson.com/v1/256x/" + cardId + ".jpg";
 		this.build = null;
+		this.hsjson = null;
 		this.ready = false;
 	}
 
@@ -83,6 +85,9 @@ export default class Launcher {
 
 	public metadataSource(metadataSource: (build: number|"latest", locale: string) => string): Launcher {
 		this.metadataSourceCb = metadataSource;
+		if (this.hsjson) {
+			(this.hsjson as any).sourceUrl = metadataSource;
+		}
 		return this;
 	}
 
@@ -341,24 +346,25 @@ export default class Launcher {
 	protected fetchLocale(cb?: () => void): void {
 		const build = this.build || "latest";
 
-		let hsjson = null;
-		if (this.metadataSourceCb) {
-			hsjson = new HearthstoneJSON(this.metadataSourceCb);
-		}
-		else {
-			hsjson = new HearthstoneJSON();
+		if (!this.hsjson) {
+			if (this.metadataSourceCb) {
+				this.hsjson = new HearthstoneJSON(this.metadataSourceCb);
+			}
+			else {
+				this.hsjson = new HearthstoneJSON();
+			}
 		}
 
 		let queryTime = Date.now();
-		hsjson.get(build, this.opts.locale, (cards: any[]) => {
+		this.hsjson.get(build, this.opts.locale, (cards: any[]) => {
 			this.ref.setCards(cards);
 			this.track("metadata", {duration: (Date.now() - queryTime) / 1000}, {
 				cards: cards.length,
 				build: build,
 				has_build: build !== "latest",
-				cached: (hsjson as any).cached,
-				fetched: (hsjson as any).fetched,
-				fallback: (hsjson as any).fallback,
+				cached: (this.hsjson as any).cached,
+				fetched: (this.hsjson as any).fetched,
+				fallback: (this.hsjson as any).fallback,
 			});
 			cb && cb();
 		});
