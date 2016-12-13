@@ -16,7 +16,7 @@ import Option from "../Option";
 import PlayerEntity from "../Player";
 import LoadingScreen from "./LoadingScreen";
 import * as bowser from "bowser";
-import * as cookie from "cookiejs";
+import {cookie} from "cookie_js";
 
 interface GameWrapperProps extends CardDataProps, CardOracleProps, MulliganOracleProps, AssetDirectoryProps, CardArtDirectory, HideCardsProps, React.ClassAttributes<GameWrapper> {
 	state: GameState;

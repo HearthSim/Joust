@@ -63,3 +63,8 @@ declare module "react-dimensions" {
 
 	export default Dimensions;
 }
+
+declare module "cookie_js" {
+	import * as cookiejs from "cookiejs";
+	export {cookiejs as cookie};
+}

@@ -3,7 +3,7 @@ import {StreamScrubber, KeybindingProps} from "../interfaces";
 import Timeline from "./Timeline";
 import SpeedSelector from "./SpeedSelector";
 import Tooltipper from "./Tooltipper";
-import * as cookie from "cookiejs";
+import {cookie} from "cookie_js";
 import * as _ from "lodash";
 
 interface ScrubberProps extends KeybindingProps, React.ClassAttributes<Scrubber> {
