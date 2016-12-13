@@ -1,13 +1,10 @@
 import * as React from "react";
-
 import SetupWidget from "./SetupWidget";
 import GameWidget from "./GameWidget";
 import HearthstoneJSON from "hearthstonejson";
-import {InteractiveBackend, MulliganOracle} from "../interfaces";
+import {InteractiveBackend, MulliganOracle, CardOracle, CardData} from "../interfaces";
 import GameStateSink from "../state/GameStateSink";
 import GameStateScrubber from "../state/GameStateScrubber";
-import {CardOracle} from "../interfaces";
-import {CardData} from "../interfaces";
 
 const enum Widget {
 	SETUP,
@@ -22,11 +19,13 @@ interface DebugState {
 	interaction?: InteractiveBackend;
 	cardOracle?: CardOracle;
 	mulliganOracle?: MulliganOracle;
+	locale?: string;
 }
 
 export default class DebugApplication extends React.Component<void, DebugState> {
 
 	private gameWidget: GameWidget;
+	private hsjson: HearthstoneJSON;
 
 	constructor() {
 		super();
@@ -38,14 +37,12 @@ export default class DebugApplication extends React.Component<void, DebugState> 
 			scrubber: null,
 			cardOracle: null,
 			mulliganOracle: null,
+			locale: "enUS",
 		};
 	}
 
 	public componentDidMount() {
-		let hsjson = new HearthstoneJSON();
-		hsjson.get("latest", (cards: CardData[]) => {
-			this.setState({ cards: cards });
-		});
+		this.loadLocale(this.state.locale);
 	}
 
 	public render(): JSX.Element {
@@ -53,11 +50,12 @@ export default class DebugApplication extends React.Component<void, DebugState> 
 		switch (this.state.currentWidget) {
 			case Widget.SETUP:
 				widget = <SetupWidget defaultHostname="localhost" defaultPort={9111}
-					onSetup={this.onSetup.bind(this) }/>;
+									  onSetup={this.onSetup.bind(this) } />;
 				break;
 			case Widget.GAME:
 				widget =
-					<GameWidget sink={this.state.sink}
+					<GameWidget
+						sink={this.state.sink}
 						startupTime={0}
 						interaction={this.state.interaction}
 						scrubber={this.state.scrubber}
@@ -65,10 +63,14 @@ export default class DebugApplication extends React.Component<void, DebugState> 
 						cardOracle={this.state.cardOracle}
 						mulliganOracle={this.state.mulliganOracle}
 						assetDirectory={(asset: string) => "./assets/" + asset}
-						cardArtDirectory = {navigator.onLine || typeof navigator.onLine === "undefined" ? (cardId) => "https://art.hearthstonejson.com/v1/256x/" + cardId + ".jpg" : null}
+						cardArtDirectory={navigator.onLine || typeof navigator.onLine === "undefined" ? (cardId) => "https://art.hearthstonejson.com/v1/256x/" + cardId + ".jpg" : null}
 						enableKeybindings={true}
-						ref={this.onMountGameWidget.bind(this) }
-						/>;
+						ref={this.onMountGameWidget.bind(this)}
+						locale={this.state.locale}
+						selectLocale={(locale: string, cb: () => void) => {
+							this.loadLocale(locale, cb);
+						}}
+					/>;
 				break;
 		}
 
@@ -77,7 +79,8 @@ export default class DebugApplication extends React.Component<void, DebugState> 
 				{widget}
 				<footer>
 					<p>
-						Not affiliated with Blizzard. Get Hearthstone at <a href="battle.net/hearthstone/">Battle.net</a>.
+						Not affiliated with Blizzard. Get Hearthstone at <a
+						href="battle.net/hearthstone/">Battle.net</a>.
 					</p>
 				</footer>
 			</div>
@@ -105,6 +108,21 @@ export default class DebugApplication extends React.Component<void, DebugState> 
 			scrubber: scrubber,
 			cardOracle: cardOracle,
 			mulliganOracle: mulliganOracle,
+		});
+	}
+
+	protected loadLocale(locale: string, cb?: () => void) {
+		if (!this.hsjson) {
+			this.hsjson = new HearthstoneJSON();
+		}
+		this.setState({
+			locale: locale,
+		})
+		this.hsjson.get("latest", locale, (cards: CardData[]) => {
+			this.setState({
+				cards: cards,
+			});
+			cb && cb();
 		});
 	}
 
