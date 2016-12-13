@@ -10,6 +10,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Enable `Launcher.locale` after initial render
 - Add `Launcher.build: number`
 - Save Event Log state in a cookie (#173)
+- Add settings menu to Scrubber
+- Add setting for users to change card locale
 
 ### Changed
 - Change `Launcher.fromUrl` to return launcher instance

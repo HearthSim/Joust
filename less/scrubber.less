@@ -5,6 +5,8 @@
 	z-index: 1000;
 	margin-top: @scrubber-margin-top;
 	user-select: none;
+	position: relative;
+	font-family: sans-serif;
 
 	> button, > select, > .joust-tooltipper {
 		margin: 0 @scrubber-component-margin 0 0;
@@ -151,9 +153,9 @@
 			color: @scrubber-tooltip-color;
 			background-color: @scrubber-tooltip-background-color;
 			padding: 4px 8px;
+			border: @scrubber-tooltip-border;
 			border-radius: @scrubber-tooltip-border-radius;
 			transform: translateX(-50%);
-			border: 1px rgba(255, 255, 255, 0.25) solid;
 		}
 
 		&.left {
@@ -174,5 +176,102 @@
 		&:hover {
 			opacity: 0.3;
 		}
+	}
+}
+
+.joust-scrubber-settings {
+	z-index: 1001;
+	display: block;
+	position: absolute;
+	right: 0;
+	bottom: (@scrubber-height + @scrubber-component-margin / 2	);
+
+	font-family: sans-serif;
+	color: white;
+
+	padding: @scrubber-settings-padding;
+	background-color: @scrubber-settings-background-color;
+	border: @scrubber-settings-border;
+	border-radius: @scrubber-settings-border-radius;
+
+	header {
+		font-size: 1em;
+		margin-bottom: (@scrubber-settings-padding);
+
+		span {
+			display: inline-block;
+		}
+
+		a {
+			cursor: pointer;
+			display: inline-block;
+			font-size: 1.5em;
+			line-height: (1/1.5em);
+			float: right;
+			color: inherit;
+			text-decoration: none;
+		}
+	}
+
+	section {
+		font-size: 0.9em;
+		margin-top: 0px;
+
+		&:first-of-type {
+			margin-top: 0;
+
+			label {
+				padding-top: 2px;
+			}
+		}
+
+		select {
+			font-size: 0.9em;
+			width: 100%;
+		}
+
+		label {
+			display: block;
+			padding: 6px 0;
+
+			span {
+				display: block;
+				margin-bottom: 4px;
+			}
+		}
+
+		.joust-scrubber-settings-checkbox {
+			span {
+				margin-bottom: 0;
+			}
+
+			input {
+				margin-left: 0;
+			}
+
+			> * {
+				display: inline-block;
+				vertical-align: middle;
+			}
+		}
+	}
+
+	footer {
+		font-size: 0.9em;
+		margin-top: 4px;
+
+		a {
+			color: inherit;
+			margin-right: 8px;
+
+			&:last-child {
+				float: right;
+				margin-right: 0;
+			}
+		}
+	}
+
+	.joust-tooltipper > .joust-tooltipper-tooltip {
+		z-index: 1002;
 	}
 }

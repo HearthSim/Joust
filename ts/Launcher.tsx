@@ -13,6 +13,7 @@ import GameStateScrubber from "./state/GameStateScrubber";
 import GameStateSink from "./state/GameStateSink";
 import GameStateTracker from "./state/GameStateTracker";
 import TexturePreloader from "./TexturePreloader";
+import {cookie} from "cookie_js";
 
 export default class Launcher {
 
@@ -39,7 +40,10 @@ export default class Launcher {
 				let message = error.message ? error.message : error;
 				console.error(message);
 			},
-			locale: "enUS",
+			locale: cookie.get("joust_locale", "enUS"),
+			selectLocale: (locale: string, loaded?: () => void): void => {
+				this.locale(locale, loaded);
+			},
 			enableKeybindings: true,
 		} as any;
 		this.opts.assetDirectory = (asset) => "assets/" + asset;
@@ -176,7 +180,7 @@ export default class Launcher {
 		return this;
 	}
 
-	public locale(locale?: string, cb?: () => void): Launcher {
+	public locale(locale: string, cb?: () => void): Launcher {
 		this.opts.locale = locale;
 		if (this.ready) {
 			this.fetchLocale(cb);

@@ -290,6 +290,8 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 					});
 				}}
 				enableKeybindings={this.props.enableKeybindings}
+				locale={this.props.locale}
+				onSelectLocale={this.props.selectLocale && ((locale: string, loaded?: () => void) => this.props.selectLocale(locale, loaded))}
 			/>);
 		}
 
