@@ -1,4 +1,5 @@
 const path = require("path");
+const webpack = require("webpack");
 
 module.exports = {
 	entry: {
@@ -31,7 +32,11 @@ module.exports = {
 		net: "empty",
 	},
 	target: "electron",
-	plugins: [],
+	plugins: [
+		new webpack.DefinePlugin({
+			JOUST_RELEASE: JSON.stringify(process.env.JOUST_RELEASE) || undefined,
+		}),
+	],
 	externals: {
 		"react": "React",
 		"react-dom": "ReactDOM",
