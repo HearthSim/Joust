@@ -196,6 +196,10 @@ export default class Launcher {
 		return this._build;
 	}
 
+	public get selectedLocale(): string {
+		return this.opts.locale;
+	}
+
 	public get replayDuration(): number {
 		return this.opts.scrubber.getDuration();
 	}
