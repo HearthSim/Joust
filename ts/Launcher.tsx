@@ -27,7 +27,7 @@ export default class Launcher {
 	protected shouldStartPaused: boolean;
 	protected ref: GameWidget;
 	protected metadataSourceCb: (build: number|"latest", locale: string) => string;
-	protected build: number;
+	protected _build: number;
 	protected ready: boolean;
 	protected hsjson: HearthstoneJSON;
 
@@ -44,7 +44,7 @@ export default class Launcher {
 		} as any;
 		this.opts.assetDirectory = (asset) => "assets/" + asset;
 		this.opts.cardArtDirectory = (cardId) => "https://art.hearthstonejson.com/v1/256x/" + cardId + ".jpg";
-		this.build = null;
+		this._build = null;
 		this.hsjson = null;
 		this.ready = false;
 	}
@@ -188,6 +188,10 @@ export default class Launcher {
 		return this;
 	}
 
+	public get build(): number {
+		return this._build;
+	}
+
 	public get replayDuration(): number {
 		return this.opts.scrubber.getDuration();
 	}
@@ -281,7 +285,7 @@ export default class Launcher {
 				},
 				(cb) => {
 					decoder.once("build", (buildNumber?: number) => {
-						this.build = buildNumber;
+						this._build = buildNumber;
 						this.fetchLocale(cb);
 					});
 				},
@@ -344,7 +348,7 @@ export default class Launcher {
 	}
 
 	protected fetchLocale(cb?: () => void): void {
-		const build = this.build || "latest";
+		const build = this._build || "latest";
 
 		if (!this.hsjson) {
 			if (this.metadataSourceCb) {

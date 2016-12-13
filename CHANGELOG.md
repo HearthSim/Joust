@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Implement Kazakus Potion text formatting (@azeier)
 - Implement Jade Golem text formatting (@azeier)
 - Enable `Launcher.locale` after initial render
+- Add `Launcher.build: number`
 
 ### Changed
 - Change `Launcher.fromUrl` to return launcher instance
