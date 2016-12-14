@@ -69,10 +69,16 @@ export default class EventLogLine extends React.Component<EventLogLineProps, Eve
 			characters += '\t';
 		}
 
-		let entity = <EventLogCard key="entity" cards={this.props.cards}
-								   cardId={this.props.cardOracle.get(this.props.entityId)}/>;
-		let target = <EventLogCard key="target" cards={this.props.cards}
-								   cardId={this.props.cardOracle.get(this.props.targetId)}/>;
+		let entity = <EventLogCard
+			key="entity"
+			cards={this.props.cards}
+			cardId={this.props.cardOracle && this.props.cardOracle.get(this.props.entityId)}
+		/>;
+		let target = <EventLogCard
+			key="target"
+			cards={this.props.cards}
+			cardId={this.props.cardOracle && this.props.cardOracle.get(this.props.targetId)}
+		/>;
 
 		let strings = {
 			'player': this.props.player,

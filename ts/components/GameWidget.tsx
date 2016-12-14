@@ -43,7 +43,7 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 			isFullscreenAvailable: Fullscreen.available(),
 			fullscreenError: false,
 			isRevealingCards: typeof this.props.startRevealed === "undefined" ? true : this.props.startRevealed,
-			cardOracle: null,
+			cardOracle: Immutable.Map<number, string>(),
 			mulliganOracle: null,
 			isLogVisible: false, // we might show it once we receive the first game state
 			isLogMounted: false,
