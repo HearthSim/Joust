@@ -28,12 +28,14 @@ export default class Launcher {
 	protected shouldStartPaused: boolean;
 	protected ref: GameWidget;
 	protected metadataSourceCb: (build: number|"latest", locale: string) => string;
-	protected _build: number;
+	protected _build: number|null;
 	protected ready: boolean;
 	protected hsjson: HearthstoneJSON;
+	protected customLocale: boolean;
 
 	constructor(target: any) {
 		this.target = target;
+		this.customLocale = !!cookie.get("joust_locale");
 		this.opts = {
 			debug: false,
 			logger: (error: Error): void => {
@@ -42,6 +44,7 @@ export default class Launcher {
 			},
 			locale: cookie.get("joust_locale", "enUS"),
 			selectLocale: (locale: string, loaded?: () => void): void => {
+				this.customLocale = true;
 				this.locale(locale, loaded);
 			},
 			enableKeybindings: true,
@@ -192,12 +195,12 @@ export default class Launcher {
 		return this;
 	}
 
-	public get build(): number {
+	public get build(): number|null {
 		return this._build;
 	}
 
-	public get selectedLocale(): string {
-		return this.opts.locale;
+	public get selectedLocale(): string|null {
+		return this.customLocale ? this.opts.locale : null;
 	}
 
 	public get replayDuration(): number {

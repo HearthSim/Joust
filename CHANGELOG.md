@@ -8,11 +8,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Implement Kazakus Potion text formatting (@azeier)
 - Implement Jade Golem text formatting (@azeier)
 - Enable `Launcher.locale` after initial render
-- Add `Launcher.build: number`
+- Add `Launcher.build: number|null`
 - Save Event Log state in a cookie (#173)
 - Add settings menu to Scrubber
 - Add setting for users to change card locale
-- Add `Launcher.selectedLocale: string`
+- Add `Launcher.selectedLocale: string|null`
 
 ### Changed
 - Change `Launcher.fromUrl` to return launcher instance
