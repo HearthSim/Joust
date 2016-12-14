@@ -9,6 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Implement Jade Golem text formatting (@azeier)
 - Enable `Launcher.locale` after initial render
 - Add `Launcher.build: number`
+- Save Event Log state in a cookie (#173)
 
 ### Changed
 - Change `Launcher.fromUrl` to return launcher instance

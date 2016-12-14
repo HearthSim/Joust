@@ -8,6 +8,7 @@ import Fullscreen from "fullscreen";
 import * as Immutable from "immutable";
 import {Zone} from "../enums";
 import Entity from "../Entity";
+import {cookie} from "cookie_js";
 
 interface GameWidgetState {
 	gameState?: GameState;
@@ -44,13 +45,22 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 			isRevealingCards: typeof this.props.startRevealed === "undefined" ? true : this.props.startRevealed,
 			cardOracle: null,
 			mulliganOracle: null,
-			isLogVisible: false,
+			isLogVisible: false, // we might show it once we receive the first game state
 			isLogMounted: false,
 		};
 	}
 
 	public componentDidMount() {
 		this.cb = this.setGameState.bind(this);
+		this.props.sink.once("gamestate", () => {
+			const showLog = !!+cookie.get("joust_event_log", "0");
+			if(showLog) {
+				this.setState({
+					isLogVisible: true,
+					isLogMounted: true,
+				});
+			}
+		});
 		this.props.sink.on("gamestate", this.cb.bind(this));
 		this.fullscreen = new Fullscreen(this.ref);
 		this.fullscreen.on("attain", this.onAttainFullscreen.bind(this));
@@ -240,7 +250,9 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 		);
 
 		if (this.props.scrubber) {
-			parts.push(<Scrubber key="scrubber" scrubber={this.props.scrubber}
+			parts.push(<Scrubber
+				key="scrubber"
+				scrubber={this.props.scrubber}
 				swapPlayers={() => {
 					let newSwap = !this.state.swapPlayers;
 					this.setState({ swapPlayers: newSwap });
@@ -269,8 +281,15 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 					}
 				}}
 				isLogVisible={this.state.isLogVisible}
-				toggleLog={() => this.setState({ isLogVisible: !this.state.isLogVisible, isLogMounted: true })}
-			    enableKeybindings={this.props.enableKeybindings}
+				toggleLog={() => {
+					const newState = !this.state.isLogVisible;
+					this.setState({ isLogVisible: newState, isLogMounted: true });
+					cookie.set("joust_event_log", "" + (+newState), {
+						expires: 365, // one year
+						path: "/",
+					});
+				}}
+				enableKeybindings={this.props.enableKeybindings}
 			/>);
 		}
 
