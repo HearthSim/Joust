@@ -196,6 +196,7 @@
 
 	header {
 		font-size: 1em;
+		font-weight: bold;
 		margin-bottom: (@scrubber-settings-padding);
 
 		span {
@@ -231,8 +232,13 @@
 		}
 
 		label {
+			font-weight: normal;
 			display: block;
 			padding: 6px 0;
+
+			input, select {
+				font-weight: normal;
+			}
 
 			span {
 				display: block;
@@ -246,7 +252,9 @@
 			}
 
 			input {
+				margin-top: -1px;
 				margin-left: 0;
+				margin-right: 4px;
 			}
 
 			> * {
@@ -262,7 +270,8 @@
 
 		a {
 			color: inherit;
-			margin-right: 8px;
+			margin-right: 4px;
+			text-decoration: underline;
 
 			&:last-child {
 				float: right;
