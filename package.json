@@ -68,8 +68,8 @@
     "karma-webpack": "^1.8.0",
     "phantomjs-prebuilt": "^2.1.13",
     "tslint": "^4.0.2",
-    "tslint-react": "^2.0.0",
-    "typescript": "^2.1.1"
+    "tslint-react": "^2.1.0",
+    "typescript": "^2.1.4"
   },
   "private": true
 }

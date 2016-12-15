@@ -1,4 +1,5 @@
 import Choice from "./Choice";
+import * as Immutable from "immutable";
 
 export default class Choices {
 

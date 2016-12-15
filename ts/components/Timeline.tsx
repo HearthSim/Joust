@@ -1,4 +1,5 @@
 import * as React from "react";
+import * as Immutable from "immutable";
 import GameStateHistory from "../state/GameStateHistory";
 import GameStateScrubber from "../state/GameStateScrubber";
 import {StreamScrubberInhibitor} from "../interfaces";

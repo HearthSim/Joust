@@ -1,4 +1,5 @@
 import * as React from "react";
+import * as Immutable from "immutable";
 import EntityList from "./EntityList";
 import Entity from "../../Entity";
 import Option from "../../Option";

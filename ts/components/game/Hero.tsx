@@ -1,5 +1,5 @@
 import * as React from "react";
-
+import * as Immutable from "immutable";
 import EntityInPlay from "./EntityInPlay";
 import {EntityInPlayProps, CardOracleProps} from "../../interfaces";
 import Entity from "../../Entity";

@@ -1,3 +1,4 @@
+import * as Immutable from "immutable";
 import {GameTag, Rarity} from "./enums";
 
 export default class Entity {

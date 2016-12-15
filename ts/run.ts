@@ -1,6 +1,3 @@
-/// <reference path="../typings/index.d.ts"/>
-/// <reference path="./global.d.ts"/>
-
 import Launcher from "./Launcher";
 import {GameWidgetProps} from "./interfaces";
 

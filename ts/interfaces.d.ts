@@ -8,7 +8,7 @@ import GameStateHistory from "./state/GameStateHistory";
 import Player from "./Player";
 import GameStateDescriptor from "./state/GameStateDescriptor";
 import GameWidget from "./components/GameWidget";
-import Rank from "./components/game/Rank";
+import * as Immutable from "immutable";
 
 export interface EntityInPlayProps extends EntityProps, OptionProps, GameStateDescriptorStackProps, React.ClassAttributes<any> {
 	isTarget?: boolean;

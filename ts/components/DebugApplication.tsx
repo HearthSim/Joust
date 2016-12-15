@@ -5,6 +5,7 @@ import HearthstoneJSON from "hearthstonejson";
 import {InteractiveBackend, MulliganOracle, CardOracle, CardData} from "../interfaces";
 import GameStateSink from "../state/GameStateSink";
 import GameStateScrubber from "../state/GameStateScrubber";
+import * as _ from "lodash";
 
 const enum Widget {
 	SETUP,

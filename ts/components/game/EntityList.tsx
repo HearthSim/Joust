@@ -1,5 +1,4 @@
 import * as React from "react";
-
 import {EntityListProps} from "../../interfaces";
 import Entity from "../../Entity";
 import Option from "../../Option";

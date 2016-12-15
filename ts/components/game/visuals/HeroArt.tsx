@@ -1,4 +1,5 @@
 import * as React from "react";
+import * as Immutable from "immutable";
 import {CardClass, GameTag, Zone} from "../../../enums";
 import Entity from "../../../Entity";
 import CardArt from "./CardArt";

@@ -9,6 +9,7 @@ import TagChangeMutator from "../mutators/TagChangeMutator";
 import SetOptionsMutator from "../mutators/SetOptionsMutator";
 import SetChoicesMutator from "../mutators/SetChoicesMutator";
 import GameStateTrackerPlugin from "../GameStateTrackerPlugin";
+import * as _ from "lodash";
 
 /**
  * Increments the game state time based on the mutator and the game state itself.

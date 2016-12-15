@@ -1,4 +1,5 @@
 import * as React from "react";
+import * as Immutable from "immutable";
 import * as _ from "lodash";
 import {CardData, EntityProps, OptionProps} from "../../interfaces";
 import Attack from "./stats/Attack";

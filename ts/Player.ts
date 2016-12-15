@@ -1,5 +1,6 @@
 import Entity from "./Entity";
 import {GameTag, PlayState} from "./enums";
+import * as Immutable from "immutable";
 
 export default class Player extends Entity {
 	protected _name: string;

@@ -1,5 +1,5 @@
 import * as Stream from "stream";
-import * as Sax from "sax";
+import {SAXStream} from "sax";
 import * as Immutable from "immutable";
 import SetOptionsMutator from "../state/mutators/SetOptionsMutator";
 import ClearOptionsMutator from "../state/mutators/ClearOptionsMutator";
@@ -32,7 +32,7 @@ interface PlayerDetails {
 
 export default class HSReplayDecoder extends Stream.Transform implements CardOracle, MulliganOracle {
 
-	private sax: Sax.SAXStream;
+	private sax: SAXStream;
 	private gameId: number;
 	private currentGame: number;
 	private nodeStack: Tag[];
@@ -63,7 +63,7 @@ export default class HSReplayDecoder extends Stream.Transform implements CardOra
 		this.build = null;
 		this.debug = false;
 
-		this.sax = Sax.createStream(true, {});
+		this.sax = new SAXStream(true, {});
 		this.sax.on('opentag', this.onOpenTag.bind(this));
 		this.sax.on('closetag', this.onCloseTag.bind(this));
 		this.sax.on('error', (e: any) => this.emit('error', e));
