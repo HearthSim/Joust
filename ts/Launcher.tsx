@@ -32,6 +32,7 @@ export default class Launcher {
 	protected ready: boolean;
 	protected hsjson: HearthstoneJSON;
 	protected customLocale: boolean;
+	protected _onSelectLocale: (locale: string) => void;
 
 	constructor(target: any) {
 		this.target = target;
@@ -45,7 +46,12 @@ export default class Launcher {
 			locale: cookie.get("joust_locale", "enUS"),
 			selectLocale: (locale: string, loaded?: () => void): void => {
 				this.customLocale = true;
-				this.locale(locale, loaded);
+				this.locale(locale, () => {
+					if(this._onSelectLocale) {
+						this._onSelectLocale(locale);
+					}
+					loaded && loaded();
+				});
 			},
 			enableKeybindings: true,
 		} as any;
@@ -197,6 +203,10 @@ export default class Launcher {
 
 	public get build(): number|null {
 		return this._build;
+	}
+
+	public onSelectLocale(callback: (locale: string) => void): void {
+		this._onSelectLocale = callback;
 	}
 
 	public get selectedLocale(): string|null {

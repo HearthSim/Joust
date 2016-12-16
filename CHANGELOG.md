@@ -13,6 +13,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Add settings menu to Scrubber
 - Add setting for users to change card locale
 - Add `Launcher.selectedLocale: string|null`
+- Add `Launcher.onSelectLocale(callback: (locale: string) => void): void`
 
 ### Changed
 - Change `Launcher.fromUrl` to return launcher instance
