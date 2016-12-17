@@ -23,13 +23,15 @@ export default class CoinDetector extends GameStateTrackerPlugin {
 	}
 
 	private isCoin(potentialCoin: Entity, state: GameState): boolean {
+		let controller = null;
 		return (
 			!potentialCoin.cardId &&
 			potentialCoin.getTag(GameTag.ZONE) === Zone.HAND &&
 			potentialCoin.getTag(GameTag.ZONE_POSITION) === 5 &&
 			state.game.getTag(GameTag.MULLIGAN_STATE) === Mulligan.INVALID &&
 			state.game.getTag(GameTag.STEP) === Step.INVALID &&
-			!state.getPlayer(potentialCoin.getTag(GameTag.CONTROLLER)).getTag(GameTag.FIRST_PLAYER)
+			(controller = state.getPlayer(potentialCoin.getTag(GameTag.CONTROLLER))) &&
+			!controller.getTag(GameTag.FIRST_PLAYER)
 		);
 	}
 }
