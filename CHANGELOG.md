@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [0.10.0] - 2017-01-16
 ### Added
 - Add `Launcher.addPlayerName(playerName: string)`
 - Implement Kazakus Potion text formatting (@azeier)
@@ -187,7 +189,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Code for initial development release
 
-[Unreleased]: https://github.com/HearthSim/Joust/compare/0.9.1...HEAD
+[Unreleased]: https://github.com/HearthSim/Joust/compare/0.10.0...HEAD
+[0.10.0]: https://github.com/HearthSim/Joust/compare/0.9.1...0.10.0
 [0.9.1]: https://github.com/HearthSim/Joust/compare/0.9.0...0.9.1
 [0.9.0]: https://github.com/HearthSim/Joust/compare/0.8.0...0.9.0
 [0.8.0]: https://github.com/HearthSim/Joust/compare/0.7.0...0.8.0
