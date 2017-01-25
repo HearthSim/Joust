@@ -19,7 +19,7 @@ notifications:
     on_success: change
   irc:
     channels:
-      - "chat.freenode.net#hearthsim"
+      - "chat.freenode.net#hearthsim-commits"
     use_notice: true
     skip_join: true
     on_failure: always
