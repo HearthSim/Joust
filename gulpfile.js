@@ -1,5 +1,6 @@
 const gulp = require("gulp");
 const gutil = require("gulp-util");
+const gfile = require("gulp-file");
 const plumber = require("gulp-plumber");
 
 const sourcemaps = require("gulp-sourcemaps");
@@ -28,7 +29,7 @@ const path = require("path");
 gulp.task("default", ["watch"]);
 
 gulp.task("compile", ["compile:web"]);
-gulp.task("compile:web", ["compile:scripts:web", "compile:styles", "html:web", "assets"]);
+gulp.task("compile:web", ["compile:scripts:web", "compile:styles", "html:web", "assets", "version:write"]);
 gulp.task("compile:dev", ["compile:scripts:dev", "compile:styles", "html:dev", "assets"]);
 
 gulp.task("compile:scripts", ["compile:scripts:web"]);
@@ -95,6 +96,12 @@ gulp.task("env:set-release", function (cb) {
 		process.env.JOUST_RELEASE = release;
 		cb();
 	});
+});
+
+gulp.task("version:write", ["env:set-release"], function() {
+	const version = process.env.JOUST_RELEASE;
+	return gfile("VERSION", version, {src: true})
+		.pipe(gulp.dest("dist/"));
 });
 
 gulp.task("sentry:release", ["env:set-release"], function () {
