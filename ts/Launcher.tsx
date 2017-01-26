@@ -289,7 +289,7 @@ export default class Launcher {
 		opts.withCredentials = false;
 		((opts.protocol === "https:" ? https : http) as any).get(opts, (message: http.IncomingMessage) => {
 			let success = (+message.statusCode === 200);
-			this.track("replay_load_error", {error: success ? "f" : "t"}, {statusCode: message.statusCode});
+			this.track("replay_load_error", {error: success ? false : true}, {statusCode: +message.statusCode});
 			if (!success) {
 				this.log(new Error("Could not load replay (status code " + message.statusCode + ")"));
 				return;
@@ -349,7 +349,7 @@ export default class Launcher {
 		this.ready = true;
 		this.render();
 
-		this.track("starting_from_turn", {fromTurn: this.startFromTurn ? "t" : "f", turn: this.startFromTurn || null});
+		this.track("starting_from_turn", {fromTurn: this.startFromTurn ? true : false, turn: +this.startFromTurn});
 
 		return this;
 	}
