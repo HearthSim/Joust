@@ -13,32 +13,43 @@ module.exports = {
 		libraryTarget: "var",
 	},
 	resolve: {
-		extensions: ["", ".webpack.js", ".web.js", ".ts", ".tsx", ".js"],
+		extensions: [".ts", ".tsx", ".js"],
 	},
 	module: {
-		loaders: [
+		rules: [
 			{
 				test: /\.tsx?$/,
-				loaders: [
-					"babel-loader?presets[]=react&presets[]=es2015",
-					"ts-loader",
-				],
-			},
+				exclude: /node_modules/,
+				use: [
+					{
+						loader: "babel-loader",
+						options: {
+							presets: [
+								"react",
+								["es2015", { modules: false }],
+							],
+						}
+					},
+					{
+						loader: "ts-loader",
+					},
+				]
+			}
 		],
 	},
+	externals: {
+		"react": "React",
+		"react-dom": "ReactDOM",
+	},
+	plugins: [
+		new webpack.DefinePlugin({
+			JOUST_RELEASE: JSON.stringify(process.env.JOUST_RELEASE) || undefined,
+		}),
+	],
 	node: {
 		// these modules are (possibly) provided by electron
 		fs: "empty",
 		net: "empty",
 	},
 	target: "electron",
-	plugins: [
-		new webpack.DefinePlugin({
-			JOUST_RELEASE: JSON.stringify(process.env.JOUST_RELEASE) || undefined,
-		}),
-	],
-	externals: {
-		"react": "React",
-		"react-dom": "ReactDOM",
-	},
 };

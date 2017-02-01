@@ -1,21 +1,18 @@
 import Launcher from "./Launcher";
 import {GameWidgetProps} from "./interfaces";
 
-module.exports = {
+export function renderHSReplay(target: string, url: string, opts?: GameWidgetProps) {
+	new Launcher(target).setOptions(opts).fromUrl(url);
+}
 
-	renderHSReplay: (target: string, url: string, opts?: GameWidgetProps) => {
-		new Launcher(target).setOptions(opts).fromUrl(url);
-	},
+export function launcher(target: string | HTMLElement) {
+	return new Launcher(target);
+}
 
-	launcher: (target: string | HTMLElement) => {
-		return new Launcher(target);
-	},
+export function release(): string {
+	return JOUST_RELEASE;
+}
 
-	release: (): string => {
-		return JOUST_RELEASE;
-	},
-
-	destroy(target: any): void {
-		Launcher.destroy(target);
-	},
-};
+export function destroy(target: any): void {
+	Launcher.destroy(target);
+}

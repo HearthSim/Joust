@@ -35,28 +35,31 @@ gulp.task("compile:dev", ["compile:scripts:dev", "compile:styles", "html:dev", "
 gulp.task("compile:scripts", ["compile:scripts:web"]);
 
 gulp.task("compile:scripts:web", ["env:set-release"], function () {
-	var config = require("./webpack.config.js");
+	const config = require("./webpack.config.js");
 	config.entry = {joust: config.entry.joust}; // remove all bundles but joust
 	config.target = "web";
 	config.plugins = config.plugins.concat([
 		new webpack.optimize.UglifyJsPlugin({
 			comments: false,
 			compress: {
-				warnings: false
-			}
+				warnings: false,
+			},
+			sourceMap: true,
 		}),
-		new webpack.optimize.DedupePlugin(),
-		new webpack.BannerPlugin("Joust " + process.env.JOUST_RELEASE + "\n" + "https://github.com/HearthSim/Joust"),
+		new webpack.BannerPlugin({banner: "Joust " + process.env.JOUST_RELEASE + "\n" + "https://github.com/HearthSim/Joust"}),
+		new webpack.LoaderOptionsPlugin({
+			minimize: true,
+		}),
 	]);
 	config.devtool = "#source-map";
-	return gulp.src("ts/run.tsx")
-		.pipe(webpackStream(config))
+	return gulp.src("ts/run.ts")
+		.pipe(webpackStream(config, webpack))
 		.pipe(gulp.dest("dist/"));
 });
 
 gulp.task("compile:scripts:dev", function () {
-	return gulp.src("ts/run.tsx")
-		.pipe(webpackStream(require("./webpack.config.js")))
+	return gulp.src("ts/run.ts")
+		.pipe(webpackStream(require("./webpack.config.js"), webpack))
 		.pipe(gulp.dest("dist/"));
 });
 
