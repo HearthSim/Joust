@@ -252,6 +252,19 @@ export default class Launcher {
 		}
 	}
 
+	public get playing(): boolean {
+		return this.opts.scrubber.isPlaying();
+	}
+
+	public set playing(playing: boolean) {
+		if (playing) {
+			this.play();
+		}
+		else {
+			this.pause();
+		}
+	}
+
 	public enableKeybindings(): Launcher {
 		this.opts.enableKeybindings = true;
 		this.render();
