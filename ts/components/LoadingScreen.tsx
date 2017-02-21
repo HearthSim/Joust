@@ -7,67 +7,102 @@ interface LoadingScreenProps extends React.ClassAttributes<LoadingScreen> {
 
 export default class LoadingScreen extends React.Component<LoadingScreenProps, void> {
 	private messages = [
-		"Spinning up...",
+		// Cardgames
 		"Sorting decks...",
-		"Calculating lethal...",
 		"Summoning heroes...",
 		"Nerfing cards...",
 		"Buffing cards...",
 		"Painting cards...",
-		"Spreading Madness...",
-		"Spreading C'Thun's word...",
-		"Prep-Coin-Conceding...",
-		"Funneling cakes...",
 		"Tossing coin...",
+		"Calculating lethal...",
+		"Dusting collection...",
 		"Deploying anti-cheats...",
-		"Disguising toast...",
-		"Dropping a 4 mana 7/7...",
-		"Assembling Exodia pieces...",
-		"Going full Northshire...",
-		"Stream-sniping...",
+		"Writing new spinner text...",
+
+		// Innkeeper
+		"Warming frozen boots...",
+		"Finding room for another...",
+
+		// Classic
+		"Watching your back...",
 		"Overloading...",
 		"Unlocking Overload...",
-		"Unlocking more deck slots...",
-		"Rolling Need...",
-		"Shadowstepping Coldlights...",
-		"Milling Reno...",
-		"Warming frozen boots...",
-		"Watching your back...",
-		"Finding room for another...",
-		"Getting everyone in here...",
-		"Pressing the button...",
-		"Requiring assistance...",
-		"Removing Sorry emote...",
-		"Restoring Sorry emote...",
-		"Writing new spinner text...",
-		"Befriending recent opponent...",
 		"Armoring up...",
 		"Enraging Worgen...",
-		"Dusting collection...",
-		"Massing Void Rays...",
-		"Poisoning blades...",
-		"Executing own Sylvanas...",
 		"Feeding Hungry Crab...",
-		"Stabilizing Portal...",
-		"Curving perfectly...",
-		"Trading for value...",
-		"Going face...",
+		"Poisoning Blades...",
+		"Rolling Need...",
+		"Disguising Toast...",
+		//"Shadowstepping Coldlights...",
+		//"Requiring assistance...",
+
+		// Goblins vs Gnomes
+		"Spinning up...",
 		"Summoning Boom Bots...",
-		"Managing Coliseum...",
+		"Stabilizing Portal...",
 		"Piloting Shredder...",
-		"Chugging Snow...",
-		"Purifying...",
+		//"Chugging Snow...",
+
+		// Naxxramas
+		"Poisoning seeds...",
+
+		// Blackrock Mountain
+		"Hatching Dragon Eggs...",
+		"Getting everyone in here...",
+
+		// Grand Tournament
+		"Funneling Cakes...",
+		"Managing Coliseum...",
+
+		// League
 		"Excavating Evil...",
+		"Finding Golden Monkey...",
+
+		// Old Gods
+		"Spreading Madness...",
+		"Spreading C'Thun's word...",
+
+		// Karazhan
+		"Guarding the Menagerie...",
+		"Clawing Spirits...",
+		"Purifying...",
+
+		// Mean Streets
+		"Loading Cannon...",
+
+		// Greetings
 		'"Well met!"',
 		'"Taz\'dingo!"',
-		'"Ryuu ga waga teki oh wrong game."',
+
+		// Meme
+		"Trading for value...",
+		"Prep-Coin-Conceding...",
+		"Befriending recent opponent...",
+		"Going face...",
+		"Stream-sniping...",
+		"Curving perfectly...",
+		"Milling Reno...",
+		/*"Going full Northshire...",
+		 "Dropping a 4 mana 7/7...",
+		 "Removing Sorry emote...",
+		 "Restoring Sorry emote...",
+		 "Unlocking more deck slots...",
+		 "Pressing the button...",
+		 "Executing own Sylvanas...",
+		 "Searching for Unicorn Priest",
+		 */
+
+		// other games
+		"Massing Void Rays...",
+		"Assembling Exodia pieces...",
+		//'"Ryuu ga waga teki oh wrong game."',
 	];
 
 	public render() {
 		let players = String.fromCharCode(160); // &nbsp;
 
-		if(this.props.players && this.props.players.length) {
-			switch(this.props.players.length) {
+		if (this.props.players && this.props.players.length) {
+			switch (this.props.players.length) {
 				case 1:
 					players = this.props.players[0];
 					break;
@@ -78,7 +113,8 @@ export default class LoadingScreen extends React.Component<LoadingScreenProps, v
 		}
 
 		return <div className="joust-loading-screen">
-			{this.props.children ? this.props.children: <p><MessagePicker interval={2} messages={this.messages} /></p>}
+			{this.props.children ? this.props.children :
+				<p><MessagePicker interval={2} messages={this.messages} /></p>}
 			<p className="participants">{players}</p>
 		</div>;
 	}
