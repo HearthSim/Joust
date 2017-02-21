@@ -54,7 +54,7 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 		this.cb = this.setGameState.bind(this);
 		this.props.sink.once("gamestate", () => {
 			const showLog = !!+cookie.get("joust_event_log", "0");
-			if(showLog) {
+			if (showLog) {
 				this.setState({
 					isLogVisible: true,
 					isLogMounted: true,
@@ -83,14 +83,14 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 	}
 
 	private track(event: string, values: Object, tags?: Object): void {
-		if(!this.props.events) {
+		if (!this.props.events) {
 			return;
 		}
 		this.props.events(event, values, tags || {});
 	}
 
 	protected setGameState(gameState: GameState): void {
-		this.setState({ gameState: gameState });
+		this.setState({gameState: gameState});
 	}
 
 	private clearFullscreenErrorTimeout() {
@@ -117,23 +117,31 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 	}
 
 	protected onAttainFullscreen() {
-		this.setState({ isFullscreen: true });
-		if ("orientation" in screen) {
-			screen.orientation.lock("landscape");
+		this.setState({isFullscreen: true});
+		const notify = () => {
+			if (this.props.onFullscreen) {
+				this.props.onFullscreen(true);
+			}
+		};
+		if ("orientation" in screen && typeof screen.orientation.lock === "function") {
+			screen.orientation.lock("landscape").catch((err) => {
+				console.warn(err);
+			}).then(notify).catch((err) => {
+				console.warn(err);
+				notify();
+			});
 		}
 		this.triggerResize();
-		if(this.props.onFullscreen) {
-			this.props.onFullscreen(true);
-		}
+
 	}
 
 	protected onReleaseFullscreen() {
-		this.setState({ isFullscreen: false });
-		if ('orientation' in screen) {
+		this.setState({isFullscreen: false});
+		if ("orientation" in screen && typeof screen.orientation.unlock === "function") {
 			screen.orientation.unlock();
 		}
 		this.triggerResize();
-		if(this.props.onFullscreen) {
+		if (this.props.onFullscreen) {
 			this.props.onFullscreen(false);
 		}
 	}
@@ -147,11 +155,11 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 	}
 
 	protected updateCardOracle(cards: Immutable.Map<number, string>) {
-		this.setState({ cardOracle: cards });
+		this.setState({cardOracle: cards});
 	}
 
 	protected updateMulliganOracle(mulligans: Immutable.Map<number, boolean>) {
-		this.setState({ mulliganOracle: mulligans });
+		this.setState({mulliganOracle: mulligans});
 	}
 
 	public setCards(cards: CardData[]) {
@@ -169,7 +177,7 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 				});
 			});
 		}
-		this.setState({ cards: cardMap });
+		this.setState({cards: cardMap});
 	}
 
 	/**
@@ -186,11 +194,11 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 	}
 
 	private checkForSwap() {
-		if(!this.state.gameState) {
+		if (!this.state.gameState) {
 			return;
 		}
 		let players = this.state.gameState.getPlayers();
-		if(!players.length) {
+		if (!players.length) {
 			return;
 		}
 		let player = players[0];
@@ -215,23 +223,25 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 		let parts = [];
 
 		if (this.props.exitGame) {
-			parts.push(<div id="joust-quit" key="exit"><a href="#" onClick={this.onClickExit.bind(this) }>Exit Game</a></div>);
+			parts.push(<div id="joust-quit" key="exit"><a href="#"
+														  onClick={this.onClickExit.bind(this) }>Exit Game</a>
+			</div>);
 		}
 
 		let isSwapped = this.swapPlayers !== this.state.swapPlayers /* XOR */;
 
 		let game = <GameWrapper key="game"
-						state={this.state.gameState}
-						interaction={this.props.interaction}
-						assetDirectory={this.props.assetDirectory}
-						cardArtDirectory={this.props.cardArtDirectory}
-						cards={this.state.cards}
-						swapPlayers={isSwapped}
-						hasStarted={this.props.scrubber.canInteract()}
-						cardOracle={this.state.cardOracle}
-						mulliganOracle={this.state.mulliganOracle}
-						hideCards={!this.state.isRevealingCards}
-						playerNames={this.props.playerNames || null}
+								state={this.state.gameState}
+								interaction={this.props.interaction}
+								assetDirectory={this.props.assetDirectory}
+								cardArtDirectory={this.props.cardArtDirectory}
+								cards={this.state.cards}
+								swapPlayers={isSwapped}
+								hasStarted={this.props.scrubber.canInteract()}
+								cardOracle={this.state.cardOracle}
+								mulliganOracle={this.state.mulliganOracle}
+								hideCards={!this.state.isRevealingCards}
+								playerNames={this.props.playerNames || null}
 		/>;
 		let log = <EventLog key="log"
 							state={this.state.gameState}
@@ -306,12 +316,13 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 		}
 
 		let classes = ['joust-widget', 'game-widget'];
-		if(this.state.isFullscreen) {
+		if (this.state.isFullscreen) {
 			classes.push('joust-fullscreen');
 		}
 
 		return (
-			<div className={classes.join(' ')} ref={(ref) => this.ref = ref} style={style} onContextMenu={(e) => e.preventDefault()}>
+			<div className={classes.join(' ')} ref={(ref) => this.ref = ref} style={style}
+				 onContextMenu={(e) => e.preventDefault()}>
 				{parts}
 			</div>
 		);

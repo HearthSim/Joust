@@ -11,6 +11,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Switch to yarn package manager (#169)
 
+### Fixed
+- Fix `Launcher.onFullscreen` throwing error messages on some devices
+
 ## [0.10.0] - 2017-01-16
 ### Added
 - Add `Launcher.addPlayerName(playerName: string)`
