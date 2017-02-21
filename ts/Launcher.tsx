@@ -227,10 +227,12 @@ export default class Launcher {
 
 	public play(): void {
 		this.opts.scrubber.play();
+		this.shouldStartPaused = false;
 	}
 
 	public pause(): void {
 		this.opts.scrubber.pause();
+		this.shouldStartPaused = true;
 	}
 
 	public toggle(): void {
