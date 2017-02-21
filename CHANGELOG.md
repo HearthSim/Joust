@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 - Write `VERSION` file when building
+- Add `Launcher.rewind()`
 
 ### Changed
 - Switch to yarn package manager (#169)

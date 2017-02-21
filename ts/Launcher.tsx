@@ -237,6 +237,10 @@ export default class Launcher {
 		this.opts.scrubber.toggle();
 	}
 
+	public rewind(): void {
+		this.opts.scrubber.rewind();
+	}
+
 	public get turn(): number {
 		return this.opts.scrubber.getCurrentTurn();
 	}
