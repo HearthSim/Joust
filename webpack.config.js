@@ -3,8 +3,8 @@ const webpack = require("webpack");
 
 module.exports = {
 	entry: {
-		joust: ["babel-polyfill", __dirname + "/ts/run"],
-		joust_debug: ["babel-polyfill", __dirname + "/ts/debug"],
+		joust: __dirname + "/ts/run",
+		joust_debug: __dirname + "/ts/debug",
 	},
 	output: {
 		path: path.resolve(__dirname, "dist"),

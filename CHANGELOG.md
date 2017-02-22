@@ -16,6 +16,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Fix `Launcher.onFullscreen` throwing error messages on some devices
 - Fix conflicts between `Launcher.play` and `Launcher.startPaused`
 
+### Removed
+- Remove `babel-polyfill`
+
 ## [0.10.0] - 2017-01-16
 ### Added
 - Add `Launcher.addPlayerName(playerName: string)`
