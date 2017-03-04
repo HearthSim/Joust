@@ -9,7 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Add `Launcher.playing`
 
 ### Changed
-- Switch to yarn package manager (#169)
+- Switch to [Yarn package manager](https://yarnpkg.com/) (#169)
 - Adjust loading screen messages
 
 ### Fixed
