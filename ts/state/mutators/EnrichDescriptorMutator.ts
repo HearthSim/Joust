@@ -10,6 +10,12 @@ export default class EnrichDescriptorMutator implements GameStateMutator {
 
 	public applyTo(state: GameState): GameState {
 		let descriptor = state.descriptors.peek();
+
+		if(!descriptor) {
+			console.warn("Ignoring MetaData outside of Block");
+			return state;
+		}
+
 		let descriptors = state.descriptors.pop();
 
 		let meta = descriptor.metaData.add(this.metaData);

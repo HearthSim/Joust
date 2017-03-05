@@ -15,6 +15,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Fix `Launcher.onFullscreen` throwing error messages on some devices
 - Fix conflicts between `Launcher.play` and `Launcher.startPaused`
+- HSReplay: Fix crash when encountering MetaData outside of Block
 
 ### Removed
 - Remove `babel-polyfill`
