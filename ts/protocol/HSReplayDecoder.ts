@@ -356,7 +356,7 @@ export default class HSReplayDecoder extends Stream.Transform implements CardOra
 			case 'MetaData':
 				let meta = new MetaData(
 					+node.attributes["meta"],
-					+node.attributes["data"] || +node.attributes["entity"], // entity is pre-1.3
+					+node.attributes["data"] || +node.attributes["entity"] || 0, // entity is pre-1.3
 					node.attributes["entities"]
 				);
 				mutator = new EnrichDescriptorMutator(meta);
