@@ -1,7 +1,5 @@
 import * as React from "react";
 import * as Immutable from "immutable";
-import GameStateHistory from "../state/GameStateHistory";
-import GameStateScrubber from "../state/GameStateScrubber";
 import {StreamScrubberInhibitor} from "../interfaces";
 import GameState from "../state/GameState";
 import Turn from "./Turn";
@@ -58,7 +56,7 @@ export default class Timeline extends React.Component<TimelineProps, TimelineSta
 			return;
 		}
 		e.preventDefault();
-		this.setState({ isDragging: true });
+		this.setState({isDragging: true});
 		this.seek(e.clientX);
 	}
 
@@ -68,7 +66,7 @@ export default class Timeline extends React.Component<TimelineProps, TimelineSta
 		}
 
 		if (!e.buttons) {
-			this.setState({ isDragging: false });
+			this.setState({isDragging: false});
 			return;
 		}
 
@@ -76,7 +74,7 @@ export default class Timeline extends React.Component<TimelineProps, TimelineSta
 	}
 
 	protected onMouseUp(e): void {
-		this.setState({ isDragging: false });
+		this.setState({isDragging: false});
 	}
 
 	protected onTouchStart(e): void {
@@ -85,7 +83,7 @@ export default class Timeline extends React.Component<TimelineProps, TimelineSta
 		}
 		e.preventDefault();
 		let touch = e.touches[0];
-		this.setState({ isDragging: true });
+		this.setState({isDragging: true});
 		this.seek(touch.clientX);
 	}
 
@@ -104,27 +102,30 @@ export default class Timeline extends React.Component<TimelineProps, TimelineSta
 	}
 
 	protected seek(x: number): void {
-		let rect = this.ref.getBoundingClientRect();
+		const rect = this.ref.getBoundingClientRect();
 		let offset = Math.min(Math.max(rect.left, x), rect.right);
 
-		let width = rect.right - rect.left;
+		const width = rect.right - rect.left;
 		offset = offset - rect.left;
 
-		let seek = this.props.duration / width * offset;
+		const seek = this.props.duration / width * offset;
 		this.props.seek(seek);
 	}
-
 
 	public render(): JSX.Element {
 		const mulliganTurn = this.props.turnMap.get(1);
 		const mulligan = mulliganTurn && mulliganTurn.time > 0 ?
-			<Turn key={0}
+			<Turn
+				key={0}
 				mulligan={true}
 				duration={mulliganTurn.time}
 				totalDuration={this.props.duration}
-				/> : null;
+			/> : null;
 
-		let turns = this.props.turnMap.map((current: GameState, turn: number, map: Immutable.Map<number, GameState>): JSX.Element => {
+		const turns = this.props.turnMap.map((
+			current: GameState, turn: number,
+			map: Immutable.Map<number, GameState>
+		): JSX.Element => {
 			let duration = 0;
 			let i = 1;
 			while (!map.has(turn + i) && turn + i < map.count()) {
@@ -139,21 +140,27 @@ export default class Timeline extends React.Component<TimelineProps, TimelineSta
 				duration = this.props.duration - current.time;
 			}
 
-			return <Turn key={turn} state={current} invert={this.props.swapPlayers} duration={duration} totalDuration={this.props.duration} turnNumber={turn} />;
+			return <Turn
+				key={turn}
+				state={current}
+				invert={this.props.swapPlayers}
+				duration={duration}
+				totalDuration={this.props.duration}
+				turnNumber={turn}
+			/>;
 		}).toArray();
 
-		let width = 100 / this.props.duration * this.props.at;
+		const width = 100 / this.props.duration * this.props.at;
 
-		let classes = ['joust-scrubber-timeline'];
+		const classes = ['joust-scrubber-timeline'];
 
-		if(!turns.length) {
+		if (!turns.length) {
 			classes.push('no-turns');
 		}
 
-		if(this.props.disabled) {
+		if (this.props.disabled) {
 			classes.push("disabled");
-		}
-		else if(this.state.isDragging) {
+		} else if (this.state.isDragging) {
 			classes.push("dragging");
 		}
 
