@@ -16,6 +16,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Fix `Launcher.onFullscreen` throwing error messages on some devices
 - Fix conflicts between `Launcher.play` and `Launcher.startPaused`
 - HSReplay: Fix crash when encountering MetaData outside of Block
+- Scrubber: Fix missing last turn in replays without mulligan data
 
 ### Removed
 - Remove `babel-polyfill`

@@ -116,10 +116,11 @@ export default class Timeline extends React.Component<TimelineProps, TimelineSta
 
 
 	public render(): JSX.Element {
-		let mulligan = this.props.turnMap.has(1) ?
+		const mulliganTurn = this.props.turnMap.get(1);
+		const mulligan = mulliganTurn && mulliganTurn.time > 0 ?
 			<Turn key={0}
 				mulligan={true}
-				duration={this.props.turnMap.get(1).time }
+				duration={mulliganTurn.time}
 				totalDuration={this.props.duration}
 				/> : null;
 
