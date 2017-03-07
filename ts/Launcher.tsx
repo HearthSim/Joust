@@ -59,6 +59,7 @@ export default class Launcher {
 		this.opts.cardArtDirectory = (cardId) => "https://art.hearthstonejson.com/v1/256x/" + cardId + ".jpg";
 		this._build = null;
 		this.hsjson = null;
+		this.startFromTurn = 0;
 		this.ready = false;
 	}
 
