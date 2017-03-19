@@ -18,6 +18,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Fix conflicts between `Launcher.play` and `Launcher.startPaused`
 - HSReplay: Fix crash when encountering MetaData outside of Block
 - Scrubber: Fix missing last turn in replays without mulligan data
+- Fix missing message when both players tie
 
 ### Removed
 - Remove `babel-polyfill`

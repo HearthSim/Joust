@@ -328,9 +328,18 @@ export default class Player extends React.Component<PlayerProps, void> {
 				classNames.push("inactive-colored");
 				break;
 			case PlayState.LOST:
+				let message = null;
 				if (this.props.player.conceded) {
-					gameresult = <div className="gameresult">{this.props.player.name} concedes</div>;
+					message = this.props.player.name + " concedes";
 				}
+				else {
+					message = this.props.player.name + " loses";
+				}
+				gameresult = <div className="gameresult">{message}</div>;
+				classNames.push("inactive");
+				break;
+			case PlayState.TIED:
+				gameresult = <div className="gameresult">{this.props.player.name} ties</div>;
 				classNames.push("inactive");
 				break;
 		}
