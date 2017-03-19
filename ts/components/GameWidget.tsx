@@ -4,11 +4,11 @@ import Scrubber from "./Scrubber";
 import EventLog from "./EventLog";
 import GameState from "../state/GameState";
 import GameWrapper from "./GameWrapper";
-import Fullscreen from "fullscreen";
 import * as Immutable from "immutable";
 import {Zone} from "../enums";
 import Entity from "../Entity";
 import {cookie} from "cookie_js";
+import screenfull from "screenfull";
 
 interface GameWidgetState {
 	gameState?: GameState;
@@ -29,7 +29,6 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 	private cardOracleCb;
 	private mulliganOracleCb;
 	private ref: HTMLDivElement;
-	private fullscreen: Fullscreen;
 	private fullscreenErrorTimeout = null;
 	private hasCheckedForSwap = false;
 	private swapPlayers = true;
@@ -40,7 +39,7 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 			gameState: null,
 			swapPlayers: !!this.props.startSwapped,
 			isFullscreen: false,
-			isFullscreenAvailable: Fullscreen.available(),
+			isFullscreenAvailable: screenfull.enabled,
 			fullscreenError: false,
 			isRevealingCards: typeof this.props.startRevealed === "undefined" ? true : this.props.startRevealed,
 			cardOracle: Immutable.Map<number, string>(),
@@ -62,10 +61,10 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 			}
 		});
 		this.props.sink.on("gamestate", this.cb.bind(this));
-		this.fullscreen = new Fullscreen(this.ref);
-		this.fullscreen.on("attain", this.onAttainFullscreen.bind(this));
-		this.fullscreen.on("release", this.onReleaseFullscreen.bind(this));
-		this.fullscreen.on("error", () => {
+		screenfull.onchange(() => {
+			this.setState({isFullscreen: screenfull.isFullscreen});
+		});
+		screenfull.onerror(() => {
 			this.setState({fullscreenError: true});
 			this.clearFullscreenErrorTimeout();
 			this.fullscreenErrorTimeout = window.setTimeout(() => {
@@ -102,8 +101,6 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 
 	protected componentWillUnmount() {
 		this.props.sink.removeListener("gamestate", this.cb);
-		this.fullscreen.removeAllListeners("attain");
-		this.fullscreen.removeAllListeners("release");
 		this.clearFullscreenErrorTimeout();
 		this.props.cardOracle.removeListener("cards", this.cardOracleCb);
 		this.props.cardOracle.removeListener("mulligans", this.mulliganOracleCb);
@@ -147,11 +144,11 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 	}
 
 	public enterFullscreen() {
-		this.fullscreen.request();
+		screenfull.request(this.ref);
 	}
 
 	public exitFullscreen() {
-		this.fullscreen.release();
+		screenfull.exit();
 	}
 
 	protected updateCardOracle(cards: Immutable.Map<number, string>) {

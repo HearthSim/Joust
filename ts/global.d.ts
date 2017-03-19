@@ -38,24 +38,22 @@ declare module "http" {
 	}
 }
 
-declare module "fullscreen" {
-	import {EventEmitter} from "events";
+declare module "screenfull" {
+	class Screenfull {
+		static isFullscreen: boolean;
 
-	class fullscreen extends EventEmitter {
-		constructor(any: any);
+		static enabled: boolean;
 
-		request(): void;
+		static request(elem?: Element): void;
 
-		release(): void;
+		static onerror(cb: () => any);
 
-		dispose(): void;
+		static onchange(cb: () => any);
 
-		static available(): boolean;
-
-		static enabled(): boolean;
+		static exit(): void;
 	}
 
-	export default fullscreen;
+	export default Screenfull;
 }
 
 declare module "react-dimensions" {

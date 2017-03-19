@@ -11,6 +11,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Switch to [Yarn package manager](https://yarnpkg.com/) (#169)
 - Adjust loading screen messages
+- Switch to the screenfull library
 
 ### Fixed
 - Fix `Launcher.onFullscreen` throwing error messages on some devices

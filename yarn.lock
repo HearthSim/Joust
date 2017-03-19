@@ -40,10 +40,6 @@ acorn@^3.0.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-3.3.0.tgz#45e37fb39e8da3f25baee3ff5369e2bb5f22017a"
 
-add-event-listener@0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/add-event-listener/-/add-event-listener-0.0.1.tgz#a76229ebc64c8aefae204a16273a2f255abea2d0"
-
 after@0.8.2:
   version "0.8.2"
   resolved "https://registry.yarnpkg.com/after/-/after-0.8.2.tgz#fedb394f9f0e02aa9768e702bda23b505fae7e1f"
@@ -1892,12 +1888,6 @@ fstream@^1.0.0, fstream@^1.0.2, fstream@~1.0.10:
     inherits "~2.0.0"
     mkdirp ">=0.5 0"
     rimraf "2"
-
-fullscreen@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/fullscreen/-/fullscreen-1.1.0.tgz#6a20096999581b3550b9991745e5a184d911dcfb"
-  dependencies:
-    add-event-listener "0.0.1"
 
 function-bind@^1.0.2:
   version "1.1.0"
@@ -4433,6 +4423,10 @@ safe-buffer@^5.0.1:
 sax@^1.2.1, sax@~1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.1.tgz#7b8e656190b228e81a66aea748480d828cd2d37a"
+
+screenfull@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/screenfull/-/screenfull-3.1.0.tgz#55f6febea6cd732a6e0e3b884c96813f7efed3b2"
 
 semver-diff@^2.0.0:
   version "2.1.0"

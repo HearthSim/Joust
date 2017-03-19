@@ -255,7 +255,8 @@ export default class Scrubber extends React.Component<ScrubberProps, ScrubberSta
 			<Tooltipper
 				title={this.props.fullscreenError ? "Error entering fullscreen." : "Fullscreen"}
 				align="right"
-				forceShow={this.props.fullscreenError} desktop="%s (F)"
+				forceShow={this.props.fullscreenError}
+				desktop={!this.props.fullscreenError ? "%s (F)" : null}
 			>
 				<button
 					onClick={() => this.props.isFullscreenAvailable && this.props.onClickFullscreen()}
