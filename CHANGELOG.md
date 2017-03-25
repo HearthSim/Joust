@@ -14,6 +14,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Switch to the screenfull library
 - Upgrade to Webpack 2 (#184)
 - Switch from typings to @types packages
+- Switch to fetch in Launcher
 
 ### Fixed
 - Fix `Launcher.onFullscreen` throwing error messages on some devices

@@ -1,10 +1,7 @@
 import {EventEmitter} from "events";
 import HearthstoneJSON from "hearthstonejson";
-import * as http from "http";
-import * as https from "https";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import * as URL from "url";
 import GameWidget from "./components/GameWidget";
 import {CardData, GameWidgetProps, JoustEventHandler} from "./interfaces";
 import HSReplayDecoder from "./protocol/HSReplayDecoder";
@@ -301,20 +298,17 @@ export default class Launcher {
 		if (preloader.canPreload()) {
 			preloader.consume();
 		}
-
-		if (url.match(/^\//) && location && location.protocol) {
-			url = location.protocol + url;
-		}
-		let opts = URL.parse(url) as any;
-		opts.withCredentials = false;
-		((opts.protocol === "https:" ? https : http) as any).get(opts, (message: http.IncomingMessage) => {
-			let success = (+message.statusCode === 200);
-			this.track("replay_load_error", {error: success ? false : true}, {statusCode: +message.statusCode});
+		fetch(url).then((response: Response) => {
+			const statusCode = response.status;
+			let success = (statusCode === 200);
+			this.track("replay_load_error", {error: success ? false : true}, {statusCode: statusCode});
 			if (!success) {
-				this.log(new Error("Could not load replay (status code " + message.statusCode + ")"));
+				this.log(new Error("Could not load replay (status code " + statusCode + ")"));
 				return;
 			}
 
+			return response.text();
+		}).then((payload: string) => {
 			let components = [decoder, tracker, scrubber, preloader];
 			components.forEach((component: EventEmitter) => {
 				component.on("error", this.log.bind(this));
@@ -344,11 +338,12 @@ export default class Launcher {
 				this.track("startup", {count: 1, duration: (Date.now() - this.opts.startupTime) / 1000});
 			});
 
-			message
-				.pipe(decoder) // xml -> mutators
+			decoder // xml -> mutators
 				.pipe(tracker) // mutators -> latest gamestate
 				.pipe(scrubber) // gamestate -> gamestate emit on scrub past
 				.pipe(sink); // gamestate
+
+			decoder.end(payload);
 
 			if (this.opts.cardArtDirectory) {
 				decoder.pipe(preloader);
