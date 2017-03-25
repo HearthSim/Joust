@@ -19,16 +19,23 @@
   },
   "scripts": {
     "test": "karma start --single-run --no-auto-watch karma.conf.js",
-    "postinstall": "concurrently \"typings install\" \"gulp enums:download\""
+    "postinstall": "gulp enums:download"
   },
   "dependencies": {
+    "@types/cookiejs": "^1.0.30",
+    "@types/immutable": "^3.8.7",
+    "@types/jasmine": "^2.5.46",
+    "@types/lodash": "^4.14.58",
+    "@types/node": "^7.0.11",
+    "@types/react": "^15.0.20",
+    "@types/react-dom": "^0.14.23",
+    "@types/sax": "^1.0.0",
     "autoprefixer": "^6.7.7",
     "babel-core": "^6.24.0",
     "babel-loader": "^6.4.1",
     "babel-preset-es2015": "^6.24.0",
     "babel-preset-react": "^6.23.0",
     "bowser": "^1.6.0",
-    "concurrently": "^3.4.0",
     "cookie_js": "^1.2.2",
     "cssnano": "^3.10.0",
     "filereader-stream": "^1.0.0",
@@ -54,7 +61,6 @@
     "through2": "^2.0.3",
     "ts-loader": "^2.0.3",
     "typescript": "^2.2.1",
-    "typings": "^2.1.0",
     "webpack": "^2.3.2",
     "webpack-stream": "^3.2.0",
     "websocket-stream": "^3.3.3"

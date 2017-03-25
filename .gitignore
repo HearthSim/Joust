@@ -1,5 +1,4 @@
 node_modules
-typings
 dist
 
 VERSION
@@ -10,4 +9,5 @@ less/**/*.css
 less/**/*.css.map
 ts/**/*.js
 ts/**/*.js.map
+typings
 enums.json
