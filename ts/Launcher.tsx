@@ -233,7 +233,7 @@ export default class Launcher {
 	}
 
 	public pause(): void {
-		this.opts.scrubber.pause();
+		this.opts.scrubber.pausePlayback();
 		this.shouldStartPaused = true;
 	}
 
@@ -338,7 +338,7 @@ export default class Launcher {
 			], () => {
 				scrubber.play();
 				if (this.shouldStartPaused) {
-					scrubber.pause();
+					scrubber.pausePlayback();
 				}
 				if (this.opts.onReady) {
 					this.opts.onReady();

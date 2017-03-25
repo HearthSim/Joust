@@ -21,6 +21,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Scrubber: Fix missing last turn in replays without mulligan data
 - Fix missing message when both players tie
 - Fix race condition in launcher (#191)
+- Fix naming conflict in GameStateScrubber with Duplex
 
 ### Removed
 - Remove `babel-polyfill`

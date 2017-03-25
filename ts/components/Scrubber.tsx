@@ -328,7 +328,7 @@ export default class Scrubber extends React.Component<ScrubberProps, ScrubberSta
 	}
 
 	protected pause(): void {
-		this.props.scrubber.pause();
+		this.props.scrubber.pausePlayback();
 	}
 
 	protected rewind(): void {

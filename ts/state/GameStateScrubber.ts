@@ -101,7 +101,7 @@ export default class GameStateScrubber extends Stream.Duplex implements StreamSc
 		this.update();
 	}
 
-	public pause(): void {
+	public pausePlayback(): void {
 		if (this.interval !== null) {
 			clearInterval(this.interval);
 			this.interval = null;
@@ -112,7 +112,7 @@ export default class GameStateScrubber extends Stream.Duplex implements StreamSc
 
 	public toggle(): void {
 		if (this.isPlaying()) {
-			this.pause();
+			this.pausePlayback();
 		}
 		else {
 			this.play();
@@ -142,7 +142,7 @@ export default class GameStateScrubber extends Stream.Duplex implements StreamSc
 
 				if (this.hasEnded()) {
 					this.currentTime = this.endTime - this.initialTime;
-					this.pause();
+					this.pausePlayback();
 					return;
 				}
 			}
@@ -175,7 +175,7 @@ export default class GameStateScrubber extends Stream.Duplex implements StreamSc
 		return this.interval !== null;
 	}
 
-	public isPaused(): boolean {
+	public isPlaybackPaused(): boolean {
 		return !this.isPlaying();
 	}
 
@@ -186,7 +186,7 @@ export default class GameStateScrubber extends Stream.Duplex implements StreamSc
 
 	public fastForward(): void {
 		this.currentTime = this.endTime - this.initialTime;
-		this.pause();
+		this.pausePlayback();
 	}
 
 	public setSpeed(speed: number): void {

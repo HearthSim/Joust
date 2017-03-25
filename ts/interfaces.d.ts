@@ -67,12 +67,12 @@ export interface InteractiveBackend {
 
 export interface StreamScrubber extends EventEmitter {
 	play(): void;
-	pause(): void;
+	pausePlayback(): void;
 	toggle(): void;
 	setSpeed(speed: number): void;
 	seek(time: number): void;
 	isPlaying(): boolean;
-	isPaused(): boolean;
+	isPlaybackPaused(): boolean;
 	canInteract(): boolean;
 	canRewind(): boolean;
 	rewind(): void;
