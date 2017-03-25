@@ -22,7 +22,6 @@
     "postinstall": "concurrently \"typings install\" \"gulp enums:download\""
   },
   "dependencies": {
-    "async": "^2.1.4",
     "autoprefixer": "^6.7.2",
     "babel-core": "^6.22.1",
     "babel-loader": "^6.4.1",

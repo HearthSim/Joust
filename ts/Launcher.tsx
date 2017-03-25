@@ -1,4 +1,3 @@
-import * as async from "async";
 import {EventEmitter} from "events";
 import HearthstoneJSON from "hearthstonejson";
 import * as http from "http";
@@ -321,21 +320,20 @@ export default class Launcher {
 				component.on("error", this.log.bind(this));
 			});
 
-			async.parallel([
-				(cb) => {
+			Promise.all([
+				new Promise((cb) => {
 					scrubber.once("ready", () => cb());
-				},
-				(cb) => {
+				}),
+				new Promise((cb) => {
 					decoder.once("build", (buildNumber?: number) => {
 						this._build = buildNumber;
 						this.fetchLocale(cb);
 					});
-				},
-
-				(cb) => {
+				}),
+				new Promise((cb) => {
 					decoder.once("end", () => cb());
-				},
-			], () => {
+				}),
+			]).then(() => {
 				scrubber.play();
 				if (this.shouldStartPaused) {
 					scrubber.pausePlayback();

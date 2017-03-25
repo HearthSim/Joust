@@ -1,6 +1,5 @@
 {
   "globalDependencies": {
-    "async": "registry:dt/async#2.0.1+20161110083428",
     "cookiejs": "registry:dt/cookiejs#1.0.0+20160412154710",
     "immutable": "registry:dt/immutable#3.8.1+20161028131303",
     "jasmine": "github:DefinitelyTyped/DefinitelyTyped/jasmine/jasmine.d.ts#d594ef506d1efe2fea15f8f39099d19b39436b71",
