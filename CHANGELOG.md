@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [0.11.0] - 2017-03-25
 ### Added
 - Write `VERSION` file when building
 - Add `Launcher.rewind()`
@@ -213,7 +215,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Code for initial development release
 
-[Unreleased]: https://github.com/HearthSim/Joust/compare/0.10.0...HEAD
+[Unreleased]: https://github.com/HearthSim/Joust/compare/0.11.0...HEAD
+[0.11.0]: https://github.com/HearthSim/Joust/compare/0.10.0...0.11.0
 [0.10.0]: https://github.com/HearthSim/Joust/compare/0.9.1...0.10.0
 [0.9.1]: https://github.com/HearthSim/Joust/compare/0.9.0...0.9.1
 [0.9.0]: https://github.com/HearthSim/Joust/compare/0.8.0...0.9.0
