@@ -1,5 +1,5 @@
 import * as React from "react";
-import {GameWidgetProps, CardData} from "../interfaces";
+import {CardData, GameWidgetProps} from "../interfaces";
 import Scrubber from "./Scrubber";
 import EventLog from "./EventLog";
 import GameState from "../state/GameState";
@@ -62,7 +62,12 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 		});
 		this.props.sink.on("gamestate", this.cb.bind(this));
 		screenfull.onchange(() => {
-			this.setState({isFullscreen: screenfull.isFullscreen});
+			if(screenfull.isFullscreen) {
+				this.onAttainFullscreen();
+			}
+			else {
+				this.onReleaseFullscreen();
+			}
 		});
 		screenfull.onerror(() => {
 			this.setState({fullscreenError: true});
@@ -115,18 +120,13 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 
 	protected onAttainFullscreen() {
 		this.setState({isFullscreen: true});
-		const notify = () => {
-			if (this.props.onFullscreen) {
-				this.props.onFullscreen(true);
-			}
-		};
 		if ("orientation" in screen && typeof screen.orientation.lock === "function") {
 			screen.orientation.lock("landscape").catch((err) => {
 				console.warn(err);
-			}).then(notify).catch((err) => {
-				console.warn(err);
-				notify();
 			});
+		}
+		if (this.props.onFullscreen) {
+			this.props.onFullscreen(true);
 		}
 		this.triggerResize();
 
@@ -137,10 +137,10 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 		if ("orientation" in screen && typeof screen.orientation.unlock === "function") {
 			screen.orientation.unlock();
 		}
-		this.triggerResize();
 		if (this.props.onFullscreen) {
 			this.props.onFullscreen(false);
 		}
+		this.triggerResize();
 	}
 
 	public enterFullscreen() {
