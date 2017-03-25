@@ -7,7 +7,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as URL from "url";
 import GameWidget from "./components/GameWidget";
-import {GameWidgetProps, JoustEventHandler} from "./interfaces";
+import {CardData, GameWidgetProps, JoustEventHandler} from "./interfaces";
 import HSReplayDecoder from "./protocol/HSReplayDecoder";
 import GameStateScrubber from "./state/GameStateScrubber";
 import GameStateSink from "./state/GameStateSink";
@@ -27,6 +27,7 @@ export default class Launcher {
 	protected turnCb: (turn: number) => void;
 	protected shouldStartPaused: boolean;
 	protected ref: GameWidget;
+	protected cards: CardData[];
 	protected metadataSourceCb: (build: number|"latest", locale: string) => string;
 	protected _build: number|null;
 	protected ready: boolean;
@@ -402,7 +403,13 @@ export default class Launcher {
 
 		let queryTime = Date.now();
 		this.hsjson.get(build, this.opts.locale, (cards: any[]) => {
-			this.ref.setCards(cards);
+			// defer setCards if component isn't mounted yet
+			if (this.ref) {
+				this.ref.setCards(cards);
+			}
+			else {
+				this.cards = cards;
+			}
 			this.track("metadata", {duration: (Date.now() - queryTime) / 1000}, {
 				cards: cards.length,
 				build: build,
@@ -423,5 +430,9 @@ export default class Launcher {
 			React.createElement(GameWidget as any, this.opts),
 			typeof this.target === "string" ? document.getElementById(this.target as string) : this.target
 		);
+		if (this.cards) {
+			this.ref.setCards(this.cards);
+			this.cards = null;
+		}
 	}
 }

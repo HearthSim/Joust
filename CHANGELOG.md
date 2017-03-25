@@ -20,6 +20,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - HSReplay: Fix crash when encountering MetaData outside of Block
 - Scrubber: Fix missing last turn in replays without mulligan data
 - Fix missing message when both players tie
+- Fix race condition in launcher (#191)
 
 ### Removed
 - Remove `babel-polyfill`
