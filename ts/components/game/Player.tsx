@@ -116,8 +116,20 @@ export default class Player extends React.Component<PlayerProps, void> {
 							}
 							let types = [CardType.WEAPON, CardType.SPELL, CardType.MINION, CardType.HERO_POWER, "WEAPON", "SPELL", "MINION", "HERO_POWER"];
 							if (types.indexOf(type) != -1 || entity.getTag(GameTag.SECRET)) {
+								let creator = null;
+								const creatorId = entity.getTag(GameTag.DISPLAYED_CREATOR);
+								if (creatorId) {
+									this.props.entities.forEach((map: Immutable.Map<number, Entity>) => {
+										map.forEach((toCompare: Entity) => {
+											if (toCompare.id === creatorId) {
+												creator = toCompare;
+											}
+										});
+									});
+								}
 								action = <div className="played"><Card
 									entity={entity}
+									creator={creator}
 									option={null}
 									optionCallback={null}
 									assetDirectory={this.props.assetDirectory}

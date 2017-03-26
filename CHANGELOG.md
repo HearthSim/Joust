@@ -3,6 +3,9 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- Show creator for created cards on play (#49)
+
 ### Fixed
 - Fix fullscreen callback in Launcher not being called
 

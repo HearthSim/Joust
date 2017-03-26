@@ -18,6 +18,7 @@ interface CardProps extends EntityProps, OptionProps, React.ClassAttributes<Card
 	customAtk?: number;
 	customCost?: number;
 	setAside?: Immutable.Iterable<number, Entity>;
+	creator?: Entity;
 }
 
 export default class Card extends React.Component<CardProps, void> {
@@ -220,6 +221,12 @@ export default class Card extends React.Component<CardProps, void> {
 				<p style={textStyle} dangerouslySetInnerHTML={{ __html: description }}></p>
 			</div>
 			{stats}
+			{this.props.creator ? <div className="created-by">
+				{"Created by " + (this.props.cards && this.props.cards.has(this.props.creator.cardId)
+					? this.props.cards.get(this.props.creator.cardId).name
+					: this.props.creator.cardId)
+				}
+			</div> : null}
 		</div>;
 	}
 
