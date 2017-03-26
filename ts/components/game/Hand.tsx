@@ -23,23 +23,9 @@ export default class Hand extends EntityList<HandProps> {
 		return 'hand';
 	}
 
-	protected totalEntities: number;
-
-	protected beforeRender(entities: number) {
-		this.totalEntities = entities;
-	}
-
 	protected renderEntity(entity: Entity, option: Option, index?: number) {
 
 		let style = {};
-
-		/*if (typeof index === 'number' && this.totalEntities > 0) {
-		 let total = this.totalEntities * 1 + 10;
-		 let deg = index * (total / (this.totalEntities - 1)) - total / 2;
-		 let px = (total - Math.abs(deg));
-
-		 style['transform'] = 'rotate(' + deg + 'deg) translateY(' + '-' + px + '%)';
-		 }*/
 
 		let wasHidden = false;
 
