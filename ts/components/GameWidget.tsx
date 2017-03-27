@@ -227,26 +227,28 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 
 		let isSwapped = this.swapPlayers !== this.state.swapPlayers /* XOR */;
 
-		let game = <GameWrapper key="game"
-								state={this.state.gameState}
-								interaction={this.props.interaction}
-								assetDirectory={this.props.assetDirectory}
-								cardArtDirectory={this.props.cardArtDirectory}
-								cards={this.state.cards}
-								swapPlayers={isSwapped}
-								hasStarted={this.props.scrubber.canInteract()}
-								cardOracle={this.state.cardOracle}
-								mulliganOracle={this.state.mulliganOracle}
-								hideCards={!this.state.isRevealingCards}
-								playerNames={this.props.playerNames || null}
+		let game = <GameWrapper
+			key="game"
+			state={this.state.gameState}
+			interaction={this.props.interaction}
+			assetDirectory={this.props.assetDirectory}
+			cardArtDirectory={this.props.cardArtDirectory}
+			cards={this.state.cards}
+			swapPlayers={isSwapped}
+			hasStarted={this.props.scrubber.canInteract()}
+			cardOracle={this.state.cardOracle}
+			mulliganOracle={this.state.mulliganOracle}
+			hideCards={!this.state.isRevealingCards}
+			playerNames={this.props.playerNames || null}
 		/>;
-		let log = <EventLog key="log"
-							state={this.state.gameState}
-							cards={this.state.cards}
-							cardOracle={this.state.cardOracle}
-							tail={this.props.scrubber.getHistory().tail}
-							currentTime={this.props.scrubber.getCurrentTime()}
-							isHidden={!this.state.isLogVisible}
+		let log = <EventLog
+			key="log"
+			state={this.state.gameState}
+			cards={this.state.cards}
+			cardOracle={this.state.cardOracle}
+			tail={this.props.scrubber.getHistory().tail}
+			currentTime={this.props.scrubber.getCurrentTime()}
+			isHidden={!this.state.isLogVisible}
 		/>;
 
 		parts.push(
