@@ -118,8 +118,8 @@ export default class DebugApplication extends React.Component<void, DebugState> 
 		}
 		this.setState({
 			locale: locale,
-		})
-		this.hsjson.get("latest", locale, (cards: CardData[]) => {
+		});
+		this.hsjson.getLatest(locale).then((cards: CardData[]) => {
 			this.setState({
 				cards: cards,
 			});

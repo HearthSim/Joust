@@ -40,6 +40,9 @@ module.exports = {
 	externals: {
 		"react": "React",
 		"react-dom": "ReactDOM",
+		"whatwg-fetch": {
+			// polyfill should be supplied externally
+		},
 	},
 	plugins: [
 		new webpack.DefinePlugin({

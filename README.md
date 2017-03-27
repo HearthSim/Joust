@@ -39,6 +39,7 @@ gulp compile
 
 [Full documentation](https://github.com/HearthSim/Joust/wiki/Embedding).
 
+Joust does not do any polyfilling and expects the globals Promise and fetch to be available.
 
 ## Development
 

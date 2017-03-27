@@ -9,6 +9,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Fix fullscreen callback in Launcher not being called
 
+### Deprecated
+- `Launcher.metadataSource` is no longer supported
+
 ## [0.11.0] - 2017-03-25
 ### Added
 - Write `VERSION` file when building
@@ -22,6 +25,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Upgrade to Webpack 2 (#184)
 - Switch from typings to @types packages
 - Switch to fetch in Launcher
+- Upgrade hearthstonejson to 0.4.0
 
 ### Fixed
 - Fix `Launcher.onFullscreen` throwing error messages on some devices

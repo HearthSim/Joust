@@ -95,10 +95,7 @@ export default class Launcher {
 	}
 
 	public metadataSource(metadataSource: (build: number|"latest", locale: string) => string): Launcher {
-		this.metadataSourceCb = metadataSource;
-		if (this.hsjson) {
-			(this.hsjson as any).sourceUrl = metadataSource;
-		}
+		console.warn("Launcher.metadataSource is deprecated");
 		return this;
 	}
 
@@ -392,16 +389,11 @@ export default class Launcher {
 		const build = this._build || "latest";
 
 		if (!this.hsjson) {
-			if (this.metadataSourceCb) {
-				this.hsjson = new HearthstoneJSON(this.metadataSourceCb);
-			}
-			else {
-				this.hsjson = new HearthstoneJSON();
-			}
+			this.hsjson = new HearthstoneJSON();
 		}
 
 		let queryTime = Date.now();
-		this.hsjson.get(build, this.opts.locale, (cards: any[]) => {
+		this.hsjson.get(build, this.opts.locale).then((cards: any[]) => {
 			// defer setCards if component isn't mounted yet
 			if (this.ref) {
 				this.ref.setCards(cards);
