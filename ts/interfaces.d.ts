@@ -187,6 +187,7 @@ export interface GameWidgetProps extends AssetDirectoryProps, CardArtDirectory, 
 	onReady?: () => void;
 	playerNames?: string[];
 	selectLocale?: (locale: string, loaded?: () => void) => void;
+	loadingError?: boolean;
 }
 
 export interface StreamScrubberInhibitor {

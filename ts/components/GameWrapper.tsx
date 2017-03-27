@@ -24,6 +24,7 @@ interface GameWrapperProps extends CardDataProps, CardOracleProps, MulliganOracl
 	interaction?: InteractiveBackend;
 	swapPlayers?: boolean;
 	hasStarted?: boolean;
+	loadingError?: boolean;
 	playerNames?: string[]|null;
 }
 
@@ -51,9 +52,24 @@ export default class GameWrapper extends React.Component<GameWrapperProps, GameW
 
 	public render(): JSX.Element {
 
+		// replay load failure
+		if (this.props.loadingError) {
+			const reload = () => {
+				document.location.reload();
+			};
+			return (
+				<LoadingScreen>
+					<p>Error loading replay.</p>
+					<p>
+						<a href="#" onClick={reload} onTouchStart={reload}>Try again…</a>
+					</p>
+				</LoadingScreen>
+			);
+		}
+
 		// warn about unsupported browsers
 		if (this.state.warnAboutBrowser) {
-			let ignoreBrowser = (e) => {
+			const ignoreBrowser = (e) => {
 				e.preventDefault();
 				this.setState({warnAboutBrowser: false});
 				cookie.set("joust_ludicrous", "1", {

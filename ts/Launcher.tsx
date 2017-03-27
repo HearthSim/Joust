@@ -298,17 +298,18 @@ export default class Launcher {
 		if (preloader.canPreload()) {
 			preloader.consume();
 		}
-		fetch(url).then((response: Response) => {
+		const result = fetch(url).then((response: Response) => {
 			const statusCode = response.status;
 			let success = (statusCode === 200);
 			this.track("replay_load_error", {error: success ? false : true}, {statusCode: statusCode});
 			if (!success) {
-				this.log(new Error("Could not load replay (status code " + statusCode + ")"));
-				return;
+				throw new Error("Could not load replay (status code " + statusCode + ")");
 			}
 
 			return response.text();
-		}).then((payload: string) => {
+		});
+
+		result.then((payload: string) => {
 			let components = [decoder, tracker, scrubber, preloader];
 			components.forEach((component: EventEmitter) => {
 				component.on("error", this.log.bind(this));
@@ -348,6 +349,11 @@ export default class Launcher {
 			if (this.opts.cardArtDirectory) {
 				decoder.pipe(preloader);
 			}
+		});
+
+		result.catch(() => {
+			this.opts.loadingError = true;
+			this.render();
 		});
 
 		decoder

@@ -240,6 +240,7 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 			mulliganOracle={this.state.mulliganOracle}
 			hideCards={!this.state.isRevealingCards}
 			playerNames={this.props.playerNames || null}
+			loadingError={this.props.loadingError}
 		/>;
 		let log = <EventLog
 			key="log"
