@@ -4,6 +4,7 @@ node_js:
   - "6"
   - "5"
   - "4"
+cache: yarn
 matrix:
   allow_failures:
   - node_js: 4
