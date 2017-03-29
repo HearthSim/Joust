@@ -406,7 +406,6 @@ export default class Launcher {
 				build: build,
 				has_build: build !== "latest",
 				cached: (this.hsjson as any).cached,
-				fetched: (this.hsjson as any).fetched,
 				fallback: (this.hsjson as any).fallback,
 			});
 			cb && cb();
