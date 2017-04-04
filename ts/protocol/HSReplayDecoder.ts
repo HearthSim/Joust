@@ -383,6 +383,11 @@ export default class HSReplayDecoder extends Stream.Transform implements CardOra
 			return +id;
 		}
 
+		if (typeof id === "undefined") {
+			console.warn('Cannot resolve missing entity id');
+			return 0;
+		}
+
 		let str = '' + id;
 
 		if (str === 'UNKNOWN HUMAN PLAYER') {
