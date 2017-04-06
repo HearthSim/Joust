@@ -6,6 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Show creator for created cards on play (#49)
 - HSReplay: Add warning if tag is missing required entity id
+- Add Quest frame art
 
 ### Fixed
 - Fix fullscreen callback in Launcher not being called

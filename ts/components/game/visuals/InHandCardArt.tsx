@@ -1,5 +1,5 @@
 import * as React from "react";
-import {CardType,CardClass} from "../../../enums";
+import {CardClass, CardType} from "../../../enums";
 import CardArt from "./CardArt";
 import {EntityProps} from "../../../interfaces";
 
@@ -81,11 +81,18 @@ export default class InHandCardArt extends React.Component<InHandCardArtProps, v
 		}
 
 		if (!this.props.hidden && entity.cardId && entity.isLegendary()) {
-			images.push({
-				image: "inhand_minion_legendary"
-					+ (entity.isPremium() ? "_premium" : "") + ".png",
-				classes: ["inhand-legendary"]
-			});
+			if (this.props.cardType === CardType.MINION) {
+				images.push({
+					image: "inhand_minion_legendary" + (entity.isPremium() ? "_premium" : "") + ".png",
+					classes: ["inhand-legendary"],
+				});
+			}
+			if (this.props.cardType === CardType.SPELL) {
+				images.push({
+					image: "inhand_spell_legendary" + (entity.isPremium() ? "_premium" : "") + ".png",
+					classes: ["inhand-legendary"],
+				});
+			}
 		}
 
 		if (this.props.mulligan) {
