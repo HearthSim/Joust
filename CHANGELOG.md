@@ -14,6 +14,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - Fix fullscreen callback in Launcher not being called
+- Fix weapons in hand not highlighting increased durability
 
 ### Deprecated
 - `Launcher.metadataSource` is no longer supported

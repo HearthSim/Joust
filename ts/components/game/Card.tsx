@@ -8,6 +8,7 @@ import Health from "./stats/Health";
 import Cost from "./stats/Cost";
 import InHandCardArt from "./visuals/InHandCardArt";
 import {CardClass, CardType, GameTag} from "../../enums";
+import Durability from "./stats/Durability";
 
 interface CardProps extends EntityProps, OptionProps, React.ClassAttributes<Card> {
 	style?: any;
@@ -185,9 +186,11 @@ export default class Card extends React.Component<CardProps, void> {
 					attack={this.getStatValue(GameTag.ATK, defaultAttack)}
 					default={defaultAttack}
 				/>;
-				let durability = <div className="durability">
-					{this.getStatValue(GameTag.DURABILITY, defaultDurability)}
-				</div>;
+				let durability = <Durability
+					durability={this.getStatValue(GameTag.DURABILITY, defaultDurability)}
+					damage={entity.getDamage()}
+					default={defaultDurability}
+				/>;
 				stats = <div className="stats">{attack}{durability}</div>;
 				textStyle = {color: "white"};
 				break;
