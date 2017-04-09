@@ -7,7 +7,7 @@ import Entity from "../../Entity";
 import Health from "./stats/Health";
 import Cost from "./stats/Cost";
 import InHandCardArt from "./visuals/InHandCardArt";
-import {CardType, CardClass, GameTag} from "../../enums";
+import {CardClass, CardType, GameTag} from "../../enums";
 
 interface CardProps extends EntityProps, OptionProps, React.ClassAttributes<Card> {
 	style?: any;
@@ -73,7 +73,11 @@ export default class Card extends React.Component<CardProps, void> {
 		if (entity.getTag(GameTag.POWERED_UP)) {
 			classNames.push("powered-up");
 		}
-		if (entity.getTag(GameTag.SHIFTING)) {
+		if (
+			entity.getTag(GameTag.SHIFTING) ||
+			entity.getTag(GameTag.SHIFTING_MINION) ||
+			entity.getTag(GameTag.SHIFTING_WEAPON)
+		) {
 			classNames.push("shifting");
 		}
 		if (entity.getTag(GameTag.CHOOSE_BOTH)) {
@@ -118,7 +122,7 @@ export default class Card extends React.Component<CardProps, void> {
 						break;
 				}
 			}
-			if(!cardClass) {
+			if (!cardClass) {
 				switch (data.playerClass) {
 					case "DRUID":
 						cardClass = CardClass.DRUID;
@@ -218,7 +222,7 @@ export default class Card extends React.Component<CardProps, void> {
 			}
 			<h1>{title}</h1>
 			<div className="description">
-				<p style={textStyle} dangerouslySetInnerHTML={{ __html: description }}></p>
+				<p style={textStyle} dangerouslySetInnerHTML={{__html: description}}></p>
 			</div>
 			{stats}
 			{this.props.creator ? <div className="created-by">
@@ -231,7 +235,7 @@ export default class Card extends React.Component<CardProps, void> {
 	}
 
 	private getStatValue(tag: GameTag, defaultValue: number): number {
-		switch(tag) {
+		switch (tag) {
 			case GameTag.HEALTH:
 				if (typeof this.props.customHealth !== "undefined") {
 					return this.props.customHealth;

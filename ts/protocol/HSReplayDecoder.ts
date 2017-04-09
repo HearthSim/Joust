@@ -416,8 +416,11 @@ export default class HSReplayDecoder extends Stream.Transform implements CardOra
 			// do not overwrite entities
 			return;
 		}
-		if (tags && tags.has("" + GameTag.SHIFTING)) {
+		if (tags && (tags.has("" + GameTag.SHIFTING) || tags.has(""+ GameTag.SHIFTING_MINION))) {
 			cardId = "OG_123"; // Shifter Zerus
+		}
+		if (tags && tags.has("" + GameTag.SHIFTING_WEAPON)) {
+			cardId = "UNG_929"; // Molten Blade
 		}
 		let newCardIds = this.cardIds.set(id, cardId);
 		if (newCardIds === this.cardIds) {
