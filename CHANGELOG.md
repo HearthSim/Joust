@@ -9,6 +9,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Add Quest frame art
 - Support Shifting Blade
 
+### Changed
+- Tweak art for legendary minions in hand
+
 ### Fixed
 - Fix fullscreen callback in Launcher not being called
 
