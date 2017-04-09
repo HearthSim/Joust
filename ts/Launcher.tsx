@@ -295,6 +295,7 @@ export default class Launcher {
 		if (preloader.canPreload()) {
 			preloader.consume();
 		}
+
 		const result = fetch(url).then((response: Response) => {
 			const statusCode = response.status;
 			let success = (statusCode === 200);
@@ -341,7 +342,15 @@ export default class Launcher {
 				.pipe(scrubber) // gamestate -> gamestate emit on scrub past
 				.pipe(sink); // gamestate
 
-			decoder.end(payload);
+			const streamString = payload.split("");
+			for (let part of streamString) {
+				if (!decoder.writable) {
+					break;
+				}
+				decoder.write(part);
+			}
+
+			decoder.end();
 
 			if (this.opts.cardArtDirectory) {
 				decoder.pipe(preloader);
@@ -353,9 +362,13 @@ export default class Launcher {
 			this.render();
 		});
 
-		decoder
-			.on("error", this.log.bind(this))
-			.once("error", () => this.track("decoder_error", {count: 1}));
+		decoder.on("error", (error) => {
+			decoder.end();
+			this.opts.loadingError = true;
+			this.render();
+		});
+
+		decoder.once("error", () => this.track("decoder_error", {count: 1}));
 
 		this.opts.sink = sink;
 		this.opts.scrubber = scrubber;
