@@ -30,7 +30,6 @@ export default class LoadingScreen extends React.Component<LoadingScreenProps, v
 		"Armoring up...",
 		"Enraging Worgen...",
 		"Feeding Hungry Crab...",
-		"Poisoning Blades...",
 		"Rolling Need...",
 		"Disguising Toast...",
 		//"Shadowstepping Coldlights...",
@@ -39,9 +38,7 @@ export default class LoadingScreen extends React.Component<LoadingScreenProps, v
 		// Goblins vs Gnomes
 		"Spinning up...",
 		"Summoning Boom Bots...",
-		"Stabilizing Portal...",
 		"Piloting Shredder...",
-		//"Chugging Snow...",
 
 		// Naxxramas
 		"Poisoning seeds...",
@@ -57,6 +54,7 @@ export default class LoadingScreen extends React.Component<LoadingScreenProps, v
 		// League
 		"Excavating Evil...",
 		"Finding Golden Monkey...",
+		"Stealing Artifacts...",
 
 		// Old Gods
 		"Spreading Madness...",
@@ -69,6 +67,11 @@ export default class LoadingScreen extends React.Component<LoadingScreenProps, v
 
 		// Mean Streets
 		"Loading Cannon...",
+		"Patching Patches...",
+
+		// Goroes
+		"Rerolling Quests...",
+		"Hunting for Dinosaurs...",
 
 		// Greetings
 		'"Well met!"',
@@ -82,6 +85,7 @@ export default class LoadingScreen extends React.Component<LoadingScreenProps, v
 		"Stream-sniping...",
 		"Curving perfectly...",
 		"Milling Reno...",
+		"Creeping power...",
 		/*"Going full Northshire...",
 		 "Dropping a 4 mana 7/7...",
 		 "Removing Sorry emote...",
