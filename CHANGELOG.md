@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - HSReplay: Add warning if tag is missing required entity id
 - Add Quest frame art
 - Support Shifting Blade
+- Show Quests above hero portrait
 
 ### Changed
 - Tweak art for legendary minions in hand
