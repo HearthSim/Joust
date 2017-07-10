@@ -18,6 +18,7 @@
     "url": "https://github.com/HearthSim/Joust.git"
   },
   "scripts": {
+    "build": "gulp compile:web",
     "test": "karma start --single-run --no-auto-watch karma.conf.js",
     "postinstall": "gulp enums:download"
   },

@@ -1,19 +1,34 @@
 language: node_js
 node_js:
-  - "7"
-  - "6"
-  - "5"
-  - "4"
-cache: yarn
-matrix:
-  allow_failures:
-  - node_js: 4
+  - 8
+  - 7
+  - 6
+env: NODE_ENV=dev
+cache:
+  - yarn
+  - pip
+jobs:
+  include:
+    - stage: deploy
+      node_js: 8
+      env: NODE_ENV=production
+      branches:
+        only:
+          - master
+      install:
+        - npm install -g gulp webpack yarn
+        - yarn --pure-lockfile
+        - pip install --user awscli
+      script:
+        - yarn build
+        - aws s3 sync --delete dist/ s3://$S3_DEFAULT_BUCKET/branches/$TRAVIS_BRANCH/
+        - gulp sentry:release
 install:
   - npm install -g gulp webpack yarn
   - yarn --pure-lockfile
 script:
-  - gulp compile:web
-  - npm test
+  - yarn build
+  - yarn test
 notifications:
   email:
     on_failure: always

@@ -7,7 +7,7 @@ Hearthstone replays in your browser, written in Typescript with React.
 
 ## Requirements
 
-- Node.js ~v7 (v4.5 should also work, but is not officially supported)
+- Node.js ~v8 (v4.5 should also work, but is not officially supported)
 - Build system: `npm install -g gulp webpack`
 - Development: `npm install -g electron-prebuilt gulp webpack`
 - [yarn](https://yarnpkg.com/): `npm install -g yarn`
