@@ -6,6 +6,7 @@ import Attack from "./stats/Attack";
 import Entity from "../../Entity";
 import Health from "./stats/Health";
 import Cost from "./stats/Cost";
+import Armor from "./stats/Armor";
 import InHandCardArt from "./visuals/InHandCardArt";
 import {CardClass, CardType, GameTag} from "../../enums";
 import Durability from "./stats/Durability";
@@ -118,6 +119,9 @@ export default class Card extends React.Component<CardProps, {}> {
 					case "SPELL":
 						cardType = CardType.SPELL;
 						break;
+					case "HERO":
+						cardType = CardType.HERO;
+						break;
 					case "HERO_POWER":
 						cardType = CardType.HERO_POWER;
 						break;
@@ -198,6 +202,16 @@ export default class Card extends React.Component<CardProps, {}> {
 				textStyle = {color: "white"};
 				break;
 			}
+			case CardType.HERO:
+				classNames.push("card-hero");
+				if (entity.getTag(GameTag.HIDE_STATS)) {
+					break;
+				}
+				let armor = <Armor
+					armor={this.getStatValue(GameTag.ARMOR, 0)}
+				/>;
+				stats = <div className="stats">{armor}</div>;
+				break;
 			case CardType.SPELL:
 				classNames.push("card-spell");
 				break;
