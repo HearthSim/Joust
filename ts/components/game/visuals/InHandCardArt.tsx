@@ -128,6 +128,8 @@ export default class InHandCardArt extends React.Component<InHandCardArtProps, {
 				return "warlock";
 			case CardClass.WARRIOR:
 				return "warrior";
+			case CardClass.DEATHKNIGHT:
+				return "deathknight";
 			default:
 				return "neutral";
 		}

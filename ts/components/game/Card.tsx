@@ -153,6 +153,9 @@ export default class Card extends React.Component<CardProps, {}> {
 					case "WARRIOR":
 						cardClass = CardClass.WARRIOR;
 						break;
+					case "DEATHKNIGHT":
+						cardClass = CardClass.DEATHKNIGHT;
+						break;
 					default:
 						cardClass = CardClass.NEUTRAL;
 				}
