@@ -183,7 +183,7 @@ gulp.task("watch:assets", ["assets"], function () {
 });
 
 gulp.task("enums", function () {
-	gutil.log(gutil.colors.red('"gulp enums" has been split up in "gulp:enums:download" (preferred) and "gulp:enums:generate" (legacy)'));
+	gutil.log(gutil.colors.red('"enums" has been split up in "enums:download" (preferred) and "enums:generate" (legacy)'));
 });
 
 gulp.task("enums:download", function () {
