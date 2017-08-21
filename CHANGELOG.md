@@ -12,6 +12,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - Tweak art for legendary minions in hand
+- Upgrade dependencies (includes Webpack 3 and Typescript 2.5)
 
 ### Fixed
 - Fix fullscreen callback in Launcher not being called
