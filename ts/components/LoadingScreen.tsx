@@ -5,7 +5,7 @@ interface LoadingScreenProps extends React.ClassAttributes<LoadingScreen> {
 	players?: string[];
 }
 
-export default class LoadingScreen extends React.Component<LoadingScreenProps, void> {
+export default class LoadingScreen extends React.Component<LoadingScreenProps, {}> {
 	private messages = [
 		// Cardgames
 		"Sorting decks...",

@@ -6,7 +6,7 @@ interface DurabilityProps extends React.ClassAttributes<Durability> {
 	default?: number;
 }
 
-export default class Durability extends React.Component<DurabilityProps, void> {
+export default class Durability extends React.Component<DurabilityProps, {}> {
 	public render(): JSX.Element {
 		let classNames = ['durability'];
 		if (this.props.damage > 0) {

@@ -8,7 +8,7 @@ interface EndTurnButtonProps extends OptionProps, React.ClassAttributes<EndTurnB
 	currentPlayer: Player;
 }
 
-export default class EndTurnButton extends React.Component<EndTurnButtonProps, void> {
+export default class EndTurnButton extends React.Component<EndTurnButtonProps, {}> {
 
 	public endTurn() {
 		if (!this.props.option || !this.props.optionCallback) {

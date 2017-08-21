@@ -11,7 +11,7 @@ interface TurnProps extends React.ClassAttributes<Turn> {
 	invert?: boolean;
 }
 
-export default class Turn extends React.Component<TurnProps, void> {
+export default class Turn extends React.Component<TurnProps, {}> {
 	public render(): JSX.Element {
 		if (!this.props.totalDuration) {
 			return null;

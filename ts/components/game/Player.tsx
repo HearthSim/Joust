@@ -38,7 +38,7 @@ interface PlayerProps extends OptionCallbackProps, CardDataProps, CardOracleProp
 	isCurrent: boolean;
 }
 
-export default class Player extends React.Component<PlayerProps, void> {
+export default class Player extends React.Component<PlayerProps, {}> {
 
 	public render(): JSX.Element {
 		let filterByCardType = (cardType: number) => {

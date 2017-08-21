@@ -5,7 +5,7 @@ interface SecretTextProps extends React.ClassAttributes<SecretText> {
 	title?: string;
 }
 
-export default class SecretText extends React.Component<SecretTextProps, void> {
+export default class SecretText extends React.Component<SecretTextProps, {}> {
 	public render(): JSX.Element {
 		return (
 			<div

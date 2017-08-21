@@ -9,7 +9,7 @@ interface SettingsProps extends React.ClassAttributes<Settings> {
 	onClose?: () => void;
 }
 
-export default class Settings extends React.Component<SettingsProps, void> {
+export default class Settings extends React.Component<SettingsProps, {}> {
 
 	public render(): JSX.Element {
 		const release = JOUST_RELEASE;

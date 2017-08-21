@@ -23,7 +23,7 @@ interface DebugState {
 	locale?: string;
 }
 
-export default class DebugApplication extends React.Component<void, DebugState> {
+export default class DebugApplication extends React.Component<React.ClassAttributes<DebugApplication>, DebugState> {
 
 	private gameWidget: GameWidget;
 	private hsjson: HearthstoneJSON;

@@ -5,7 +5,7 @@ interface CostProps extends React.ClassAttributes<Cost> {
 	default?: number;
 }
 
-export default class Cost extends React.Component<CostProps, void> {
+export default class Cost extends React.Component<CostProps, {}> {
 	public render(): JSX.Element {
 		let classNames = ['cost'];
 		if (this.props.default !== null && this.props.cost !== null) {

@@ -4,7 +4,7 @@ interface DamageProps extends React.ClassAttributes<Damage> {
 	damage:number;
 }
 
-export default class Damage extends React.Component<DamageProps, void> {
+export default class Damage extends React.Component<DamageProps, {}> {
 
 	shouldComponentUpdate(nextProps:DamageProps):boolean {
 		return nextProps.damage !== this.props.damage;

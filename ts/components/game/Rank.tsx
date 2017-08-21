@@ -2,7 +2,7 @@ import * as React from "react";
 import {RankProps} from "../../interfaces"
 import RankArt from "./visuals/RankArt"
 
-export default class Rank extends React.Component<RankProps, void> {
+export default class Rank extends React.Component<RankProps, {}> {
     public render(): JSX.Element {
         if (this.props.rank > 0) {
             return (
