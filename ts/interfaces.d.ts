@@ -166,30 +166,6 @@ export interface KeybindingProps {
 	enableKeybindings?: boolean;
 }
 
-export interface GameWidgetProps extends AssetDirectoryProps, CardArtDirectory, EventHandlerProps, LocaleProps, KeybindingProps, React.ClassAttributes<GameWidget> {
-	sink: GameStateSink;
-	startupTime: number;
-	interaction?: InteractiveBackend;
-	scrubber?: StreamScrubber;
-	getImageURL?: (cardId: string) => string;
-	exitGame?: () => void;
-	cardOracle?: CardOracle;
-	mulliganOracle?: MulliganOracle;
-	width?: any;
-	height?: any;
-	debug?: boolean;
-	logger?: (error: Error) => void;
-	startRevealed?: boolean;
-	onToggleReveal?: (reveal: boolean) => void;
-	startSwapped?: boolean;
-	onToggleSwap?: (swap: boolean) => void;
-	onFullscreen?: (fullscreen: boolean) => void;
-	onReady?: () => void;
-	playerNames?: string[];
-	selectLocale?: (locale: string, loaded?: () => void) => void;
-	loadingError?: boolean;
-}
-
 export interface StreamScrubberInhibitor {
 	isInhibiting: () => boolean;
 }

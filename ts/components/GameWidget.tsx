@@ -1,5 +1,16 @@
 import * as React from "react";
-import {CardData, GameWidgetProps} from "../interfaces";
+import {
+	AssetDirectoryProps,
+	CardArtDirectory,
+	CardData,
+	CardOracle,
+	EventHandlerProps,
+	InteractiveBackend,
+	KeybindingProps,
+	LocaleProps,
+	MulliganOracle,
+	StreamScrubber,
+} from "../interfaces";
 import Scrubber from "./Scrubber";
 import EventLog from "./EventLog";
 import GameState from "../state/GameState";
@@ -9,6 +20,31 @@ import {Zone} from "../enums";
 import Entity from "../Entity";
 import {cookie} from "cookie_js";
 import screenfull from "screenfull";
+import GameStateSink from "../state/GameStateSink";
+
+export interface GameWidgetProps extends AssetDirectoryProps, CardArtDirectory, EventHandlerProps, LocaleProps, KeybindingProps, React.ClassAttributes<GameWidget> {
+	sink: GameStateSink;
+	startupTime: number;
+	interaction?: InteractiveBackend;
+	scrubber?: StreamScrubber;
+	getImageURL?: (cardId: string) => string;
+	exitGame?: () => void;
+	cardOracle?: CardOracle;
+	mulliganOracle?: MulliganOracle;
+	width?: any;
+	height?: any;
+	debug?: boolean;
+	logger?: (error: Error) => void;
+	startRevealed?: boolean;
+	onToggleReveal?: (reveal: boolean) => void;
+	startSwapped?: boolean;
+	onToggleSwap?: (swap: boolean) => void;
+	onFullscreen?: (fullscreen: boolean) => void;
+	onReady?: () => void;
+	playerNames?: string[];
+	selectLocale?: (locale: string, loaded?: () => void) => void;
+	loadingError?: boolean;
+}
 
 interface GameWidgetState {
 	gameState?: GameState;
@@ -49,7 +85,7 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 		};
 	}
 
-	public componentDidMount() {
+	componentDidMount() {
 		this.cb = this.setGameState.bind(this);
 		this.props.sink.once("gamestate", () => {
 			const showLog = !!+cookie.get("joust_event_log", "0");
@@ -62,7 +98,7 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 		});
 		this.props.sink.on("gamestate", this.cb.bind(this));
 		screenfull.onchange(() => {
-			if(screenfull.isFullscreen) {
+			if (screenfull.isFullscreen) {
 				this.onAttainFullscreen();
 			}
 			else {
@@ -104,7 +140,7 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 		}
 	}
 
-	protected componentWillUnmount() {
+	componentWillUnmount() {
 		this.props.sink.removeListener("gamestate", this.cb);
 		this.clearFullscreenErrorTimeout();
 		this.props.cardOracle.removeListener("cards", this.cardOracleCb);
@@ -163,7 +199,7 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 		let cardMap = null;
 		if (cards) {
 			if (!cards.length) {
-				console.error('Got invalid card data to metadata callback (expected card data array)');
+				console.error("Got invalid card data to metadata callback (expected card data array)");
 				return;
 			}
 			cardMap = Immutable.Map<string, CardData>();
@@ -183,8 +219,8 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 	 */
 	protected triggerResize() {
 		try {
-			let event = document.createEvent('UIEvents');
-			event.initUIEvent('resize', true, false, window, 0);
+			let event = document.createEvent("UIEvents");
+			event.initUIEvent("resize", true, false, window, 0);
 			window.dispatchEvent(event);
 		} catch (e) {
 		}
@@ -220,9 +256,11 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 		let parts = [];
 
 		if (this.props.exitGame) {
-			parts.push(<div id="joust-quit" key="exit"><a href="#"
-														  onClick={this.onClickExit.bind(this) }>Exit Game</a>
-			</div>);
+			parts.push(
+				<div id="joust-quit" key="exit">
+					<a href="#" onClick={this.onClickExit.bind(this)}>Exit Game</a>
+				</div>
+			);
 		}
 
 		let isSwapped = this.swapPlayers !== this.state.swapPlayers /* XOR */;
@@ -265,8 +303,8 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 				scrubber={this.props.scrubber}
 				swapPlayers={() => {
 					let newSwap = !this.state.swapPlayers;
-					this.setState({ swapPlayers: newSwap });
-					if(this.props.onToggleSwap) {
+					this.setState({swapPlayers: newSwap});
+					if (this.props.onToggleSwap) {
 						this.props.onToggleSwap(newSwap);
 					}
 				}}
@@ -279,21 +317,21 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 				isRevealingCards={this.state.isRevealingCards}
 				canRevealCards={!!this.state.cardOracle}
 				onClickHideCards={() => {
-					this.setState({ isRevealingCards: false });
-					if(this.props.onToggleReveal) {
+					this.setState({isRevealingCards: false});
+					if (this.props.onToggleReveal) {
 						this.props.onToggleReveal(false);
 					}
 				}}
 				onClickRevealCards={() => {
-					this.setState({ isRevealingCards: true });
-					if(this.props.onToggleReveal) {
+					this.setState({isRevealingCards: true});
+					if (this.props.onToggleReveal) {
 						this.props.onToggleReveal(true);
 					}
 				}}
 				isLogVisible={this.state.isLogVisible}
 				toggleLog={() => {
 					const newState = !this.state.isLogVisible;
-					this.setState({ isLogVisible: newState, isLogMounted: true });
+					this.setState({isLogVisible: newState, isLogMounted: true});
 					cookie.set("joust_event_log", "" + (+newState), {
 						expires: 365, // one year
 						path: "/",
@@ -301,27 +339,30 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 				}}
 				enableKeybindings={this.props.enableKeybindings}
 				locale={this.props.locale}
-				onSelectLocale={this.props.selectLocale && ((locale: string, loaded?: () => void) => this.props.selectLocale(locale, loaded))}
+				onSelectLocale={this.props.selectLocale && ((
+					locale: string,
+					loaded?: () => void
+				) => this.props.selectLocale(locale, loaded))}
 			/>);
 		}
 
 		let style = {};
 		if (!this.state.isFullscreen) {
 			if (this.props.width) {
-				style['width'] = this.props.width;
+				style["width"] = this.props.width;
 			}
 			if (this.props.height) {
-				style['height'] = this.props.height;
+				style["height"] = this.props.height;
 			}
 		}
 
-		let classes = ['joust-widget', 'game-widget'];
+		let classes = ["joust-widget", "game-widget"];
 		if (this.state.isFullscreen) {
-			classes.push('joust-fullscreen');
+			classes.push("joust-fullscreen");
 		}
 
 		return (
-			<div className={classes.join(' ')} ref={(ref) => this.ref = ref} style={style}
+			<div className={classes.join(" ")} ref={(ref) => this.ref = ref} style={style}
 				 onContextMenu={(e) => e.preventDefault()}>
 				{parts}
 			</div>
