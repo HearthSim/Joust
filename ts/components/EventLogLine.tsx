@@ -22,8 +22,8 @@ export default class EventLogLine extends React.Component<EventLogLineProps, Eve
 		}
 	}
 
-	public shouldComponentUpdate(nextProps:EventLogLineProps) {
-		let hasEntity = nextProps.entityId || nextProps.targetId;
+	shouldComponentUpdate(nextProps:EventLogLineProps) {
+		let hasEntity = !!(nextProps.entityId || nextProps.targetId);
 		return (
 			this.props.inactive !== nextProps.inactive ||
 			(this.props.cards !== nextProps.cards && hasEntity) ||
@@ -39,7 +39,7 @@ export default class EventLogLine extends React.Component<EventLogLineProps, Eve
 		);
 	}
 
-	public componentWillReceiveProps(nextProps:EventLogLineProps):void {
+	componentWillReceiveProps(nextProps:EventLogLineProps) {
 		let changes = {} as EventLogLineState;
 		if (this.props.entityId !== nextProps.entityId) {
 			changes.entityData = this.lookupEntity(nextProps.entityId);
