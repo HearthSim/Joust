@@ -10,11 +10,9 @@ cache:
 jobs:
   include:
     - stage: deploy
+      if: branch = master AND type = push
       node_js: 8
       env: NODE_ENV=production
-      branches:
-        only:
-          - master
       install:
         - npm install -g gulp webpack yarn
         - yarn --pure-lockfile
