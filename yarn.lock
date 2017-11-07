@@ -2566,9 +2566,9 @@ hawk@~3.1.3:
     hoek "2.x.x"
     sntp "1.x.x"
 
-hearthstonejson@^0.6.3:
-  version "0.6.6"
-  resolved "https://registry.yarnpkg.com/hearthstonejson/-/hearthstonejson-0.6.6.tgz#72870cd953b474c05faccb673a4716031126990b"
+hearthstonejson@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/hearthstonejson/-/hearthstonejson-0.7.0.tgz#1a5130b3cc186cfe02d14992c62917d065a60c51"
   dependencies:
     isomorphic-fetch "^2.2.1"
 
