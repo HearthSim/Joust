@@ -43,18 +43,9 @@ Joust does not do any polyfilling and expects the globals Promise and fetch to b
 
 ## Development
 
-Watch TypeScript with Webpack:
-
 ```
-webpack -d --watch
+yarn run dev
 ```
-
-Watch HTML and LESS:
-
-```
-gulp watch
-```
-
 
 ## License
 
