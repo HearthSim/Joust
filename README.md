@@ -16,8 +16,8 @@ Hearthstone replays in your browser, written in Typescript with React.
 ## Building
 
 ```
-yarn --pure-lockfile
-gulp compile
+$ yarn --pure-lockfile
+$ gulp compile
 ```
 
 
@@ -44,7 +44,7 @@ Joust does not do any polyfilling and expects the globals Promise and fetch to b
 ## Development
 
 ```
-yarn run dev
+$ yarn run dev
 ```
 
 ## License
