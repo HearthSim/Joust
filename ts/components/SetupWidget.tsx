@@ -1,4 +1,5 @@
 import * as React from "react";
+import * as fs from "fs";
 import HSReplayDecoder from "../protocol/HSReplayDecoder";
 import Websocket from "websocket-stream";
 import KettleDecoder from "../protocol/KettleDecoder";
@@ -15,6 +16,7 @@ import * as Stream from "stream";
 interface SetupWidgetProps extends React.ClassAttributes<SetupWidget> {
 	defaultHostname: string;
 	defaultPort: number;
+	autoloadReplay?: string;
 	onSetup: (sink: GameStateSink, interaction?: InteractiveBackend, scrubber?: GameStateScrubber, cardOracle?: CardOracle, mulliganOracle?: MulliganOracle) => void;
 }
 
@@ -39,6 +41,13 @@ export default class SetupWidget extends React.Component<SetupWidgetProps, Setup
 			secureWebsocket: true
 		}
 		this.forceWebsocket = (typeof Socket === 'undefined');
+	}
+
+	componentDidMount () {
+		const { autoloadReplay } = this.props
+		if (autoloadReplay) {
+			this.preloadReplay(autoloadReplay)
+		}		
 	}
 
 	public render(): JSX.Element {
@@ -95,6 +104,18 @@ export default class SetupWidget extends React.Component<SetupWidgetProps, Setup
 		}
 		this.setState({ working: true });
 		this.loadFile(file);
+	}
+
+	protected preloadReplay(file: string) {
+		this.setState({ working: true });
+		fs.readFile(file, "utf8", (err, data) => {
+  			if (err) {
+  				this.setState({ working: false })
+  				console.error(err)
+  				return
+  			}
+  			this.loadFile(new File([data], file));
+		});
 	}
 
 	protected loadFile(file: any): void {

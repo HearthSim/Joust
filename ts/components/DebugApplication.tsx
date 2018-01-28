@@ -23,13 +23,18 @@ interface DebugState {
 	locale?: string;
 }
 
-export default class DebugApplication extends React.Component<React.ClassAttributes<DebugApplication>, DebugState> {
+
+interface DebugProps extends React.ClassAttributes<DebugApplication> {
+	replay?: string;
+}
+
+export default class DebugApplication extends React.Component<DebugProps, DebugState> {
 
 	private gameWidget: GameWidget;
 	private hsjson: HearthstoneJSON;
 
-	constructor() {
-		super();
+	constructor(props:DebugProps) {
+		super(props);
 		this.state = {
 			currentWidget: Widget.SETUP,
 			cards: null,
@@ -48,9 +53,10 @@ export default class DebugApplication extends React.Component<React.ClassAttribu
 
 	public render(): JSX.Element {
 		let widget: JSX.Element = null;
+		const { replay } = this.props
 		switch (this.state.currentWidget) {
 			case Widget.SETUP:
-				widget = <SetupWidget defaultHostname="localhost" defaultPort={9111}
+				widget = <SetupWidget defaultHostname="localhost" defaultPort={9111} autoloadReplay={replay}
 									  onSetup={this.onSetup.bind(this) } />;
 				break;
 			case Widget.GAME:
