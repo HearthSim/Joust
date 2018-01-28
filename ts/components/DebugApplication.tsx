@@ -57,7 +57,7 @@ export default class DebugApplication extends React.Component<DebugProps, DebugS
 		switch (this.state.currentWidget) {
 			case Widget.SETUP:
 				widget = <SetupWidget defaultHostname="localhost" defaultPort={9111} autoloadReplay={replay}
-									  onSetup={this.onSetup.bind(this) } />;
+									onSetup={this.onSetup.bind(this) } />;
 				break;
 			case Widget.GAME:
 				widget =

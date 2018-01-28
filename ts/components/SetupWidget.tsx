@@ -47,14 +47,14 @@ export default class SetupWidget extends React.Component<SetupWidgetProps, Setup
 		const { autoloadReplay } = this.props
 		if (autoloadReplay) {
 			this.preloadReplay(autoloadReplay)
-		}		
+		}
 	}
 
 	public render(): JSX.Element {
 		let hsreplay = <section>
 			<h2>HSReplay</h2>
 			<input type="file" accept="application/vnd.hearthsim-hsreplay+xml,application/xml"
-				   onChange={this.onSelectFile.bind(this) } disabled={this.state.working}/>
+				onChange={this.onSelectFile.bind(this) } disabled={this.state.working}/>
 		</section>;
 
 		let kettle = <section>
@@ -66,7 +66,7 @@ export default class SetupWidget extends React.Component<SetupWidgetProps, Setup
 										onChange={this.onChangePort.bind(this) }
 										disabled={this.state.working}/></label>
 				<label>Websocket<br /><input type="checkbox" checked={this.state.websocket || this.forceWebsocket}
-											 onChange={this.onChangeWebsocket.bind(this) } disabled={this.forceWebsocket}/></label>
+											onChange={this.onChangeWebsocket.bind(this) } disabled={this.forceWebsocket}/></label>
 				<label>Secure Websocket<br /><input type="checkbox" checked={this.state.secureWebsocket && this.state.websocket}
 													onChange={this.onChangeSecureWebsocket.bind(this) } disabled={!this.state.websocket}/></label>
 				<button type="submit" disabled={this.state.working}>Connect</button>
@@ -109,12 +109,12 @@ export default class SetupWidget extends React.Component<SetupWidgetProps, Setup
 	protected preloadReplay(file: string) {
 		this.setState({ working: true });
 		fs.readFile(file, "utf8", (err, data) => {
-  			if (err) {
-  				this.setState({ working: false })
-  				console.error(err)
-  				return
-  			}
-  			this.loadFile(new File([data], file));
+		if (err) {
+			this.setState({ working: false })
+			console.error(err)
+			return
+		}
+		this.loadFile(new File([data], file));
 		});
 	}
 
