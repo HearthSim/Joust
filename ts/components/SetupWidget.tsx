@@ -1,4 +1,5 @@
 import * as React from "react";
+import * as fs from "fs";
 import HSReplayDecoder from "../protocol/HSReplayDecoder";
 import Websocket from "websocket-stream";
 import KettleDecoder from "../protocol/KettleDecoder";
@@ -15,6 +16,7 @@ import * as Stream from "stream";
 interface SetupWidgetProps extends React.ClassAttributes<SetupWidget> {
 	defaultHostname: string;
 	defaultPort: number;
+	autoloadReplay?: string;
 	onSetup: (sink: GameStateSink, interaction?: InteractiveBackend, scrubber?: GameStateScrubber, cardOracle?: CardOracle, mulliganOracle?: MulliganOracle) => void;
 }
 
@@ -41,11 +43,18 @@ export default class SetupWidget extends React.Component<SetupWidgetProps, Setup
 		this.forceWebsocket = (typeof Socket === 'undefined');
 	}
 
+	componentDidMount () {
+		const { autoloadReplay } = this.props
+		if (autoloadReplay) {
+			this.preloadReplay(autoloadReplay)
+		}
+	}
+
 	public render(): JSX.Element {
 		let hsreplay = <section>
 			<h2>HSReplay</h2>
 			<input type="file" accept="application/vnd.hearthsim-hsreplay+xml,application/xml"
-				   onChange={this.onSelectFile.bind(this) } disabled={this.state.working}/>
+				onChange={this.onSelectFile.bind(this) } disabled={this.state.working}/>
 		</section>;
 
 		let kettle = <section>
@@ -57,7 +66,7 @@ export default class SetupWidget extends React.Component<SetupWidgetProps, Setup
 										onChange={this.onChangePort.bind(this) }
 										disabled={this.state.working}/></label>
 				<label>Websocket<br /><input type="checkbox" checked={this.state.websocket || this.forceWebsocket}
-											 onChange={this.onChangeWebsocket.bind(this) } disabled={this.forceWebsocket}/></label>
+											onChange={this.onChangeWebsocket.bind(this) } disabled={this.forceWebsocket}/></label>
 				<label>Secure Websocket<br /><input type="checkbox" checked={this.state.secureWebsocket && this.state.websocket}
 													onChange={this.onChangeSecureWebsocket.bind(this) } disabled={!this.state.websocket}/></label>
 				<button type="submit" disabled={this.state.working}>Connect</button>
@@ -95,6 +104,18 @@ export default class SetupWidget extends React.Component<SetupWidgetProps, Setup
 		}
 		this.setState({ working: true });
 		this.loadFile(file);
+	}
+
+	protected preloadReplay(file: string) {
+		this.setState({ working: true });
+		fs.readFile(file, "utf8", (err, data) => {
+		if (err) {
+			this.setState({ working: false })
+			console.error(err)
+			return
+		}
+		this.loadFile(new File([data], file));
+		});
 	}
 
 	protected loadFile(file: any): void {

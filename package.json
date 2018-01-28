@@ -68,6 +68,7 @@
   },
   "devDependencies": {
     "concurrently": "^3.5.1",
+    "electron": "^1.7.11",
     "jasmine": "^2.5.3",
     "karma": "^1.5.0",
     "karma-jasmine": "^1.1.0",
