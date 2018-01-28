@@ -23,6 +23,8 @@ interface ScrubberProps extends KeybindingProps, LocaleProps, React.ClassAttribu
 	isLogVisible?: boolean;
 	toggleLog?: () => void;
 	onSelectLocale?: (locale: string, loaded?: () => void) => void;
+	replayBlob?: Blob;
+	replayFilename?: string;
 }
 
 interface ScrubberState {
@@ -316,6 +318,8 @@ export default class Scrubber extends React.Component<ScrubberProps, ScrubberSta
 					isLogVisible={this.props.isLogVisible}
 					onToggleLog={() => this.props.toggleLog()}
 					onClose={() => this.setState({isShowingSettings: false})}
+					replayBlob={this.props.replayBlob}
+					replayFilename={this.props.replayFilename}
 				/>}
 				{settingsToggle}
 				{fullscreenToggle}

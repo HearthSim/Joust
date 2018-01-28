@@ -44,6 +44,8 @@ export interface GameWidgetProps extends AssetDirectoryProps, CardArtDirectory, 
 	playerNames?: string[];
 	selectLocale?: (locale: string, loaded?: () => void) => void;
 	loadingError?: boolean;
+	replayBlob?: Blob;
+	replayFilename?: string;
 }
 
 interface GameWidgetState {
@@ -343,6 +345,8 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 					locale: string,
 					loaded?: () => void
 				) => this.props.selectLocale(locale, loaded))}
+				replayBlob={this.props.replayBlob}
+				replayFilename={this.props.replayFilename}
 			/>);
 		}
 

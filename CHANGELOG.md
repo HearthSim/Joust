@@ -9,6 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Add Quest frame art
 - Support Shifting Blade
 - Show Quests above hero portrait
+- Add Download XML from settings (#210, @dzannotti)
 
 ### Changed
 - Tweak art for legendary minions in hand

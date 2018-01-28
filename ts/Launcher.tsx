@@ -50,6 +50,8 @@ export default class Launcher {
 					loaded && loaded();
 				});
 			},
+			replayBlob: null,
+			replayFilename: null,
 			enableKeybindings: true,
 		} as any;
 		this.opts.assetDirectory = (asset) => "assets/" + asset;
@@ -309,6 +311,8 @@ export default class Launcher {
 
 		result.then((payload: string) => {
 			let components = [decoder, tracker, scrubber, preloader];
+			this.opts.replayBlob = new Blob([payload], { type : 'application/xml' })
+			this.opts.replayFilename = url.substr(url.lastIndexOf('/') + 1) + '.hreplay.xml'
 			components.forEach((component: EventEmitter) => {
 				component.on("error", this.log.bind(this));
 			});

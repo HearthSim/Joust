@@ -5,11 +5,29 @@ interface SettingsProps extends React.ClassAttributes<Settings> {
 	locale: string;
 	onSelectLocale?: (locale: string, loaded?: () => void) => void;
 	isLogVisible: boolean;
+	replayBlob?: Blob;
+	replayFilename?: string;
 	onToggleLog: () => void;
 	onClose?: () => void;
 }
 
 export default class Settings extends React.Component<SettingsProps, {}> {
+
+	protected downloadXML() {
+		const { replayBlob, replayFilename } = this.props
+		const blobURL = window.URL.createObjectURL(replayBlob);
+		const tempLink = document.createElement('a');
+		tempLink.style.display = 'none';
+		tempLink.href = blobURL;
+		tempLink.setAttribute('download', replayFilename);
+		if (typeof tempLink.download === 'undefined') {
+			tempLink.setAttribute('target', '_blank');
+		}
+		document.body.appendChild(tempLink);
+		tempLink.click();
+		document.body.removeChild(tempLink);
+		window.URL.revokeObjectURL(blobURL);
+	}
 
 	public render(): JSX.Element {
 		const release = JOUST_RELEASE;
@@ -41,6 +59,11 @@ export default class Settings extends React.Component<SettingsProps, {}> {
 						<span>Show Event Log</span>
 					</label>
 				</section>
+				{this.props.replayBlob &&
+					<section>
+						<a onClick={() => this.downloadXML()}>Download XML</a>
+					</section>
+				}
 				<footer>
 					<a href="https://github.com/HearthSim/Joust/issues" target="_blank">Report Issue</a>
 					<a href="https://hearthsim.info/joust/" target="_blank" title={release ? "Joust " + release : null}>About</a>

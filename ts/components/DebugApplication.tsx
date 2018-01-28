@@ -21,6 +21,8 @@ interface DebugState {
 	cardOracle?: CardOracle;
 	mulliganOracle?: MulliganOracle;
 	locale?: string;
+	replayBlob?: Blob;
+	replayFilename?: string;
 }
 
 
@@ -44,6 +46,8 @@ export default class DebugApplication extends React.Component<DebugProps, DebugS
 			cardOracle: null,
 			mulliganOracle: null,
 			locale: "enUS",
+			replayBlob: null,
+			replayFilename: null
 		};
 	}
 
@@ -77,6 +81,8 @@ export default class DebugApplication extends React.Component<DebugProps, DebugS
 						selectLocale={(locale: string, cb: () => void) => {
 							this.loadLocale(locale, cb);
 						}}
+						replayBlob={this.state.replayBlob}
+						replayFilename={this.state.replayFilename}
 					/>;
 				break;
 		}
@@ -107,7 +113,7 @@ export default class DebugApplication extends React.Component<DebugProps, DebugS
 		}
 	}
 
-	protected onSetup(sink: GameStateSink, interaction?: InteractiveBackend, scrubber?: GameStateScrubber, cardOracle?: CardOracle, mulliganOracle?: MulliganOracle): void {
+	protected onSetup(sink: GameStateSink, replayBlob: Blob, replayFilename: string, interaction?: InteractiveBackend, scrubber?: GameStateScrubber, cardOracle?: CardOracle, mulliganOracle?: MulliganOracle): void {
 		this.setState({
 			currentWidget: Widget.GAME,
 			sink: sink,
@@ -115,6 +121,8 @@ export default class DebugApplication extends React.Component<DebugProps, DebugS
 			scrubber: scrubber,
 			cardOracle: cardOracle,
 			mulliganOracle: mulliganOracle,
+			replayFilename,
+			replayBlob
 		});
 	}
 

@@ -17,7 +17,7 @@ interface SetupWidgetProps extends React.ClassAttributes<SetupWidget> {
 	defaultHostname: string;
 	defaultPort: number;
 	autoloadReplay?: string;
-	onSetup: (sink: GameStateSink, interaction?: InteractiveBackend, scrubber?: GameStateScrubber, cardOracle?: CardOracle, mulliganOracle?: MulliganOracle) => void;
+	onSetup: (sink: GameStateSink, replayBlob?: Blob, replayFilename?: string, interaction?: InteractiveBackend, scrubber?: GameStateScrubber, cardOracle?: CardOracle, mulliganOracle?: MulliganOracle) => void;
 }
 
 interface SetupWidgetState {
@@ -142,7 +142,7 @@ export default class SetupWidget extends React.Component<SetupWidgetProps, Setup
 			.pipe(new GameStateSink()); // gamestate
 
 
-		this.props.onSetup(sink, null, scrubber, decoder, decoder);
+		this.props.onSetup(sink, file, file.name, null, scrubber, decoder, decoder);
 	}
 
 	protected onSubmitKettle(e): void {
@@ -184,7 +184,7 @@ export default class SetupWidget extends React.Component<SetupWidgetProps, Setup
 
 		socket.on('connect', () => {
 			interaction.startGame();
-			this.props.onSetup(sink, interaction);
+			this.props.onSetup(sink, null, null, interaction);
 		});
 
 		socket.on('error', (e) => {
