@@ -39,6 +39,7 @@
     "bowser": "^1.6.0",
     "cookie_js": "^1.2.2",
     "cssnano": "^3.10.0",
+    "electron": "^1.7.11",
     "filereader-stream": "^1.0.0",
     "git-describe": "^4.0.1",
     "gulp": "^3.9.1",
@@ -68,7 +69,6 @@
   },
   "devDependencies": {
     "concurrently": "^3.5.1",
-    "electron": "^1.7.11",
     "jasmine": "^2.5.3",
     "karma": "^1.5.0",
     "karma-jasmine": "^1.1.0",
