@@ -1,11 +1,12 @@
 import * as React from "react";
+import * as Immutable from "immutable";
 import {EntityListProps} from "../../interfaces";
 import Entity from "../../Entity";
 import Option from "../../Option";
 
 abstract class EntityList<T extends EntityListProps> extends React.Component<T, {}> {
 
-	protected renderEntity(entity: Entity, option: Option, index?: number) {
+	protected renderEntity(entity: Entity, option: Option, index?: number, entities?: Immutable.Map<number, Immutable.Map<number, Entity>>) {
 		let id = entity.cardId ? (' (CardID=' + entity.cardId + ')') : '';
 		return (<span>Entity #{entity.id }{id}</span>);
 	}
@@ -25,7 +26,7 @@ abstract class EntityList<T extends EntityListProps> extends React.Component<T, 
 			this.beforeRender(entities.count());
 			entities.forEach((entity, i) => {
 				let option = this.props.options ? this.props.options.get(entity.id) : null;
-				let rendered = this.renderEntity(entity, option, i);
+				let rendered = this.renderEntity(entity, option, i, this.props.gameEntities);
 				if(!rendered) {
 					return;
 				}

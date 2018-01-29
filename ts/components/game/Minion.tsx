@@ -1,4 +1,5 @@
 import * as React from "react";
+import * as Immutable from "immutable";
 import EntityInPlay from "./EntityInPlay";
 import {EntityInPlayProps} from "../../interfaces";
 import {GameTag, MetaDataType} from "../../enums";
@@ -8,11 +9,18 @@ import Health from "./stats/Health";
 import Damage from "./stats/Damage";
 import Healing from "./stats/Healing";
 import MetaData from "../../MetaData";
+import Entity from "../../Entity";
+import { findCreator } from "./Utils";
 import GameStateDescriptor from "../../state/GameStateDescriptor";
 import Card from "./Card";
 import { CardData } from "hearthstonejson-client";
 
-export default class Minion extends EntityInPlay<EntityInPlayProps> {
+interface MinionProps extends EntityInPlayProps {
+	creator?: Entity;
+	gameEntities?: Immutable.Map<number, Immutable.Map<number, Entity>>;
+}
+
+export default class Minion extends EntityInPlay<MinionProps> {
 
 	constructor() {
 		super("minion");
@@ -29,6 +37,12 @@ export default class Minion extends EntityInPlay<EntityInPlayProps> {
 
 		let damage = 0;
 		let healing = 0;
+
+		let creator = null;
+		const creatorId = entity.getTag(GameTag.DISPLAYED_CREATOR);
+		if (creatorId) {
+			creator = findCreator(creatorId, this.props.gameEntities)
+		}
 
 		if (this.props.descriptors) {
 			this.props.descriptors.forEach((descriptor:GameStateDescriptor) => {
@@ -77,6 +91,7 @@ export default class Minion extends EntityInPlay<EntityInPlayProps> {
 			components.push(<div key="hover" className="mouse-over">
 				<Card
 					entity={entity}
+					creator={creator}
 					assetDirectory={this.props.assetDirectory}
 					cards={this.props.cards}
 					isHidden={false}

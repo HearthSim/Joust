@@ -24,6 +24,7 @@ export interface EntityListProps extends OptionCallbackProps, ControllerProps, C
 	entities: Immutable.Iterable<number, Entity>;
 	options?: Immutable.Iterable<number, Option>;
 	isTop?: boolean;
+	gameEntities?: Immutable.Map<number, Immutable.Map<number, Entity>>;
 }
 
 export interface ControllerProps {

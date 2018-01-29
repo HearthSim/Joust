@@ -26,6 +26,7 @@ import {
 	HideCardsProps,
 	MulliganOracleProps
 } from "../../interfaces";
+import { findCreator } from "./Utils";
 import GameStateDescriptor from "../../state/GameStateDescriptor";
 
 interface PlayerProps extends OptionCallbackProps, CardDataProps, CardOracleProps, MulliganOracleProps, AssetDirectoryProps,
@@ -119,13 +120,7 @@ export default class Player extends React.Component<PlayerProps, {}> {
 								let creator = null;
 								const creatorId = entity.getTag(GameTag.DISPLAYED_CREATOR);
 								if (creatorId) {
-									this.props.entities.forEach((map: Immutable.Map<number, Entity>) => {
-										map.forEach((toCompare: Entity) => {
-											if (toCompare.id === creatorId) {
-												creator = toCompare;
-											}
-										});
-									});
+									creator = findCreator(creatorId, this.props.entities);
 								}
 								action = <div className="played"><Card
 									entity={entity}
@@ -199,6 +194,7 @@ export default class Player extends React.Component<PlayerProps, {}> {
 
 		let field = <Field
 			entities={playEntities.filter(filterByCardType(CardType.MINION)) || emptyEntities}
+			gameEntities={this.props.entities}
 			options={playOptions || emptyOptions}
 			optionCallback={this.props.optionCallback}
 			cards={this.props.cards}
