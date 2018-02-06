@@ -1,5 +1,5 @@
 import {EventEmitter} from "events";
-import HearthstoneJSON from "hearthstonejson";
+import HearthstoneJSON from "hearthstonejson-client";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import GameWidget, {GameWidgetProps} from "./components/GameWidget";

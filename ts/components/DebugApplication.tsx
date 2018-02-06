@@ -1,7 +1,7 @@
 import * as React from "react";
 import SetupWidget from "./SetupWidget";
 import GameWidget from "./GameWidget";
-import HearthstoneJSON from "hearthstonejson";
+import HearthstoneJSON from "hearthstonejson-client";
 import {InteractiveBackend, MulliganOracle, CardOracle, CardData} from "../interfaces";
 import GameStateSink from "../state/GameStateSink";
 import GameStateScrubber from "../state/GameStateScrubber";
