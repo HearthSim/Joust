@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as Immutable from "immutable";
 import * as _ from "lodash";
-import {CardData, EntityProps, OptionProps} from "../../interfaces";
+import {EntityProps, OptionProps} from "../../interfaces";
 import Attack from "./stats/Attack";
 import Entity from "../../Entity";
 import Health from "./stats/Health";
@@ -9,6 +9,7 @@ import Cost from "./stats/Cost";
 import InHandCardArt from "./visuals/InHandCardArt";
 import {CardClass, CardType, GameTag} from "../../enums";
 import Durability from "./stats/Durability";
+import { CardData } from "hearthstonejson-client";
 
 interface CardProps extends EntityProps, OptionProps, React.ClassAttributes<Card> {
 	style?: any;
@@ -124,7 +125,7 @@ export default class Card extends React.Component<CardProps, {}> {
 				}
 			}
 			if (!cardClass) {
-				switch (data.playerClass) {
+				switch (data.cardClass) {
 					case "DRUID":
 						cardClass = CardClass.DRUID;
 						break;

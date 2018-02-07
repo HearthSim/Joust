@@ -1,7 +1,7 @@
 import * as React from "react";
 import {CardType, GameTag} from "../../../enums";
 import CardArt from "./CardArt";
-import {EntityProps, CardData} from "../../../interfaces";
+import {EntityProps} from "../../../interfaces";
 
 export default class InPlayCardArt extends React.Component<EntityProps, {}> {
 

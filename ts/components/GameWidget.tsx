@@ -2,7 +2,6 @@ import * as React from "react";
 import {
 	AssetDirectoryProps,
 	CardArtDirectory,
-	CardData,
 	CardOracle,
 	EventHandlerProps,
 	InteractiveBackend,
@@ -21,6 +20,7 @@ import Entity from "../Entity";
 import {cookie} from "cookie_js";
 import screenfull from "screenfull";
 import GameStateSink from "../state/GameStateSink";
+import { CardData } from "hearthstonejson-client";
 
 export interface GameWidgetProps extends AssetDirectoryProps, CardArtDirectory, EventHandlerProps, LocaleProps, KeybindingProps, React.ClassAttributes<GameWidget> {
 	sink: GameStateSink;

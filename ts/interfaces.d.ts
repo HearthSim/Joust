@@ -9,6 +9,7 @@ import Player from "./Player";
 import GameStateDescriptor from "./state/GameStateDescriptor";
 import GameWidget from "./components/GameWidget";
 import * as Immutable from "immutable";
+import { CardData } from "hearthstonejson-client";
 
 export interface EntityInPlayProps extends EntityProps, OptionProps, GameStateDescriptorStackProps, React.ClassAttributes<any> {
 	isTarget?: boolean;
@@ -90,40 +91,6 @@ export interface StreamScrubber extends EventEmitter {
 	nextAction(): void;
 	previousAction(): void;
 	hasEnded(): boolean;
-}
-
-export interface CardData {
-	id?: string;
-
-	// enums
-	rarity?: string;
-	faction?: string;
-	set?: string;
-	playerClass?: string;
-	type?: string;
-	race?: string;
-
-	// localized
-	name?: string;
-	text?: string;
-	collectionText?: string;
-	flavor?: string;
-	howToEarn?: string;
-	howToEarnGolden?: string;
-	targetingArrowText?: string;
-	textInPlay?: string;
-
-	// additional
-	collectible?: boolean;
-	cost?: number;
-	attack?: number;
-	health?: number;
-	durability?: number;
-	dust?: number[];
-
-	mechanics?: string[]; // enum
-	artist?: string;
-	texture?: string;
 }
 
 export interface CardDataProps {

@@ -1,6 +1,6 @@
 import * as React from "react";
 import EntityInPlay from "./EntityInPlay";
-import {EntityInPlayProps, CardData} from "../../interfaces";
+import {EntityInPlayProps} from "../../interfaces";
 import {GameTag, MetaDataType} from "../../enums";
 import InPlayCardArt from "./visuals/InPlayCardArt";
 import Attack from "./stats/Attack";
@@ -10,11 +10,12 @@ import Healing from "./stats/Healing";
 import MetaData from "../../MetaData";
 import GameStateDescriptor from "../../state/GameStateDescriptor";
 import Card from "./Card";
+import { CardData } from "hearthstonejson-client";
 
 export default class Minion extends EntityInPlay<EntityInPlayProps> {
 
 	constructor() {
-		super('minion');
+		super("minion");
 	}
 
 	public jsx() {
@@ -65,11 +66,11 @@ export default class Minion extends EntityInPlay<EntityInPlayProps> {
 			<div key="stats" className="stats">
 				{entity.getTag(GameTag.HIDE_STATS) == 0 ? [
 					<Attack key="attack" attack={entity.getAtk()} default={data.attack}/>,
-					<Health key="health" health={entity.getHealth()} damage={entity.getDamage()} default={data.health}/>
+					<Health key="health" health={entity.getHealth()} damage={entity.getDamage()} default={data.health}/>,
 				] : null}
 				{damage != 0 ? <Damage damage={damage}/> : null}
 				{healing != 0 ? <Healing healing={healing}/> : null}
-			</div>
+			</div>,
 		];
 
 		if (this.state.isHovering) {

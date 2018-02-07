@@ -1,6 +1,7 @@
 import * as React from "react";
-import {CardDataProps, CardOracleProps, CardData, EventLogItemData, LineType} from "../interfaces";
+import {CardDataProps, CardOracleProps, EventLogItemData, LineType} from "../interfaces";
 import EventLogCard from "./EventLogCard";
+import { CardData } from "hearthstonejson-client";
 
 interface EventLogLineProps extends CardDataProps, CardOracleProps, EventLogItemData, React.ClassAttributes<EventLogLine> {
 	inactive:boolean;

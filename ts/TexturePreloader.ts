@@ -1,5 +1,4 @@
 import * as Stream from "stream";
-import {CardData} from "./interfaces";
 import Entity from "./Entity";
 
 export default class TexturePreloader extends Stream.Writable {

@@ -1,9 +1,9 @@
 import {EventEmitter} from "events";
-import HearthstoneJSON from "hearthstonejson-client";
+import HearthstoneJSON, { CardData } from "hearthstonejson-client";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import GameWidget, {GameWidgetProps} from "./components/GameWidget";
-import {CardData, JoustEventHandler} from "./interfaces";
+import {JoustEventHandler} from "./interfaces";
 import HSReplayDecoder from "./protocol/HSReplayDecoder";
 import GameStateScrubber from "./state/GameStateScrubber";
 import GameStateSink from "./state/GameStateSink";
