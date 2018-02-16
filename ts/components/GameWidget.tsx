@@ -77,7 +77,7 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 			gameState: null,
 			swapPlayers: !!this.props.startSwapped,
 			isFullscreen: false,
-			isFullscreenAvailable: screenfull.enabled,
+			isFullscreenAvailable: screenfull && screenfull.enabled,
 			fullscreenError: false,
 			isRevealingCards: typeof this.props.startRevealed === "undefined" ? true : this.props.startRevealed,
 			cardOracle: Immutable.Map<number, string>(),
@@ -99,21 +99,23 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 			}
 		});
 		this.props.sink.on("gamestate", this.cb.bind(this));
-		screenfull.onchange(() => {
-			if (screenfull.isFullscreen) {
-				this.onAttainFullscreen();
-			}
-			else {
-				this.onReleaseFullscreen();
-			}
-		});
-		screenfull.onerror(() => {
-			this.setState({fullscreenError: true});
-			this.clearFullscreenErrorTimeout();
-			this.fullscreenErrorTimeout = window.setTimeout(() => {
-				this.setState({fullscreenError: false});
-			}, 3000);
-		});
+		if (this.state.isFullscreenAvailable) {
+			screenfull.onchange(() => {
+				if (screenfull.isFullscreen) {
+					this.onAttainFullscreen();
+				}
+				else {
+					this.onReleaseFullscreen();
+				}
+			});
+			screenfull.onerror(() => {
+				this.setState({ fullscreenError: true });
+				this.clearFullscreenErrorTimeout();
+				this.fullscreenErrorTimeout = window.setTimeout(() => {
+					this.setState({ fullscreenError: false });
+				}, 3000);
+			});
+		}
 		this.cardOracleCb = this.updateCardOracle.bind(this);
 		this.mulliganOracleCb = this.updateMulliganOracle.bind(this);
 		if (this.props.cardOracle) {
@@ -182,10 +184,16 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 	}
 
 	public enterFullscreen() {
+		if (!this.state.isFullscreenAvailable) {
+			return;
+		}
 		screenfull.request(this.ref);
 	}
 
 	public exitFullscreen() {
+		if (!this.state.isFullscreenAvailable) {
+			return;
+		}
 		screenfull.exit();
 	}
 
