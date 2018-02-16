@@ -61,8 +61,8 @@
     "screenfull": "^3.1.0",
     "sentry-api": "^0.1.1",
     "through2": "^2.0.3",
-    "ts-loader": "^2.0.3",
-    "typescript": "^2.4.2",
+    "ts-loader": "^3.5.0",
+    "typescript": "^2.7.2",
     "webpack": "^3.5.5",
     "webpack-stream": "^4.0.0",
     "websocket-stream": "^5.0.1"
