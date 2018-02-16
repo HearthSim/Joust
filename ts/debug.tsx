@@ -11,7 +11,7 @@ export function renderApplication(target: string) {
 	// electron argv follows bash/c++ ones [electronpath, arg1 ("." in our case), <optionalreplayname>]
 	const replayName = process.argv.length > 2 ? process.argv[2] : null;
 	ReactDOM.render(
-		<DebugApplication replay={replayName} />,
+		<DebugApplication replay={replayName} /> as any,
 		document.getElementById(target)
 	);
 }
