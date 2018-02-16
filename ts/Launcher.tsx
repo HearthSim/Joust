@@ -264,7 +264,10 @@ export default class Launcher {
 		}
 	}
 
-	public get fullscreenSupported(): boolean {
+	public get fullscreenSupported(): boolean | null {
+		if (!this.ref) {
+			return null;
+		}
 		return this.ref.isFullscreenAvailable();
 	}
 
@@ -288,7 +291,7 @@ export default class Launcher {
 		return this;
 	}
 
-	public fromUrl(url: string): Launcher {
+	public fromUrl(url: string, cb?: () => any): Launcher {
 		let decoder = new HSReplayDecoder();
 		decoder.debug = this.opts.debug;
 		let tracker = new GameStateTracker();
@@ -385,7 +388,7 @@ export default class Launcher {
 
 		this.opts.startupTime = +Date.now();
 		this.ready = true;
-		this.render();
+		this.render(cb);
 
 		this.track("starting_from_turn", {fromTurn: this.startFromTurn ? true : false, turn: +this.startFromTurn});
 
@@ -433,17 +436,22 @@ export default class Launcher {
 		});
 	}
 
-	protected render(): void {
+	protected render(cb?: () => any): void {
 		if (!this.ready) {
 			return;
 		}
 		ReactDOM.render(
 			<GameWidget {...Object.assign({}, this.opts, { ref: (ref) => this.ref = ref })} /> as any,
 			typeof this.target === "string" ? document.getElementById(this.target as string) : this.target,
+			() => {
+				if (this.cards) {
+					this.ref.setCards(this.cards);
+					this.cards = null;
+				}
+				if (typeof cb === "function") {
+					cb();
+				}
+			}
 		);
-		if (this.cards) {
-			this.ref.setCards(this.cards);
-			this.cards = null;
-		}
 	}
 }
