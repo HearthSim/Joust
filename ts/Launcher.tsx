@@ -438,7 +438,7 @@ export default class Launcher {
 			return;
 		}
 		ReactDOM.render(
-			<GameWidget {...this.opts} /> as any,
+			<GameWidget {...Object.assign({}, this.opts, { ref: (ref) => this.ref = ref })} /> as any,
 			typeof this.target === "string" ? document.getElementById(this.target as string) : this.target,
 		);
 		if (this.cards) {
