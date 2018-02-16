@@ -183,6 +183,10 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 		this.triggerResize();
 	}
 
+	public isFullscreenAvailable() {
+		return this.state.isFullscreenAvailable;
+	}
+
 	public enterFullscreen() {
 		if (!this.state.isFullscreenAvailable) {
 			return;

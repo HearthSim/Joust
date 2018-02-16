@@ -264,6 +264,10 @@ export default class Launcher {
 		}
 	}
 
+	public get fullscreenSupported(): boolean {
+		return this.ref.isFullscreenAvailable();
+	}
+
 	public enableKeybindings(): Launcher {
 		this.opts.enableKeybindings = true;
 		this.render();
