@@ -19,8 +19,8 @@ interface HeroProps extends EntityInPlayProps, CardOracleProps {
 }
 
 export default class Hero extends EntityInPlay<HeroProps> {
-	constructor() {
-		super('hero');
+	constructor(props: HeroProps, context?: any) {
+		super('hero', props, context);
 	}
 
 	protected jsx() {

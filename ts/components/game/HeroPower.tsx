@@ -11,8 +11,8 @@ interface HeroPowerProps extends EntityInPlayProps {
 }
 
 export default class HeroPower extends EntityInPlay<HeroPowerProps> {
-	constructor() {
-		super('heroPower');
+	constructor(props: HeroPowerProps, context?: any) {
+		super('heroPower', props, context);
 	}
 
 	protected playWithClick():boolean {

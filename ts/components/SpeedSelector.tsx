@@ -8,7 +8,7 @@ interface SpeedSelectorProps extends React.ClassAttributes<SpeedSelector> {
 	disabled?: boolean;
 }
 
-export default class SpeedSelector extends React.Component<SpeedSelectorProps, {}> {
+export default class SpeedSelector extends React.Component<SpeedSelectorProps> {
 
 	protected changeSpeed(e): void {
 		this.props.selectSpeed(+e.target.value);

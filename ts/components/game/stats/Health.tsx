@@ -6,7 +6,7 @@ interface HealthProps extends React.ClassAttributes<Health> {
 	default?: number;
 }
 
-export default class Health extends React.Component<HealthProps, {}> {
+export default class Health extends React.Component<HealthProps> {
 	public render(): JSX.Element {
 		let classNames = ['health'];
 		if (this.props.health !== null) {

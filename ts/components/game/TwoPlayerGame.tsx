@@ -24,7 +24,7 @@ interface TwoPlayerGameProps extends EntityProps, CardDataProps, CardOracleProps
 	endTurnOption?: Option;
 }
 
-export default class TwoPlayerGame extends React.Component<TwoPlayerGameProps, {}> {
+export default class TwoPlayerGame extends React.Component<TwoPlayerGameProps> {
 
 	public render(): JSX.Element {
 		let entities = this.props.entities;

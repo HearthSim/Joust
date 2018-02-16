@@ -21,7 +21,7 @@ interface CardArtState {
 
 class CardArt extends React.Component<CardArtProps, CardArtState> {
 
-	constructor(props: CardArtProps, context: any) {
+	constructor(props: CardArtProps, context?: any) {
 		super(props, context);
 		this.state = {
 			height: 0,

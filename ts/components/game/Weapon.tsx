@@ -9,8 +9,8 @@ import {GameTag} from "../../enums";
 
 export default class Weapon extends EntityInPlay<EntityInPlayProps> {
 
-	constructor() {
-		super('weapon');
+	constructor(props: EntityInPlayProps, context?: any) {
+		super('weapon', props, context);
 	}
 
 	public jsx() {

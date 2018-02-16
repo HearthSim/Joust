@@ -10,8 +10,8 @@ abstract class EntityInPlay<P extends EntityInPlayProps> extends React.Component
 
 	protected abstract jsx();
 
-	constructor(baseClassName: string) {
-		super();
+	constructor(baseClassName: string, props: P, context?: any) {
+		super(props, context);
 		this.baseClassName = baseClassName;
 		this.state = {
 			isHovering: false

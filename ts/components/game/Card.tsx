@@ -23,7 +23,7 @@ interface CardProps extends EntityProps, OptionProps, React.ClassAttributes<Card
 	creator?: Entity;
 }
 
-export default class Card extends React.Component<CardProps, {}> {
+export default class Card extends React.Component<CardProps> {
 
 	public shouldComponentUpdate(nextProps: CardProps, nextState: any): boolean {
 		return (

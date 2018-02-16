@@ -10,7 +10,7 @@ interface InHandCardArtProps extends EntityProps, React.ClassAttributes<InHandCa
 	mulligan?: boolean;
 }
 
-export default class InHandCardArt extends React.Component<InHandCardArtProps, {}> {
+export default class InHandCardArt extends React.Component<InHandCardArtProps> {
 	public render(): JSX.Element {
 		let images = [];
 		let entity = this.props.entity;

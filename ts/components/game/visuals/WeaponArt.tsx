@@ -6,7 +6,7 @@ import CardArt from "./CardArt";
 import {EntityProps} from "../../../interfaces";
 import InPlayCardArt from "./InPlayCardArt";
 
-export default class WeaponArt extends React.Component<EntityProps, {}> {
+export default class WeaponArt extends React.Component<EntityProps> {
 	public render(): JSX.Element {
 		let images = [];
 		let entity = this.props.entity;

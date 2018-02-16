@@ -5,7 +5,7 @@ interface AttackProps extends React.ClassAttributes<Attack> {
 	default?: number;
 }
 
-export default class Attack extends React.Component<AttackProps, {}> {
+export default class Attack extends React.Component<AttackProps> {
 	public render(): JSX.Element {
 		let classNames = ['atk'];
 		if (this.props.attack !== null && this.props.default !== null && this.props.attack > this.props.default) {

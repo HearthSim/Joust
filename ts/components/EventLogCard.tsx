@@ -5,7 +5,7 @@ interface EventLogCardProps extends CardDataProps, React.ClassAttributes<EventLo
 	cardId:string;
 }
 
-export default class EventLogCard extends React.Component<EventLogCardProps, {}> {
+export default class EventLogCard extends React.Component<EventLogCardProps> {
 
 	public shouldComponentUpdate(nextProps:EventLogCardProps, nextState:any):boolean {
 		return (

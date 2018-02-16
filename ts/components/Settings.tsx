@@ -11,7 +11,7 @@ interface SettingsProps extends React.ClassAttributes<Settings> {
 	onClose?: () => void;
 }
 
-export default class Settings extends React.Component<SettingsProps, {}> {
+export default class Settings extends React.Component<SettingsProps> {
 
 	protected downloadXML() {
 		const { replayBlob, replayFilename } = this.props

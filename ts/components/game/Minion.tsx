@@ -14,8 +14,8 @@ import { CardData } from "hearthstonejson-client";
 
 export default class Minion extends EntityInPlay<EntityInPlayProps> {
 
-	constructor() {
-		super("minion");
+	constructor(props: EntityInPlayProps, context?: any) {
+		super("minion", props, context);
 	}
 
 	public jsx() {
