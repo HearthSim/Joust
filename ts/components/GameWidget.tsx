@@ -8,7 +8,7 @@ import {
 	KeybindingProps,
 	LocaleProps,
 	MulliganOracle,
-	StreamScrubber,
+	StreamScrubber, StripBattletagsProps,
 } from "../interfaces";
 import Scrubber from "./Scrubber";
 import EventLog from "./EventLog";
@@ -22,7 +22,7 @@ import screenfull from "screenfull";
 import GameStateSink from "../state/GameStateSink";
 import { CardData } from "hearthstonejson-client";
 
-export interface GameWidgetProps extends AssetDirectoryProps, CardArtDirectory, EventHandlerProps, LocaleProps, KeybindingProps, React.ClassAttributes<GameWidget> {
+export interface GameWidgetProps extends AssetDirectoryProps, CardArtDirectory, EventHandlerProps, LocaleProps, KeybindingProps, StripBattletagsProps, React.ClassAttributes<GameWidget> {
 	sink: GameStateSink;
 	startupTime: number;
 	interaction?: InteractiveBackend;
@@ -293,6 +293,7 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 			hideCards={!this.state.isRevealingCards}
 			playerNames={this.props.playerNames || null}
 			loadingError={this.props.loadingError}
+			stripBattletags={this.props.stripBattletags}
 		/>;
 		let log = <EventLog
 			key="log"
@@ -302,6 +303,7 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 			tail={this.props.scrubber.getHistory().tail}
 			currentTime={this.props.scrubber.getCurrentTime()}
 			isHidden={!this.state.isLogVisible}
+			stripBattletags={this.props.stripBattletags}
 		/>;
 
 		parts.push(

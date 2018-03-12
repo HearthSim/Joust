@@ -2,8 +2,15 @@ import * as React from "react";
 import * as Immutable from "immutable";
 
 import {
-	EntityProps, OptionCallbackProps, CardDataProps, CardOracleProps, AssetDirectoryProps,
-	GameStateDescriptorStackProps, HideCardsProps, MulliganOracleProps
+	EntityProps,
+	OptionCallbackProps,
+	CardDataProps,
+	CardOracleProps,
+	AssetDirectoryProps,
+	GameStateDescriptorStackProps,
+	HideCardsProps,
+	MulliganOracleProps,
+	StripBattletagsProps,
 } from "../../interfaces";
 import Entity from "../../Entity";
 import Player from "./Player";
@@ -15,7 +22,7 @@ import Choice from "../../Choice";
 import Choices from "../../Choices";
 
 interface TwoPlayerGameProps extends EntityProps, CardDataProps, CardOracleProps, MulliganOracleProps, OptionCallbackProps,
-	AssetDirectoryProps, GameStateDescriptorStackProps, HideCardsProps, React.ClassAttributes<TwoPlayerGame> {
+	AssetDirectoryProps, GameStateDescriptorStackProps, HideCardsProps, StripBattletagsProps, React.ClassAttributes<TwoPlayerGame> {
 	player1: PlayerEntity;
 	player2: PlayerEntity;
 	entities: Immutable.Map<number, Immutable.Map<number, Immutable.Map<number, Entity>>>;
@@ -50,6 +57,7 @@ export default class TwoPlayerGame extends React.Component<TwoPlayerGameProps> {
 					assetDirectory={this.props.assetDirectory}
 					cardArtDirectory={this.props.cardArtDirectory}
 					hideCards={this.props.hideCards}
+					stripBattletags={this.props.stripBattletags}
 					/>
 				{this.props.optionCallback && <EndTurnButton option={this.props.endTurnOption}
 					optionCallback={this.props.optionCallback} onlyOption={options.count() === 0}
@@ -67,6 +75,7 @@ export default class TwoPlayerGame extends React.Component<TwoPlayerGameProps> {
 					descriptors={this.props.descriptors}
 					assetDirectory={this.props.assetDirectory}
 					cardArtDirectory={this.props.cardArtDirectory}
+					stripBattletags={this.props.stripBattletags}
 					/>
 			</div>
 		);

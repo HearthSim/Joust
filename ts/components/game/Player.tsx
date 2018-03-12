@@ -24,12 +24,12 @@ import {
 	CardArtDirectory,
 	GameStateDescriptorStackProps,
 	HideCardsProps,
-	MulliganOracleProps
+	MulliganOracleProps, StripBattletagsProps,
 } from "../../interfaces";
 import GameStateDescriptor from "../../state/GameStateDescriptor";
 
 interface PlayerProps extends OptionCallbackProps, CardDataProps, CardOracleProps, MulliganOracleProps, AssetDirectoryProps,
-	CardArtDirectory,GameStateDescriptorStackProps, HideCardsProps, React.ClassAttributes<Player> {
+	CardArtDirectory,GameStateDescriptorStackProps, HideCardsProps, StripBattletagsProps, React.ClassAttributes<Player> {
 	player: PlayerEntity;
 	entities: Immutable.Map<number, Immutable.Map<number, Entity>>;
 	options: Immutable.Map<number, Immutable.Map<number, Option>>;
@@ -265,8 +265,9 @@ export default class Player extends React.Component<PlayerProps> {
 			/>;
 		}
 
-		let name = this.props.player.name ?
-			<div className="name" title={this.props.player.name}>{this.props.player.name}</div> : null;
+		const playerName = this.cleanPlayerName();
+		const name = playerName ? <div className="name" title={playerName}>{playerName}</div> : null;
+
 		let rank = <Rank
 			rank={this.props.player.rank }
 			legendRank={this.props.player.legendRank }
@@ -336,22 +337,22 @@ export default class Player extends React.Component<PlayerProps> {
 		let gameresult = null;
 		switch (this.props.player.getTag(GameTag.PLAYSTATE)) {
 			case PlayState.WON:
-				gameresult = <div className="gameresult">{this.props.player.name} wins!</div>;
+				gameresult = <div className="gameresult">{playerName} wins!</div>;
 				classNames.push("inactive-colored");
 				break;
 			case PlayState.LOST:
 				let message = null;
 				if (this.props.player.conceded) {
-					message = this.props.player.name + " concedes";
+					message = playerName + " concedes";
 				}
 				else {
-					message = this.props.player.name + " loses";
+					message = playerName + " loses";
 				}
 				gameresult = <div className="gameresult">{message}</div>;
 				classNames.push("inactive");
 				break;
 			case PlayState.TIED:
-				gameresult = <div className="gameresult">{this.props.player.name} ties</div>;
+				gameresult = <div className="gameresult">{playerName} ties</div>;
 				classNames.push("inactive");
 				break;
 		}
@@ -393,5 +394,17 @@ export default class Player extends React.Component<PlayerProps> {
 			this.props.isCurrent !== nextProps.isCurrent ||
 			this.props.hideCards !== nextProps.hideCards
 		);
+	}
+
+	private cleanPlayerName(): string | null {
+		if (!this.props.player.name) {
+			return null;
+		}
+		let playerName = this.props.player.name.trim();
+		if (this.props.stripBattletags) {
+			const match = /^(.*)#\d+$/.exec(playerName);
+			playerName = match ? match[1] : playerName;
+		}
+		return playerName;
 	}
 }

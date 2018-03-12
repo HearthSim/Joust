@@ -133,6 +133,10 @@ export interface KeybindingProps {
 	enableKeybindings?: boolean;
 }
 
+export interface StripBattletagsProps {
+	stripBattletags?: boolean;
+}
+
 export interface StreamScrubberInhibitor {
 	isInhibiting: () => boolean;
 }

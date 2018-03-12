@@ -240,6 +240,14 @@ export default class Launcher {
 		this.opts.scrubber.rewind();
 	}
 
+	public stripBattletags(strip?: boolean): Launcher {
+		if (typeof strip === "undefined") {
+			strip = true;
+		}
+		this.opts.stripBattletags = strip;
+		return this;
+	}
+
 	public get turn(): number {
 		return this.opts.scrubber.getCurrentTurn();
 	}

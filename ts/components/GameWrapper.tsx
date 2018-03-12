@@ -7,7 +7,7 @@ import {
 	CardOracleProps,
 	AssetDirectoryProps,
 	CardArtDirectory,
-	MulliganOracleProps
+	MulliganOracleProps, StripBattletagsProps,
 } from "../interfaces";
 import GameState from "../state/GameState";
 import TwoPlayerGame from "./game/TwoPlayerGame";
@@ -19,7 +19,7 @@ import LoadingScreen from "./LoadingScreen";
 import * as bowser from "bowser";
 import {cookie} from "cookie_js";
 
-interface GameWrapperProps extends CardDataProps, CardOracleProps, MulliganOracleProps, AssetDirectoryProps, CardArtDirectory, HideCardsProps, React.ClassAttributes<GameWrapper> {
+interface GameWrapperProps extends CardDataProps, CardOracleProps, MulliganOracleProps, AssetDirectoryProps, CardArtDirectory, HideCardsProps, StripBattletagsProps, React.ClassAttributes<GameWrapper> {
 	state: GameState;
 	interaction?: InteractiveBackend;
 	swapPlayers?: boolean;
@@ -153,6 +153,7 @@ export default class GameWrapper extends React.Component<GameWrapperProps, GameW
 					assetDirectory={this.props.assetDirectory}
 					cardArtDirectory={this.props.cardArtDirectory}
 					hideCards={this.props.hideCards}
+					stripBattletags={this.props.stripBattletags}
 				/>;
 			default:
 				return <div>Unsupported player count ({playerCount}).</div>
@@ -160,6 +161,15 @@ export default class GameWrapper extends React.Component<GameWrapperProps, GameW
 	}
 
 	private renderLoadingScreen(players?: string[]) {
+		if (Array.isArray(players) && this.props.stripBattletags) {
+			players = players.map((playerName) => {
+				const match = /^(.*)#\d+$/.exec(playerName.trim());
+				if (match) {
+					return match[1];
+				}
+				return playerName;
+			});
+		}
 		return <LoadingScreen players={players} />;
 	}
 

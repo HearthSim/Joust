@@ -2,12 +2,20 @@ import * as React from "react";
 import * as _ from "lodash";
 import GameState from "../state/GameState";
 import EventLogLine from "./EventLogLine";
-import {CardDataProps, CardOracleProps, GameStateDiff, HistoryEntry, EventLogItemData, LineType} from "../interfaces";
+import {
+	CardDataProps,
+	CardOracleProps,
+	GameStateDiff,
+	HistoryEntry,
+	EventLogItemData,
+	LineType,
+	StripBattletagsProps,
+} from "../interfaces";
 import {Zone, CardType, GameTag, BlockType, MetaDataType, Mulligan, PlayState, Step} from "../enums";
 import Player from "../Player";
 import Entity from "../Entity";
 
-interface EventLogProps extends CardDataProps, CardOracleProps, React.ClassAttributes<EventLog> {
+interface EventLogProps extends CardDataProps, CardOracleProps, StripBattletagsProps, React.ClassAttributes<EventLog> {
 	state:GameState;
 	tail:HistoryEntry;
 	currentTime:number;
@@ -105,18 +113,21 @@ export default class EventLog extends React.Component<EventLogProps, EventLogSta
 		let activeLines = this.state.lines.filter(lid => lid.time <= this.props.currentTime).length;
 		let offset = Math.max(0, activeLines - 20);
 		let lines = this.state.lines.slice(offset).map((lid, index) =>
-			<EventLogLine key={index + offset}
-						  first={!index}
-						  type={lid.type}
-						  entityId={lid.entityId}
-						  targetId={lid.targetId}
-						  player={lid.player}
-						  data={lid.data}
-						  data2={lid.data2}
-						  indent={lid.indent}
-						  inactive={lid.time >= this.props.currentTime}
-						  cardOracle={this.props.cardOracle}
-						  cards={this.props.cards}/>);
+			<EventLogLine
+				key={index + offset}
+				first={!index}
+				type={lid.type}
+				entityId={lid.entityId}
+				targetId={lid.targetId}
+				player={lid.player}
+				data={lid.data}
+				data2={lid.data2}
+				indent={lid.indent}
+				inactive={lid.time >= this.props.currentTime}
+				cardOracle={this.props.cardOracle}
+				cards={this.props.cards}
+				stripBattletags={this.props.stripBattletags}
+			/>);
 
 		return <div className="joust-log" onContextMenu={(e) => e.stopPropagation()}>{lines}</div>;
 	}

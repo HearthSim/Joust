@@ -1,9 +1,15 @@
 import * as React from "react";
-import {CardDataProps, CardOracleProps, EventLogItemData, LineType} from "../interfaces";
+import {
+	CardDataProps,
+	CardOracleProps,
+	EventLogItemData,
+	LineType,
+	StripBattletagsProps,
+} from "../interfaces";
 import EventLogCard from "./EventLogCard";
 import { CardData } from "hearthstonejson-client";
 
-interface EventLogLineProps extends CardDataProps, CardOracleProps, EventLogItemData, React.ClassAttributes<EventLogLine> {
+interface EventLogLineProps extends CardDataProps, CardOracleProps, EventLogItemData, StripBattletagsProps, React.ClassAttributes<EventLogLine> {
 	inactive:boolean;
 	first?:boolean;
 }
@@ -82,7 +88,7 @@ export default class EventLogLine extends React.Component<EventLogLineProps, Eve
 		/>;
 
 		let strings = {
-			'player': this.props.player,
+			'player': this.getPlayerName(),
 			'entity': entity,
 			'target': target,
 			'source': target,
@@ -241,5 +247,16 @@ export default class EventLogLine extends React.Component<EventLogLineProps, Eve
 		}
 		let cardId = this.props.cardOracle.get(id);
 		return this.props.cards.get(cardId);
+	}
+
+	private getPlayerName():string {
+		let playerName = (this.props.player || "").trim();
+		if (this.props.stripBattletags) {
+			const match = /^(.*)#\d+$/.exec(playerName);
+			if (match) {
+				playerName = match[1];
+			}
+		}
+		return playerName;
 	}
 }

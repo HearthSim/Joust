@@ -10,6 +10,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Support Shifting Blade
 - Show Quests above hero portrait
 - Add Download XML from settings (#210, @dzannotti)
+- Add option to strip battletags from player names
 
 ### Changed
 - Tweak art for legendary minions in hand
