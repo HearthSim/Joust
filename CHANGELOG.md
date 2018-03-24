@@ -20,6 +20,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Fix fullscreen callback in Launcher not being called
 - Fix weapons in hand not highlighting increased durability
 - Fix XML errors not terminating parser early
+- Fix displays creator on minion hover (#49)
 
 ### Deprecated
 - `Launcher.metadataSource` is no longer supported

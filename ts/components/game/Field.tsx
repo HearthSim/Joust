@@ -1,5 +1,6 @@
 import * as React from "react";
 import * as _ from "lodash";
+import * as Immutable from "immutable";
 import EntityList from "./EntityList";
 import Entity from "../../Entity";
 import Option from "../../Option";
@@ -23,9 +24,10 @@ export default class Field extends EntityList<FieldProps> {
 		return "field";
 	}
 
-	protected renderEntity(entity: Entity, option: Option) {
+	protected renderEntity(entity: Entity, option: Option, index?: number, gameEntities?: Immutable.Map<number, Immutable.Map<number, Entity>>) {
 		return <Minion
 			entity={entity}
+			gameEntities={gameEntities}
 			option={option}
 			optionCallback={this.props.optionCallback}
 			assetDirectory={this.props.assetDirectory}
