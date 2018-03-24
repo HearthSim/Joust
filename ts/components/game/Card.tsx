@@ -41,12 +41,12 @@ export default class Card extends React.Component<CardProps> {
 	}
 
 	public render(): JSX.Element {
-		let entity = this.props.entity;
-		let classNames = ["card"];
+		const entity = this.props.entity;
+		const classNames = ["card"];
 		if (entity.getTag(GameTag.EVIL_GLOW)) {
 			classNames.push("evil-glow");
 		}
-		let canBeRevealed = this.props.cards && this.props.cards.has(entity.cardId);
+		const canBeRevealed = this.props.cards && this.props.cards.has(entity.cardId);
 		if (!entity.cardId || (this.props.isHidden && !canBeRevealed)) {
 			return (
 				<div className={classNames.join(" ")}>
@@ -61,7 +61,7 @@ export default class Card extends React.Component<CardProps> {
 			);
 		}
 
-		let draggable = this.props.option && this.props.optionCallback;
+		const draggable = this.props.option && this.props.optionCallback;
 		classNames.push("revealed");
 		if (this.props.option) {
 			classNames.push("playable");
@@ -101,7 +101,7 @@ export default class Card extends React.Component<CardProps> {
 		}
 		let cardClass = entity.getClass();
 		if (canBeRevealed) {
-			let data = this.props.cards && this.props.cards.get(entity.cardId);
+			const data = this.props.cards && this.props.cards.get(entity.cardId);
 			title = data.name;
 			description = this.parseDescription(data);
 			defaultAttack = data.attack;
@@ -169,29 +169,37 @@ export default class Card extends React.Component<CardProps> {
 				if (entity.getTag(GameTag.HIDE_STATS)) {
 					break;
 				}
-				let attack = <Attack
-					attack={this.getStatValue(GameTag.ATK, defaultAttack)}
-					default={defaultAttack}
-				/>;
-				let health = <Health
-					health={this.getStatValue(GameTag.HEALTH, defaultHealth)}
-					damage={this.props.defaultStats ? 0 : entity.getDamage()}
-					default={defaultHealth}
-				/>;
+				const attack = (
+					<Attack
+						attack={this.getStatValue(GameTag.ATK, defaultAttack)}
+						default={defaultAttack}
+					/>
+				);
+				const health = (
+					<Health
+						health={this.getStatValue(GameTag.HEALTH, defaultHealth)}
+						damage={this.props.defaultStats ? 0 : entity.getDamage()}
+						default={defaultHealth}
+					/>
+				);
 				stats = <div className="stats">{attack}{health}</div>;
 				break;
 			}
 			case CardType.WEAPON: {
 				classNames.push("card-weapon");
-				let attack = <Attack
-					attack={this.getStatValue(GameTag.ATK, defaultAttack)}
-					default={defaultAttack}
-				/>;
-				let durability = <Durability
-					durability={this.getStatValue(GameTag.DURABILITY, defaultDurability)}
-					damage={entity.getDamage()}
-					default={defaultDurability}
-				/>;
+				const attack = (
+					<Attack
+						attack={this.getStatValue(GameTag.ATK, defaultAttack)}
+						default={defaultAttack}
+					/>
+				);
+				const durability = (
+					<Durability
+						durability={this.getStatValue(GameTag.DURABILITY, defaultDurability)}
+						damage={entity.getDamage()}
+						default={defaultDurability}
+					/>
+				);
 				stats = <div className="stats">{attack}{durability}</div>;
 				textStyle = {color: "white"};
 				break;
@@ -208,59 +216,38 @@ export default class Card extends React.Component<CardProps> {
 			classNames.push("hidden-card");
 		}
 
-		return <div className={classNames.join(" ") } style={this.props.style}>
-			<InHandCardArt
-				entity={entity} hidden={false}
-				cardType={cardType} cardClass={cardClass}
-				cards={this.props.cards}
-				assetDirectory={this.props.assetDirectory}
-				cardArtDirectory={this.props.cardArtDirectory}
-				mulligan={this.props.mulligan}
-			/>
-			{entity.getTag(GameTag.HIDE_STATS) !== 0 ?
-				null :
-				<Cost
-					cost={!this.props.isHidden && !this.props.defaultStats ? entity.getCost() : defaultCost}
-					default={defaultCost}
+		return (
+			<div className={classNames.join(" ")} style={this.props.style}>
+				<InHandCardArt
+					entity={entity}
+					hidden={false}
+					cardType={cardType}
+					cardClass={cardClass}
+					cards={this.props.cards}
+					assetDirectory={this.props.assetDirectory}
+					cardArtDirectory={this.props.cardArtDirectory}
+					mulligan={this.props.mulligan}
 				/>
-			}
-			<h1>{title}</h1>
-			<div className="description">
-				<p style={textStyle} dangerouslySetInnerHTML={{__html: description}}></p>
+				{entity.getTag(GameTag.HIDE_STATS) !== 0 ?
+					null :
+					<Cost
+						cost={!this.props.isHidden && !this.props.defaultStats ? entity.getCost() : defaultCost}
+						default={defaultCost}
+					/>
+				}
+				<h1>{title}</h1>
+				<div className="description">
+					<p style={textStyle} dangerouslySetInnerHTML={{__html: description}}/>
+				</div>
+				{stats}
+				{this.props.creator ? <div className="created-by">
+					{"Created by " + (this.props.cards && this.props.cards.has(this.props.creator.cardId)
+						? this.props.cards.get(this.props.creator.cardId).name
+						: this.props.creator.cardId)
+					}
+				</div> : null}
 			</div>
-			{stats}
-			{this.props.creator ? <div className="created-by">
-				{"Created by " + (this.props.cards && this.props.cards.has(this.props.creator.cardId)
-					? this.props.cards.get(this.props.creator.cardId).name
-					: this.props.creator.cardId)
-				}
-			</div> : null}
-		</div>;
-	}
-
-	private getStatValue(tag: GameTag, defaultValue: number): number {
-		switch (tag) {
-			case GameTag.HEALTH:
-				if (typeof this.props.customHealth !== "undefined") {
-					return this.props.customHealth;
-				}
-				break;
-			case GameTag.ATK:
-				if (typeof this.props.customAtk !== "undefined") {
-					return this.props.customAtk;
-				}
-				break;
-			case GameTag.COST:
-				if (typeof this.props.customCost !== "undefined") {
-					return this.props.customCost;
-				}
-				break;
-		}
-		let value = this.props.entity.getTag(tag);
-		if (this.props.defaultStats || this.props.isHidden) {
-			return defaultValue;
-		}
-		return value;
+		);
 	}
 
 	protected parseDescription(data: CardData): string {
@@ -277,7 +264,7 @@ export default class Card extends React.Component<CardProps> {
 			description = this.formatKazakusPotionText(data.text);
 		}
 
-		let modifier = (bonus: number, double: number) => {
+		const modifier = (bonus: number, double: number) => {
 			return (match: string, part1: string) => {
 				let value = +part1;
 				if (+bonus !== 0 || +double !== 0) {
@@ -318,7 +305,7 @@ export default class Card extends React.Component<CardProps> {
 		if (description.match(/^\[x\]/)) {
 			description = description.replace(/^\[x\]/, "");
 			// enable this when font-sizing is optimized
-			//description = description.replace(/\n/g, "<br>");
+			// description = description.replace(/\n/g, "<br>");
 		}
 
 		// remove non-breaking spaces
@@ -327,13 +314,37 @@ export default class Card extends React.Component<CardProps> {
 		return description.trim();
 	}
 
+	private getStatValue(tag: GameTag, defaultValue: number): number {
+		switch (tag) {
+			case GameTag.HEALTH:
+				if (typeof this.props.customHealth !== "undefined") {
+					return this.props.customHealth;
+				}
+				break;
+			case GameTag.ATK:
+				if (typeof this.props.customAtk !== "undefined") {
+					return this.props.customAtk;
+				}
+				break;
+			case GameTag.COST:
+				if (typeof this.props.customCost !== "undefined") {
+					return this.props.customCost;
+				}
+				break;
+		}
+		if (this.props.defaultStats || this.props.isHidden) {
+			return defaultValue;
+		}
+		return this.props.entity.getTag(tag);
+	}
+
 	private formatJadeGolemText(text: string): string {
 		if (!this.props.controller) {
 			return text;
 		}
-		let value = this.props.controller.getTag(GameTag.JADE_GOLEM) + 1;
-		//arg1 is only used in the english localization. It's used to print "an 8/8.." instead of "a 8/8".
-		let arg1 = [8, 11, 18].indexOf(value) !== -1 ? "n" : "";
+		const value = this.props.controller.getTag(GameTag.JADE_GOLEM) + 1;
+		// arg1 is only used in the english localization. It's used to print "an 8/8.." instead of "a 8/8".
+		const arg1 = [8, 11, 18].indexOf(value) !== -1 ? "n" : "";
 		return text.replace("{0}", value + "/" + value).replace("{1}", arg1);
 	}
 
@@ -341,15 +352,15 @@ export default class Card extends React.Component<CardProps> {
 		if (!this.props.setAside) {
 			return text;
 		}
-		let data1 = this.props.entity.getTag(GameTag.TAG_SCRIPT_DATA_NUM_1);
-		let data2 = this.props.entity.getTag(GameTag.TAG_SCRIPT_DATA_NUM_2);
+		const data1 = this.props.entity.getTag(GameTag.TAG_SCRIPT_DATA_NUM_1);
+		const data2 = this.props.entity.getTag(GameTag.TAG_SCRIPT_DATA_NUM_2);
 		let arg1 = "";
 		let arg2 = "";
-		this.props.setAside.forEach(e => {
-			let tagScriptData = e.getTag(GameTag.TAG_SCRIPT_DATA_NUM_1);
+		this.props.setAside.forEach((e) => {
+			const tagScriptData = e.getTag(GameTag.TAG_SCRIPT_DATA_NUM_1);
 			if (tagScriptData) {
 				if (tagScriptData === data1) {
-					let data = this.props.cards.get(e.cardId);
+					const data = this.props.cards.get(e.cardId);
 					if (data) {
 						arg1 = data.text;
 					}
@@ -358,7 +369,7 @@ export default class Card extends React.Component<CardProps> {
 					}
 				}
 				else if (tagScriptData === data2) {
-					let data = this.props.cards.get(e.cardId);
+					const data = this.props.cards.get(e.cardId);
 					if (data) {
 						arg2 = data.text;
 					}
