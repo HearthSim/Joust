@@ -250,6 +250,25 @@ export default class Card extends React.Component<CardProps> {
 		);
 	}
 
+	protected formatLanguageRule4(text: string) {
+		while (text.indexOf("|4") >= 0) {
+			// \|4\(    -> Literal "|4("
+			// ([^,]*)  -> Capture zero or more characters that aren't ","
+			// ,        -> Literal ","
+			// ([^)]*)  -> Capture zero or more characters that aren't ")"
+			// \)       -> Literal ")"
+			const text2 = text.replace(/\|4\(([^,]*),([^)]*)\)/, "$2");
+			// FIXME: Currently always replacing with $2 match (= pluralizing).
+			// This is incorrect, but parsing the correct plural is, uh, hard.
+			if (text === text2) {
+				// Safeguard against badly-formatted text.
+				break;
+			}
+			text = text2;
+		}
+		return text;
+	}
+
 	protected parseDescription(data: CardData): string {
 		if (!data || !(data.text || data.collectionText)) {
 			return "";
@@ -310,6 +329,11 @@ export default class Card extends React.Component<CardProps> {
 
 		// remove non-breaking spaces
 		description = description.replace(String.fromCharCode(160), " ");
+
+		// Pluralize (rule 4)
+		if (description.indexOf("|4") >= 0) {
+			description = this.formatLanguageRule4(description);
+		}
 
 		return description.trim();
 	}
