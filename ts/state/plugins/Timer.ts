@@ -1,7 +1,7 @@
 import GameState from "../GameState";
 import GameStateMutator from "../GameStateMutator";
 import PopDescriptorMutator from "../mutators/PopDescriptorMutator";
-import {BlockType, GameTag, Step, MetaDataType} from "../../enums";
+import { BlockType, GameTag, Step, MetaDataType } from "../../enums";
 import IncrementTimeMutator from "../mutators/IncrementTimeMutator";
 import PushDescriptorMutator from "../mutators/PushDescriptorMutator";
 import EnrichDescriptorMutator from "../mutators/EnrichDescriptorMutator";
@@ -15,7 +15,6 @@ import * as _ from "lodash";
  * Increments the game state time based on the mutator and the game state itself.
  */
 export default class Timer extends GameStateTrackerPlugin {
-
 	private lastDescriptorType: BlockType = null;
 	private waitAtNextBlockOrEndOfBlock: boolean = false;
 	private mulliganChoicesSeen: number = 0;
@@ -23,7 +22,10 @@ export default class Timer extends GameStateTrackerPlugin {
 	private upcomingMetadataTargets: number[] = [];
 	private hasSteppedThisBlock: boolean = false;
 
-	public onBeforeMutate(mutator: GameStateMutator, state: GameState): void|GameState {
+	public onBeforeMutate(
+		mutator: GameStateMutator,
+		state: GameState,
+	): void | GameState {
 		let timeStep = 0;
 
 		if (mutator instanceof PopDescriptorMutator) {
@@ -39,12 +41,21 @@ export default class Timer extends GameStateTrackerPlugin {
 		return;
 	}
 
-	public onAfterMutate(mutator: GameStateMutator, state: GameState): void|GameState {
+	public onAfterMutate(
+		mutator: GameStateMutator,
+		state: GameState,
+	): void | GameState {
 		let timeStep = 0;
-		let gameStep = state.game ? state.game.getTag(GameTag.STEP) : Step.INVALID;
+		let gameStep = state.game
+			? state.game.getTag(GameTag.STEP)
+			: Step.INVALID;
 
 		// main action timing
-		if (this.waitAtNextBlockOrEndOfBlock && (mutator instanceof PopDescriptorMutator || mutator instanceof PushDescriptorMutator)) {
+		if (
+			this.waitAtNextBlockOrEndOfBlock &&
+			(mutator instanceof PopDescriptorMutator ||
+				mutator instanceof PushDescriptorMutator)
+		) {
 			timeStep = 2;
 			this.waitAtNextBlockOrEndOfBlock = false;
 		}
@@ -61,18 +72,25 @@ export default class Timer extends GameStateTrackerPlugin {
 					break;
 				case BlockType.TRIGGER:
 					if (!timeStep) {
-						if (mutator.descriptor.entityId > 3 && gameStep !== Step.INVALID) {
-							let entity = state.getEntity(mutator.descriptor.entityId);
-							if (entity && entity.cardId === "KAR_096" && entity.getTag(GameTag.REVEALED)) {
+						if (
+							mutator.descriptor.entityId > 3 &&
+							gameStep !== Step.INVALID
+						) {
+							let entity = state.getEntity(
+								mutator.descriptor.entityId,
+							);
+							if (
+								entity &&
+								entity.cardId === "KAR_096" &&
+								entity.getTag(GameTag.REVEALED)
+							) {
 								// Prince Malchezaar after Mulligan
 								timeStep = 3;
-							}
-							else {
+							} else {
 								// normal entity triggers
 								timeStep = 1;
 							}
-						}
-						else {
+						} else {
 							switch (gameStep) {
 								case Step.MAIN_START:
 									// before card is drawn
@@ -107,18 +125,19 @@ export default class Timer extends GameStateTrackerPlugin {
 
 		if (mutator instanceof PopDescriptorMutator) {
 			if (!timeStep) {
-				if (this.lastDescriptorEntityId > 3 && gameStep !== Step.INVALID) {
+				if (
+					this.lastDescriptorEntityId > 3 &&
+					gameStep !== Step.INVALID
+				) {
 					if (this.lastDescriptorType === BlockType.TRIGGER) {
 						timeStep = 1;
-					}
-					else if (this.lastDescriptorType === BlockType.PLAY) {
+					} else if (this.lastDescriptorType === BlockType.PLAY) {
 						// pause after playing a card
 						if (!state.descriptor) {
 							// ...if not in another block (Yogg-Sarron)
 							timeStep = 1;
 						}
-					}
-					else if (!this.hasSteppedThisBlock) {
+					} else if (!this.hasSteppedThisBlock) {
 						timeStep = 2;
 						this.hasSteppedThisBlock = true;
 					}
@@ -127,7 +146,9 @@ export default class Timer extends GameStateTrackerPlugin {
 			if (this.upcomingMetadataTargets.length) {
 				this.upcomingMetadataTargets = [];
 			}
-			this.lastDescriptorType = state.descriptor ? state.descriptor.type : null;
+			this.lastDescriptorType = state.descriptor
+				? state.descriptor.type
+				: null;
 		}
 
 		// damage hits/healing
@@ -136,10 +157,19 @@ export default class Timer extends GameStateTrackerPlugin {
 			if (this.lastDescriptorType !== BlockType.ATTACK) {
 				// attack pauses are handled in diffs
 				if (mutator.metaData.type === MetaDataType.TARGET) {
-					this.upcomingMetadataTargets = _.merge(this.upcomingMetadataTargets, targets);
+					this.upcomingMetadataTargets = _.merge(
+						this.upcomingMetadataTargets,
+						targets,
+					);
 				}
-				if (mutator.metaData.type === MetaDataType.DAMAGE || mutator.metaData.type === MetaDataType.HEALING) {
-					this.upcomingMetadataTargets = _.difference<number>(this.upcomingMetadataTargets, targets);
+				if (
+					mutator.metaData.type === MetaDataType.DAMAGE ||
+					mutator.metaData.type === MetaDataType.HEALING
+				) {
+					this.upcomingMetadataTargets = _.difference<number>(
+						this.upcomingMetadataTargets,
+						targets,
+					);
 					if (!this.upcomingMetadataTargets.length) {
 						// once all targets have received their damage value, we step
 						this.hasSteppedThisBlock = true;
@@ -152,7 +182,10 @@ export default class Timer extends GameStateTrackerPlugin {
 		// attack and stuff
 		if (mutator instanceof TagChangeMutator) {
 			if (this.lastDescriptorType === BlockType.ATTACK) {
-				if (mutator.tag === GameTag.PROPOSED_DEFENDER && mutator.value === 0) {
+				if (
+					mutator.tag === GameTag.PROPOSED_DEFENDER &&
+					mutator.value === 0
+				) {
 					timeStep = 1;
 				}
 			}
@@ -171,8 +204,7 @@ export default class Timer extends GameStateTrackerPlugin {
 					// mulligan step
 					timeStep = 6;
 				}
-			}
-			else {
+			} else {
 				// discover step
 				timeStep = 4;
 			}

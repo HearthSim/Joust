@@ -111,15 +111,23 @@ export default class LoadingScreen extends React.Component<LoadingScreenProps> {
 					players = this.props.players[0];
 					break;
 				case 2:
-					players = this.props.players[0] + " vs. " + this.props.players[1];
+					players =
+						this.props.players[0] + " vs. " + this.props.players[1];
 					break;
 			}
 		}
 
-		return <div className="joust-loading-screen">
-			{this.props.children ? this.props.children :
-				<p><MessagePicker interval={2} messages={this.messages} /></p>}
-			<p className="participants">{players}</p>
-		</div>;
+		return (
+			<div className="joust-loading-screen">
+				{this.props.children ? (
+					this.props.children
+				) : (
+					<p>
+						<MessagePicker interval={2} messages={this.messages} />
+					</p>
+				)}
+				<p className="participants">{players}</p>
+			</div>
+		);
 	}
 }

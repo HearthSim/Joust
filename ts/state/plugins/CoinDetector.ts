@@ -3,14 +3,16 @@ import GameState from "../GameState";
 import GameStateMutator from "../GameStateMutator";
 import AddEntityMutator from "../mutators/AddEntityMutator";
 import Entity from "../../Entity";
-import {GameTag, Zone, Mulligan, Step} from "../../enums";
+import { GameTag, Zone, Mulligan, Step } from "../../enums";
 
 /**
  * Attempts to detect The Coin at the start of the game and sets it's card id if found.
  */
 export default class CoinDetector extends GameStateTrackerPlugin {
-
-	public onBeforeMutate(mutator: GameStateMutator, state: GameState): void|GameState {
+	public onBeforeMutate(
+		mutator: GameStateMutator,
+		state: GameState,
+	): void | GameState {
 		if (mutator instanceof AddEntityMutator) {
 			const entity = mutator.entity;
 			if (this.isCoin(entity, state)) {
@@ -30,7 +32,9 @@ export default class CoinDetector extends GameStateTrackerPlugin {
 			potentialCoin.getTag(GameTag.ZONE_POSITION) === 5 &&
 			state.game.getTag(GameTag.MULLIGAN_STATE) === Mulligan.INVALID &&
 			state.game.getTag(GameTag.STEP) === Step.INVALID &&
-			(controller = state.getPlayer(potentialCoin.getTag(GameTag.CONTROLLER))) &&
+			(controller = state.getPlayer(
+				potentialCoin.getTag(GameTag.CONTROLLER),
+			)) &&
 			!controller.getTag(GameTag.FIRST_PLAYER)
 		);
 	}

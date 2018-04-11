@@ -24,21 +24,18 @@ module.exports = {
 					{
 						loader: "babel-loader",
 						options: {
-							presets: [
-								"react",
-								["es2015", { modules: false }],
-							],
-						}
+							presets: ["react", ["es2015", { modules: false }]],
+						},
 					},
 					{
 						loader: "ts-loader",
 					},
-				]
-			}
+				],
+			},
 		],
 	},
 	externals: {
-		"react": "React",
+		react: "React",
 		"react-dom": "ReactDOM",
 		"whatwg-fetch": {
 			// polyfill should be supplied externally
@@ -46,7 +43,8 @@ module.exports = {
 	},
 	plugins: [
 		new webpack.DefinePlugin({
-			JOUST_RELEASE: JSON.stringify(process.env.JOUST_RELEASE) || undefined,
+			JOUST_RELEASE:
+				JSON.stringify(process.env.JOUST_RELEASE) || undefined,
 		}),
 	],
 	node: {

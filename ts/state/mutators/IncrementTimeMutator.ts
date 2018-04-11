@@ -2,8 +2,7 @@ import GameState from "../GameState";
 import GameStateMutator from "../GameStateMutator";
 
 export default class IncrementTimeMutator implements GameStateMutator {
-	constructor(public time: number = 1) {
-	}
+	constructor(public time: number = 1) {}
 
 	public applyTo(state: GameState): GameState {
 		if (this.time === 0 && state.time !== null) {
@@ -13,8 +12,7 @@ export default class IncrementTimeMutator implements GameStateMutator {
 		let time = state.time;
 		if (time === null) {
 			time = 0;
-		}
-		else {
+		} else {
 			time += this.time;
 		}
 
@@ -30,7 +28,7 @@ export default class IncrementTimeMutator implements GameStateMutator {
 			time,
 			state.choices,
 			state.descriptors,
-			state.diffs.clear()
+			state.diffs.clear(),
 		);
 	}
 }

@@ -1,6 +1,10 @@
 export default class Option {
-
-	constructor(protected _index: number, protected _type: number, protected _entityId: number, protected _targets: number[]) {
+	constructor(
+		protected _index: number,
+		protected _type: number,
+		protected _entityId: number,
+		protected _targets: number[],
+	) {
 		if (!this._targets) {
 			this._targets = [];
 		}

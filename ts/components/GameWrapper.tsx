@@ -7,25 +7,34 @@ import {
 	CardOracleProps,
 	AssetDirectoryProps,
 	CardArtDirectory,
-	MulliganOracleProps, StripBattletagsProps,
+	MulliganOracleProps,
+	StripBattletagsProps,
 } from "../interfaces";
 import GameState from "../state/GameState";
 import TwoPlayerGame from "./game/TwoPlayerGame";
-import {CardType, OptionType} from "../enums";
+import { CardType, OptionType } from "../enums";
 import Entity from "../Entity";
 import Option from "../Option";
 import PlayerEntity from "../Player";
 import LoadingScreen from "./LoadingScreen";
 import * as bowser from "bowser";
-import {cookie} from "cookie_js";
+import { cookie } from "cookie_js";
 
-interface GameWrapperProps extends CardDataProps, CardOracleProps, MulliganOracleProps, AssetDirectoryProps, CardArtDirectory, HideCardsProps, StripBattletagsProps, React.ClassAttributes<GameWrapper> {
+interface GameWrapperProps
+	extends CardDataProps,
+		CardOracleProps,
+		MulliganOracleProps,
+		AssetDirectoryProps,
+		CardArtDirectory,
+		HideCardsProps,
+		StripBattletagsProps,
+		React.ClassAttributes<GameWrapper> {
 	state: GameState;
 	interaction?: InteractiveBackend;
 	swapPlayers?: boolean;
 	hasStarted?: boolean;
 	loadingError?: boolean;
-	playerNames?: string[]|null;
+	playerNames?: string[] | null;
 }
 
 interface GameWrapperState {
@@ -36,14 +45,20 @@ interface GameWrapperState {
  * This component wraps around the /actual/ game component (such as TwoPlayerGame).
  * It extracts the game entities.
  */
-export default class GameWrapper extends React.Component<GameWrapperProps, GameWrapperState> {
-
+export default class GameWrapper extends React.Component<
+	GameWrapperProps,
+	GameWrapperState
+> {
 	constructor(props: GameWrapperProps, context: any) {
 		super(props, context);
 		let shouldWarn = false;
-		let ignoreWarning = !!(+cookie.get("joust_ludicrous", "0"));
+		let ignoreWarning = !!+cookie.get("joust_ludicrous", "0");
 		if (!ignoreWarning) {
-			shouldWarn = !(bowser.webkit || (bowser as any).blink || bowser.gecko)
+			shouldWarn = !(
+				bowser.webkit ||
+				(bowser as any).blink ||
+				bowser.gecko
+			);
 		}
 		this.state = {
 			warnAboutBrowser: shouldWarn,
@@ -51,7 +66,6 @@ export default class GameWrapper extends React.Component<GameWrapperProps, GameW
 	}
 
 	public render(): JSX.Element {
-
 		// replay load failure
 		if (this.props.loadingError) {
 			const reload = () => {
@@ -61,7 +75,9 @@ export default class GameWrapper extends React.Component<GameWrapperProps, GameW
 				<LoadingScreen>
 					<p>Error loading replay.</p>
 					<p>
-						<a href="#" onClick={reload} onTouchStart={reload}>Try again…</a>
+						<a href="#" onClick={reload} onTouchStart={reload}>
+							Try again…
+						</a>
 					</p>
 				</LoadingScreen>
 			);
@@ -71,7 +87,7 @@ export default class GameWrapper extends React.Component<GameWrapperProps, GameW
 		if (this.state.warnAboutBrowser) {
 			const ignoreBrowser = (e) => {
 				e.preventDefault();
-				this.setState({warnAboutBrowser: false});
+				this.setState({ warnAboutBrowser: false });
 				cookie.set("joust_ludicrous", "1", {
 					expires: 365, // one year
 					path: "/",
@@ -80,11 +96,19 @@ export default class GameWrapper extends React.Component<GameWrapperProps, GameW
 			return (
 				<LoadingScreen>
 					<p>
-						<small>Sorry, your browser is out of standard right now.<br />Please consider using Chrome or Firefox instead.
+						<small>
+							Sorry, your browser is out of standard right now.<br />Please
+							consider using Chrome or Firefox instead.
 						</small>
 					</p>
 					<p>
-						<a href="#" onClick={ignoreBrowser} onTouchStart={ignoreBrowser}>Continue anyway</a>
+						<a
+							href="#"
+							onClick={ignoreBrowser}
+							onTouchStart={ignoreBrowser}
+						>
+							Continue anyway
+						</a>
 					</p>
 				</LoadingScreen>
 			);
@@ -115,19 +139,30 @@ export default class GameWrapper extends React.Component<GameWrapperProps, GameW
 		if (gameState.getPlayerCount() === 0) {
 			return this.renderLoadingScreen(this.props.playerNames);
 		}
-		let players = allEntities.filter(GameWrapper.filterByCardType(CardType.PLAYER)) as Immutable.Map<number, PlayerEntity>;
+		let players = allEntities.filter(
+			GameWrapper.filterByCardType(CardType.PLAYER),
+		) as Immutable.Map<number, PlayerEntity>;
 
 		// wait for start
-		if (typeof this.props.hasStarted !== "undefined" && !this.props.hasStarted) {
-			return this.renderLoadingScreen(players.map((player: PlayerEntity) => {
-				return player.name;
-			}).toArray());
+		if (
+			typeof this.props.hasStarted !== "undefined" &&
+			!this.props.hasStarted
+		) {
+			return this.renderLoadingScreen(
+				players
+					.map((player: PlayerEntity) => {
+						return player.name;
+					})
+					.toArray(),
+			);
 		}
 
 		// find an end turn option
-		let endTurnOption = gameState.options.filter((option: Option) => {
-			return !!option && option.type === OptionType.END_TURN;
-		}).first();
+		let endTurnOption = gameState.options
+			.filter((option: Option) => {
+				return !!option && option.type === OptionType.END_TURN;
+			})
+			.first();
 
 		let playerCount = players.count();
 		switch (playerCount) {
@@ -137,26 +172,33 @@ export default class GameWrapper extends React.Component<GameWrapperProps, GameW
 				if (this.props.swapPlayers) {
 					[player1, player2] = [player2, player1];
 				}
-				return <TwoPlayerGame
-					entity={game}
-					player1={player1}
-					player2={player2}
-					entities={entityTree}
-					options={optionTree}
-					choices={gameState.choices}
-					endTurnOption={endTurnOption}
-					optionCallback={this.props.interaction && this.props.interaction.sendOption.bind(this.props.interaction) }
-					cards={this.props.cards}
-					cardOracle={this.props.cardOracle}
-					mulliganOracle={this.props.mulliganOracle}
-					descriptors={this.props.state.descriptors}
-					assetDirectory={this.props.assetDirectory}
-					cardArtDirectory={this.props.cardArtDirectory}
-					hideCards={this.props.hideCards}
-					stripBattletags={this.props.stripBattletags}
-				/>;
+				return (
+					<TwoPlayerGame
+						entity={game}
+						player1={player1}
+						player2={player2}
+						entities={entityTree}
+						options={optionTree}
+						choices={gameState.choices}
+						endTurnOption={endTurnOption}
+						optionCallback={
+							this.props.interaction &&
+							this.props.interaction.sendOption.bind(
+								this.props.interaction,
+							)
+						}
+						cards={this.props.cards}
+						cardOracle={this.props.cardOracle}
+						mulliganOracle={this.props.mulliganOracle}
+						descriptors={this.props.state.descriptors}
+						assetDirectory={this.props.assetDirectory}
+						cardArtDirectory={this.props.cardArtDirectory}
+						hideCards={this.props.hideCards}
+						stripBattletags={this.props.stripBattletags}
+					/>
+				);
 			default:
-				return <div>Unsupported player count ({playerCount}).</div>
+				return <div>Unsupported player count ({playerCount}).</div>;
 		}
 	}
 
@@ -173,9 +215,11 @@ export default class GameWrapper extends React.Component<GameWrapperProps, GameW
 		return <LoadingScreen players={players} />;
 	}
 
-	public static filterByCardType(cardType: CardType): (entity: Entity) => boolean {
+	public static filterByCardType(
+		cardType: CardType,
+	): (entity: Entity) => boolean {
 		return (entity: Entity) => {
 			return !!entity && entity.getCardType() === cardType;
 		};
-	};
+	}
 }

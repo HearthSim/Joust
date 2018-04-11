@@ -4,7 +4,7 @@ import EntityList from "./EntityList";
 import Entity from "../../Entity";
 import Option from "../../Option";
 import Card from "./Card";
-import {EntityListProps, MulliganOracleProps} from "../../interfaces";
+import { EntityListProps, MulliganOracleProps } from "../../interfaces";
 import Choice from "../../Choice";
 
 interface ChoicesProps extends EntityListProps, MulliganOracleProps {
@@ -13,24 +13,26 @@ interface ChoicesProps extends EntityListProps, MulliganOracleProps {
 }
 
 export default class Choices extends EntityList<ChoicesProps> {
-
 	protected className(): string {
-		return 'choices';
+		return "choices";
 	}
 
 	protected sort(entity: Entity): number {
 		return this.props.choices.get(entity.id).index;
 	}
 
-	private lookup(id: number): string|null {
+	private lookup(id: number): string | null {
 		if (!this.props.cardOracle) {
 			return null;
 		}
 		return this.props.cardOracle.get(id) || null;
 	}
 
-	protected renderEntity(entity: Entity, option: Option, index?: number): JSX.Element {
-
+	protected renderEntity(
+		entity: Entity,
+		option: Option,
+		index?: number,
+	): JSX.Element {
 		let hidden = false;
 
 		const cardId = entity.cardId || this.lookup(entity.id);
@@ -43,15 +45,18 @@ export default class Choices extends EntityList<ChoicesProps> {
 		// reveal or hide entity
 		if (this.props.hideCards) {
 			entity = new Entity(entity.id, entity.getTags());
-		}
-		else if (!entity.cardId && cardId) {
+		} else if (!entity.cardId && cardId) {
 			entity = new Entity(entity.id, entity.getTags(), cardId);
 			hidden = true;
 		}
 
 		// mulligan cards
 		let mulligan = false;
-		if (this.props.isMulligan && this.props.mulliganOracle && this.props.mulliganOracle.get(entity.id) === true) {
+		if (
+			this.props.isMulligan &&
+			this.props.mulliganOracle &&
+			this.props.mulliganOracle.get(entity.id) === true
+		) {
 			mulligan = true;
 		}
 
@@ -66,6 +71,7 @@ export default class Choices extends EntityList<ChoicesProps> {
 				controller={this.props.controller}
 				cardArtDirectory={this.props.cardArtDirectory}
 				mulligan={mulligan}
-			/>);
+			/>
+		);
 	}
 }

@@ -1,18 +1,17 @@
-import {EventEmitter} from "events";
+import { EventEmitter } from "events";
 import HearthstoneJSON, { CardData } from "hearthstonejson-client";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import GameWidget, {GameWidgetProps} from "./components/GameWidget";
-import {JoustEventHandler} from "./interfaces";
+import GameWidget, { GameWidgetProps } from "./components/GameWidget";
+import { JoustEventHandler } from "./interfaces";
 import HSReplayDecoder from "./protocol/HSReplayDecoder";
 import GameStateScrubber from "./state/GameStateScrubber";
 import GameStateSink from "./state/GameStateSink";
 import GameStateTracker from "./state/GameStateTracker";
 import TexturePreloader from "./TexturePreloader";
-import {cookie} from "cookie_js";
+import { cookie } from "cookie_js";
 
 export default class Launcher {
-
 	public static destroy(target: any): void {
 		ReactDOM.unmountComponentAtNode(target);
 	}
@@ -24,8 +23,11 @@ export default class Launcher {
 	protected shouldStartPaused: boolean;
 	protected ref: GameWidget;
 	protected cards: CardData[];
-	protected metadataSourceCb: (build: number|"latest", locale: string) => string;
-	protected _build: number|null;
+	protected metadataSourceCb: (
+		build: number | "latest",
+		locale: string,
+	) => string;
+	protected _build: number | null;
 	protected ready: boolean;
 	protected hsjson: HearthstoneJSON;
 	protected customLocale: boolean;
@@ -44,7 +46,7 @@ export default class Launcher {
 			selectLocale: (locale: string, loaded?: () => void): void => {
 				this.customLocale = true;
 				this.locale(locale, () => {
-					if(this._onSelectLocale) {
+					if (this._onSelectLocale) {
 						this._onSelectLocale(locale);
 					}
 					loaded && loaded();
@@ -55,7 +57,8 @@ export default class Launcher {
 			enableKeybindings: true,
 		} as any;
 		this.opts.assetDirectory = (asset) => "assets/" + asset;
-		this.opts.cardArtDirectory = (cardId) => "https://art.hearthstonejson.com/v1/256x/" + cardId + ".jpg";
+		this.opts.cardArtDirectory = (cardId) =>
+			"https://art.hearthstonejson.com/v1/256x/" + cardId + ".jpg";
 		this._build = null;
 		this.hsjson = null;
 		this.startFromTurn = 0;
@@ -72,31 +75,31 @@ export default class Launcher {
 		return this;
 	}
 
-	public assets(assets: string|((asset: string) => string)): Launcher {
+	public assets(assets: string | ((asset: string) => string)): Launcher {
 		let cb = null;
 		if (typeof assets === "string") {
 			cb = (asset: string) => assets + asset;
-		}
-		else {
+		} else {
 			cb = assets;
 		}
 		this.opts.assetDirectory = cb;
 		return this;
 	}
 
-	public cardArt(url: string|((cardId: string) => string)): Launcher {
+	public cardArt(url: string | ((cardId: string) => string)): Launcher {
 		let cb = null;
 		if (typeof url === "string") {
 			cb = (cardId: string) => url + cardId + ".jpg";
-		}
-		else {
+		} else {
 			cb = url;
 		}
 		this.opts.cardArtDirectory = cb;
 		return this;
 	}
 
-	public metadataSource(metadataSource: (build: number|"latest", locale: string) => string): Launcher {
+	public metadataSource(
+		metadataSource: (build: number | "latest", locale: string) => string,
+	): Launcher {
 		console.warn("Launcher.metadataSource is deprecated");
 		return this;
 	}
@@ -131,7 +134,8 @@ export default class Launcher {
 	}
 
 	public startPaused(paused?: boolean): Launcher {
-		this.shouldStartPaused = typeof paused === "undefined" ? true : !!paused;
+		this.shouldStartPaused =
+			typeof paused === "undefined" ? true : !!paused;
 		return this;
 	}
 
@@ -159,8 +163,7 @@ export default class Launcher {
 		if (this.ref) {
 			if (fullscreen) {
 				this.ref.enterFullscreen();
-			}
-			else {
+			} else {
 				this.ref.exitFullscreen();
 			}
 		}
@@ -174,7 +177,7 @@ export default class Launcher {
 
 	public events(cb: JoustEventHandler): Launcher {
 		this.opts.events = cb;
-		this.track("init", {count: 1});
+		this.track("init", { count: 1 });
 		return this;
 	}
 
@@ -191,14 +194,13 @@ export default class Launcher {
 		if (this.ready) {
 			this.fetchLocale(cb);
 			this.render();
-		}
-		else {
+		} else {
 			cb && cb();
 		}
 		return this;
 	}
 
-	public get build(): number|null {
+	public get build(): number | null {
 		return this._build;
 	}
 
@@ -206,7 +208,7 @@ export default class Launcher {
 		this._onSelectLocale = callback;
 	}
 
-	public get selectedLocale(): string|null {
+	public get selectedLocale(): string | null {
 		return this.customLocale ? this.opts.locale : null;
 	}
 
@@ -266,8 +268,7 @@ export default class Launcher {
 	public set playing(playing: boolean) {
 		if (playing) {
 			this.play();
-		}
-		else {
+		} else {
 			this.pause();
 		}
 	}
@@ -308,17 +309,26 @@ export default class Launcher {
 			scrubber.on("turn", this.turnCb);
 		}
 		let sink = new GameStateSink();
-		let preloader = new TexturePreloader(this.opts.cardArtDirectory, this.opts.assetDirectory);
+		let preloader = new TexturePreloader(
+			this.opts.cardArtDirectory,
+			this.opts.assetDirectory,
+		);
 		if (preloader.canPreload()) {
 			preloader.consume();
 		}
 
 		const result = fetch(url).then((response: Response) => {
 			const statusCode = response.status;
-			let success = (statusCode === 200);
-			this.track("replay_load_error", {error: success ? false : true}, {statusCode: statusCode});
+			let success = statusCode === 200;
+			this.track(
+				"replay_load_error",
+				{ error: success ? false : true },
+				{ statusCode: statusCode },
+			);
 			if (!success) {
-				throw new Error("Could not load replay (status code " + statusCode + ")");
+				throw new Error(
+					"Could not load replay (status code " + statusCode + ")",
+				);
 			}
 
 			return response.text();
@@ -326,8 +336,11 @@ export default class Launcher {
 
 		result.then((payload: string) => {
 			let components = [decoder, tracker, scrubber, preloader];
-			this.opts.replayBlob = new Blob([payload], { type : 'application/xml' })
-			this.opts.replayFilename = url.substr(url.lastIndexOf('/') + 1) + '.hreplay.xml'
+			this.opts.replayBlob = new Blob([payload], {
+				type: "application/xml",
+			});
+			this.opts.replayFilename =
+				url.substr(url.lastIndexOf("/") + 1) + ".hreplay.xml";
 			components.forEach((component: EventEmitter) => {
 				component.on("error", this.log.bind(this));
 			});
@@ -353,7 +366,10 @@ export default class Launcher {
 				if (this.opts.onReady) {
 					this.opts.onReady();
 				}
-				this.track("startup", {count: 1, duration: (Date.now() - this.opts.startupTime) / 1000});
+				this.track("startup", {
+					count: 1,
+					duration: (Date.now() - this.opts.startupTime) / 1000,
+				});
 			});
 
 			decoder // xml -> mutators
@@ -387,7 +403,7 @@ export default class Launcher {
 			this.render();
 		});
 
-		decoder.once("error", () => this.track("decoder_error", {count: 1}));
+		decoder.once("error", () => this.track("decoder_error", { count: 1 }));
 
 		this.opts.sink = sink;
 		this.opts.scrubber = scrubber;
@@ -398,7 +414,10 @@ export default class Launcher {
 		this.ready = true;
 		this.render(cb);
 
-		this.track("starting_from_turn", {fromTurn: this.startFromTurn ? true : false, turn: +this.startFromTurn});
+		this.track("starting_from_turn", {
+			fromTurn: this.startFromTurn ? true : false,
+			turn: +this.startFromTurn,
+		});
 
 		return this;
 	}
@@ -429,17 +448,20 @@ export default class Launcher {
 			// defer setCards if component isn't mounted yet
 			if (this.ref) {
 				this.ref.setCards(cards);
-			}
-			else {
+			} else {
 				this.cards = cards;
 			}
-			this.track("metadata", {duration: (Date.now() - queryTime) / 1000}, {
-				cards: cards.length,
-				build: build,
-				has_build: build !== "latest",
-				cached: (this.hsjson as any).cached,
-				fallback: (this.hsjson as any).fallback,
-			});
+			this.track(
+				"metadata",
+				{ duration: (Date.now() - queryTime) / 1000 },
+				{
+					cards: cards.length,
+					build: build,
+					has_build: build !== "latest",
+					cached: (this.hsjson as any).cached,
+					fallback: (this.hsjson as any).fallback,
+				},
+			);
 			cb && cb();
 		});
 	}
@@ -449,8 +471,16 @@ export default class Launcher {
 			return;
 		}
 		ReactDOM.render(
-			<GameWidget {...Object.assign({}, this.opts, { ref: (ref) => this.ref = ref })} /> as any,
-			typeof this.target === "string" ? document.getElementById(this.target as string) : this.target,
+			(
+				<GameWidget
+					{...Object.assign({}, this.opts, {
+						ref: (ref) => (this.ref = ref),
+					})}
+				/>
+			) as any,
+			typeof this.target === "string"
+				? document.getElementById(this.target as string)
+				: this.target,
 			() => {
 				if (this.cards) {
 					this.ref.setCards(this.cards);
@@ -459,7 +489,7 @@ export default class Launcher {
 				if (typeof cb === "function") {
 					cb();
 				}
-			}
+			},
 		);
 	}
 }

@@ -1,6 +1,6 @@
 import * as React from "react";
 import CardArt from "./CardArt";
-import {RankProps} from "../../../interfaces";
+import { RankProps } from "../../../interfaces";
 
 export default class RankArt extends React.Component<RankProps> {
 	public render(): JSX.Element {
@@ -9,23 +9,30 @@ export default class RankArt extends React.Component<RankProps> {
 			images.push({
 				image: "Medal_Ranked_" + this.props.rank,
 				isArt: true,
-				classes: ["rank-portrait"]
+				classes: ["rank-portrait"],
 			});
 			images.push({
-				image: "rank_frame_" + Math.floor((this.props.rank - 1) / 5) + ".png",
-				classes: ["rank-frame"]
+				image:
+					"rank_frame_" +
+					Math.floor((this.props.rank - 1) / 5) +
+					".png",
+				classes: ["rank-frame"],
 			});
-		}
-		else if (this.props.legendRank > 0) {
+		} else if (this.props.legendRank > 0) {
 			images.push({
 				image: "legend_rank.png",
-				classes: ["rank-frame"]
+				classes: ["rank-frame"],
 			});
 		}
 		return (
-			<CardArt layers={images} scale={1} square={false} margin={false}
+			<CardArt
+				layers={images}
+				scale={1}
+				square={false}
+				margin={false}
 				assetDirectory={this.props.assetDirectory}
-				cardArtDirectory={this.props.cardArtDirectory}/>
+				cardArtDirectory={this.props.cardArtDirectory}
+			/>
 		);
 	}
 }

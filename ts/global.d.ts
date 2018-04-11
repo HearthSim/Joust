@@ -64,5 +64,5 @@ declare module "react-dimensions" {
 
 declare module "cookie_js" {
 	import * as cookiejs from "cookiejs";
-	export {cookiejs as cookie};
+	export { cookiejs as cookie };
 }

@@ -1,9 +1,8 @@
 import Entity from "./Entity";
 import * as Immutable from "immutable";
-import {GameTag} from "./enums";
+import { GameTag } from "./enums";
 
 describe("Entity", () => {
-
 	it("should save the entity id", () => {
 		let entity = new Entity(1, Immutable.Map<string, number>());
 		expect(entity.id).toBe(1);

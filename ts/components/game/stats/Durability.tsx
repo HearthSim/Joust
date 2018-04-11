@@ -8,13 +8,19 @@ interface DurabilityProps extends React.ClassAttributes<Durability> {
 
 export default class Durability extends React.Component<DurabilityProps> {
 	public render(): JSX.Element {
-		let classNames = ['durability'];
+		let classNames = ["durability"];
 		if (this.props.damage > 0) {
-			classNames.push('negative');
+			classNames.push("negative");
+		} else if (
+			this.props.default !== null &&
+			this.props.durability > this.props.default
+		) {
+			classNames.push("positive");
 		}
-		else if (this.props.default !== null && this.props.durability > this.props.default) {
-			classNames.push('positive');
-		}
-		return <div className={classNames.join(' ') }>{this.props.durability - this.props.damage}</div>;
+		return (
+			<div className={classNames.join(" ")}>
+				{this.props.durability - this.props.damage}
+			</div>
+		);
 	}
 }

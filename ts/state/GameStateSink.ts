@@ -1,6 +1,5 @@
 import * as Stream from "stream";
 
-
 /**
  * Emits game states written to it as "gamestate" events.
  */

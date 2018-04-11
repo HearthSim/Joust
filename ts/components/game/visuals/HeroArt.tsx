@@ -1,17 +1,20 @@
 import * as React from "react";
 import * as Immutable from "immutable";
-import {CardClass, GameTag, Zone} from "../../../enums";
+import { CardClass, GameTag, Zone } from "../../../enums";
 import Entity from "../../../Entity";
 import CardArt from "./CardArt";
-import {EntityProps} from "../../../interfaces";
+import { EntityProps } from "../../../interfaces";
 
 interface HeroArtProps extends EntityProps {
 	secrets: Immutable.Map<number, Entity>;
 }
 
 export default class HeroArt extends React.Component<HeroArtProps> {
-
-	shouldComponentUpdate(nextProps: HeroArtProps, nextState: {}, nextContext: any): boolean {
+	shouldComponentUpdate(
+		nextProps: HeroArtProps,
+		nextState: {},
+		nextContext: any,
+	): boolean {
 		return (
 			nextProps.entity !== this.props.entity ||
 			nextProps.damage !== this.props.damage ||
@@ -66,15 +69,16 @@ export default class HeroArt extends React.Component<HeroArtProps> {
 			});
 		}
 
-		let hasQuest = this.props.secrets.some((potentialQuest: Entity) => !!potentialQuest.getTag(GameTag.QUEST));
+		let hasQuest = this.props.secrets.some(
+			(potentialQuest: Entity) => !!potentialQuest.getTag(GameTag.QUEST),
+		);
 
 		if (hasQuest) {
 			images.push({
 				image: "quest.png",
 				classes: ["secret"],
 			});
-		}
-		else if (this.props.secrets.count() > 0) {
+		} else if (this.props.secrets.count() > 0) {
 			let image = "secret_sheathed.png";
 			let secret = this.props.secrets.first();
 			if (!secret.getTag(GameTag.EXHAUSTED)) {
@@ -96,7 +100,11 @@ export default class HeroArt extends React.Component<HeroArtProps> {
 			});
 		}
 
-		if (entity.getTag(GameTag.HEALTH) - entity.getTag(GameTag.DAMAGE) <= 0 || entity.getTag(GameTag.ZONE) != Zone.PLAY) {
+		if (
+			entity.getTag(GameTag.HEALTH) - entity.getTag(GameTag.DAMAGE) <=
+				0 ||
+			entity.getTag(GameTag.ZONE) != Zone.PLAY
+		) {
 			images.push({
 				image: "skull.png",
 				classes: ["skull"],
@@ -108,8 +116,7 @@ export default class HeroArt extends React.Component<HeroArtProps> {
 				image: "damage.png",
 				classes: ["dmg"],
 			});
-		}
-		else if (this.props.healing && this.props.healing > 0) {
+		} else if (this.props.healing && this.props.healing > 0) {
 			images.push({
 				image: "healing.png",
 				classes: ["heal"],

@@ -12,16 +12,15 @@ interface SettingsProps extends React.ClassAttributes<Settings> {
 }
 
 export default class Settings extends React.Component<SettingsProps> {
-
 	protected downloadXML() {
-		const { replayBlob, replayFilename } = this.props
+		const { replayBlob, replayFilename } = this.props;
 		const blobURL = window.URL.createObjectURL(replayBlob);
-		const tempLink = document.createElement('a');
-		tempLink.style.display = 'none';
+		const tempLink = document.createElement("a");
+		tempLink.style.display = "none";
 		tempLink.href = blobURL;
-		tempLink.setAttribute('download', replayFilename);
-		if (typeof tempLink.download === 'undefined') {
-			tempLink.setAttribute('target', '_blank');
+		tempLink.setAttribute("download", replayFilename);
+		if (typeof tempLink.download === "undefined") {
+			tempLink.setAttribute("target", "_blank");
 		}
 		document.body.appendChild(tempLink);
 		tempLink.click();
@@ -34,17 +33,23 @@ export default class Settings extends React.Component<SettingsProps> {
 
 		return (
 			<div className="joust-scrubber-settings">
-				{this.props.onClose &&
-				<header>
-					<span>Settings</span>
-					<a title="Close" onClick={() => this.props.onClose()}>&times;</a>
-				</header>}
+				{this.props.onClose && (
+					<header>
+						<span>Settings</span>
+						<a title="Close" onClick={() => this.props.onClose()}>
+							&times;
+						</a>
+					</header>
+				)}
 				<section>
 					<label>
 						<span>Card Language:</span>
 						<LocaleSelector
 							locale={this.props.locale}
-							selectLocale={(locale: string, loaded?: () => void) => this.props.onSelectLocale(locale, loaded)}
+							selectLocale={(
+								locale: string,
+								loaded?: () => void,
+							) => this.props.onSelectLocale(locale, loaded)}
 							disabled={!this.props.onSelectLocale}
 						/>
 					</label>
@@ -59,14 +64,25 @@ export default class Settings extends React.Component<SettingsProps> {
 						<span>Show Event Log</span>
 					</label>
 				</section>
-				{this.props.replayBlob &&
+				{this.props.replayBlob && (
 					<section>
 						<a onClick={() => this.downloadXML()}>Download XML</a>
 					</section>
-				}
+				)}
 				<footer>
-					<a href="https://github.com/HearthSim/Joust/issues" target="_blank">Report Issue</a>
-					<a href="https://hearthsim.info/joust/" target="_blank" title={release ? "Joust " + release : null}>About</a>
+					<a
+						href="https://github.com/HearthSim/Joust/issues"
+						target="_blank"
+					>
+						Report Issue
+					</a>
+					<a
+						href="https://hearthsim.info/joust/"
+						target="_blank"
+						title={release ? "Joust " + release : null}
+					>
+						About
+					</a>
 				</footer>
 			</div>
 		);

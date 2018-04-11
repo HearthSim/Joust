@@ -1,6 +1,6 @@
 import * as React from "react";
 import GameState from "../state/GameState";
-import {GameTag} from "../enums";
+import { GameTag } from "../enums";
 
 interface TurnProps extends React.ClassAttributes<Turn> {
 	state?: GameState;
@@ -20,7 +20,7 @@ export default class Turn extends React.Component<TurnProps> {
 		let classNames = ["joust-scrubber-turn"];
 
 		let width = 100 / this.props.totalDuration * this.props.duration;
-		let style = {width: width + "%"};
+		let style = { width: width + "%" };
 
 		if (this.props.state) {
 			let flip = 0;
@@ -30,24 +30,28 @@ export default class Turn extends React.Component<TurnProps> {
 			}
 			let game = this.props.state.game;
 			if (game) {
-				classNames.push((!!((game.getTag(GameTag.TURN) + flip) % 2) != this.props.invert) ? "top" : "bottom");
+				classNames.push(
+					!!((game.getTag(GameTag.TURN) + flip) % 2) !=
+					this.props.invert
+						? "top"
+						: "bottom",
+				);
 			}
-		}
-		else if (this.props.mulligan) {
+		} else if (this.props.mulligan) {
 			classNames.push("mulligan");
 		}
 
-		let prettyTurn = (this.props.turnNumber % 2) ? Math.floor(this.props.turnNumber / 2) + 1 : null;
+		let prettyTurn =
+			this.props.turnNumber % 2
+				? Math.floor(this.props.turnNumber / 2) + 1
+				: null;
 		if (prettyTurn) {
 			classNames.push("text");
 			classNames.push(prettyTurn % 2 ? "odd" : "even");
 		}
 
 		return (
-			<section
-				className={classNames.join(" ") }
-				style={style}
-			>
+			<section className={classNames.join(" ")} style={style}>
 				{this.props.mulligan ? "M" : prettyTurn}
 			</section>
 		);

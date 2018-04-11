@@ -15,7 +15,7 @@ export default class ClearOptionsMutator implements GameStateMutator {
 			state.time,
 			state.choices,
 			state.descriptors,
-			state.diffs
+			state.diffs,
 		);
 	}
 }

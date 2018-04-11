@@ -1,9 +1,12 @@
 import * as Immutable from "immutable";
-import {GameTag, Rarity} from "./enums";
+import { GameTag, Rarity } from "./enums";
 
 export default class Entity {
-	constructor(protected _id: number, protected tags: Immutable.Map<string, number>, protected _cardId?: string) {
-	}
+	constructor(
+		protected _id: number,
+		protected tags: Immutable.Map<string, number>,
+		protected _cardId?: string,
+	) {}
 
 	get id(): number {
 		return +this._id;
@@ -120,13 +123,15 @@ export default class Entity {
 	public isAsleep(controller?: Entity): boolean {
 		return (
 			this.getTag(GameTag.NUM_TURNS_IN_PLAY) === 0 &&
-			this.getTag(GameTag.CHARGE) === 0 && !this.getTag(GameTag.UNTOUCHABLE) && !this.getTag(GameTag.AUTOATTACK) &&
+			this.getTag(GameTag.CHARGE) === 0 &&
+			!this.getTag(GameTag.UNTOUCHABLE) &&
+			!this.getTag(GameTag.AUTOATTACK) &&
 			(!controller || controller.getTag(GameTag.CURRENT_PLAYER) === 1)
 		);
 	}
 
 	public getTag(key: number): number {
-		return this.tags ? (+this.tags.get("" + key) || 0) : 0;
+		return this.tags ? +this.tags.get("" + key) || 0 : 0;
 	}
 
 	public setTag(key: number, value: number): Entity {
@@ -150,10 +155,13 @@ export default class Entity {
 				map.set(strkey, 0).delete(strkey);
 			});
 			if (tags.has(strkey)) {
-				console.error("Entity could not remove tag " + strkey + ' (it is still " + tags.get(strkey) + ")');
+				console.error(
+					"Entity could not remove tag " +
+						strkey +
+						' (it is still " + tags.get(strkey) + ")',
+				);
 			}
-		}
-		else {
+		} else {
 			tags = tags.set(strkey, value);
 		}
 
@@ -198,8 +206,10 @@ export default class Entity {
 		return str;
 	}
 
-
-	protected factory(tags: Immutable.Map<string, number>, cardId: string): Entity {
+	protected factory(
+		tags: Immutable.Map<string, number>,
+		cardId: string,
+	): Entity {
 		return new Entity(this.id, tags, cardId);
 	}
 }

@@ -1,10 +1,10 @@
 import * as React from "react";
-import {EntityInPlayProps} from "../../interfaces";
+import { EntityInPlayProps } from "../../interfaces";
 import EntityInPlay from "./EntityInPlay";
 import Cost from "./stats/Cost";
-import Card from "./Card"
+import Card from "./Card";
 import HeroPowerArt from "./visuals/HeroPowerArt";
-import {GameTag} from "../../enums";
+import { GameTag } from "../../enums";
 
 interface HeroPowerProps extends EntityInPlayProps {
 	activated?: boolean;
@@ -12,10 +12,10 @@ interface HeroPowerProps extends EntityInPlayProps {
 
 export default class HeroPower extends EntityInPlay<HeroPowerProps> {
 	constructor(props: HeroPowerProps, context?: any) {
-		super('heroPower', props, context);
+		super("heroPower", props, context);
 	}
 
-	protected playWithClick():boolean {
+	protected playWithClick(): boolean {
 		return true;
 	}
 
@@ -29,7 +29,10 @@ export default class HeroPower extends EntityInPlay<HeroPowerProps> {
 
 	protected jsx() {
 		let defaultCost = null;
-		if (this.props.cards && this.props.cards.has(this.props.entity.cardId)) {
+		if (
+			this.props.cards &&
+			this.props.cards.has(this.props.entity.cardId)
+		) {
 			let data = this.props.cards.get(this.props.entity.cardId);
 			defaultCost = data.cost;
 		}
@@ -43,28 +46,33 @@ export default class HeroPower extends EntityInPlay<HeroPowerProps> {
 				cards={this.props.cards}
 				assetDirectory={this.props.assetDirectory}
 				cardArtDirectory={this.props.cardArtDirectory}
-			/>
+			/>,
 		];
 
 		if (this.state.isHovering) {
-			components.push(<div key="hover" className="mouse-over">
-				<Card
-					entity={entity}
-					assetDirectory={this.props.assetDirectory}
-					cards={this.props.cards}
-					isHidden={false}
-					controller={this.props.controller}
-					cardArtDirectory={this.props.cardArtDirectory}
-					option={null}
-				/></div>);
+			components.push(
+				<div key="hover" className="mouse-over">
+					<Card
+						entity={entity}
+						assetDirectory={this.props.assetDirectory}
+						cards={this.props.cards}
+						isHidden={false}
+						controller={this.props.controller}
+						cardArtDirectory={this.props.cardArtDirectory}
+						option={null}
+					/>
+				</div>,
+			);
 		}
 
 		if (!entity.isExhausted()) {
-			components.push(<Cost
-				key="cost"
-				cost={entity.getCost()}
-				default={defaultCost}
-			/>);
+			components.push(
+				<Cost
+					key="cost"
+					cost={entity.getCost()}
+					default={defaultCost}
+				/>,
+			);
 		}
 
 		return components;

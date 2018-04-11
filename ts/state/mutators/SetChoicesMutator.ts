@@ -3,8 +3,7 @@ import GameStateMutator from "../GameStateMutator";
 import Choices from "../../Choices";
 
 export default class SetChoicesMutator implements GameStateMutator {
-	constructor(public player: number, public choices: Choices) {
-	}
+	constructor(public player: number, public choices: Choices) {}
 
 	public applyTo(state: GameState): GameState {
 		let choices = state.choices;
@@ -17,7 +16,7 @@ export default class SetChoicesMutator implements GameStateMutator {
 			state.time,
 			choices,
 			state.descriptors,
-			state.diffs
+			state.diffs,
 		);
 	}
 }

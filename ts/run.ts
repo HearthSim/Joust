@@ -1,7 +1,11 @@
 import Launcher from "./Launcher";
-import {GameWidgetProps} from "./components/GameWidget";
+import { GameWidgetProps } from "./components/GameWidget";
 
-export function renderHSReplay(target: string, url: string, opts?: GameWidgetProps) {
+export function renderHSReplay(
+	target: string,
+	url: string,
+	opts?: GameWidgetProps,
+) {
 	new Launcher(target).setOptions(opts).fromUrl(url);
 }
 

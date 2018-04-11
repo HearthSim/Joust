@@ -3,12 +3,15 @@ import GameStateMutator from "../GameStateMutator";
 import * as Immutable from "immutable";
 import ReplaceEntityMutator from "./ReplaceEntityMutator";
 import AddDiffsMutator from "./AddDiffsMutator";
-import {GameStateDiff} from "../../interfaces";
+import { GameStateDiff } from "../../interfaces";
 
 export default class ShowEntityMutator implements GameStateMutator {
-
-	constructor(public entityId: number, public cardId: string, public tags: Immutable.Map<string, number>, public replaceTags: boolean = false) {
-	}
+	constructor(
+		public entityId: number,
+		public cardId: string,
+		public tags: Immutable.Map<string, number>,
+		public replaceTags: boolean = false,
+	) {}
 
 	public applyTo(state: GameState): GameState {
 		const id = +this.entityId;
@@ -32,7 +35,11 @@ export default class ShowEntityMutator implements GameStateMutator {
 			diffs.push({
 				entity: id,
 				tag: +tag,
-				previous: this.replaceTags ? null : (oldEntity.getTags().has(tag) ? oldEntity.getTag(+tag) : null),
+				previous: this.replaceTags
+					? null
+					: oldEntity.getTags().has(tag)
+						? oldEntity.getTag(+tag)
+						: null,
 				current: value,
 			});
 		});

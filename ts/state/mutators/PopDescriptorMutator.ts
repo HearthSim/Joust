@@ -17,7 +17,7 @@ export default class PopDescriptorMutator implements GameStateMutator {
 			state.time,
 			state.choices,
 			descriptors,
-			state.diffs
+			state.diffs,
 		);
 	}
 }

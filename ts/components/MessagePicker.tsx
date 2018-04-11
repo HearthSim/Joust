@@ -11,15 +11,17 @@ interface MessagePickerState {
 	sequence?: number[];
 }
 
-export default class MessagePicker extends React.Component<MessagePickerProps, MessagePickerState> {
-
+export default class MessagePicker extends React.Component<
+	MessagePickerProps,
+	MessagePickerState
+> {
 	private interval: number;
 
 	public constructor(props: MessagePickerProps) {
 		super(props);
 		this.state = {
 			message: 0,
-			sequence: this.generateSequence()
+			sequence: this.generateSequence(),
 		};
 	}
 
@@ -28,26 +30,31 @@ export default class MessagePicker extends React.Component<MessagePickerProps, M
 	}
 
 	public componentWillReceiveProps(nextProps: MessagePickerProps): void {
-		if(nextProps.messages.length != this.props.messages.length) {
+		if (nextProps.messages.length != this.props.messages.length) {
 			clearInterval(this.interval);
-			this.setState({message: 0, sequence: this.generateSequence()});
+			this.setState({ message: 0, sequence: this.generateSequence() });
 			this.scheduleUpdates();
 		}
 	}
 
-	public componentWillUnmount():void {
-		if(this.interval) {
+	public componentWillUnmount(): void {
+		if (this.interval) {
 			clearInterval(this.interval);
 		}
 	}
 
 	private scheduleUpdates() {
-		this.interval = setInterval(this.cycleMessage.bind(this), this.props.interval * 1000);
+		this.interval = setInterval(
+			this.cycleMessage.bind(this),
+			this.props.interval * 1000,
+		);
 	}
 
 	public render(): JSX.Element {
-		let message = this.props.messages[this.state.sequence[this.state.message]];
-		message = message.replace('...', String.fromCharCode(8230)); // &hellip;
+		let message = this.props.messages[
+			this.state.sequence[this.state.message]
+		];
+		message = message.replace("...", String.fromCharCode(8230)); // &hellip;
 		return <span>{message}</span>;
 	}
 
@@ -60,7 +67,9 @@ export default class MessagePicker extends React.Component<MessagePickerProps, M
 		if (this.props.random !== false) {
 			// Knuth shuffle
 			for (let i = 0; i < length - 1; i++) {
-				let j = Math.floor(i + Math.floor(Math.random() * (length - i)));
+				let j = Math.floor(
+					i + Math.floor(Math.random() * (length - i)),
+				);
 				[sequence[i], sequence[j]] = [sequence[j], sequence[i]];
 			}
 		}
@@ -68,6 +77,8 @@ export default class MessagePicker extends React.Component<MessagePickerProps, M
 	}
 
 	private cycleMessage(): void {
-		this.setState({message: (this.state.message + 1) % this.props.messages.length});
+		this.setState({
+			message: (this.state.message + 1) % this.props.messages.length,
+		});
 	}
 }

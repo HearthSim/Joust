@@ -3,8 +3,7 @@ import GameStateMutator from "../GameStateMutator";
 import Entity from "../../Entity";
 
 export default class ReplaceEntityMutator implements GameStateMutator {
-	constructor(public entity: Entity) {
-	}
+	constructor(public entity: Entity) {}
 
 	public applyTo(state: GameState): GameState {
 		let newEntity = this.entity;
@@ -31,8 +30,12 @@ export default class ReplaceEntityMutator implements GameStateMutator {
 
 		let entityTree = state.entityTree;
 		entityTree = entityTree.withMutations((map) => {
-			map.deleteIn([oldEntity.getController(), oldEntity.getZone(), id])
-				.setIn([newEntity.getController(), newEntity.getZone(), id], newEntity);
+			map
+				.deleteIn([oldEntity.getController(), oldEntity.getZone(), id])
+				.setIn(
+					[newEntity.getController(), newEntity.getZone(), id],
+					newEntity,
+				);
 		});
 
 		return new GameState(
@@ -43,7 +46,7 @@ export default class ReplaceEntityMutator implements GameStateMutator {
 			state.time,
 			state.choices,
 			state.descriptors,
-			state.diffs
+			state.diffs,
 		);
 	}
 }

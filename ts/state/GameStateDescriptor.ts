@@ -1,11 +1,15 @@
 import * as Immutable from "immutable";
-import {BlockType} from "../enums";
+import { BlockType } from "../enums";
 import MetaData from "../MetaData";
 
 export default class GameStateDescriptor {
-
-	constructor(private _entityId: number, private _target: number, private _action: BlockType, private _metaData?: Immutable.Set<MetaData>) {
-		if(!this._metaData) {
+	constructor(
+		private _entityId: number,
+		private _target: number,
+		private _action: BlockType,
+		private _metaData?: Immutable.Set<MetaData>,
+	) {
+		if (!this._metaData) {
 			this._metaData = Immutable.Set<MetaData>();
 		}
 	}

@@ -1,47 +1,50 @@
 import * as React from "react";
-import {EntityListProps} from "../../interfaces";
+import { EntityListProps } from "../../interfaces";
 import Entity from "../../Entity";
 import Option from "../../Option";
 
-abstract class EntityList<T extends EntityListProps> extends React.Component<T> {
-
+abstract class EntityList<T extends EntityListProps> extends React.Component<
+	T
+> {
 	protected renderEntity(entity: Entity, option: Option, index?: number) {
-		let id = entity.cardId ? (' (CardID=' + entity.cardId + ')') : '';
-		return (<span>Entity #{entity.id }{id}</span>);
+		let id = entity.cardId ? " (CardID=" + entity.cardId + ")" : "";
+		return (
+			<span>
+				Entity #{entity.id}
+				{id}
+			</span>
+		);
 	}
 
 	protected sort(entity: Entity): number {
 		return entity.getZonePosition();
 	}
 
-	protected beforeRender(entities: number) { }
+	protected beforeRender(entities: number) {}
 
 	protected abstract className(): string;
 
 	public render(): JSX.Element {
 		let elements = [];
 		if (this.props.entities) {
-			let entities = this.props.entities.toList().sortBy(this.sort.bind(this));
+			let entities = this.props.entities
+				.toList()
+				.sortBy(this.sort.bind(this));
 			this.beforeRender(entities.count());
 			entities.forEach((entity, i) => {
-				let option = this.props.options ? this.props.options.get(entity.id) : null;
+				let option = this.props.options
+					? this.props.options.get(entity.id)
+					: null;
 				let rendered = this.renderEntity(entity, option, i);
-				if(!rendered) {
+				if (!rendered) {
 					return;
 				}
-				elements.push(
-					<li key={entity.id }>
-						{rendered}
-					</li>);
+				elements.push(<li key={entity.id}>{rendered}</li>);
 			});
 		}
-		let classNames = ['entity-list'];
+		let classNames = ["entity-list"];
 		classNames.push(this.className());
-		return (
-			<ul className={classNames.join(' ') }>
-				{elements}
-			</ul>
-		);
+		return <ul className={classNames.join(" ")}>{elements}</ul>;
 	}
 
 	public shouldComponentUpdate(nextProps: EntityListProps, nextState) {

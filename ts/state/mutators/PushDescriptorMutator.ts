@@ -3,8 +3,7 @@ import GameStateMutator from "../GameStateMutator";
 import GameStateDescriptor from "../GameStateDescriptor";
 
 export default class PushDescriptorMutator implements GameStateMutator {
-	constructor(public descriptor: GameStateDescriptor) {
-	}
+	constructor(public descriptor: GameStateDescriptor) {}
 
 	public applyTo(state: GameState): GameState {
 		let descriptors = state.descriptors.push(this.descriptor);
@@ -16,7 +15,7 @@ export default class PushDescriptorMutator implements GameStateMutator {
 			state.time,
 			state.choices,
 			descriptors,
-			state.diffs
+			state.diffs,
 		);
 	}
 }

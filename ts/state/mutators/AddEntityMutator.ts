@@ -2,12 +2,11 @@ import GameState from "../GameState";
 import GameStateMutator from "../GameStateMutator";
 import Entity from "../../Entity";
 import AddDiffsMutator from "./AddDiffsMutator";
-import {GameStateDiff} from "../../interfaces";
-import {Zone, GameTag, Mulligan, Step} from "../../enums";
+import { GameStateDiff } from "../../interfaces";
+import { Zone, GameTag, Mulligan, Step } from "../../enums";
 
 export default class AddEntityMutator implements GameStateMutator {
-	constructor(public entity: Entity) {
-	}
+	constructor(public entity: Entity) {}
 
 	public applyTo(state: GameState): GameState {
 		if (!this.entity) {
@@ -32,7 +31,10 @@ export default class AddEntityMutator implements GameStateMutator {
 		entities = entities.set(id, entity);
 
 		let entityTree = state.entityTree;
-		entityTree = entityTree.setIn([entity.getController(), entity.getZone(), id], entity);
+		entityTree = entityTree.setIn(
+			[entity.getController(), entity.getZone(), id],
+			entity,
+		);
 
 		let diffs: GameStateDiff[] = [];
 		entity.getTags().forEach((value: number, tag: string) => {
@@ -53,7 +55,7 @@ export default class AddEntityMutator implements GameStateMutator {
 			state.time,
 			state.choices,
 			state.descriptors,
-			state.diffs
+			state.diffs,
 		);
 
 		return state.apply(new AddDiffsMutator(diffs));

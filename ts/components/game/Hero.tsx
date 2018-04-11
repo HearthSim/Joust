@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as Immutable from "immutable";
 import EntityInPlay from "./EntityInPlay";
-import {CardOracleProps, EntityInPlayProps} from "../../interfaces";
+import { CardOracleProps, EntityInPlayProps } from "../../interfaces";
 import Entity from "../../Entity";
 import Attack from "./stats/Attack";
 import Damage from "./stats/Damage";
@@ -10,7 +10,7 @@ import Health from "./stats/Health";
 import Armor from "./stats/Armor";
 import SecretText from "./stats/SecretText";
 import HeroArt from "./visuals/HeroArt";
-import {GameTag, MetaDataType} from "../../enums";
+import { GameTag, MetaDataType } from "../../enums";
 import MetaData from "../../MetaData";
 import GameStateDescriptor from "../../state/GameStateDescriptor";
 
@@ -20,7 +20,7 @@ interface HeroProps extends EntityInPlayProps, CardOracleProps {
 
 export default class Hero extends EntityInPlay<HeroProps> {
 	constructor(props: HeroProps, context?: any) {
-		super('hero', props, context);
+		super("hero", props, context);
 	}
 
 	protected jsx() {
@@ -29,50 +29,61 @@ export default class Hero extends EntityInPlay<HeroProps> {
 		let secrets = this.props.secrets;
 		let quests = [];
 
-		let hasQuest = secrets.some((potentialQuest: Entity) => !!potentialQuest.getTag(GameTag.QUEST));
+		let hasQuest = secrets.some(
+			(potentialQuest: Entity) => !!potentialQuest.getTag(GameTag.QUEST),
+		);
 		let secretCount = secrets.count();
 
 		// build text in icon
-		let secretText = hasQuest ? "!" : (secretCount > 1 ? "" + secretCount : "?");
+		let secretText = hasQuest
+			? "!"
+			: secretCount > 1 ? "" + secretCount : "?";
 
 		// build title
-		let secretTitle = this.props.secrets.reduce((title, entity: Entity): string => {
-			let name = entity.cardId;
-			if (!entity.revealed) {
-				if (this.props.cardOracle && this.props.cardOracle.has(entity.id)) {
-					name = this.props.cardOracle.get(entity.id);
+		let secretTitle = this.props.secrets.reduce(
+			(title, entity: Entity): string => {
+				let name = entity.cardId;
+				if (!entity.revealed) {
+					if (
+						this.props.cardOracle &&
+						this.props.cardOracle.has(entity.id)
+					) {
+						name = this.props.cardOracle.get(entity.id);
+					} else {
+						return title;
+					}
 				}
-				else {
-					return title;
+				if (title) {
+					title += ", ";
 				}
-			}
-			if (title) {
-				title += ", ";
-			}
-			if (this.props.cards && this.props.cards.has(name)) {
-				name = this.props.cards.get(name).name || name;
-			}
-			return title += name;
-		}, "");
+				if (this.props.cards && this.props.cards.has(name)) {
+					name = this.props.cards.get(name).name || name;
+				}
+				return (title += name);
+			},
+			"",
+		);
 
 		let damage = 0;
 		let healing = 0;
 
 		if (this.props.descriptors) {
-			this.props.descriptors.forEach((descriptor: GameStateDescriptor) => {
-				descriptor.metaData.forEach((metaData: MetaData) => {
-					if (metaData.entities.has(entity.id)) {
-						switch (metaData.type) {
-							case MetaDataType.DAMAGE:
-								damage += metaData.data;
-								break;
-							case MetaDataType.HEALING:
-								healing += metaData.data;
-								break;
+			this.props.descriptors.forEach(
+				(descriptor: GameStateDescriptor) => {
+					descriptor.metaData.forEach((metaData: MetaData) => {
+						if (metaData.entities.has(entity.id)) {
+							switch (metaData.type) {
+								case MetaDataType.DAMAGE:
+									damage += metaData.data;
+									break;
+								case MetaDataType.HEALING:
+									healing += metaData.data;
+									break;
+							}
 						}
-					}
-				})
-			})
+					});
+				},
+			);
 		}
 
 		return [
@@ -88,9 +99,14 @@ export default class Hero extends EntityInPlay<HeroProps> {
 			/>,
 			<div key="stats" className="stats">
 				{entity.getAtk() ? <Attack attack={entity.getAtk()} /> : null}
-				<Health health={entity.getHealth() } damage={entity.getDamage()} />
+				<Health
+					health={entity.getHealth()}
+					damage={entity.getDamage()}
+				/>
 				{entity.getArmor() ? <Armor armor={entity.getArmor()} /> : null}
-				{(hasQuest || secretCount > 0) ? <SecretText text={secretText} title={secretTitle} /> : null}
+				{hasQuest || secretCount > 0 ? (
+					<SecretText text={secretText} title={secretTitle} />
+				) : null}
 				{damage != 0 ? <Damage damage={damage} /> : null}
 				{healing != 0 ? <Healing healing={healing} /> : null}
 			</div>,

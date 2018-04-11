@@ -1,9 +1,11 @@
 import * as React from "react";
-import {CardClass, CardType} from "../../../enums";
+import { CardClass, CardType } from "../../../enums";
 import CardArt from "./CardArt";
-import {EntityProps} from "../../../interfaces";
+import { EntityProps } from "../../../interfaces";
 
-interface InHandCardArtProps extends EntityProps, React.ClassAttributes<InHandCardArt> {
+interface InHandCardArtProps
+	extends EntityProps,
+		React.ClassAttributes<InHandCardArt> {
 	hidden: boolean;
 	cardType?: number;
 	cardClass?: number;
@@ -23,7 +25,7 @@ export default class InHandCardArt extends React.Component<InHandCardArtProps> {
 		if (this.props.hidden) {
 			images.push({
 				image: "cardback.png",
-				classes: ["inhand-base", "cardback"]
+				classes: ["inhand-base", "cardback"],
 			});
 		} else {
 			switch (this.props.cardType) {
@@ -64,32 +66,38 @@ export default class InHandCardArt extends React.Component<InHandCardArtProps> {
 			images.push({
 				image: entity.cardId,
 				isArt: true,
-				classes: [portraitClass]
+				classes: [portraitClass],
 			});
 		}
 
 		images.push({
 			image: frame,
-			classes: ["inhand-base"]
+			classes: ["inhand-base"],
 		});
 
 		if (entity.isPremium()) {
 			images.push({
 				image: premiumOverlay,
 				classes: ["inhand-base", premiumOverlayClass],
-			})
+			});
 		}
 
 		if (!this.props.hidden && entity.cardId && entity.isLegendary()) {
 			if (this.props.cardType === CardType.MINION) {
 				images.push({
-					image: "inhand_minion_legendary" + (entity.isPremium() ? "_premium" : "") + ".png",
+					image:
+						"inhand_minion_legendary" +
+						(entity.isPremium() ? "_premium" : "") +
+						".png",
 					classes: ["inhand-legendary"],
 				});
 			}
 			if (this.props.cardType === CardType.SPELL) {
 				images.push({
-					image: "inhand_spell_legendary" + (entity.isPremium() ? "_premium" : "") + ".png",
+					image:
+						"inhand_spell_legendary" +
+						(entity.isPremium() ? "_premium" : "") +
+						".png",
 					classes: ["inhand-legendary"],
 				});
 			}
@@ -98,12 +106,19 @@ export default class InHandCardArt extends React.Component<InHandCardArtProps> {
 		if (this.props.mulligan) {
 			images.push({
 				image: "inhand_mulligan.png",
-				classes: ["inhand-mulligan"]
+				classes: ["inhand-mulligan"],
 			});
 		}
 
 		return (
-			<CardArt layers={images} scale={0.71} square={false} margin={false} assetDirectory={this.props.assetDirectory} cardArtDirectory={this.props.cardArtDirectory} />
+			<CardArt
+				layers={images}
+				scale={0.71}
+				square={false}
+				margin={false}
+				assetDirectory={this.props.assetDirectory}
+				cardArtDirectory={this.props.cardArtDirectory}
+			/>
 		);
 	}
 

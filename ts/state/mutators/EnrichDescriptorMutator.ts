@@ -4,14 +4,12 @@ import GameStateDescriptor from "../GameStateDescriptor";
 import MetaData from "../../MetaData";
 
 export default class EnrichDescriptorMutator implements GameStateMutator {
-	constructor(public metaData: MetaData) {
-
-	}
+	constructor(public metaData: MetaData) {}
 
 	public applyTo(state: GameState): GameState {
 		let descriptor = state.descriptors.peek();
 
-		if(!descriptor) {
+		if (!descriptor) {
 			console.warn("Ignoring MetaData outside of Block");
 			return state;
 		}
@@ -19,7 +17,12 @@ export default class EnrichDescriptorMutator implements GameStateMutator {
 		let descriptors = state.descriptors.pop();
 
 		let meta = descriptor.metaData.add(this.metaData);
-		descriptor = new GameStateDescriptor(descriptor.entityId, descriptor.target, descriptor.type, meta);
+		descriptor = new GameStateDescriptor(
+			descriptor.entityId,
+			descriptor.target,
+			descriptor.type,
+			meta,
+		);
 		descriptors = descriptors.push(descriptor);
 
 		return new GameState(
@@ -30,7 +33,7 @@ export default class EnrichDescriptorMutator implements GameStateMutator {
 			state.time,
 			state.choices,
 			descriptors,
-			state.diffs
+			state.diffs,
 		);
 	}
 }

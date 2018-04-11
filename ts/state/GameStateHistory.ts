@@ -1,7 +1,7 @@
 import GameState from "./GameState";
-import {GameTag, Step} from "../enums";
+import { GameTag, Step } from "../enums";
 import * as Immutable from "immutable";
-import {HistoryEntry} from "../interfaces";
+import { HistoryEntry } from "../interfaces";
 
 /**
  * Organizes game states in a linear history.
@@ -10,7 +10,10 @@ export default class GameStateHistory {
 	public tail: HistoryEntry = null; // earliest
 	public head: HistoryEntry = null; // latest
 	public pointer: HistoryEntry = null;
-	public turnMap: Immutable.Map<number, GameState> = Immutable.OrderedMap<number, GameState>();
+	public turnMap: Immutable.Map<number, GameState> = Immutable.OrderedMap<
+		number,
+		GameState
+	>();
 
 	public push(gameState: GameState): void {
 		let time = gameState.time;
@@ -26,16 +29,21 @@ export default class GameStateHistory {
 			if (!this.turnMap.has(turn) && turn > 0) {
 				let step = game.getTag(GameTag.STEP);
 				// any turn is real once mulligan is done and we have game and players
-				let real = !(step === Step.INVALID || step === Step.BEGIN_MULLIGAN) && gameState.getPlayerCount() > 0;
+				let real =
+					!(step === Step.INVALID || step === Step.BEGIN_MULLIGAN) &&
+					gameState.getPlayerCount() > 0;
 				// only add once MAIN_START occurs, or if we haven't had any turn yet and see a real turn
-				if (step === Step.MAIN_START || (this.turnMap.isEmpty() && real)) {
+				if (
+					step === Step.MAIN_START ||
+					(this.turnMap.isEmpty() && real)
+				) {
 					this.turnMap = this.turnMap.set(turn, gameState);
 				}
 			}
 		}
 
 		if (!this.tail && !this.head) {
-			let element = {state: gameState};
+			let element = { state: gameState };
 			this.tail = element;
 			this.head = element;
 			this.pointer = element;
@@ -43,15 +51,13 @@ export default class GameStateHistory {
 		}
 
 		if (time > this.head.state.time) {
-			let element = {state: gameState, prev: this.head};
+			let element = { state: gameState, prev: this.head };
 			this.head.next = element;
 			this.head = element;
-		}
-		else if (time === this.head.state.time) {
+		} else if (time === this.head.state.time) {
 			// overwrite state if time is identical
 			this.head.state = gameState;
-		}
-		else {
+		} else {
 			console.error("Replay contains out-of-order timestamps");
 		}
 	}

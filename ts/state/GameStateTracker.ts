@@ -9,7 +9,6 @@ import CoinDetector from "./plugins/CoinDetector";
  * Also increments game state times based on the incoming mutators.
  */
 export default class GameStateTracker extends Stream.Transform {
-
 	public gameState: GameState;
 	public plugins: GameStateTrackerPlugin[];
 
@@ -17,7 +16,9 @@ export default class GameStateTracker extends Stream.Transform {
 		opts = opts || {};
 		opts.objectMode = true;
 		super(opts);
-		this.gameState = initialGameState || new GameState(undefined, undefined, undefined, undefined, 0);
+		this.gameState =
+			initialGameState ||
+			new GameState(undefined, undefined, undefined, undefined, 0);
 		this.plugins = [];
 		this.registerPlugin(new Timer());
 		this.registerPlugin(new CoinDetector());
@@ -27,16 +28,26 @@ export default class GameStateTracker extends Stream.Transform {
 		this.plugins.push(plugin);
 	}
 
-	public _transform(mutator: any, encoding: string, callback: Function): void {
+	public _transform(
+		mutator: any,
+		encoding: string,
+		callback: Function,
+	): void {
 		let oldState = this.gameState;
-		this.gameState = this.plugins.reduce((state: GameState, plugin: GameStateTrackerPlugin): GameState => {
-			return plugin.onBeforeMutate(mutator, state) || state;
-		}, oldState);
+		this.gameState = this.plugins.reduce(
+			(state: GameState, plugin: GameStateTrackerPlugin): GameState => {
+				return plugin.onBeforeMutate(mutator, state) || state;
+			},
+			oldState,
+		);
 		this.gameState = this.gameState.apply(mutator);
 		this.push(this.gameState);
-		this.gameState = this.plugins.reduce((state: GameState, plugin: GameStateTrackerPlugin): GameState => {
-			return plugin.onAfterMutate(mutator, this.gameState) || state;
-		}, this.gameState);
+		this.gameState = this.plugins.reduce(
+			(state: GameState, plugin: GameStateTrackerPlugin): GameState => {
+				return plugin.onAfterMutate(mutator, this.gameState) || state;
+			},
+			this.gameState,
+		);
 		this.push(this.gameState);
 		callback();
 	}

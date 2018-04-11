@@ -1,13 +1,16 @@
 import * as React from "react";
-import {StreamScrubber, KeybindingProps, LocaleProps} from "../interfaces";
+import { StreamScrubber, KeybindingProps, LocaleProps } from "../interfaces";
 import Timeline from "./Timeline";
 import SpeedSelector from "./SpeedSelector";
 import Tooltipper from "./Tooltipper";
-import {cookie} from "cookie_js";
+import { cookie } from "cookie_js";
 import * as _ from "lodash";
 import Settings from "./Settings";
 
-interface ScrubberProps extends KeybindingProps, LocaleProps, React.ClassAttributes<Scrubber> {
+interface ScrubberProps
+	extends KeybindingProps,
+		LocaleProps,
+		React.ClassAttributes<Scrubber> {
 	scrubber: StreamScrubber;
 	swapPlayers?: () => void;
 	isSwapped?: boolean;
@@ -38,8 +41,10 @@ interface ScrubberState {
 	isShowingSettings?: boolean;
 }
 
-export default class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
-
+export default class Scrubber extends React.Component<
+	ScrubberProps,
+	ScrubberState
+> {
 	private static SPEEDS = [0.75, 1, 1.5, 2, 3, 4, 8];
 
 	constructor(props: ScrubberProps) {
@@ -67,23 +72,36 @@ export default class Scrubber extends React.Component<ScrubberProps, ScrubberSta
 		this.registerListeners(this.props);
 	}
 
-	public componentWillUpdate(nextProps: ScrubberProps, nextState: ScrubberState): void {
+	public componentWillUpdate(
+		nextProps: ScrubberProps,
+		nextState: ScrubberState,
+	): void {
 		if (!_.isEqual(nextProps, this.props)) {
 			this.removeListeners(this.props);
 		}
 	}
 
-	public componentDidUpdate(prevProps: ScrubberProps, prevState: ScrubberState, prevContext: any): void {
+	public componentDidUpdate(
+		prevProps: ScrubberProps,
+		prevState: ScrubberState,
+		prevContext: any,
+	): void {
 		if (!_.isEqual(prevProps, this.props)) {
 			this.registerListeners(this.props);
 		}
 	}
 
-	public shouldComponentUpdate(nextProps: ScrubberProps, nextState: ScrubberState, nextContext: any): boolean {
-		if (_.isEqual(nextState, this.state) &&
+	public shouldComponentUpdate(
+		nextProps: ScrubberProps,
+		nextState: ScrubberState,
+		nextContext: any,
+	): boolean {
+		if (
+			_.isEqual(nextState, this.state) &&
 			nextProps.isSwapped === this.props.isSwapped &&
 			nextProps.isFullscreen === this.props.isFullscreen &&
-			nextProps.isFullscreenAvailable === this.props.isFullscreenAvailable &&
+			nextProps.isFullscreenAvailable ===
+				this.props.isFullscreenAvailable &&
 			nextProps.fullscreenError === this.props.fullscreenError &&
 			nextProps.isRevealingCards === this.props.isRevealingCards &&
 			nextProps.canRevealCards === this.props.canRevealCards &&
@@ -121,8 +139,13 @@ export default class Scrubber extends React.Component<ScrubberProps, ScrubberSta
 			return;
 		}
 
-		let activeTag = document.activeElement && document.activeElement.tagName;
-		if (activeTag == "TEXTAREA" || activeTag == "INPUT" || activeTag == "SELECT") {
+		let activeTag =
+			document.activeElement && document.activeElement.tagName;
+		if (
+			activeTag == "TEXTAREA" ||
+			activeTag == "INPUT" ||
+			activeTag == "SELECT"
+		) {
 			// Do not trigger if an input element is focused
 			return;
 		}
@@ -159,29 +182,30 @@ export default class Scrubber extends React.Component<ScrubberProps, ScrubberSta
 					return;
 				}
 				if (this.props.isRevealingCards) {
-					this.props.onClickHideCards && this.props.onClickHideCards();
-				}
-				else {
-					this.props.onClickRevealCards && this.props.onClickRevealCards();
+					this.props.onClickHideCards &&
+						this.props.onClickHideCards();
+				} else {
+					this.props.onClickRevealCards &&
+						this.props.onClickRevealCards();
 				}
 				break;
 			case 87: // w
 			case 187: // +
-			{
-				let index = Scrubber.SPEEDS.indexOf(this.state.speed) + 1;
-				if (Scrubber.SPEEDS[index]) {
-					this.selectSpeed(Scrubber.SPEEDS[index]);
+				{
+					let index = Scrubber.SPEEDS.indexOf(this.state.speed) + 1;
+					if (Scrubber.SPEEDS[index]) {
+						this.selectSpeed(Scrubber.SPEEDS[index]);
+					}
 				}
-			}
 				break;
 			case 83: // s
 			case 189: // -
-			{
-				let index = Scrubber.SPEEDS.indexOf(this.state.speed) - 1;
-				if (Scrubber.SPEEDS[index]) {
-					this.selectSpeed(Scrubber.SPEEDS[index]);
+				{
+					let index = Scrubber.SPEEDS.indexOf(this.state.speed) - 1;
+					if (Scrubber.SPEEDS[index]) {
+						this.selectSpeed(Scrubber.SPEEDS[index]);
+					}
 				}
-			}
 				break;
 			case 67: // c
 				this.props.swapPlayers();
@@ -192,8 +216,7 @@ export default class Scrubber extends React.Component<ScrubberProps, ScrubberSta
 				}
 				if (this.props.isFullscreen) {
 					this.props.onClickMinimize();
-				}
-				else {
+				} else {
 					this.props.onClickFullscreen();
 				}
 				break;
@@ -225,102 +248,179 @@ export default class Scrubber extends React.Component<ScrubberProps, ScrubberSta
 	}
 
 	public render(): JSX.Element {
-		const playpause = this.state.playing ?
+		const playpause = this.state.playing ? (
 			<Tooltipper title="Pause" align="left">
-				<button onClick={() => this.pause()} disabled={!this.state.canInteract}
-						className="joust-scrubber-button-wide"><i className="joust-fa joust-fa-pause"></i></button>
-			</Tooltipper> :
-			<Tooltipper title="Play" align="left">
-				<button onClick={() => this.play()} disabled={!this.state.canPlay}
-						className="joust-scrubber-button-wide"><i className="joust-fa joust-fa-play"></i></button>
-			</Tooltipper>;
-
-		const restart = <Tooltipper title="Restart" align="left">
-			<button onClick={() => this.rewind()} disabled={!this.state.canRewind}
-					className="joust-scrubber-button-wide"><i className="joust-fa joust-fa-fast-backward"></i></button>
-		</Tooltipper>;
-
-		const speedSelector = <Tooltipper title="Playback speed" desktop="%s (W/S)">
-			<SpeedSelector
-				speed={this.state.speed}
-				speeds={Scrubber.SPEEDS}
-				selectSpeed={(speed: number) => this.selectSpeed(speed)}
-				disabled={!this.state.canInteract}
-			/>
-		</Tooltipper>;
-
-		const fullscreenToggle = this.props.isFullscreen ?
-			<Tooltipper title="Restore" align="right" desktop="%s (F)">
-				<button onClick={this.props.onClickMinimize}><i className="joust-fa joust-fa-window-restore"></i>
+				<button
+					onClick={() => this.pause()}
+					disabled={!this.state.canInteract}
+					className="joust-scrubber-button-wide"
+				>
+					<i className="joust-fa joust-fa-pause" />
 				</button>
-			</Tooltipper> :
+			</Tooltipper>
+		) : (
+			<Tooltipper title="Play" align="left">
+				<button
+					onClick={() => this.play()}
+					disabled={!this.state.canPlay}
+					className="joust-scrubber-button-wide"
+				>
+					<i className="joust-fa joust-fa-play" />
+				</button>
+			</Tooltipper>
+		);
+
+		const restart = (
+			<Tooltipper title="Restart" align="left">
+				<button
+					onClick={() => this.rewind()}
+					disabled={!this.state.canRewind}
+					className="joust-scrubber-button-wide"
+				>
+					<i className="joust-fa joust-fa-fast-backward" />
+				</button>
+			</Tooltipper>
+		);
+
+		const speedSelector = (
+			<Tooltipper title="Playback speed" desktop="%s (W/S)">
+				<SpeedSelector
+					speed={this.state.speed}
+					speeds={Scrubber.SPEEDS}
+					selectSpeed={(speed: number) => this.selectSpeed(speed)}
+					disabled={!this.state.canInteract}
+				/>
+			</Tooltipper>
+		);
+
+		const fullscreenToggle = this.props.isFullscreen ? (
+			<Tooltipper title="Restore" align="right" desktop="%s (F)">
+				<button onClick={this.props.onClickMinimize}>
+					<i className="joust-fa joust-fa-window-restore" />
+				</button>
+			</Tooltipper>
+		) : (
 			<Tooltipper
-				title={this.props.fullscreenError ? "Error entering fullscreen." : "Fullscreen"}
+				title={
+					this.props.fullscreenError
+						? "Error entering fullscreen."
+						: "Fullscreen"
+				}
 				align="right"
 				forceShow={this.props.fullscreenError}
 				desktop={!this.props.fullscreenError ? "%s (F)" : null}
 			>
 				<button
-					onClick={() => this.props.isFullscreenAvailable && this.props.onClickFullscreen()}
+					onClick={() =>
+						this.props.isFullscreenAvailable &&
+						this.props.onClickFullscreen()
+					}
 					disabled={!this.props.isFullscreenAvailable}
 				>
-					<i className="joust-fa joust-fa-arrows-alt"></i>
+					<i className="joust-fa joust-fa-arrows-alt" />
 				</button>
-			</Tooltipper>;
+			</Tooltipper>
+		);
 
-		const revealToggle = this.props.isRevealingCards ?
+		const revealToggle = this.props.isRevealingCards ? (
 			<Tooltipper title="Hide cards" desktop="%s (X)">
-				<button onClick={this.props.onClickHideCards}><i className="joust-fa joust-fa-eye-slash"></i></button>
-			</Tooltipper> :
-			<Tooltipper title="Reveal cards" desktop="%s (X)">
-				<button onClick={this.props.onClickRevealCards} disabled={!this.props.canRevealCards}>
-					<i className="joust-fa joust-fa-eye"></i>
+				<button onClick={this.props.onClickHideCards}>
+					<i className="joust-fa joust-fa-eye-slash" />
 				</button>
-			</Tooltipper>;
+			</Tooltipper>
+		) : (
+			<Tooltipper title="Reveal cards" desktop="%s (X)">
+				<button
+					onClick={this.props.onClickRevealCards}
+					disabled={!this.props.canRevealCards}
+				>
+					<i className="joust-fa joust-fa-eye" />
+				</button>
+			</Tooltipper>
+		);
 
-		const swapToggle = <Tooltipper title="Swap players" desktop="%s (C)">
-			<button onClick={this.props.swapPlayers} disabled={!this.state.canInteract}><i
-				className="joust-fa joust-fa-unsorted"></i></button>
-		</Tooltipper>;
+		const swapToggle = (
+			<Tooltipper title="Swap players" desktop="%s (C)">
+				<button
+					onClick={this.props.swapPlayers}
+					disabled={!this.state.canInteract}
+				>
+					<i className="joust-fa joust-fa-unsorted" />
+				</button>
+			</Tooltipper>
+		);
 
-		const log = <Tooltipper title={this.props.isLogVisible ? "Hide event log" : "Show event log"}>
-			<button onClick={this.props.toggleLog} disabled={!this.state.canInteract}><i
-				className="joust-fa joust-fa-bars"></i></button>
-		</Tooltipper>;
+		const log = (
+			<Tooltipper
+				title={
+					this.props.isLogVisible
+						? "Hide event log"
+						: "Show event log"
+				}
+			>
+				<button
+					onClick={this.props.toggleLog}
+					disabled={!this.state.canInteract}
+				>
+					<i className="joust-fa joust-fa-bars" />
+				</button>
+			</Tooltipper>
+		);
 
-		const settingsToggleButton = <button
-			onClick={() => this.setState({isShowingSettings: !this.state.isShowingSettings})}>
-			<i className="joust-fa joust-fa-cog"></i>
-		</button>;
+		const settingsToggleButton = (
+			<button
+				onClick={() =>
+					this.setState({
+						isShowingSettings: !this.state.isShowingSettings,
+					})
+				}
+			>
+				<i className="joust-fa joust-fa-cog" />
+			</button>
+		);
 
-		const settingsToggle = !this.state.isShowingSettings ? <Tooltipper title={"Settings"}>
-			{settingsToggleButton}
-		</Tooltipper> : settingsToggleButton;
+		const settingsToggle = !this.state.isShowingSettings ? (
+			<Tooltipper title={"Settings"}>{settingsToggleButton}</Tooltipper>
+		) : (
+			settingsToggleButton
+		);
 
 		return (
 			<div className="joust-scrubber">
-				{this.state.canRewind && !this.state.canPlay ? restart : playpause}
+				{this.state.canRewind && !this.state.canPlay
+					? restart
+					: playpause}
 				{speedSelector}
 				<Timeline
-					duration={this.state.duration }
-					at={this.state.currentTime }
-					seek={this.props.scrubber.seek.bind(this.props.scrubber) }
+					duration={this.state.duration}
+					at={this.state.currentTime}
+					seek={this.props.scrubber.seek.bind(this.props.scrubber)}
 					turnMap={this.props.scrubber.getHistory().turnMap}
 					swapPlayers={this.props.isSwapped}
 					disabled={!this.state.canInteract}
-					ref={(inhibitor) => this.props.scrubber.setInhibitor(inhibitor) }
+					ref={(inhibitor) =>
+						this.props.scrubber.setInhibitor(inhibitor)
+					}
 				/>
 				{revealToggle}
 				{swapToggle}
-				{this.state.isShowingSettings && <Settings
-					locale={this.props.locale}
-					onSelectLocale={this.props.onSelectLocale && ((locale: string, loaded: () => void) => this.selectLocale(locale, loaded))}
-					isLogVisible={this.props.isLogVisible}
-					onToggleLog={() => this.props.toggleLog()}
-					onClose={() => this.setState({isShowingSettings: false})}
-					replayBlob={this.props.replayBlob}
-					replayFilename={this.props.replayFilename}
-				/>}
+				{this.state.isShowingSettings && (
+					<Settings
+						locale={this.props.locale}
+						onSelectLocale={
+							this.props.onSelectLocale &&
+							((locale: string, loaded: () => void) =>
+								this.selectLocale(locale, loaded))
+						}
+						isLogVisible={this.props.isLogVisible}
+						onToggleLog={() => this.props.toggleLog()}
+						onClose={() =>
+							this.setState({ isShowingSettings: false })
+						}
+						replayBlob={this.props.replayBlob}
+						replayFilename={this.props.replayFilename}
+					/>
+				)}
 				{settingsToggle}
 				{fullscreenToggle}
 			</div>

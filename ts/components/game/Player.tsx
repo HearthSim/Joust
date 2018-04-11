@@ -15,7 +15,15 @@ import Choices from "./Choices";
 import Rank from "./Rank";
 import Card from "./Card";
 import Minion from "./Minion";
-import {Zone, CardType, GameTag, ChoiceType, Mulligan, PlayState, BlockType} from "../../enums";
+import {
+	Zone,
+	CardType,
+	GameTag,
+	ChoiceType,
+	Mulligan,
+	PlayState,
+	BlockType,
+} from "../../enums";
 import {
 	OptionCallbackProps,
 	CardDataProps,
@@ -24,12 +32,22 @@ import {
 	CardArtDirectory,
 	GameStateDescriptorStackProps,
 	HideCardsProps,
-	MulliganOracleProps, StripBattletagsProps,
+	MulliganOracleProps,
+	StripBattletagsProps,
 } from "../../interfaces";
 import GameStateDescriptor from "../../state/GameStateDescriptor";
 
-interface PlayerProps extends OptionCallbackProps, CardDataProps, CardOracleProps, MulliganOracleProps, AssetDirectoryProps,
-	CardArtDirectory,GameStateDescriptorStackProps, HideCardsProps, StripBattletagsProps, React.ClassAttributes<Player> {
+interface PlayerProps
+	extends OptionCallbackProps,
+		CardDataProps,
+		CardOracleProps,
+		MulliganOracleProps,
+		AssetDirectoryProps,
+		CardArtDirectory,
+		GameStateDescriptorStackProps,
+		HideCardsProps,
+		StripBattletagsProps,
+		React.ClassAttributes<Player> {
 	player: PlayerEntity;
 	entities: Immutable.Map<number, Immutable.Map<number, Entity>>;
 	options: Immutable.Map<number, Immutable.Map<number, Option>>;
@@ -39,7 +57,6 @@ interface PlayerProps extends OptionCallbackProps, CardDataProps, CardOracleProp
 }
 
 export default class Player extends React.Component<PlayerProps> {
-
 	public render(): JSX.Element {
 		let filterByCardType = (cardType: number) => {
 			return (entity: Entity) => {
@@ -49,112 +66,206 @@ export default class Player extends React.Component<PlayerProps> {
 
 		let activatedHeroPower = false;
 
-
 		const emptyEntities = Immutable.Map<number, Entity>();
 		const emptyOptions = Immutable.Map<number, Option>();
 
-		const setAside = this.props.entities.get(Zone.SETASIDE) || emptyEntities;
+		const setAside =
+			this.props.entities.get(Zone.SETASIDE) || emptyEntities;
 
 		let action = null;
 		if (this.props.descriptors.count() > 0 && !this.props.choices) {
-			this.props.descriptors.forEach((descriptor: GameStateDescriptor, index: number) => {
-				let outer = this.props.descriptors.get(index + 1);
-				let type = descriptor.type;
-				if (type === BlockType.PLAY || type === BlockType.TRIGGER || type === BlockType.RITUAL) {
-					let entity: Entity|null = null;
-					// search for entity
-					this.props.entities.forEach((map: Immutable.Map<number, Entity>) => {
-						map.forEach((toCompare: Entity) => {
-							if (descriptor.entityId === toCompare.id) {
-								if (type === BlockType.PLAY || toCompare.getTag(GameTag.SECRET) || toCompare.getTag(GameTag.EVIL_GLOW)) {
-									entity = toCompare;
-								}
-								else if (type === BlockType.TRIGGER && toCompare.cardId === "KAR_096" && toCompare.getTag(GameTag.REVEALED)) {
-									//Prince Malchezaar
-									entity = toCompare;
-								}
-								else if (type === BlockType.RITUAL) {
-									// search for ritual minion ("...give your C'Thun...")
-									entity = toCompare;
+			this.props.descriptors.forEach(
+				(descriptor: GameStateDescriptor, index: number) => {
+					let outer = this.props.descriptors.get(index + 1);
+					let type = descriptor.type;
+					if (
+						type === BlockType.PLAY ||
+						type === BlockType.TRIGGER ||
+						type === BlockType.RITUAL
+					) {
+						let entity: Entity | null = null;
+						// search for entity
+						this.props.entities.forEach(
+							(map: Immutable.Map<number, Entity>) => {
+								map.forEach((toCompare: Entity) => {
+									if (descriptor.entityId === toCompare.id) {
+										if (
+											type === BlockType.PLAY ||
+											toCompare.getTag(GameTag.SECRET) ||
+											toCompare.getTag(GameTag.EVIL_GLOW)
+										) {
+											entity = toCompare;
+										} else if (
+											type === BlockType.TRIGGER &&
+											toCompare.cardId === "KAR_096" &&
+											toCompare.getTag(GameTag.REVEALED)
+										) {
+											//Prince Malchezaar
+											entity = toCompare;
+										} else if (type === BlockType.RITUAL) {
+											// search for ritual minion ("...give your C'Thun...")
+											entity = toCompare;
+										}
+									}
+								});
+							},
+						);
+						if (entity) {
+							if (type === BlockType.RITUAL) {
+								let setAside = this.props.entities.get(
+									Zone.SETASIDE,
+								);
+								if (setAside) {
+									let cthun = setAside.find(
+										(x) => x.cardId === "OG_279",
+									);
+									if (cthun) {
+										cthun = cthun.setTag(
+											GameTag.NUM_TURNS_IN_PLAY,
+											1,
+										);
+										action = (
+											<div className="played">
+												<Minion
+													entity={cthun}
+													option={null}
+													optionCallback={null}
+													assetDirectory={
+														this.props
+															.assetDirectory
+													}
+													cards={this.props.cards}
+													controller={
+														this.props.player
+													}
+													cardArtDirectory={
+														this.props
+															.cardArtDirectory
+													}
+												/>
+											</div>
+										);
+										return false;
+									}
 								}
 							}
-						});
-					});
-					if (entity) {
-						if (type === BlockType.RITUAL) {
-							let setAside = this.props.entities.get(Zone.SETASIDE);
-							if (setAside) {
-								let cthun = setAside.find(x => x.cardId === "OG_279");
-								if (cthun) {
-									cthun = cthun.setTag(GameTag.NUM_TURNS_IN_PLAY, 1);
-									action = <div className="played"><Minion
-										entity={cthun}
-										option={null}
-										optionCallback={null}
-										assetDirectory={this.props.assetDirectory}
-										cards={this.props.cards}
-										controller={this.props.player}
-										cardArtDirectory={this.props.cardArtDirectory}
-									/></div>;
-									return false;
+							if (
+								entity.getTag(GameTag.CARDTYPE) ===
+									CardType.HERO_POWER &&
+								!entity.getTag(GameTag.EXHAUSTED)
+							) {
+								activatedHeroPower = true;
+							}
+							if (!action) {
+								let type: number | string = entity.getTag(
+									GameTag.CARDTYPE,
+								);
+								let hidden = false;
+								if (
+									(!entity.cardId &&
+										this.props.cardOracle &&
+										this.props.cardOracle.has(
+											+entity.id,
+										)) ||
+									entity.getTag(GameTag.SHIFTING)
+								) {
+									let cardId = this.props.cardOracle.get(
+										entity.id,
+									);
+									entity = new Entity(
+										entity.id,
+										entity.getTags(),
+										cardId,
+									);
+									hidden = true;
+									if (
+										this.props.cards &&
+										this.props.cards.has(cardId)
+									) {
+										type = this.props.cards.get(cardId)
+											.type;
+									}
+								}
+								let types = [
+									CardType.WEAPON,
+									CardType.SPELL,
+									CardType.MINION,
+									CardType.HERO_POWER,
+									"WEAPON",
+									"SPELL",
+									"MINION",
+									"HERO_POWER",
+								];
+								if (
+									types.indexOf(type) != -1 ||
+									entity.getTag(GameTag.SECRET)
+								) {
+									let creator = null;
+									const creatorId = entity.getTag(
+										GameTag.DISPLAYED_CREATOR,
+									);
+									if (creatorId) {
+										this.props.entities.forEach(
+											(
+												map: Immutable.Map<
+													number,
+													Entity
+												>,
+											) => {
+												map.forEach(
+													(toCompare: Entity) => {
+														if (
+															toCompare.id ===
+															creatorId
+														) {
+															creator = toCompare;
+														}
+													},
+												);
+											},
+										);
+									}
+									action = (
+										<div className="played">
+											<Card
+												entity={entity}
+												creator={creator}
+												option={null}
+												optionCallback={null}
+												assetDirectory={
+													this.props.assetDirectory
+												}
+												cards={this.props.cards}
+												isHidden={hidden}
+												controller={this.props.player}
+												cardArtDirectory={
+													this.props.cardArtDirectory
+												}
+												setAside={setAside}
+											/>
+										</div>
+									);
 								}
 							}
 						}
-						if (entity.getTag(GameTag.CARDTYPE) === CardType.HERO_POWER && !entity.getTag(GameTag.EXHAUSTED)) {
-							activatedHeroPower = true;
-						}
-						if (!action) {
-							let type: number|string = entity.getTag(GameTag.CARDTYPE);
-							let hidden = false;
-							if ((!entity.cardId && this.props.cardOracle && this.props.cardOracle.has(+entity.id)) || entity.getTag(GameTag.SHIFTING)) {
-								let cardId = this.props.cardOracle.get(entity.id);
-								entity = new Entity(entity.id, entity.getTags(), cardId);
-								hidden = true;
-								if (this.props.cards && this.props.cards.has(cardId)) {
-									type = this.props.cards.get(cardId).type;
-								}
-							}
-							let types = [CardType.WEAPON, CardType.SPELL, CardType.MINION, CardType.HERO_POWER, "WEAPON", "SPELL", "MINION", "HERO_POWER"];
-							if (types.indexOf(type) != -1 || entity.getTag(GameTag.SECRET)) {
-								let creator = null;
-								const creatorId = entity.getTag(GameTag.DISPLAYED_CREATOR);
-								if (creatorId) {
-									this.props.entities.forEach((map: Immutable.Map<number, Entity>) => {
-										map.forEach((toCompare: Entity) => {
-											if (toCompare.id === creatorId) {
-												creator = toCompare;
-											}
-										});
-									});
-								}
-								action = <div className="played"><Card
-									entity={entity}
-									creator={creator}
-									option={null}
-									optionCallback={null}
-									assetDirectory={this.props.assetDirectory}
-									cards={this.props.cards}
-									isHidden={hidden}
-									controller={this.props.player}
-									cardArtDirectory={this.props.cardArtDirectory}
-									setAside={setAside}
-								/></div>;
-							}
+						if (action && activatedHeroPower) {
+							// terminate loop
+							return false;
 						}
 					}
-					if (action && activatedHeroPower) {
-						// terminate loop
-						return false;
-					}
-				}
-			});
+				},
+			);
 		}
 
-		const playEntities = this.props.entities.get(Zone.PLAY) || Immutable.Map<number, Entity>();
-		const playOptions = this.props.options.get(Zone.PLAY) || Immutable.Map<number, Option>();
+		const playEntities =
+			this.props.entities.get(Zone.PLAY) ||
+			Immutable.Map<number, Entity>();
+		const playOptions =
+			this.props.options.get(Zone.PLAY) ||
+			Immutable.Map<number, Option>();
 
 		const buffedEntities = [];
-		playEntities.forEach(entity => {
+		playEntities.forEach((entity) => {
 			let attached = entity.getTag(GameTag.ATTACHED);
 			if (attached && buffedEntities.indexOf(attached) === -1) {
 				buffedEntities.push(attached);
@@ -162,163 +273,228 @@ export default class Player extends React.Component<PlayerProps> {
 		});
 
 		/* Equipment */
-		let heroEntity = playEntities.filter(filterByCardType(CardType.HERO)).first();
+		let heroEntity = playEntities
+			.filter(filterByCardType(CardType.HERO))
+			.first();
 		if (!heroEntity) {
-			heroEntity = (this.props.entities.get(Zone.GRAVEYARD) || Immutable.Map<number, Entity>()).filter(filterByCardType(CardType.HERO)).first();
+			heroEntity = (
+				this.props.entities.get(Zone.GRAVEYARD) ||
+				Immutable.Map<number, Entity>()
+			)
+				.filter(filterByCardType(CardType.HERO))
+				.first();
 		}
-		let hero = <Hero
-			entity={heroEntity}
-			option={heroEntity ? playOptions.get(heroEntity.id) : null}
-			secrets={this.props.entities.get(Zone.SECRET) || Immutable.Map<number, Entity>() }
-			optionCallback={this.props.optionCallback}
-			cards={this.props.cards}
-			assetDirectory={this.props.assetDirectory}
-			cardArtDirectory={this.props.cardArtDirectory}
-			controller={this.props.player}
-			descriptors={this.props.descriptors}
-			cardOracle={this.props.cardOracle}
-		/>;
-		let heroPowerEntity = playEntities.filter(filterByCardType(CardType.HERO_POWER)).first();
-		let heroPower = <HeroPower
-			entity={heroPowerEntity}
-			option={heroPowerEntity ? playOptions.get(heroPowerEntity.id) : null}
-			optionCallback={this.props.optionCallback}
-			cards={this.props.cards}
-			assetDirectory={this.props.assetDirectory}
-			cardArtDirectory={this.props.cardArtDirectory}
-			controller={this.props.player}
-			activated={activatedHeroPower}
-		/>;
-		let weapon = <Weapon
-			entity={playEntities.filter(filterByCardType(CardType.WEAPON)).first() }
-			cards={this.props.cards}
-			assetDirectory={this.props.assetDirectory}
-			cardArtDirectory={this.props.cardArtDirectory}
-			controller={this.props.player}
-		/>;
-
-		let field = <Field
-			entities={playEntities.filter(filterByCardType(CardType.MINION)) || emptyEntities}
-			options={playOptions || emptyOptions}
-			optionCallback={this.props.optionCallback}
-			cards={this.props.cards}
-			assetDirectory={this.props.assetDirectory}
-			cardArtDirectory={this.props.cardArtDirectory}
-			controller={this.props.player}
-			descriptors={this.props.descriptors}
-			buffedEntities={buffedEntities}
-		/>;
-		let deck = <Deck
-			entities={this.props.entities.get(Zone.DECK) || emptyEntities}
-			options={this.props.options.get(Zone.DECK) || emptyOptions}
-			cards={this.props.cards}
-			assetDirectory={this.props.assetDirectory}
-			cardArtDirectory={this.props.cardArtDirectory}
-			controller={this.props.player}
-			fatigue={this.props.player.getTag(GameTag.FATIGUE) + 1}
-		/>;
-		let hand = <Hand
-			entities={((!this.props.choices || this.props.choices.type !== ChoiceType.MULLIGAN) && this.props.entities.get(Zone.HAND)) || emptyEntities}
-			options={this.props.options.get(Zone.HAND) || emptyOptions}
-			optionCallback={this.props.optionCallback}
-			cards={this.props.cards}
-			cardOracle={this.props.cardOracle}
-			isTop={this.props.isTop}
-			assetDirectory={this.props.assetDirectory}
-			cardArtDirectory={this.props.cardArtDirectory}
-			controller={this.props.player}
-			hideCards={this.props.hideCards}
-			setAside={setAside}
-		/>;
-
-		let choices = null;
-		if (this.props.choices) {
-			let choiceEntities = this.props.choices.choices.map((choice: Choice) => {
-				let entity = null;
-				// search for the entity in all player zones
-				let id = choice.entityId;
-				this.props.entities.forEach((zoneEntities: Immutable.Map<number, Entity>) => {
-					if (zoneEntities.has(id)) {
-						entity = zoneEntities.get(id);
-						return false;
-					}
-				});
-				if (entity === null) {
-					console.error("Entity #" + id + " from choice could not be found for player #" + this.props.player.id + " (playerId=" + this.props.player.playerId + ")");
+		let hero = (
+			<Hero
+				entity={heroEntity}
+				option={heroEntity ? playOptions.get(heroEntity.id) : null}
+				secrets={
+					this.props.entities.get(Zone.SECRET) ||
+					Immutable.Map<number, Entity>()
 				}
-				return entity;
-			}).filter((entity: Entity) => {
-				return !!entity;
-			});
-			choices = <Choices
-				entities={choiceEntities}
+				optionCallback={this.props.optionCallback}
+				cards={this.props.cards}
+				assetDirectory={this.props.assetDirectory}
+				cardArtDirectory={this.props.cardArtDirectory}
+				controller={this.props.player}
+				descriptors={this.props.descriptors}
+				cardOracle={this.props.cardOracle}
+			/>
+		);
+		let heroPowerEntity = playEntities
+			.filter(filterByCardType(CardType.HERO_POWER))
+			.first();
+		let heroPower = (
+			<HeroPower
+				entity={heroPowerEntity}
+				option={
+					heroPowerEntity ? playOptions.get(heroPowerEntity.id) : null
+				}
+				optionCallback={this.props.optionCallback}
+				cards={this.props.cards}
+				assetDirectory={this.props.assetDirectory}
+				cardArtDirectory={this.props.cardArtDirectory}
+				controller={this.props.player}
+				activated={activatedHeroPower}
+			/>
+		);
+		let weapon = (
+			<Weapon
+				entity={playEntities
+					.filter(filterByCardType(CardType.WEAPON))
+					.first()}
+				cards={this.props.cards}
+				assetDirectory={this.props.assetDirectory}
+				cardArtDirectory={this.props.cardArtDirectory}
+				controller={this.props.player}
+			/>
+		);
+
+		let field = (
+			<Field
+				entities={
+					playEntities.filter(filterByCardType(CardType.MINION)) ||
+					emptyEntities
+				}
+				options={playOptions || emptyOptions}
+				optionCallback={this.props.optionCallback}
+				cards={this.props.cards}
+				assetDirectory={this.props.assetDirectory}
+				cardArtDirectory={this.props.cardArtDirectory}
+				controller={this.props.player}
+				descriptors={this.props.descriptors}
+				buffedEntities={buffedEntities}
+			/>
+		);
+		let deck = (
+			<Deck
+				entities={this.props.entities.get(Zone.DECK) || emptyEntities}
+				options={this.props.options.get(Zone.DECK) || emptyOptions}
+				cards={this.props.cards}
+				assetDirectory={this.props.assetDirectory}
+				cardArtDirectory={this.props.cardArtDirectory}
+				controller={this.props.player}
+				fatigue={this.props.player.getTag(GameTag.FATIGUE) + 1}
+			/>
+		);
+		let hand = (
+			<Hand
+				entities={
+					((!this.props.choices ||
+						this.props.choices.type !== ChoiceType.MULLIGAN) &&
+						this.props.entities.get(Zone.HAND)) ||
+					emptyEntities
+				}
+				options={this.props.options.get(Zone.HAND) || emptyOptions}
+				optionCallback={this.props.optionCallback}
 				cards={this.props.cards}
 				cardOracle={this.props.cardOracle}
-				mulliganOracle={this.props.mulliganOracle}
 				isTop={this.props.isTop}
 				assetDirectory={this.props.assetDirectory}
 				cardArtDirectory={this.props.cardArtDirectory}
 				controller={this.props.player}
-				isMulligan={this.props.choices.type === ChoiceType.MULLIGAN}
-				choices={this.props.choices && this.props.choices.choices}
 				hideCards={this.props.hideCards}
-			/>;
+				setAside={setAside}
+			/>
+		);
+
+		let choices = null;
+		if (this.props.choices) {
+			let choiceEntities = this.props.choices.choices
+				.map((choice: Choice) => {
+					let entity = null;
+					// search for the entity in all player zones
+					let id = choice.entityId;
+					this.props.entities.forEach(
+						(zoneEntities: Immutable.Map<number, Entity>) => {
+							if (zoneEntities.has(id)) {
+								entity = zoneEntities.get(id);
+								return false;
+							}
+						},
+					);
+					if (entity === null) {
+						console.error(
+							"Entity #" +
+								id +
+								" from choice could not be found for player #" +
+								this.props.player.id +
+								" (playerId=" +
+								this.props.player.playerId +
+								")",
+						);
+					}
+					return entity;
+				})
+				.filter((entity: Entity) => {
+					return !!entity;
+				});
+			choices = (
+				<Choices
+					entities={choiceEntities}
+					cards={this.props.cards}
+					cardOracle={this.props.cardOracle}
+					mulliganOracle={this.props.mulliganOracle}
+					isTop={this.props.isTop}
+					assetDirectory={this.props.assetDirectory}
+					cardArtDirectory={this.props.cardArtDirectory}
+					controller={this.props.player}
+					isMulligan={this.props.choices.type === ChoiceType.MULLIGAN}
+					choices={this.props.choices && this.props.choices.choices}
+					hideCards={this.props.hideCards}
+				/>
+			);
 		}
 
 		const playerName = this.cleanPlayerName();
-		const name = playerName ? <div className="name" title={playerName}>{playerName}</div> : null;
+		const name = playerName ? (
+			<div className="name" title={playerName}>
+				{playerName}
+			</div>
+		) : null;
 
-		let rank = <Rank
-			rank={this.props.player.rank }
-			legendRank={this.props.player.legendRank }
-			assetDirectory={this.props.assetDirectory}
-			cardArtDirectory={this.props.cardArtDirectory}
-		/>;
+		let rank = (
+			<Rank
+				rank={this.props.player.rank}
+				legendRank={this.props.player.legendRank}
+				assetDirectory={this.props.assetDirectory}
+				cardArtDirectory={this.props.cardArtDirectory}
+			/>
+		);
 
 		let crystals = [];
-		let resources = this.props.player.getTag(GameTag.RESOURCES) + this.props.player.getTag(GameTag.TEMP_RESOURCES);
-		let available = resources - this.props.player.getTag(GameTag.RESOURCES_USED);
+		let resources =
+			this.props.player.getTag(GameTag.RESOURCES) +
+			this.props.player.getTag(GameTag.TEMP_RESOURCES);
+		let available =
+			resources - this.props.player.getTag(GameTag.RESOURCES_USED);
 		let crystalClassNames = ["crystal"];
 		if (available > 0) {
 			crystalClassNames.push("full");
-		}
-		else {
+		} else {
 			if (this.props.player.getTag(GameTag.OVERLOAD_LOCKED) > 0) {
 				crystalClassNames.push("locked");
-			}
-			else {
+			} else {
 				crystalClassNames.push("empty");
 			}
 		}
 		let tray = (
 			<div className="tray">
-				<span>{available}/{resources}</span>
-				<img src={this.props.assetDirectory("images/mana_crystal.png")}
-					 className={crystalClassNames.join(" ") }></img>
+				<span>
+					{available}/{resources}
+				</span>
+				<img
+					src={this.props.assetDirectory("images/mana_crystal.png")}
+					className={crystalClassNames.join(" ")}
+				/>
 			</div>
 		);
 
-		let tall = <section className="tall">
-			<div className="equipment">
-				<section className="entities">
-					{hero}
-					<section>
-						{weapon}
-						{heroPower}
+		let tall = (
+			<section className="tall">
+				<div className="equipment">
+					<section className="entities">
+						{hero}
+						<section>
+							{weapon}
+							{heroPower}
+						</section>
 					</section>
-				</section>
-				<section className="details">
-					{name}
-					{tray}
-				</section>
-			</div>
-			{hand}
-		</section>;
+					<section className="details">
+						{name}
+						{tray}
+					</section>
+				</div>
+				{hand}
+			</section>
+		);
 
-		let short = <section className="short">
-			{deck}
-			{field}
-		</section>;
+		let short = (
+			<section className="short">
+				{deck}
+				{field}
+			</section>
+		);
 
 		let classNames = ["player"];
 
@@ -330,29 +506,35 @@ export default class Player extends React.Component<PlayerProps> {
 			classNames.push("inactive");
 		}
 
-		if (this.props.isCurrent && this.props.player.getTag(GameTag.MULLIGAN_STATE) === Mulligan.DONE) {
+		if (
+			this.props.isCurrent &&
+			this.props.player.getTag(GameTag.MULLIGAN_STATE) === Mulligan.DONE
+		) {
 			classNames.push("current");
 		}
 
 		let gameresult = null;
 		switch (this.props.player.getTag(GameTag.PLAYSTATE)) {
 			case PlayState.WON:
-				gameresult = <div className="gameresult">{playerName} wins!</div>;
+				gameresult = (
+					<div className="gameresult">{playerName} wins!</div>
+				);
 				classNames.push("inactive-colored");
 				break;
 			case PlayState.LOST:
 				let message = null;
 				if (this.props.player.conceded) {
 					message = playerName + " concedes";
-				}
-				else {
+				} else {
 					message = playerName + " loses";
 				}
 				gameresult = <div className="gameresult">{message}</div>;
 				classNames.push("inactive");
 				break;
 			case PlayState.TIED:
-				gameresult = <div className="gameresult">{playerName} ties</div>;
+				gameresult = (
+					<div className="gameresult">{playerName} ties</div>
+				);
 				classNames.push("inactive");
 				break;
 		}
@@ -367,8 +549,7 @@ export default class Player extends React.Component<PlayerProps> {
 					{short}
 				</div>
 			);
-		}
-		else {
+		} else {
 			return (
 				<div className={classNames.join(" ")}>
 					{gameresult}

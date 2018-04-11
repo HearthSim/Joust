@@ -2,7 +2,7 @@ import GameState from "../GameState";
 import GameStateMutator from "../GameStateMutator";
 import ReplaceEntityMutator from "./ReplaceEntityMutator";
 import AddDiffsMutator from "./AddDiffsMutator";
-import {GameStateDiff} from "../../interfaces";
+import { GameStateDiff } from "../../interfaces";
 
 export default class TagChangeMutator implements GameStateMutator {
 	public id: number;
@@ -18,7 +18,9 @@ export default class TagChangeMutator implements GameStateMutator {
 	public applyTo(state: GameState): GameState {
 		let oldEntity = state.getEntity(this.id);
 		if (!oldEntity) {
-			console.error("Cannot change tag on non-existent entity #" + this.id);
+			console.error(
+				"Cannot change tag on non-existent entity #" + this.id,
+			);
 			return state;
 		}
 

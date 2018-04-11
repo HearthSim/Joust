@@ -2,9 +2,7 @@ import GameState from "../GameState";
 import GameStateMutator from "../GameStateMutator";
 
 export default class ClearChoicesMutator implements GameStateMutator {
-	constructor(public player: number) {
-
-	}
+	constructor(public player: number) {}
 
 	public applyTo(state: GameState): GameState {
 		if (!this.player) {
@@ -27,7 +25,7 @@ export default class ClearChoicesMutator implements GameStateMutator {
 			state.time,
 			newChoices,
 			state.descriptors,
-			state.diffs
+			state.diffs,
 		);
 	}
 }

@@ -2,7 +2,6 @@ import GameState from "../GameState";
 import IncrementTimeMutator from "./IncrementTimeMutator";
 
 describe("IncrementTimeMutator", () => {
-
 	it("should have a default time increment of 1", () => {
 		let mutator = new IncrementTimeMutator();
 		expect(mutator.time).toEqual(1);
@@ -43,5 +42,4 @@ describe("IncrementTimeMutator", () => {
 		state = state.apply(mutator2);
 		expect(state.time).toEqual(expected);
 	});
-
 });

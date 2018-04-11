@@ -1,19 +1,23 @@
 import GameState from "./GameState";
 import * as Stream from "stream";
-import {StreamScrubber, StreamScrubberInhibitor} from "../interfaces";
+import { StreamScrubber, StreamScrubberInhibitor } from "../interfaces";
 import GameStateHistory from "./GameStateHistory";
-import {GameTag} from "../enums";
+import { GameTag } from "../enums";
 
 /**
  * Interacts with the GameStateHistory by scrubbing over it, emitting whenever the historical GameState changes.
  */
-export default class GameStateScrubber extends Stream.Duplex implements StreamScrubber {
-
+export default class GameStateScrubber extends Stream.Duplex
+	implements StreamScrubber {
 	protected history: GameStateHistory;
 	protected inhibitor: StreamScrubberInhibitor;
 	protected timeSeen: boolean[];
 
-	constructor(history?: GameStateHistory, startFromTurn?: number, opts?: Stream.DuplexOptions) {
+	constructor(
+		history?: GameStateHistory,
+		startFromTurn?: number,
+		opts?: Stream.DuplexOptions,
+	) {
 		opts = opts || {};
 		opts.objectMode = true;
 		opts.allowHalfOpen = true;
@@ -62,7 +66,9 @@ export default class GameStateScrubber extends Stream.Duplex implements StreamSc
 		if (!this.hasStarted && this.currentTime === 0 && this.startFromTurn) {
 			ready = false;
 			if (this.history.turnMap.has(this.startFromTurn)) {
-				this.currentTime = this.history.turnMap.get(this.startFromTurn).time;
+				this.currentTime = this.history.turnMap.get(
+					this.startFromTurn,
+				).time;
 				ready = true;
 			}
 		}
@@ -113,8 +119,7 @@ export default class GameStateScrubber extends Stream.Duplex implements StreamSc
 	public toggle(): void {
 		if (this.isPlaying()) {
 			this.pausePlayback();
-		}
-		else {
+		} else {
 			this.play();
 		}
 	}
@@ -134,7 +139,8 @@ export default class GameStateScrubber extends Stream.Duplex implements StreamSc
 
 		if (this.isPlaying() && this.speed != 0) {
 			let now = new Date().getTime();
-			let elapsed = (now - this.lastUpdate) * this.speed * this.multiplier;
+			let elapsed =
+				(now - this.lastUpdate) * this.speed * this.multiplier;
 			this.lastUpdate = now;
 
 			if (!this.isInhibited()) {
@@ -148,7 +154,9 @@ export default class GameStateScrubber extends Stream.Duplex implements StreamSc
 			}
 		}
 
-		let latest = this.history.getLatest(this.currentTime + this.initialTime);
+		let latest = this.history.getLatest(
+			this.currentTime + this.initialTime,
+		);
 		if (latest !== this.lastState) {
 			this.lastState = latest;
 			this.push(latest);
@@ -161,7 +169,6 @@ export default class GameStateScrubber extends Stream.Duplex implements StreamSc
 
 		this.emit("update");
 	}
-
 
 	public seek(time: number): void {
 		if (time === this.currentTime) {
@@ -266,7 +273,10 @@ export default class GameStateScrubber extends Stream.Duplex implements StreamSc
 			currentTurn--;
 		}
 		let turn = currentTurn + 1;
-		while (!this.history.turnMap.has(turn) && turn < this.history.turnMap.count()) {
+		while (
+			!this.history.turnMap.has(turn) &&
+			turn < this.history.turnMap.count()
+		) {
 			turn++;
 		}
 		if (this.history.turnMap.has(turn)) {
@@ -305,11 +315,13 @@ export default class GameStateScrubber extends Stream.Duplex implements StreamSc
 		}
 		let turnStart = turnStartState.time;
 		let timeElapsed = this.currentTime - turnStart;
-		if (timeElapsed > (this.isPlaying() ? 1.5 * this.speed * this.multiplier : 0)) {
+		if (
+			timeElapsed >
+			(this.isPlaying() ? 1.5 * this.speed * this.multiplier : 0)
+		) {
 			this.currentTime = turnStart;
 			this.update();
-		}
-		else {
+		} else {
 			this.previousTurn();
 		}
 	}
@@ -358,7 +370,8 @@ export default class GameStateScrubber extends Stream.Duplex implements StreamSc
 	}
 
 	public get percentageWatched(): number {
-		let percentage = 100 / Math.floor(this.getDuration()) * this.secondsWatched;
+		let percentage =
+			100 / Math.floor(this.getDuration()) * this.secondsWatched;
 		if (!isFinite(percentage)) {
 			percentage = 0;
 		}

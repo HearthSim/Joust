@@ -8,21 +8,29 @@ import {
 	KeybindingProps,
 	LocaleProps,
 	MulliganOracle,
-	StreamScrubber, StripBattletagsProps,
+	StreamScrubber,
+	StripBattletagsProps,
 } from "../interfaces";
 import Scrubber from "./Scrubber";
 import EventLog from "./EventLog";
 import GameState from "../state/GameState";
 import GameWrapper from "./GameWrapper";
 import * as Immutable from "immutable";
-import {Zone} from "../enums";
+import { Zone } from "../enums";
 import Entity from "../Entity";
-import {cookie} from "cookie_js";
+import { cookie } from "cookie_js";
 import screenfull from "screenfull";
 import GameStateSink from "../state/GameStateSink";
 import { CardData } from "hearthstonejson-client";
 
-export interface GameWidgetProps extends AssetDirectoryProps, CardArtDirectory, EventHandlerProps, LocaleProps, KeybindingProps, StripBattletagsProps, React.ClassAttributes<GameWidget> {
+export interface GameWidgetProps
+	extends AssetDirectoryProps,
+		CardArtDirectory,
+		EventHandlerProps,
+		LocaleProps,
+		KeybindingProps,
+		StripBattletagsProps,
+		React.ClassAttributes<GameWidget> {
 	sink: GameStateSink;
 	startupTime: number;
 	interaction?: InteractiveBackend;
@@ -62,7 +70,10 @@ interface GameWidgetState {
 	isLogMounted?: boolean;
 }
 
-export default class GameWidget extends React.Component<GameWidgetProps, GameWidgetState> {
+export default class GameWidget extends React.Component<
+	GameWidgetProps,
+	GameWidgetState
+> {
 	private cb;
 	private cardOracleCb;
 	private mulliganOracleCb;
@@ -79,7 +90,10 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 			isFullscreen: false,
 			isFullscreenAvailable: screenfull && screenfull.enabled,
 			fullscreenError: false,
-			isRevealingCards: typeof this.props.startRevealed === "undefined" ? true : this.props.startRevealed,
+			isRevealingCards:
+				typeof this.props.startRevealed === "undefined"
+					? true
+					: this.props.startRevealed,
 			cardOracle: Immutable.Map<number, string>(),
 			mulliganOracle: null,
 			isLogVisible: false, // we might show it once we receive the first game state
@@ -103,8 +117,7 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 			screenfull.onchange(() => {
 				if (screenfull.isFullscreen) {
 					this.onAttainFullscreen();
-				}
-				else {
+				} else {
 					this.onReleaseFullscreen();
 				}
 			});
@@ -134,7 +147,7 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 	}
 
 	protected setGameState(gameState: GameState): void {
-		this.setState({gameState: gameState});
+		this.setState({ gameState: gameState });
 	}
 
 	private clearFullscreenErrorTimeout() {
@@ -148,7 +161,10 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 		this.props.sink.removeListener("gamestate", this.cb);
 		this.clearFullscreenErrorTimeout();
 		this.props.cardOracle.removeListener("cards", this.cardOracleCb);
-		this.props.cardOracle.removeListener("mulligans", this.mulliganOracleCb);
+		this.props.cardOracle.removeListener(
+			"mulligans",
+			this.mulliganOracleCb,
+		);
 	}
 
 	protected onClickExit(e): void {
@@ -159,8 +175,11 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 	}
 
 	protected onAttainFullscreen() {
-		this.setState({isFullscreen: true});
-		if ("orientation" in screen && typeof screen.orientation.lock === "function") {
+		this.setState({ isFullscreen: true });
+		if (
+			"orientation" in screen &&
+			typeof screen.orientation.lock === "function"
+		) {
 			screen.orientation.lock("landscape").catch((err) => {
 				console.warn(err);
 			});
@@ -169,12 +188,14 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 			this.props.onFullscreen(true);
 		}
 		this.triggerResize();
-
 	}
 
 	protected onReleaseFullscreen() {
-		this.setState({isFullscreen: false});
-		if ("orientation" in screen && typeof screen.orientation.unlock === "function") {
+		this.setState({ isFullscreen: false });
+		if (
+			"orientation" in screen &&
+			typeof screen.orientation.unlock === "function"
+		) {
 			screen.orientation.unlock();
 		}
 		if (this.props.onFullscreen) {
@@ -202,18 +223,20 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 	}
 
 	protected updateCardOracle(cards: Immutable.Map<number, string>) {
-		this.setState({cardOracle: cards});
+		this.setState({ cardOracle: cards });
 	}
 
 	protected updateMulliganOracle(mulligans: Immutable.Map<number, boolean>) {
-		this.setState({mulliganOracle: mulligans});
+		this.setState({ mulliganOracle: mulligans });
 	}
 
 	public setCards(cards: CardData[]) {
 		let cardMap = null;
 		if (cards) {
 			if (!cards.length) {
-				console.error("Got invalid card data to metadata callback (expected card data array)");
+				console.error(
+					"Got invalid card data to metadata callback (expected card data array)",
+				);
 				return;
 			}
 			cardMap = Immutable.Map<string, CardData>();
@@ -224,7 +247,7 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 				});
 			});
 		}
-		this.setState({cards: cardMap});
+		this.setState({ cards: cardMap });
 	}
 
 	/**
@@ -236,8 +259,7 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 			let event = document.createEvent("UIEvents");
 			event.initUIEvent("resize", true, false, window, 0);
 			window.dispatchEvent(event);
-		} catch (e) {
-		}
+		} catch (e) {}
 	}
 
 	private checkForSwap() {
@@ -249,7 +271,9 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 			return;
 		}
 		let player = players[0];
-		let cards = this.state.gameState.entityTree.get(player.playerId).get(Zone.HAND);
+		let cards = this.state.gameState.entityTree
+			.get(player.playerId)
+			.get(Zone.HAND);
 		if (cards && cards.count() > 0) {
 			this.hasCheckedForSwap = true;
 			cards.forEach((card: Entity) => {
@@ -262,7 +286,6 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 	}
 
 	public render(): JSX.Element {
-
 		if (!this.hasCheckedForSwap) {
 			this.checkForSwap();
 		}
@@ -272,96 +295,110 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 		if (this.props.exitGame) {
 			parts.push(
 				<div id="joust-quit" key="exit">
-					<a href="#" onClick={this.onClickExit.bind(this)}>Exit Game</a>
-				</div>
+					<a href="#" onClick={this.onClickExit.bind(this)}>
+						Exit Game
+					</a>
+				</div>,
 			);
 		}
 
 		let isSwapped = this.swapPlayers !== this.state.swapPlayers /* XOR */;
 
-		let game = <GameWrapper
-			key="game"
-			state={this.state.gameState}
-			interaction={this.props.interaction}
-			assetDirectory={this.props.assetDirectory}
-			cardArtDirectory={this.props.cardArtDirectory}
-			cards={this.state.cards}
-			swapPlayers={isSwapped}
-			hasStarted={this.props.scrubber.canInteract()}
-			cardOracle={this.state.cardOracle}
-			mulliganOracle={this.state.mulliganOracle}
-			hideCards={!this.state.isRevealingCards}
-			playerNames={this.props.playerNames || null}
-			loadingError={this.props.loadingError}
-			stripBattletags={this.props.stripBattletags}
-		/>;
-		let log = <EventLog
-			key="log"
-			state={this.state.gameState}
-			cards={this.state.cards}
-			cardOracle={this.state.cardOracle}
-			tail={this.props.scrubber.getHistory().tail}
-			currentTime={this.props.scrubber.getCurrentTime()}
-			isHidden={!this.state.isLogVisible}
-			stripBattletags={this.props.stripBattletags}
-		/>;
+		let game = (
+			<GameWrapper
+				key="game"
+				state={this.state.gameState}
+				interaction={this.props.interaction}
+				assetDirectory={this.props.assetDirectory}
+				cardArtDirectory={this.props.cardArtDirectory}
+				cards={this.state.cards}
+				swapPlayers={isSwapped}
+				hasStarted={this.props.scrubber.canInteract()}
+				cardOracle={this.state.cardOracle}
+				mulliganOracle={this.state.mulliganOracle}
+				hideCards={!this.state.isRevealingCards}
+				playerNames={this.props.playerNames || null}
+				loadingError={this.props.loadingError}
+				stripBattletags={this.props.stripBattletags}
+			/>
+		);
+		let log = (
+			<EventLog
+				key="log"
+				state={this.state.gameState}
+				cards={this.state.cards}
+				cardOracle={this.state.cardOracle}
+				tail={this.props.scrubber.getHistory().tail}
+				currentTime={this.props.scrubber.getCurrentTime()}
+				isHidden={!this.state.isLogVisible}
+				stripBattletags={this.props.stripBattletags}
+			/>
+		);
 
 		parts.push(
 			<div key="game-wrapper" className="game-wrapper">
 				{game}
-				{this.state.isLogMounted || this.state.isLogVisible ? log : null}
-			</div>
+				{this.state.isLogMounted || this.state.isLogVisible
+					? log
+					: null}
+			</div>,
 		);
 
 		if (this.props.scrubber) {
-			parts.push(<Scrubber
-				key="scrubber"
-				scrubber={this.props.scrubber}
-				swapPlayers={() => {
-					let newSwap = !this.state.swapPlayers;
-					this.setState({swapPlayers: newSwap});
-					if (this.props.onToggleSwap) {
-						this.props.onToggleSwap(newSwap);
+			parts.push(
+				<Scrubber
+					key="scrubber"
+					scrubber={this.props.scrubber}
+					swapPlayers={() => {
+						let newSwap = !this.state.swapPlayers;
+						this.setState({ swapPlayers: newSwap });
+						if (this.props.onToggleSwap) {
+							this.props.onToggleSwap(newSwap);
+						}
+					}}
+					isSwapped={isSwapped}
+					isFullscreen={this.state.isFullscreen}
+					isFullscreenAvailable={this.state.isFullscreenAvailable}
+					fullscreenError={this.state.fullscreenError}
+					onClickFullscreen={() => this.enterFullscreen()}
+					onClickMinimize={() => this.exitFullscreen()}
+					isRevealingCards={this.state.isRevealingCards}
+					canRevealCards={!!this.state.cardOracle}
+					onClickHideCards={() => {
+						this.setState({ isRevealingCards: false });
+						if (this.props.onToggleReveal) {
+							this.props.onToggleReveal(false);
+						}
+					}}
+					onClickRevealCards={() => {
+						this.setState({ isRevealingCards: true });
+						if (this.props.onToggleReveal) {
+							this.props.onToggleReveal(true);
+						}
+					}}
+					isLogVisible={this.state.isLogVisible}
+					toggleLog={() => {
+						const newState = !this.state.isLogVisible;
+						this.setState({
+							isLogVisible: newState,
+							isLogMounted: true,
+						});
+						cookie.set("joust_event_log", "" + +newState, {
+							expires: 365, // one year
+							path: "/",
+						});
+					}}
+					enableKeybindings={this.props.enableKeybindings}
+					locale={this.props.locale}
+					onSelectLocale={
+						this.props.selectLocale &&
+						((locale: string, loaded?: () => void) =>
+							this.props.selectLocale(locale, loaded))
 					}
-				}}
-				isSwapped={isSwapped}
-				isFullscreen={this.state.isFullscreen}
-				isFullscreenAvailable={this.state.isFullscreenAvailable}
-				fullscreenError={this.state.fullscreenError}
-				onClickFullscreen={() => this.enterFullscreen()}
-				onClickMinimize={() => this.exitFullscreen()}
-				isRevealingCards={this.state.isRevealingCards}
-				canRevealCards={!!this.state.cardOracle}
-				onClickHideCards={() => {
-					this.setState({isRevealingCards: false});
-					if (this.props.onToggleReveal) {
-						this.props.onToggleReveal(false);
-					}
-				}}
-				onClickRevealCards={() => {
-					this.setState({isRevealingCards: true});
-					if (this.props.onToggleReveal) {
-						this.props.onToggleReveal(true);
-					}
-				}}
-				isLogVisible={this.state.isLogVisible}
-				toggleLog={() => {
-					const newState = !this.state.isLogVisible;
-					this.setState({isLogVisible: newState, isLogMounted: true});
-					cookie.set("joust_event_log", "" + (+newState), {
-						expires: 365, // one year
-						path: "/",
-					});
-				}}
-				enableKeybindings={this.props.enableKeybindings}
-				locale={this.props.locale}
-				onSelectLocale={this.props.selectLocale && ((
-					locale: string,
-					loaded?: () => void
-				) => this.props.selectLocale(locale, loaded))}
-				replayBlob={this.props.replayBlob}
-				replayFilename={this.props.replayFilename}
-			/>);
+					replayBlob={this.props.replayBlob}
+					replayFilename={this.props.replayFilename}
+				/>,
+			);
 		}
 
 		let style = {};
@@ -380,14 +417,21 @@ export default class GameWidget extends React.Component<GameWidgetProps, GameWid
 		}
 
 		return (
-			<div className={classes.join(" ")} ref={(ref) => this.ref = ref} style={style}
-				 onContextMenu={(e) => e.preventDefault()}>
+			<div
+				className={classes.join(" ")}
+				ref={(ref) => (this.ref = ref)}
+				style={style}
+				onContextMenu={(e) => e.preventDefault()}
+			>
 				{parts}
 			</div>
 		);
 	}
 
-	public shouldComponentUpdate(nextProps: GameWidgetProps, nextState: GameWidgetState) {
+	public shouldComponentUpdate(
+		nextProps: GameWidgetProps,
+		nextState: GameWidgetState,
+	) {
 		if (this.state.cardOracle !== nextState.cardOracle) {
 			if (this.props.scrubber && this.props.scrubber.isPlaying()) {
 				return false;

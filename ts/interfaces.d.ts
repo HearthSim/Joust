@@ -2,7 +2,7 @@ import * as React from "react";
 import Entity from "./Entity";
 import Option from "./Option";
 import GameState from "./state/GameState";
-import {EventEmitter} from "events";
+import { EventEmitter } from "events";
 import GameStateSink from "./state/GameStateSink";
 import GameStateHistory from "./state/GameStateHistory";
 import Player from "./Player";
@@ -11,7 +11,11 @@ import GameWidget from "./components/GameWidget";
 import * as Immutable from "immutable";
 import { CardData } from "hearthstonejson-client";
 
-export interface EntityInPlayProps extends EntityProps, OptionProps, GameStateDescriptorStackProps, React.ClassAttributes<any> {
+export interface EntityInPlayProps
+	extends EntityProps,
+		OptionProps,
+		GameStateDescriptorStackProps,
+		React.ClassAttributes<any> {
 	isTarget?: boolean;
 }
 
@@ -19,8 +23,16 @@ export interface EntityInPlayState {
 	isHovering?: boolean;
 }
 
-export interface EntityListProps extends OptionCallbackProps, ControllerProps, CardDataProps,
-	CardOracleProps, AssetDirectoryProps, CardArtDirectory, GameStateDescriptorStackProps, HideCardsProps, React.ClassAttributes<any> {
+export interface EntityListProps
+	extends OptionCallbackProps,
+		ControllerProps,
+		CardDataProps,
+		CardOracleProps,
+		AssetDirectoryProps,
+		CardArtDirectory,
+		GameStateDescriptorStackProps,
+		HideCardsProps,
+		React.ClassAttributes<any> {
 	entities: Immutable.Iterable<number, Entity>;
 	options?: Immutable.Iterable<number, Option>;
 	isTop?: boolean;
@@ -30,7 +42,11 @@ export interface ControllerProps {
 	controller?: Player;
 }
 
-export interface EntityProps extends CardDataProps, ControllerProps, AssetDirectoryProps, CardArtDirectory {
+export interface EntityProps
+	extends CardDataProps,
+		ControllerProps,
+		AssetDirectoryProps,
+		CardArtDirectory {
 	entity: Entity;
 	damage?: number;
 	healing?: number;
@@ -141,7 +157,10 @@ export interface StreamScrubberInhibitor {
 	isInhibiting: () => boolean;
 }
 
-export interface RankProps extends AssetDirectoryProps, CardArtDirectory, React.ClassAttributes<any> {
+export interface RankProps
+	extends AssetDirectoryProps,
+		CardArtDirectory,
+		React.ClassAttributes<any> {
 	rank?: number;
 	legendRank?: number;
 }

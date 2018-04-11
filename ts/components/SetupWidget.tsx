@@ -4,20 +4,28 @@ import HSReplayDecoder from "../protocol/HSReplayDecoder";
 import Websocket from "websocket-stream";
 import KettleDecoder from "../protocol/KettleDecoder";
 import KettleEncoder from "../protocol/KettleEncoder";
-import {InteractiveBackend, MulliganOracle} from "../interfaces";
-import {Socket} from "net";
+import { InteractiveBackend, MulliganOracle } from "../interfaces";
+import { Socket } from "net";
 import FileReaderStream from "filereader-stream";
 import GameStateScrubber from "../state/GameStateScrubber";
 import GameStateTracker from "../state/GameStateTracker";
 import GameStateSink from "../state/GameStateSink";
-import {CardOracle} from "../interfaces";
+import { CardOracle } from "../interfaces";
 import * as Stream from "stream";
 
 interface SetupWidgetProps extends React.ClassAttributes<SetupWidget> {
 	defaultHostname: string;
 	defaultPort: number;
 	autoloadReplay?: string;
-	onSetup: (sink: GameStateSink, replayBlob?: Blob, replayFilename?: string, interaction?: InteractiveBackend, scrubber?: GameStateScrubber, cardOracle?: CardOracle, mulliganOracle?: MulliganOracle) => void;
+	onSetup: (
+		sink: GameStateSink,
+		replayBlob?: Blob,
+		replayFilename?: string,
+		interaction?: InteractiveBackend,
+		scrubber?: GameStateScrubber,
+		cardOracle?: CardOracle,
+		mulliganOracle?: MulliganOracle,
+	) => void;
 }
 
 interface SetupWidgetState {
@@ -28,7 +36,10 @@ interface SetupWidgetState {
 	secureWebsocket?: boolean;
 }
 
-export default class SetupWidget extends React.Component<SetupWidgetProps, SetupWidgetState> {
+export default class SetupWidget extends React.Component<
+	SetupWidgetProps,
+	SetupWidgetState
+> {
 	private forceWebsocket: boolean;
 
 	constructor(props: SetupWidgetProps) {
@@ -38,46 +49,84 @@ export default class SetupWidget extends React.Component<SetupWidgetProps, Setup
 			hostname: null,
 			port: null,
 			websocket: true,
-			secureWebsocket: true
-		}
-		this.forceWebsocket = (typeof Socket === 'undefined');
+			secureWebsocket: true,
+		};
+		this.forceWebsocket = typeof Socket === "undefined";
 	}
 
-	componentDidMount () {
-		const { autoloadReplay } = this.props
+	componentDidMount() {
+		const { autoloadReplay } = this.props;
 		if (autoloadReplay) {
-			this.preloadReplay(autoloadReplay)
+			this.preloadReplay(autoloadReplay);
 		}
 	}
 
 	public render(): JSX.Element {
-		let hsreplay = <section>
-			<h2>HSReplay</h2>
-			<input type="file" accept="application/vnd.hearthsim-hsreplay+xml,application/xml"
-				onChange={this.onSelectFile.bind(this) } disabled={this.state.working}/>
-		</section>;
-
-		let kettle = <section>
-			<h2>Kettle</h2>
-			<form onSubmit={this.onSubmitKettle.bind(this) }>
-				<label>Host<br /><input type="text" placeholder={this.props.defaultHostname}
-										onChange={this.onChangeHostname.bind(this) } disabled={this.state.working}/></label>
-				<label>Port<br /><input type="number" placeholder={'' + this.props.defaultPort}
-										onChange={this.onChangePort.bind(this) }
-										disabled={this.state.working}/></label>
-				<label>Websocket<br /><input type="checkbox" checked={this.state.websocket || this.forceWebsocket}
-											onChange={this.onChangeWebsocket.bind(this) } disabled={this.forceWebsocket}/></label>
-				<label>Secure Websocket<br /><input type="checkbox" checked={this.state.secureWebsocket && this.state.websocket}
-													onChange={this.onChangeSecureWebsocket.bind(this) } disabled={!this.state.websocket}/></label>
-				<button type="submit" disabled={this.state.working}>Connect</button>
-			</form>
-		</section>;
-
-		return (
-			<div className="setup-widget">
-				{hsreplay}
-			</div>
+		let hsreplay = (
+			<section>
+				<h2>HSReplay</h2>
+				<input
+					type="file"
+					accept="application/vnd.hearthsim-hsreplay+xml,application/xml"
+					onChange={this.onSelectFile.bind(this)}
+					disabled={this.state.working}
+				/>
+			</section>
 		);
+
+		let kettle = (
+			<section>
+				<h2>Kettle</h2>
+				<form onSubmit={this.onSubmitKettle.bind(this)}>
+					<label>
+						Host<br />
+						<input
+							type="text"
+							placeholder={this.props.defaultHostname}
+							onChange={this.onChangeHostname.bind(this)}
+							disabled={this.state.working}
+						/>
+					</label>
+					<label>
+						Port<br />
+						<input
+							type="number"
+							placeholder={"" + this.props.defaultPort}
+							onChange={this.onChangePort.bind(this)}
+							disabled={this.state.working}
+						/>
+					</label>
+					<label>
+						Websocket<br />
+						<input
+							type="checkbox"
+							checked={
+								this.state.websocket || this.forceWebsocket
+							}
+							onChange={this.onChangeWebsocket.bind(this)}
+							disabled={this.forceWebsocket}
+						/>
+					</label>
+					<label>
+						Secure Websocket<br />
+						<input
+							type="checkbox"
+							checked={
+								this.state.secureWebsocket &&
+								this.state.websocket
+							}
+							onChange={this.onChangeSecureWebsocket.bind(this)}
+							disabled={!this.state.websocket}
+						/>
+					</label>
+					<button type="submit" disabled={this.state.working}>
+						Connect
+					</button>
+				</form>
+			</section>
+		);
+
+		return <div className="setup-widget">{hsreplay}</div>;
 	}
 
 	protected onChangeHostname(e: any): void {
@@ -96,7 +145,6 @@ export default class SetupWidget extends React.Component<SetupWidgetProps, Setup
 		this.setState({ secureWebsocket: e.target.checked });
 	}
 
-
 	protected onSelectFile(e): void {
 		let file = e.target.files[0];
 		if (!file || this.state.working) {
@@ -109,12 +157,12 @@ export default class SetupWidget extends React.Component<SetupWidgetProps, Setup
 	protected preloadReplay(file: string) {
 		this.setState({ working: true });
 		fs.readFile(file, "utf8", (err, data) => {
-		if (err) {
-			this.setState({ working: false })
-			console.error(err)
-			return
-		}
-		this.loadFile(new File([data], file));
+			if (err) {
+				this.setState({ working: false });
+				console.error(err);
+				return;
+			}
+			this.loadFile(new File([data], file));
 		});
 	}
 
@@ -141,8 +189,15 @@ export default class SetupWidget extends React.Component<SetupWidgetProps, Setup
 			.pipe(scrubber) // gamestate -> gamestate emit on scrub past
 			.pipe(new GameStateSink()); // gamestate
 
-
-		this.props.onSetup(sink, file, file.name, null, scrubber, decoder, decoder);
+		this.props.onSetup(
+			sink,
+			file,
+			file.name,
+			null,
+			scrubber,
+			decoder,
+			decoder,
+		);
 	}
 
 	protected onSubmitKettle(e): void {
@@ -158,15 +213,16 @@ export default class SetupWidget extends React.Component<SetupWidgetProps, Setup
 		let socket: Stream.Duplex = null;
 
 		if (this.state.websocket) {
-			let protocol = this.state.secureWebsocket ? 'wss' : 'ws';
-			socket = new Websocket(protocol + '://' + hostname + ':' + port, 'binary');
-		}
-		else {
+			let protocol = this.state.secureWebsocket ? "wss" : "ws";
+			socket = new Websocket(
+				protocol + "://" + hostname + ":" + port,
+				"binary",
+			);
+		} else {
 			let theSocket = new Socket();
 			theSocket.connect(port, hostname);
 			socket = theSocket;
 		}
-
 
 		/* Kettle -> Joust */
 
@@ -179,22 +235,20 @@ export default class SetupWidget extends React.Component<SetupWidgetProps, Setup
 		/* Joust -> Kettle */
 
 		let interaction = new KettleEncoder(tracker);
-		interaction
-			.pipe(socket);
+		interaction.pipe(socket);
 
-		socket.on('connect', () => {
+		socket.on("connect", () => {
 			interaction.startGame();
 			this.props.onSetup(sink, null, null, interaction);
 		});
 
-		socket.on('error', (e) => {
+		socket.on("error", (e) => {
 			console.error(e);
 		});
 
-		socket.on('close', () => {
+		socket.on("close", () => {
 			this.setState({ working: false });
-			console.log('Connection closed');
+			console.log("Connection closed");
 		});
 	}
-
 }

@@ -1,12 +1,12 @@
 import * as Stream from "stream";
-import {InteractiveBackend} from "../interfaces";
+import { InteractiveBackend } from "../interfaces";
 import Option from "../Option";
 import Entity from "../Entity";
 import ClearOptionsMutator from "../state/mutators/ClearOptionsMutator";
 import GameStateTracker from "../state/GameStateTracker";
 
-export default class KettleEncoder extends Stream.Readable implements InteractiveBackend {
-
+export default class KettleEncoder extends Stream.Readable
+	implements InteractiveBackend {
 	private tracker: GameStateTracker;
 	private gameStarted: boolean;
 
@@ -27,30 +27,36 @@ export default class KettleEncoder extends Stream.Readable implements Interactiv
 			return result;
 		};
 
-		this.queueMessage([{
-			Type: 'CreateGame',
-			CreateGame: {
-				Players: [
-					{
-						Name: 'Player 1',
-						Hero: 'HERO_08',
-						Cards: repeat(['GVG_003'], 30),
-					},
-					{
-						Name: 'Player 2',
-						Hero: 'HERO_08',
-						Cards: repeat(['GVG_003'], 30),
-					}
-				]
-			}
-		}]);
+		this.queueMessage([
+			{
+				Type: "CreateGame",
+				CreateGame: {
+					Players: [
+						{
+							Name: "Player 1",
+							Hero: "HERO_08",
+							Cards: repeat(["GVG_003"], 30),
+						},
+						{
+							Name: "Player 2",
+							Hero: "HERO_08",
+							Cards: repeat(["GVG_003"], 30),
+						},
+					],
+				},
+			},
+		]);
 	}
 
 	public exitGame(): void {
 		this.push(null);
 	}
 
-	public sendOption(option: Option, target?: number, position?: number): void {
+	public sendOption(
+		option: Option,
+		target?: number,
+		position?: number,
+	): void {
 		if (this.tracker) {
 			this.tracker.write(new ClearOptionsMutator());
 		}
@@ -63,7 +69,7 @@ export default class KettleEncoder extends Stream.Readable implements Interactiv
 			case 3: // power
 				sendOption = {
 					Index: option.index,
-					Target: target
+					Target: target,
 				};
 				if (typeof position === "number") {
 					sendOption.Position = position;
@@ -72,8 +78,8 @@ export default class KettleEncoder extends Stream.Readable implements Interactiv
 				break;
 		}
 		this.queueMessage({
-			Type: 'SendOption',
-			SendOption: sendOption
+			Type: "SendOption",
+			SendOption: sendOption,
 		});
 	}
 
@@ -82,9 +88,9 @@ export default class KettleEncoder extends Stream.Readable implements Interactiv
 			return entity.id;
 		});
 		this.queueMessage({
-			Type: 'ChooseEntities',
-			ChooseEntities: ids
-		})
+			Type: "ChooseEntities",
+			ChooseEntities: ids,
+		});
 	}
 
 	_read(size: number): void {
@@ -95,10 +101,15 @@ export default class KettleEncoder extends Stream.Readable implements Interactiv
 		let message = JSON.stringify(payload);
 		let length = message.length;
 		// todo: we need to properly encode the length (see onData)
-		let buffer = new Buffer(((number: number, length: number) => {
-			return Array(length - (number + '').length + 1).join('0') + number;
-		})(length, 4) + message, 'utf-8');
+		let buffer = new Buffer(
+			((number: number, length: number) => {
+				return (
+					Array(length - (number + "").length + 1).join("0") + number
+				);
+			})(length, 4) + message,
+			"utf-8",
+		);
 
-		this.push(buffer.toString('utf-8'));
+		this.push(buffer.toString("utf-8"));
 	}
 }

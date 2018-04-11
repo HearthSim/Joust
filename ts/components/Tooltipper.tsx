@@ -14,7 +14,10 @@ interface TooltipperState {
 	mobile?: boolean;
 }
 
-export default class Tooltipper extends React.Component<TooltipperProps, TooltipperState> {
+export default class Tooltipper extends React.Component<
+	TooltipperProps,
+	TooltipperState
+> {
 	constructor(props: TooltipperProps, context: any) {
 		super(props, context);
 		this.state = {
@@ -35,19 +38,18 @@ export default class Tooltipper extends React.Component<TooltipperProps, Tooltip
 		let tooltip = this.props.title || "";
 		if (this.props.mobile && this.mobile) {
 			tooltip = this.props.mobile.replace(/%s/, tooltip);
-		}
-		else if (this.props.desktop && this.desktop) {
+		} else if (this.props.desktop && this.desktop) {
 			tooltip = this.props.desktop.replace(/%s/, tooltip);
 		}
 		return tooltip;
 	}
 
 	protected startHovering(e: any) {
-		this.setState({isHovering: true});
+		this.setState({ isHovering: true });
 	}
 
 	protected stopHovering(e: any) {
-		this.setState({isHovering: false});
+		this.setState({ isHovering: false });
 	}
 
 	public shouldShow() {
@@ -59,14 +61,29 @@ export default class Tooltipper extends React.Component<TooltipperProps, Tooltip
 		if (this.props.align) {
 			classNames.push(this.props.align);
 		}
-		return <div className="joust-tooltipper"
-					onMouseOver={(e) => {this.startHovering(e)}}
-					onTouchStart={(e) => {this.startHovering(e)}}
-					onMouseOut={(e) => {this.stopHovering(e)}}
-					onTouchEnd={(e) => {this.stopHovering(e)}}>
-			{this.shouldShow() ? <div className={classNames.join(" ")}><span>{this.tooltip}</span></div> : null}
-			{this.props.children}
-		</div>;
+		return (
+			<div
+				className="joust-tooltipper"
+				onMouseOver={(e) => {
+					this.startHovering(e);
+				}}
+				onTouchStart={(e) => {
+					this.startHovering(e);
+				}}
+				onMouseOut={(e) => {
+					this.stopHovering(e);
+				}}
+				onTouchEnd={(e) => {
+					this.stopHovering(e);
+				}}
+			>
+				{this.shouldShow() ? (
+					<div className={classNames.join(" ")}>
+						<span>{this.tooltip}</span>
+					</div>
+				) : null}
+				{this.props.children}
+			</div>
+		);
 	}
-
 }

@@ -1,4 +1,4 @@
-import {GameTag} from "../../enums";
+import { GameTag } from "../../enums";
 import GameState from "../GameState";
 import GameStateMutator from "../GameStateMutator";
 import ReplaceEntityMutator from "./ReplaceEntityMutator";

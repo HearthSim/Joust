@@ -2,14 +2,14 @@ import * as React from "react";
 import SetupWidget from "./SetupWidget";
 import GameWidget from "./GameWidget";
 import HearthstoneJSON, { CardData } from "hearthstonejson-client";
-import {InteractiveBackend, MulliganOracle, CardOracle} from "../interfaces";
+import { InteractiveBackend, MulliganOracle, CardOracle } from "../interfaces";
 import GameStateSink from "../state/GameStateSink";
 import GameStateScrubber from "../state/GameStateScrubber";
 import * as _ from "lodash";
 
 const enum Widget {
 	SETUP,
-	GAME
+	GAME,
 }
 
 interface DebugState {
@@ -25,17 +25,18 @@ interface DebugState {
 	replayFilename?: string;
 }
 
-
 interface DebugProps extends React.ClassAttributes<DebugApplication> {
 	replay?: string;
 }
 
-export default class DebugApplication extends React.Component<DebugProps, DebugState> {
-
+export default class DebugApplication extends React.Component<
+	DebugProps,
+	DebugState
+> {
 	private gameWidget: GameWidget;
 	private hsjson: HearthstoneJSON;
 
-	constructor(props:DebugProps) {
+	constructor(props: DebugProps) {
 		super(props);
 		this.state = {
 			currentWidget: Widget.SETUP,
@@ -47,7 +48,7 @@ export default class DebugApplication extends React.Component<DebugProps, DebugS
 			mulliganOracle: null,
 			locale: "enUS",
 			replayBlob: null,
-			replayFilename: null
+			replayFilename: null,
 		};
 	}
 
@@ -57,24 +58,38 @@ export default class DebugApplication extends React.Component<DebugProps, DebugS
 
 	public render(): JSX.Element {
 		let widget: JSX.Element = null;
-		const { replay } = this.props
+		const { replay } = this.props;
 		switch (this.state.currentWidget) {
 			case Widget.SETUP:
-				widget = <SetupWidget defaultHostname="localhost" defaultPort={9111} autoloadReplay={replay}
-									onSetup={this.onSetup.bind(this) } />;
+				widget = (
+					<SetupWidget
+						defaultHostname="localhost"
+						defaultPort={9111}
+						autoloadReplay={replay}
+						onSetup={this.onSetup.bind(this)}
+					/>
+				);
 				break;
 			case Widget.GAME:
-				widget =
+				widget = (
 					<GameWidget
 						sink={this.state.sink}
 						startupTime={0}
 						interaction={this.state.interaction}
 						scrubber={this.state.scrubber}
-						exitGame={this.exitGame.bind(this) }
+						exitGame={this.exitGame.bind(this)}
 						cardOracle={this.state.cardOracle}
 						mulliganOracle={this.state.mulliganOracle}
 						assetDirectory={(asset: string) => "./assets/" + asset}
-						cardArtDirectory={navigator.onLine || typeof navigator.onLine === "undefined" ? (cardId) => "https://art.hearthstonejson.com/v1/256x/" + cardId + ".jpg" : null}
+						cardArtDirectory={
+							navigator.onLine ||
+							typeof navigator.onLine === "undefined"
+								? (cardId) =>
+										"https://art.hearthstonejson.com/v1/256x/" +
+										cardId +
+										".jpg"
+								: null
+						}
 						enableKeybindings={true}
 						ref={this.onMountGameWidget.bind(this)}
 						locale={this.state.locale}
@@ -83,7 +98,8 @@ export default class DebugApplication extends React.Component<DebugProps, DebugS
 						}}
 						replayBlob={this.state.replayBlob}
 						replayFilename={this.state.replayFilename}
-					/>;
+					/>
+				);
 				break;
 		}
 
@@ -92,8 +108,8 @@ export default class DebugApplication extends React.Component<DebugProps, DebugS
 				{widget}
 				<footer>
 					<p>
-						Not affiliated with Blizzard. Get Hearthstone at <a
-						href="battle.net/hearthstone/">Battle.net</a>.
+						Not affiliated with Blizzard. Get Hearthstone at{" "}
+						<a href="battle.net/hearthstone/">Battle.net</a>.
 					</p>
 				</footer>
 			</div>
@@ -113,7 +129,15 @@ export default class DebugApplication extends React.Component<DebugProps, DebugS
 		}
 	}
 
-	protected onSetup(sink: GameStateSink, replayBlob: Blob, replayFilename: string, interaction?: InteractiveBackend, scrubber?: GameStateScrubber, cardOracle?: CardOracle, mulliganOracle?: MulliganOracle): void {
+	protected onSetup(
+		sink: GameStateSink,
+		replayBlob: Blob,
+		replayFilename: string,
+		interaction?: InteractiveBackend,
+		scrubber?: GameStateScrubber,
+		cardOracle?: CardOracle,
+		mulliganOracle?: MulliganOracle,
+	): void {
 		this.setState({
 			currentWidget: Widget.GAME,
 			sink: sink,
@@ -122,7 +146,7 @@ export default class DebugApplication extends React.Component<DebugProps, DebugS
 			cardOracle: cardOracle,
 			mulliganOracle: mulliganOracle,
 			replayFilename,
-			replayBlob
+			replayBlob,
 		});
 	}
 

@@ -12,6 +12,6 @@ export function renderApplication(target: string) {
 	const replayName = process.argv.length > 2 ? process.argv[2] : null;
 	ReactDOM.render(
 		<DebugApplication replay={replayName} /> as any,
-		document.getElementById(target)
+		document.getElementById(target),
 	);
 }

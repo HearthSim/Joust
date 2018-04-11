@@ -1,7 +1,7 @@
 import * as React from "react";
 import EntityInPlay from "./EntityInPlay";
-import {EntityInPlayProps} from "../../interfaces";
-import {GameTag, MetaDataType} from "../../enums";
+import { EntityInPlayProps } from "../../interfaces";
+import { GameTag, MetaDataType } from "../../enums";
 import InPlayCardArt from "./visuals/InPlayCardArt";
 import Attack from "./stats/Attack";
 import Health from "./stats/Health";
@@ -13,7 +13,6 @@ import Card from "./Card";
 import { CardData } from "hearthstonejson-client";
 
 export default class Minion extends EntityInPlay<EntityInPlayProps> {
-
 	constructor(props: EntityInPlayProps, context?: any) {
 		super("minion", props, context);
 	}
@@ -22,7 +21,7 @@ export default class Minion extends EntityInPlay<EntityInPlayProps> {
 		let entity = this.props.entity;
 		let cardId = entity.cardId;
 
-		let data:CardData = {};
+		let data: CardData = {};
 		if (this.props.cards && this.props.cards.has(cardId)) {
 			data = this.props.cards.get(cardId);
 		}
@@ -31,20 +30,22 @@ export default class Minion extends EntityInPlay<EntityInPlayProps> {
 		let healing = 0;
 
 		if (this.props.descriptors) {
-			this.props.descriptors.forEach((descriptor:GameStateDescriptor) => {
-				descriptor.metaData.forEach((metaData:MetaData) => {
-					if (metaData.entities.has(entity.id)) {
-						switch (metaData.type) {
-							case MetaDataType.DAMAGE:
-								damage += metaData.data;
-								break;
-							case MetaDataType.HEALING:
-								healing += metaData.data;
-								break;
+			this.props.descriptors.forEach(
+				(descriptor: GameStateDescriptor) => {
+					descriptor.metaData.forEach((metaData: MetaData) => {
+						if (metaData.entities.has(entity.id)) {
+							switch (metaData.type) {
+								case MetaDataType.DAMAGE:
+									damage += metaData.data;
+									break;
+								case MetaDataType.HEALING:
+									healing += metaData.data;
+									break;
+							}
 						}
-					}
-				})
-			})
+					});
+				},
+			);
 		}
 
 		if (data.mechanics && data.mechanics.indexOf("AUTOATTACK") !== -1) {
@@ -64,26 +65,40 @@ export default class Minion extends EntityInPlay<EntityInPlayProps> {
 				buffed={this.props.buffed}
 			/>,
 			<div key="stats" className="stats">
-				{entity.getTag(GameTag.HIDE_STATS) == 0 ? [
-					<Attack key="attack" attack={entity.getAtk()} default={data.attack}/>,
-					<Health key="health" health={entity.getHealth()} damage={entity.getDamage()} default={data.health}/>,
-				] : null}
-				{damage != 0 ? <Damage damage={damage}/> : null}
-				{healing != 0 ? <Healing healing={healing}/> : null}
+				{entity.getTag(GameTag.HIDE_STATS) == 0
+					? [
+							<Attack
+								key="attack"
+								attack={entity.getAtk()}
+								default={data.attack}
+							/>,
+							<Health
+								key="health"
+								health={entity.getHealth()}
+								damage={entity.getDamage()}
+								default={data.health}
+							/>,
+					  ]
+					: null}
+				{damage != 0 ? <Damage damage={damage} /> : null}
+				{healing != 0 ? <Healing healing={healing} /> : null}
 			</div>,
 		];
 
 		if (this.state.isHovering) {
-			components.push(<div key="hover" className="mouse-over">
-				<Card
-					entity={entity}
-					assetDirectory={this.props.assetDirectory}
-					cards={this.props.cards}
-					isHidden={false}
-					controller={this.props.controller}
-					cardArtDirectory={this.props.cardArtDirectory}
-					option={null}
-				/></div>);
+			components.push(
+				<div key="hover" className="mouse-over">
+					<Card
+						entity={entity}
+						assetDirectory={this.props.assetDirectory}
+						cards={this.props.cards}
+						isHidden={false}
+						controller={this.props.controller}
+						cardArtDirectory={this.props.cardArtDirectory}
+						option={null}
+					/>
+				</div>,
+			);
 		}
 
 		return components;

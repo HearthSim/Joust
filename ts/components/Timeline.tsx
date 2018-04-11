@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as Immutable from "immutable";
-import {StreamScrubberInhibitor} from "../interfaces";
+import { StreamScrubberInhibitor } from "../interfaces";
 import GameState from "../state/GameState";
 import Turn from "./Turn";
 
@@ -17,7 +17,9 @@ interface TimelineState {
 	isDragging?: boolean;
 }
 
-export default class Timeline extends React.Component<TimelineProps, TimelineState> implements StreamScrubberInhibitor {
+export default class Timeline
+	extends React.Component<TimelineProps, TimelineState>
+	implements StreamScrubberInhibitor {
 	private ref: HTMLDivElement;
 	private mouseMove: (e) => void;
 	private mouseUp: (e) => void;
@@ -27,7 +29,7 @@ export default class Timeline extends React.Component<TimelineProps, TimelineSta
 	constructor(props: TimelineProps) {
 		super(props);
 		this.state = {
-			isDragging: false
+			isDragging: false,
 		};
 		this.mouseMove = this.onMouseMove.bind(this);
 		this.mouseUp = this.onMouseUp.bind(this);
@@ -35,19 +37,19 @@ export default class Timeline extends React.Component<TimelineProps, TimelineSta
 	}
 
 	public componentDidMount(): void {
-		document.addEventListener('mousemove', this.mouseMove);
-		document.addEventListener('mouseup', this.mouseUp);
-		document.addEventListener('touchmove', this.touchMove);
-		document.addEventListener('touchend', this.mouseUp);
-		document.addEventListener('touchcancel', this.mouseUp);
+		document.addEventListener("mousemove", this.mouseMove);
+		document.addEventListener("mouseup", this.mouseUp);
+		document.addEventListener("touchmove", this.touchMove);
+		document.addEventListener("touchend", this.mouseUp);
+		document.addEventListener("touchcancel", this.mouseUp);
 	}
 
 	public componentWillUnmount(): void {
-		document.removeEventListener('mousemove', this.mouseMove);
-		document.removeEventListener('mouseup', this.mouseUp);
-		document.removeEventListener('touchmove', this.touchMove);
-		document.removeEventListener('touchend', this.mouseUp);
-		document.removeEventListener('touchcancel', this.mouseUp);
+		document.removeEventListener("mousemove", this.mouseMove);
+		document.removeEventListener("mouseup", this.mouseUp);
+		document.removeEventListener("touchmove", this.touchMove);
+		document.removeEventListener("touchend", this.mouseUp);
+		document.removeEventListener("touchcancel", this.mouseUp);
 	}
 
 	protected onMouseDown(e): void {
@@ -56,7 +58,7 @@ export default class Timeline extends React.Component<TimelineProps, TimelineSta
 			return;
 		}
 		e.preventDefault();
-		this.setState({isDragging: true});
+		this.setState({ isDragging: true });
 		this.seek(e.clientX);
 	}
 
@@ -66,7 +68,7 @@ export default class Timeline extends React.Component<TimelineProps, TimelineSta
 		}
 
 		if (!e.buttons) {
-			this.setState({isDragging: false});
+			this.setState({ isDragging: false });
 			return;
 		}
 
@@ -74,7 +76,7 @@ export default class Timeline extends React.Component<TimelineProps, TimelineSta
 	}
 
 	protected onMouseUp(e): void {
-		this.setState({isDragging: false});
+		this.setState({ isDragging: false });
 	}
 
 	protected onTouchStart(e): void {
@@ -83,7 +85,7 @@ export default class Timeline extends React.Component<TimelineProps, TimelineSta
 		}
 		e.preventDefault();
 		let touch = e.touches[0];
-		this.setState({isDragging: true});
+		this.setState({ isDragging: true });
 		this.seek(touch.clientX);
 	}
 
@@ -114,48 +116,56 @@ export default class Timeline extends React.Component<TimelineProps, TimelineSta
 
 	public render(): JSX.Element {
 		const mulliganTurn = this.props.turnMap.get(1);
-		const mulligan = mulliganTurn && mulliganTurn.time > 0 ?
-			<Turn
-				key={0}
-				mulligan={true}
-				duration={mulliganTurn.time}
-				totalDuration={this.props.duration}
-			/> : null;
+		const mulligan =
+			mulliganTurn && mulliganTurn.time > 0 ? (
+				<Turn
+					key={0}
+					mulligan={true}
+					duration={mulliganTurn.time}
+					totalDuration={this.props.duration}
+				/>
+			) : null;
 
-		const turns = this.props.turnMap.map((
-			current: GameState, turn: number,
-			map: Immutable.Map<number, GameState>
-		): JSX.Element => {
-			let duration = 0;
-			let i = 1;
-			while (!map.has(turn + i) && turn + i < map.count()) {
-				i++;
-			}
+		const turns = this.props.turnMap
+			.map(
+				(
+					current: GameState,
+					turn: number,
+					map: Immutable.Map<number, GameState>,
+				): JSX.Element => {
+					let duration = 0;
+					let i = 1;
+					while (!map.has(turn + i) && turn + i < map.count()) {
+						i++;
+					}
 
-			if (map.has(turn + i)) {
-				let next = map.get(turn + i);
-				duration = next.time - current.time;
-			}
-			else {
-				duration = this.props.duration - current.time;
-			}
+					if (map.has(turn + i)) {
+						let next = map.get(turn + i);
+						duration = next.time - current.time;
+					} else {
+						duration = this.props.duration - current.time;
+					}
 
-			return <Turn
-				key={turn}
-				state={current}
-				invert={this.props.swapPlayers}
-				duration={duration}
-				totalDuration={this.props.duration}
-				turnNumber={turn}
-			/>;
-		}).toArray();
+					return (
+						<Turn
+							key={turn}
+							state={current}
+							invert={this.props.swapPlayers}
+							duration={duration}
+							totalDuration={this.props.duration}
+							turnNumber={turn}
+						/>
+					);
+				},
+			)
+			.toArray();
 
 		const width = 100 / this.props.duration * this.props.at;
 
-		const classes = ['joust-scrubber-timeline'];
+		const classes = ["joust-scrubber-timeline"];
 
 		if (!turns.length) {
-			classes.push('no-turns');
+			classes.push("no-turns");
 		}
 
 		if (this.props.disabled) {
@@ -166,12 +176,15 @@ export default class Timeline extends React.Component<TimelineProps, TimelineSta
 
 		return (
 			<div
-				className={classes.join(' ')}
-				ref={(ref) => this.ref = ref}
-				onMouseDown={this.onMouseDown.bind(this) }
-				onTouchStart={this.onTouchStart.bind(this) }
+				className={classes.join(" ")}
+				ref={(ref) => (this.ref = ref)}
+				onMouseDown={this.onMouseDown.bind(this)}
+				onTouchStart={this.onTouchStart.bind(this)}
 			>
-				<div className="joust-scrubber-progress" style={{ width: width + '%' }}></div>
+				<div
+					className="joust-scrubber-progress"
+					style={{ width: width + "%" }}
+				/>
 				{mulligan}
 				{turns}
 			</div>
