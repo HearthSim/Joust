@@ -130,7 +130,7 @@ export default class HSReplayDecoder extends Stream.Transform
 			case "HSReplay":
 				this.version = node.attributes["version"];
 				if (this.version) {
-					if (!this.version.match(/^1\.3(\.[0-9]+)?$/)) {
+					if (!this.version.match(/^1\.[3-7](\.[0-9]+)?$/)) {
 						console.warn(
 							"HSReplay version",
 							this.version,
