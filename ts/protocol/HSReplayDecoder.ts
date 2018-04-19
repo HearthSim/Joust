@@ -158,6 +158,7 @@ export default class HSReplayDecoder extends Stream.Transform
 					+node.attributes["entity"],
 					+node.attributes["target"],
 					+node.attributes["type"],
+					+node.attributes["triggerKeyword"] || null,
 				);
 				node["descriptor"] = descriptor;
 				this.push(new PushDescriptorMutator(descriptor));

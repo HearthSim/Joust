@@ -81,10 +81,11 @@ export default class Timer extends GameStateTrackerPlugin {
 							);
 							if (
 								entity &&
-								entity.cardId === "KAR_096" &&
-								entity.getTag(GameTag.REVEALED)
+								entity.getTag(GameTag.REVEALED) &&
+								mutator.descriptor.triggerKeyword ===
+									GameTag.START_OF_GAME
 							) {
-								// Prince Malchezaar after Mulligan
+								// Start of Game
 								timeStep = 3;
 							} else {
 								// normal entity triggers

@@ -1,12 +1,13 @@
 import * as Immutable from "immutable";
-import { BlockType } from "../enums";
+import { BlockType, GameTag } from "../enums";
 import MetaData from "../MetaData";
 
 export default class GameStateDescriptor {
 	constructor(
 		private _entityId: number,
 		private _target: number,
-		private _action: BlockType,
+		private _blockType: BlockType,
+		private _triggerKeyword: GameTag | null,
 		private _metaData?: Immutable.Set<MetaData>,
 	) {
 		if (!this._metaData) {
@@ -23,7 +24,11 @@ export default class GameStateDescriptor {
 	}
 
 	get type(): BlockType {
-		return this._action;
+		return this._blockType;
+	}
+
+	get triggerKeyword(): GameTag | null {
+		return this._triggerKeyword;
 	}
 
 	get metaData(): Immutable.Set<MetaData> {

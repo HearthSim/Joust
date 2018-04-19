@@ -97,10 +97,13 @@ export default class Player extends React.Component<PlayerProps> {
 											entity = toCompare;
 										} else if (
 											type === BlockType.TRIGGER &&
-											toCompare.cardId === "KAR_096" &&
-											toCompare.getTag(GameTag.REVEALED)
+											toCompare.getTag(
+												GameTag.REVEALED,
+											) &&
+											descriptor.triggerKeyword ===
+												GameTag.START_OF_GAME
 										) {
-											//Prince Malchezaar
+											// Start of Game
 											entity = toCompare;
 										} else if (type === BlockType.RITUAL) {
 											// search for ritual minion ("...give your C'Thun...")

@@ -21,6 +21,7 @@ export default class EnrichDescriptorMutator implements GameStateMutator {
 			descriptor.entityId,
 			descriptor.target,
 			descriptor.type,
+			descriptor.triggerKeyword,
 			meta,
 		);
 		descriptors = descriptors.push(descriptor);
