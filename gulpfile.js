@@ -109,24 +109,15 @@ gulp.task("compile:styles", function() {
 });
 
 gulp.task("env:set-release", function(cb) {
-	gitDescribe(
-		{
-			match: null,
-		},
-		function(error, gitInfo) {
-			var release = "unknown";
-			if (!error) {
-				release = gitInfo.semverString;
-			} else {
-				gutil.log(
-					gutil.colors.yellow("Warning: could not determine release"),
-				);
-			}
-			gutil.log("Setting JOUST_RELEASE to", gutil.colors.green(release));
-			process.env.JOUST_RELEASE = release;
-			cb();
-		},
-	);
+	gitDescribe(__dirname, { match: null }).then(function(gitInfo) {
+		var release = gitInfo.semverString;
+		if (!release) {
+			throw Error("Unable to determine release");
+		}
+		gutil.log("Setting JOUST_RELEASE to", gutil.colors.green(release));
+		process.env.JOUST_RELEASE = release;
+		cb();
+	});
 });
 
 gulp.task("version:write", ["env:set-release"], function() {

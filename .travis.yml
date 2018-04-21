@@ -41,6 +41,9 @@ install:
 
 script: yarn run $SCRIPT
 
+git:
+  depth: false
+
 notifications:
   email:
     on_failure: always
