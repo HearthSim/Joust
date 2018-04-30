@@ -3,7 +3,7 @@ cache:
   - yarn
   - pip
 
-node_js: "node"
+node_js: "9"
 
 stages:
   - name: test
@@ -15,16 +15,10 @@ jobs:
       env: SCRIPT=lint:prettier
 
     - stage: test
-      node_js: 9
-      env: SCRIPT=build
-
-    - stage: test
-      node_js: 8
       env: SCRIPT=build
 
     - stage: deploy
       if: branch = master AND type = push
-      node_js: "node"
       env: NODE_ENV=production
       install:
         - npm install -g gulp webpack yarn
