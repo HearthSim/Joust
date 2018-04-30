@@ -3,7 +3,7 @@ cache:
   - yarn
   - pip
 
-node_js: "9"
+node_js: 9
 
 stages:
   - name: test
@@ -11,6 +11,9 @@ stages:
 
 jobs:
   include:
+    - stage: test
+      env: SCRIPT=lint:tslint
+
     - stage: test
       env: SCRIPT=lint:prettier
 
@@ -34,6 +37,10 @@ install:
   - yarn --pure-lockfile
 
 script: yarn run $SCRIPT
+
+matrix:
+  allow_failures:
+    - env: SCRIPT=lint:tslint
 
 git:
   depth: false

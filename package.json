@@ -20,9 +20,11 @@
 			"concurrently 'gulp watch:html watch:assets watch:styles' 'webpack --watch -d'",
 		"test": "karma start --single-run --no-auto-watch karma.conf.js",
 		"postinstall": "gulp enums:download",
-		"lint": "yarn lint:prettier",
+		"lint": "yarn lint:tslint; yarn lint:prettier",
+		"lint:tslint": "tslint --project tsconfig.json",
 		"lint:prettier": "prettier -l \"*.{js,json}\" \"ts/**/*.{ts,tsx,js}\"",
-		"format": "yarn format:prettier",
+		"format": "yarn format:tslint; yarn format:prettier",
+		"format:tslint": "tslint --project tsconfig.json --fix",
 		"format:prettier":
 			"prettier --write \"*.{js,json}\" \"ts/**/*.{ts,tsx,js}\""
 	},
