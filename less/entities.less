@@ -6,14 +6,17 @@
 	animation: draw-intro 0.25s ease-out;
 
 	h1 {
+		color: white;
 		position: absolute;
+		top: 54.25%;
 		font-size: 0.5em;
 		text-align: center;
 		font-family: @serif-font;
 		margin: 0 8%;
 		width: 84%;
-		top: 54.25%;
-		color: white;
+		max-width: 84%;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 
 	div.visuals {
@@ -54,6 +57,8 @@
 		text-align: center;
 		line-height: 1em;
 		height: 26%;
+		max-height: 26%;
+		overflow: hidden;
 		width: 65%;
 		top: 64.5%;
 		left: 0.5%;
