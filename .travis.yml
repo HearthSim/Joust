@@ -3,7 +3,7 @@ cache:
   - yarn
   - pip
 
-node_js: 9
+node_js: 10
 
 stages:
   - name: test
