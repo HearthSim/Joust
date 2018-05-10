@@ -37,7 +37,9 @@ export default class Hero extends EntityInPlay<HeroProps> {
 		// build text in icon
 		let secretText = hasQuest
 			? "!"
-			: secretCount > 1 ? "" + secretCount : "?";
+			: secretCount > 1
+				? "" + secretCount
+				: "?";
 
 		// build title
 		let secretTitle = this.props.secrets.reduce(
