@@ -1,11 +1,8 @@
 import * as Stream from "stream";
 import { SAXStream } from "sax";
 import * as Immutable from "immutable";
-import SetOptionsMutator from "../state/mutators/SetOptionsMutator";
-import ClearOptionsMutator from "../state/mutators/ClearOptionsMutator";
 import TagChangeMutator from "../state/mutators/TagChangeMutator";
 import AddEntityMutator from "../state/mutators/AddEntityMutator";
-import Option from "../Option";
 import Entity from "../Entity";
 import Player from "../Player";
 import { GameTag, BlockType, ChoiceType } from "../enums";
@@ -39,7 +36,6 @@ export default class HSReplayDecoder extends Stream.Transform
 	private timeOffset: number;
 	private cardIds: Immutable.Map<number, string>;
 	private mulligans: Immutable.Map<number, boolean>;
-	private clearOptionsOnTimestamp: boolean;
 	private playerMap: Immutable.Map<string, PlayerDetails>;
 	private choiceMap: Immutable.Map<number, number>;
 	public version: string;
@@ -57,7 +53,6 @@ export default class HSReplayDecoder extends Stream.Transform
 		this.timeOffset = null;
 		this.cardIds = Immutable.Map<number, string>();
 		this.mulligans = Immutable.Map<number, boolean>();
-		this.clearOptionsOnTimestamp = false;
 		this.playerMap = Immutable.Map<string, PlayerDetails>();
 		this.choiceMap = Immutable.Map<number, number>();
 		this.build = null;
@@ -107,16 +102,6 @@ export default class HSReplayDecoder extends Stream.Transform
 				node.attributes["tags"] = Immutable.Map<
 					string,
 					number
-				>() as any;
-				break;
-			case "Option":
-			case "SubOption":
-				node.attributes["targets"] = [] as any;
-				break;
-			case "Options":
-				node.attributes["options"] = Immutable.Map<
-					number,
-					Option
 				>() as any;
 				break;
 			case "Choices":
@@ -288,38 +273,6 @@ export default class HSReplayDecoder extends Stream.Transform
 					+node.attributes["value"],
 				);
 				break;
-			case "Option":
-				{
-					let parent = this.nodeStack.pop() as any;
-					let option = new Option(
-						+node.attributes["index"],
-						+node.attributes["type"],
-						(node.attributes["entity"] &&
-							this.resolveEntityId(node.attributes["entity"])) ||
-							null,
-						node.attributes["targets"],
-					);
-					parent.attributes["options"] = parent.attributes[
-						"options"
-					].set(+node.attributes["index"], option);
-					this.nodeStack.push(parent);
-				}
-				break;
-			case "Target":
-				{
-					let parent = this.nodeStack.pop() as any;
-					parent.attributes["targets"].push(
-						this.resolveEntityId(node.attributes["entity"]),
-					);
-					this.nodeStack.push(parent);
-				}
-				break;
-			case "Options":
-				mutator = new SetOptionsMutator(node.attributes["options"]);
-				break;
-			case "SendOption":
-				mutator = new ClearOptionsMutator();
-				break;
 			case "Choice":
 				{
 					let parent = this.nodeStack.pop() as any;
@@ -413,6 +366,12 @@ export default class HSReplayDecoder extends Stream.Transform
 					node.attributes["entities"],
 				);
 				mutator = new EnrichDescriptorMutator(meta);
+				break;
+			case "Option":
+			case "Options":
+			case "Target":
+			case "SendOption":
+				// disabled while Hearthstone does not reliably clear them
 				break;
 			case "HSReplay":
 			case "Deck":
