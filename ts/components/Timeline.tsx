@@ -110,7 +110,7 @@ export default class Timeline
 		const width = rect.right - rect.left;
 		offset = offset - rect.left;
 
-		const seek = this.props.duration / width * offset;
+		const seek = (this.props.duration / width) * offset;
 		this.props.seek(seek);
 	}
 
@@ -160,7 +160,7 @@ export default class Timeline
 			)
 			.toArray();
 
-		const width = 100 / this.props.duration * this.props.at;
+		const width = (100 / this.props.duration) * this.props.at;
 
 		const classes = ["joust-scrubber-timeline"];
 

@@ -220,7 +220,10 @@ export default class SetupWidget extends React.Component<
 			);
 		} else {
 			const theSocket = new Socket();
-			theSocket.connect(port, hostname);
+			theSocket.connect(
+				port,
+				hostname,
+			);
 			socket = theSocket;
 		}
 

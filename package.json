@@ -2,7 +2,10 @@
 	"name": "joust",
 	"version": "0.11.0",
 	"description": "Hearthstone replays in your browser",
-	"keywords": ["hearthstone", "hsreplay"],
+	"keywords": [
+		"hearthstone",
+		"hsreplay"
+	],
 	"homepage": "https://hearthsim.info/joust/",
 	"bugs": {
 		"url": "https://github.com/HearthSim/Joust/issues"
@@ -16,8 +19,7 @@
 	},
 	"scripts": {
 		"build": "gulp compile:web",
-		"dev":
-			"concurrently 'gulp watch:html watch:assets watch:styles' 'webpack --watch -d'",
+		"dev": "concurrently 'gulp watch:html watch:assets watch:styles' 'webpack --watch -d'",
 		"test": "karma start --single-run --no-auto-watch karma.conf.js",
 		"postinstall": "gulp enums:download",
 		"lint": "yarn lint:tslint; yarn lint:prettier",
@@ -25,8 +27,7 @@
 		"lint:prettier": "prettier -l \"*.{js,json}\" \"ts/**/*.{ts,tsx,js}\"",
 		"format": "yarn format:tslint; yarn format:prettier",
 		"format:tslint": "tslint --project tsconfig.json --fix",
-		"format:prettier":
-			"prettier --write \"*.{js,json}\" \"ts/**/*.{ts,tsx,js}\""
+		"format:prettier": "prettier --write \"*.{js,json}\" \"ts/**/*.{ts,tsx,js}\""
 	},
 	"dependencies": {
 		"@types/cookiejs": "^1.0.30",
@@ -80,10 +81,10 @@
 		"karma-phantomjs-launcher": "^1.0.4",
 		"karma-webpack": "^2.0.3",
 		"phantomjs-prebuilt": "^2.1.14",
-		"prettier": "^1.11.1",
-		"tslint": "^5.6.0",
+		"prettier": "^1.13.2",
+		"tslint": "^5.10.0",
 		"tslint-config-prettier": "^1.13.0",
-		"tslint-react": "^3.2.0"
+		"tslint-react": "^3.6.0"
 	},
 	"prettier": {
 		"useTabs": true,
