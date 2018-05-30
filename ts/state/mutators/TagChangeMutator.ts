@@ -16,7 +16,7 @@ export default class TagChangeMutator implements GameStateMutator {
 	}
 
 	public applyTo(state: GameState): GameState {
-		let oldEntity = state.getEntity(this.id);
+		const oldEntity = state.getEntity(this.id);
 		if (!oldEntity) {
 			console.error(
 				"Cannot change tag on non-existent entity #" + this.id,
@@ -24,14 +24,14 @@ export default class TagChangeMutator implements GameStateMutator {
 			return state;
 		}
 
-		let newEntity = oldEntity.setTag(this.tag, this.value);
+		const newEntity = oldEntity.setTag(this.tag, this.value);
 
 		if (newEntity === oldEntity) {
 			// tag value did not change
 			return state;
 		}
 
-		let diff: GameStateDiff = {
+		const diff: GameStateDiff = {
 			entity: this.id,
 			tag: this.tag,
 			previous: oldEntity.getTag(this.tag),

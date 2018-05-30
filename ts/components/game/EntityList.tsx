@@ -7,7 +7,7 @@ abstract class EntityList<T extends EntityListProps> extends React.Component<
 	T
 > {
 	protected renderEntity(entity: Entity, option: Option, index?: number) {
-		let id = entity.cardId ? " (CardID=" + entity.cardId + ")" : "";
+		const id = entity.cardId ? " (CardID=" + entity.cardId + ")" : "";
 		return (
 			<span>
 				Entity #{entity.id}
@@ -25,24 +25,24 @@ abstract class EntityList<T extends EntityListProps> extends React.Component<
 	protected abstract className(): string;
 
 	public render(): JSX.Element {
-		let elements = [];
+		const elements = [];
 		if (this.props.entities) {
-			let entities = this.props.entities
+			const entities = this.props.entities
 				.toList()
 				.sortBy(this.sort.bind(this));
 			this.beforeRender(entities.count());
 			entities.forEach((entity, i) => {
-				let option = this.props.options
+				const option = this.props.options
 					? this.props.options.get(entity.id)
 					: null;
-				let rendered = this.renderEntity(entity, option, i);
+				const rendered = this.renderEntity(entity, option, i);
 				if (!rendered) {
 					return;
 				}
 				elements.push(<li key={entity.id}>{rendered}</li>);
 			});
 		}
-		let classNames = ["entity-list"];
+		const classNames = ["entity-list"];
 		classNames.push(this.className());
 		return <ul className={classNames.join(" ")}>{elements}</ul>;
 	}

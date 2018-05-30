@@ -37,7 +37,7 @@ export default class EventLogLine extends React.Component<
 	}
 
 	shouldComponentUpdate(nextProps: EventLogLineProps) {
-		let hasEntity = !!(nextProps.entityId || nextProps.targetId);
+		const hasEntity = !!(nextProps.entityId || nextProps.targetId);
 		return (
 			this.props.inactive !== nextProps.inactive ||
 			(this.props.cards !== nextProps.cards && hasEntity) ||
@@ -54,7 +54,7 @@ export default class EventLogLine extends React.Component<
 	}
 
 	componentWillReceiveProps(nextProps: EventLogLineProps) {
-		let changes = {} as EventLogLineState;
+		const changes = {} as EventLogLineState;
 		if (this.props.entityId !== nextProps.entityId) {
 			changes.entityData = this.lookupEntity(nextProps.entityId);
 		}
@@ -66,7 +66,7 @@ export default class EventLogLine extends React.Component<
 
 	public render(): JSX.Element {
 		let characters = "";
-		let classNames = ["line"];
+		const classNames = ["line"];
 
 		if (this.props.inactive) {
 			classNames.push("inactive");
@@ -82,7 +82,7 @@ export default class EventLogLine extends React.Component<
 			characters += "\t";
 		}
 
-		let entity = (
+		const entity = (
 			<EventLogCard
 				key="entity"
 				cards={this.props.cards}
@@ -92,7 +92,7 @@ export default class EventLogLine extends React.Component<
 				}
 			/>
 		);
-		let target = (
+		const target = (
 			<EventLogCard
 				key="target"
 				cards={this.props.cards}
@@ -103,22 +103,22 @@ export default class EventLogLine extends React.Component<
 			/>
 		);
 
-		let strings = {
+		const strings = {
 			player: this.getPlayerName(),
-			entity: entity,
-			target: target,
+			entity,
+			target,
 			source: target,
 			data: this.props.data,
 		} as any;
 
-		let words = this.parseLine(strings).split(" ");
-		let parts = words
+		const words = this.parseLine(strings).split(" ");
+		const parts = words
 			.map((word) => {
-				let parts = word.match(/^(.*)%(\w+)%(.*)$/);
+				const parts = word.match(/^(.*)%(\w+)%(.*)$/);
 				if (parts === null) {
 					return word;
 				}
-				let key = parts[2];
+				const key = parts[2];
 				if (typeof strings[key] !== "undefined") {
 					if (typeof strings[key] !== "object") {
 						return parts[1] + strings[key] + parts[3];
@@ -319,7 +319,7 @@ export default class EventLogLine extends React.Component<
 		if (!id || !this.props.cardOracle || !this.props.cards) {
 			return;
 		}
-		let cardId = this.props.cardOracle.get(id);
+		const cardId = this.props.cardOracle.get(id);
 		return this.props.cards.get(cardId);
 	}
 

@@ -14,13 +14,13 @@ interface InHandCardArtProps
 
 export default class InHandCardArt extends React.Component<InHandCardArtProps> {
 	public render(): JSX.Element {
-		let images = [];
-		let entity = this.props.entity;
+		const images = [];
+		const entity = this.props.entity;
 		let portraitClass = null;
 		let frame = null;
 		let premiumOverlay = null;
 		let premiumOverlayClass = null;
-		let cardClass = this.cardClassToString();
+		const cardClass = this.cardClassToString();
 
 		if (this.props.hidden) {
 			images.push({

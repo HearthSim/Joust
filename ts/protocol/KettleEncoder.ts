@@ -19,7 +19,7 @@ export default class KettleEncoder extends Stream.Readable
 	}
 
 	public startGame(): void {
-		let repeat = (array: any[], times: number): any[] => {
+		const repeat = (array: any[], times: number): any[] => {
 			let result = array;
 			for (let i = 0; i < times; i++) {
 				result = result.concat(array);
@@ -84,7 +84,7 @@ export default class KettleEncoder extends Stream.Readable
 	}
 
 	public chooseEntities(entities: Entity[]): void {
-		let ids = entities.map((entity: Entity) => {
+		const ids = entities.map((entity: Entity) => {
 			return entity.id;
 		});
 		this.queueMessage({
@@ -98,10 +98,10 @@ export default class KettleEncoder extends Stream.Readable
 	}
 
 	protected queueMessage(payload) {
-		let message = JSON.stringify(payload);
-		let length = message.length;
+		const message = JSON.stringify(payload);
+		const length = message.length;
 		// todo: we need to properly encode the length (see onData)
-		let buffer = new Buffer(
+		const buffer = new Buffer(
 			((number: number, length: number) => {
 				return (
 					Array(length - (number + "").length + 1).join("0") + number

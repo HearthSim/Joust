@@ -39,7 +39,7 @@ export default class Launcher {
 		this.opts = {
 			debug: false,
 			logger: (error: Error): void => {
-				let message = error.message ? error.message : error;
+				const message = error.message ? error.message : error;
 				console.error(message);
 			},
 			locale: cookie.get("joust_locale", "enUS"),
@@ -105,7 +105,7 @@ export default class Launcher {
 	}
 
 	public setOptions(opts: any): Launcher {
-		for (let prop in opts) {
+		for (const prop in opts) {
 			if (prop) {
 				this.opts[prop] = opts[prop];
 			}
@@ -255,7 +255,7 @@ export default class Launcher {
 	}
 
 	public set turn(turn: number) {
-		let turnState = this.opts.scrubber.getHistory().turnMap.get(turn);
+		const turnState = this.opts.scrubber.getHistory().turnMap.get(turn);
 		if (turnState) {
 			this.opts.scrubber.seek(turnState.time);
 		}
@@ -301,15 +301,15 @@ export default class Launcher {
 	}
 
 	public fromUrl(url: string, cb?: () => any): Launcher {
-		let decoder = new HSReplayDecoder();
+		const decoder = new HSReplayDecoder();
 		decoder.debug = this.opts.debug;
-		let tracker = new GameStateTracker();
-		let scrubber = new GameStateScrubber(null, this.startFromTurn);
+		const tracker = new GameStateTracker();
+		const scrubber = new GameStateScrubber(null, this.startFromTurn);
 		if (this.turnCb) {
 			scrubber.on("turn", this.turnCb);
 		}
-		let sink = new GameStateSink();
-		let preloader = new TexturePreloader(
+		const sink = new GameStateSink();
+		const preloader = new TexturePreloader(
 			this.opts.cardArtDirectory,
 			this.opts.assetDirectory,
 		);
@@ -319,11 +319,11 @@ export default class Launcher {
 
 		const result = fetch(url).then((response: Response) => {
 			const statusCode = response.status;
-			let success = statusCode === 200;
+			const success = statusCode === 200;
 			this.track(
 				"replay_load_error",
 				{ error: success ? false : true },
-				{ statusCode: statusCode },
+				{ statusCode },
 			);
 			if (!success) {
 				throw new Error(
@@ -335,7 +335,7 @@ export default class Launcher {
 		});
 
 		result.then((payload: string) => {
-			let components = [decoder, tracker, scrubber, preloader];
+			const components = [decoder, tracker, scrubber, preloader];
 			this.opts.replayBlob = new Blob([payload], {
 				type: "application/xml",
 			});
@@ -378,7 +378,7 @@ export default class Launcher {
 				.pipe(sink); // gamestate
 
 			const streamString = payload.split("");
-			for (let part of streamString) {
+			for (const part of streamString) {
 				if (!decoder.writable) {
 					break;
 				}
@@ -443,7 +443,7 @@ export default class Launcher {
 			this.hsjson = new HearthstoneJSON();
 		}
 
-		let queryTime = Date.now();
+		const queryTime = Date.now();
 		this.hsjson.get(build, this.opts.locale).then((cards: any[]) => {
 			// defer setCards if component isn't mounted yet
 			if (this.ref) {
@@ -456,7 +456,7 @@ export default class Launcher {
 				{ duration: (Date.now() - queryTime) / 1000 },
 				{
 					cards: cards.length,
-					build: build,
+					build,
 					has_build: build !== "latest",
 					cached: (this.hsjson as any).cached,
 					fallback: (this.hsjson as any).fallback,

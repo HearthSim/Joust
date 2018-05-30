@@ -24,7 +24,7 @@ abstract class EntityInPlay<
 	}
 
 	protected getClassNames(): string[] {
-		let classNames = ["entity", "in-play"];
+		const classNames = ["entity", "in-play"];
 		classNames.push(this.baseClassName);
 		if (this.props.isTarget) {
 			classNames.push("target");
@@ -125,11 +125,11 @@ abstract class EntityInPlay<
 			);
 		}
 
-		let playable = !!this.props.option;
-		let requiresTarget =
+		const playable = !!this.props.option;
+		const requiresTarget =
 			this.props.option && this.props.option.hasTargets();
 
-		let jsx = null;
+		const jsx = null;
 		/*if (playable && !requiresTarget && this.playWithClick()) {
 			jsx = <div className={this.getClassNames().join(' ') }
 					   onClick={(playable && this.props.optionCallback) ? this.click.bind(this) : null}>
@@ -145,7 +145,7 @@ abstract class EntityInPlay<
 		}*/
 
 		// make drop target
-		//jsx = this.props.connectDropTarget(jsx);*/
+		// jsx = this.props.connectDropTarget(jsx);*/
 
 		return (
 			<div

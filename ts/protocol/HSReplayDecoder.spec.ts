@@ -44,7 +44,7 @@ describe("HSReplayDecoder", () => {
 				'<Player id="3" playerID="2" name="BehEh" rank="0" legendRank="5"></Player>',
 			);
 			decoder.once("data", (mutator: AddEntityMutator) => {
-				let player = mutator.entity as Player;
+				const player = mutator.entity as Player;
 				expect(player.id).toBe(3);
 				expect(player.playerId).toBe(2);
 				expect(player.name).toBe("BehEh");
@@ -126,10 +126,10 @@ describe("HSReplayDecoder", () => {
 			);
 			decoder.once("data", (mutator: SetChoicesMutator) => {
 				expect(mutator).toEqual(jasmine.any(SetChoicesMutator));
-				let choices = mutator.choices;
+				const choices = mutator.choices;
 				expect(choices.type).toBe(1);
 				expect(mutator.choices).toBeDefined();
-				let collection = choices.choices;
+				const collection = choices.choices;
 				expect(collection.get(19).entityId).toBe(19);
 				expect(collection.get(19).index).toBe(0);
 				expect(collection.get(16).entityId).toBe(16);

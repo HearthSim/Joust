@@ -19,7 +19,7 @@ export default class Minion extends EntityInPlay<EntityInPlayProps> {
 
 	public jsx() {
 		let entity = this.props.entity;
-		let cardId = entity.cardId;
+		const cardId = entity.cardId;
 
 		let data: CardData = {};
 		if (this.props.cards && this.props.cards.has(cardId)) {
@@ -52,7 +52,7 @@ export default class Minion extends EntityInPlay<EntityInPlayProps> {
 			entity = entity.setTag(GameTag.AUTOATTACK, 1);
 		}
 
-		let components = [
+		const components = [
 			<InPlayCardArt
 				key="art"
 				entity={entity}

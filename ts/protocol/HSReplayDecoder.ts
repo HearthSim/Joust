@@ -1,15 +1,15 @@
+import SetChoicesMutator from "../state/mutators/SetChoicesMutator";
 import * as Stream from "stream";
-import { SAXStream } from "sax";
 import * as Immutable from "immutable";
 import TagChangeMutator from "../state/mutators/TagChangeMutator";
 import AddEntityMutator from "../state/mutators/AddEntityMutator";
 import Entity from "../Entity";
 import Player from "../Player";
-import { GameTag, BlockType, ChoiceType } from "../enums";
+import { ChoiceType, GameTag } from "../enums";
 import ShowEntityMutator from "../state/mutators/ShowEntityMutator";
 import { CardOracle, MulliganOracle } from "../interfaces";
 import Choice from "../Choice";
-import SetChoicesMutator from "../state/mutators/SetChoicesMutator";
+import { SAXStream } from "sax";
 import ClearChoicesMutator from "../state/mutators/ClearChoicesMutator";
 import Choices from "../Choices";
 import GameStateDescriptor from "../state/GameStateDescriptor";
@@ -88,7 +88,7 @@ export default class HSReplayDecoder extends Stream.Transform
 
 		switch (node.name) {
 			case "Game":
-				let gameId = node.attributes["id"];
+				const gameId = node.attributes["id"];
 				if (gameId) {
 					this.gameId = +gameId;
 					this.currentGame = +gameId;
@@ -125,7 +125,7 @@ export default class HSReplayDecoder extends Stream.Transform
 				} else {
 					console.warn("Replay does not contain HSReplay version");
 				}
-				let build = node.attributes["build"];
+				const build = node.attributes["build"];
 				if (typeof build !== "undefined") {
 					this.build = +build;
 				}
@@ -139,7 +139,7 @@ export default class HSReplayDecoder extends Stream.Transform
 			case "Action":
 			case "Block":
 				// attach meta information to current game state
-				let descriptor = new GameStateDescriptor(
+				const descriptor = new GameStateDescriptor(
 					+node.attributes["entity"],
 					+node.attributes["target"],
 					+node.attributes["type"],
@@ -157,7 +157,7 @@ export default class HSReplayDecoder extends Stream.Transform
 	}
 
 	private onCloseTag(name: string): void {
-		let node = this.nodeStack.pop() as any;
+		const node = this.nodeStack.pop() as any;
 
 		// sanity check for our stack
 		if (node.name !== name) {
@@ -188,10 +188,10 @@ export default class HSReplayDecoder extends Stream.Transform
 				break;
 			case "GameEntity":
 			case "FullEntity": {
-				let id = this.resolveEntityId(node.attributes["id"]);
-				let cardId = node.attributes["cardID"] || null;
+				const id = this.resolveEntityId(node.attributes["id"]);
+				const cardId = node.attributes["cardID"] || null;
 				this.revealEntity(id, cardId);
-				let entity = new Entity(
+				const entity = new Entity(
 					id,
 					node.attributes["tags"],
 					cardId || null,
@@ -200,7 +200,7 @@ export default class HSReplayDecoder extends Stream.Transform
 				break;
 			}
 			case "Player": {
-				let id = +node.attributes["id"];
+				const id = +node.attributes["id"];
 				let rank = +node.attributes["rank"];
 				let legendRank = +node.attributes["legendRank"];
 				let name = "" + node.attributes["name"];
@@ -221,12 +221,12 @@ export default class HSReplayDecoder extends Stream.Transform
 						}
 					});
 				}
-				this.playerMap = this.playerMap.set(name, <PlayerDetails>{
-					id: id,
-					rank: rank,
-					legendRank: legendRank,
-				});
-				let player = new Player(
+				this.playerMap = this.playerMap.set(name, {
+					id,
+					rank,
+					legendRank,
+				} as PlayerDetails);
+				const player = new Player(
 					id,
 					node.attributes["tags"],
 					+node.attributes["playerID"],
@@ -239,9 +239,9 @@ export default class HSReplayDecoder extends Stream.Transform
 			}
 			case "ShowEntity":
 			case "ChangeEntity": {
-				let id = this.resolveEntityId(node.attributes["entity"]);
-				let cardId = node.attributes["cardID"] || null;
-				let tags = node.attributes["tags"];
+				const id = this.resolveEntityId(node.attributes["entity"]);
+				const cardId = node.attributes["cardID"] || null;
+				const tags = node.attributes["tags"];
 				this.revealEntity(id, cardId, tags);
 				mutator = new ShowEntityMutator(
 					id,
@@ -258,7 +258,7 @@ export default class HSReplayDecoder extends Stream.Transform
 				);
 				break;
 			case "Tag": {
-				let parent = this.nodeStack.pop() as any;
+				const parent = this.nodeStack.pop() as any;
 				parent.attributes["tags"] = parent.attributes["tags"].set(
 					"" + node.attributes["tag"],
 					+node.attributes["value"],
@@ -275,11 +275,14 @@ export default class HSReplayDecoder extends Stream.Transform
 				break;
 			case "Choice":
 				{
-					let parent = this.nodeStack.pop() as any;
-					let entity =
+					const parent = this.nodeStack.pop() as any;
+					const entity =
 						node.attributes["entity"] &&
 						this.resolveEntityId(node.attributes["entity"]);
-					let choice = new Choice(+node.attributes["index"], entity);
+					const choice = new Choice(
+						+node.attributes["index"],
+						entity,
+					);
 					parent.attributes["choices"] = parent.attributes[
 						"choices"
 					].set(entity, choice);
@@ -288,11 +291,14 @@ export default class HSReplayDecoder extends Stream.Transform
 				break;
 			case "Choices":
 				{
-					let entity = this.resolveEntityId(
+					const entity = this.resolveEntityId(
 						node.attributes["entity"],
 					);
-					let type = +node.attributes["type"];
-					let choices = new Choices(node.attributes["choices"], type);
+					const type = +node.attributes["type"];
+					const choices = new Choices(
+						node.attributes["choices"],
+						type,
+					);
 					mutator = new SetChoicesMutator(entity, choices);
 					// save player entity in choice map
 					this.choiceMap = this.choiceMap.set(
@@ -325,7 +331,7 @@ export default class HSReplayDecoder extends Stream.Transform
 						node.attributes["entity"] &&
 						this.resolveEntityId(node.attributes["entity"]);
 				} else if (node.attributes["id"]) {
-					let id = +node.attributes["id"];
+					const id = +node.attributes["id"];
 					if (this.choiceMap.has(id)) {
 						entity = this.choiceMap.get(+node.attributes["id"]);
 					}
@@ -352,7 +358,7 @@ export default class HSReplayDecoder extends Stream.Transform
 				mutator = new PopDescriptorMutator();
 				break;
 			case "Info": {
-				let parent = this.nodeStack.pop() as any;
+				const parent = this.nodeStack.pop() as any;
 				parent.attributes["entities"] = parent.attributes[
 					"entities"
 				].add(this.resolveEntityId(node.attributes["entity"]));
@@ -360,7 +366,7 @@ export default class HSReplayDecoder extends Stream.Transform
 				break;
 			}
 			case "MetaData":
-				let meta = new MetaData(
+				const meta = new MetaData(
 					+node.attributes["meta"],
 					+node.attributes["data"] || +node.attributes["entity"] || 0, // entity is pre-1.3
 					node.attributes["entities"],
@@ -402,7 +408,7 @@ export default class HSReplayDecoder extends Stream.Transform
 			return 0;
 		}
 
-		let str = "" + id;
+		const str = "" + id;
 
 		if (str === "UNKNOWN HUMAN PLAYER") {
 			console.warn("Cannot resolve entity for " + str);
@@ -445,7 +451,7 @@ export default class HSReplayDecoder extends Stream.Transform
 		if (tags && tags.has("" + GameTag.SHIFTING_WEAPON)) {
 			cardId = "UNG_929"; // Molten Blade
 		}
-		let newCardIds = this.cardIds.set(id, cardId);
+		const newCardIds = this.cardIds.set(id, cardId);
 		if (newCardIds === this.cardIds) {
 			return;
 		}

@@ -3,7 +3,6 @@ import GameStateMutator from "../GameStateMutator";
 import Entity from "../../Entity";
 import AddDiffsMutator from "./AddDiffsMutator";
 import { GameStateDiff } from "../../interfaces";
-import { Zone, GameTag, Mulligan, Step } from "../../enums";
 
 export default class AddEntityMutator implements GameStateMutator {
 	constructor(public entity: Entity) {}
@@ -14,9 +13,9 @@ export default class AddEntityMutator implements GameStateMutator {
 			return state;
 		}
 
-		let entity = this.entity;
+		const entity = this.entity;
 
-		let id = +entity.id;
+		const id = +entity.id;
 		if (id < 1) {
 			console.error("Cannot add entity: Invalid entity id");
 			return state;
@@ -36,7 +35,7 @@ export default class AddEntityMutator implements GameStateMutator {
 			entity,
 		);
 
-		let diffs: GameStateDiff[] = [];
+		const diffs: GameStateDiff[] = [];
 		entity.getTags().forEach((value: number, tag: string) => {
 			diffs.push({
 				entity: id,

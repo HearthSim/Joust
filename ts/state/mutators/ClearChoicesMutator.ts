@@ -10,8 +10,8 @@ export default class ClearChoicesMutator implements GameStateMutator {
 			return state;
 		}
 
-		let oldChoices = state.choices;
-		let newChoices = state.choices.delete(+this.player);
+		const oldChoices = state.choices;
+		const newChoices = state.choices.delete(+this.player);
 
 		if (newChoices === oldChoices) {
 			return state;

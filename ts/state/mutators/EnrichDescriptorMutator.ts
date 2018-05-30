@@ -16,7 +16,7 @@ export default class EnrichDescriptorMutator implements GameStateMutator {
 
 		let descriptors = state.descriptors.pop();
 
-		let meta = descriptor.metaData.add(this.metaData);
+		const meta = descriptor.metaData.add(this.metaData);
 		descriptor = new GameStateDescriptor(
 			descriptor.entityId,
 			descriptor.target,

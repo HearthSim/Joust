@@ -62,7 +62,7 @@ export default class SetupWidget extends React.Component<
 	}
 
 	public render(): JSX.Element {
-		let hsreplay = (
+		const hsreplay = (
 			<section>
 				<h2>HSReplay</h2>
 				<input
@@ -74,7 +74,7 @@ export default class SetupWidget extends React.Component<
 			</section>
 		);
 
-		let kettle = (
+		const kettle = (
 			<section>
 				<h2>Kettle</h2>
 				<form onSubmit={this.onSubmitKettle.bind(this)}>
@@ -146,7 +146,7 @@ export default class SetupWidget extends React.Component<
 	}
 
 	protected onSelectFile(e): void {
-		let file = e.target.files[0];
+		const file = e.target.files[0];
 		if (!file || this.state.working) {
 			return;
 		}
@@ -167,11 +167,11 @@ export default class SetupWidget extends React.Component<
 	}
 
 	protected loadFile(file: any): void {
-		let filestream = FileReaderStream(file);
+		const filestream = FileReaderStream(file);
 
 		/* HSReplay -> Joust */
 
-		let scrubber = new GameStateScrubber();
+		const scrubber = new GameStateScrubber();
 
 		Promise.all([
 			new Promise((cb) => {
@@ -182,8 +182,8 @@ export default class SetupWidget extends React.Component<
 			}),
 		]).then(() => scrubber.play());
 
-		let decoder = new HSReplayDecoder();
-		let sink = filestream // sink is returned by the last .pipe()
+		const decoder = new HSReplayDecoder();
+		const sink = filestream // sink is returned by the last .pipe()
 			.pipe(decoder) // json -> mutators
 			.pipe(new GameStateTracker()) // mutators -> latest gamestate
 			.pipe(scrubber) // gamestate -> gamestate emit on scrub past
@@ -207,34 +207,34 @@ export default class SetupWidget extends React.Component<
 		}
 		this.setState({ working: true });
 
-		let hostname = this.state.hostname || this.props.defaultHostname;
-		let port = this.state.port || this.props.defaultPort;
+		const hostname = this.state.hostname || this.props.defaultHostname;
+		const port = this.state.port || this.props.defaultPort;
 
 		let socket: Stream.Duplex = null;
 
 		if (this.state.websocket) {
-			let protocol = this.state.secureWebsocket ? "wss" : "ws";
+			const protocol = this.state.secureWebsocket ? "wss" : "ws";
 			socket = new Websocket(
 				protocol + "://" + hostname + ":" + port,
 				"binary",
 			);
 		} else {
-			let theSocket = new Socket();
+			const theSocket = new Socket();
 			theSocket.connect(port, hostname);
 			socket = theSocket;
 		}
 
 		/* Kettle -> Joust */
 
-		let tracker = new GameStateTracker();
-		let sink = socket // sink is returned by the last .pipe()
+		const tracker = new GameStateTracker();
+		const sink = socket // sink is returned by the last .pipe()
 			.pipe(new KettleDecoder()) // json -> mutators
 			.pipe(tracker) // mutators -> latest gamestate
 			.pipe(new GameStateSink());
 
 		/* Joust -> Kettle */
 
-		let interaction = new KettleEncoder(tracker);
+		const interaction = new KettleEncoder(tracker);
 		interaction.pipe(socket);
 
 		socket.on("connect", () => {

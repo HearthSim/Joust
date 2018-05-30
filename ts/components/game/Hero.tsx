@@ -24,25 +24,25 @@ export default class Hero extends EntityInPlay<HeroProps> {
 	}
 
 	protected jsx() {
-		let entity = this.props.entity;
+		const entity = this.props.entity;
 
-		let secrets = this.props.secrets;
-		let quests = [];
+		const secrets = this.props.secrets;
+		const quests = [];
 
-		let hasQuest = secrets.some(
+		const hasQuest = secrets.some(
 			(potentialQuest: Entity) => !!potentialQuest.getTag(GameTag.QUEST),
 		);
-		let secretCount = secrets.count();
+		const secretCount = secrets.count();
 
 		// build text in icon
-		let secretText = hasQuest
+		const secretText = hasQuest
 			? "!"
 			: secretCount > 1
 				? "" + secretCount
 				: "?";
 
 		// build title
-		let secretTitle = this.props.secrets.reduce(
+		const secretTitle = this.props.secrets.reduce(
 			(title, entity: Entity): string => {
 				let name = entity.cardId;
 				if (!entity.revealed) {

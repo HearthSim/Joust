@@ -1,19 +1,19 @@
+import Entity from "../Entity";
 import * as React from "react";
-import * as Immutable from "immutable";
 import {
-	CardDataProps,
-	HideCardsProps,
-	InteractiveBackend,
-	CardOracleProps,
 	AssetDirectoryProps,
 	CardArtDirectory,
+	CardDataProps,
+	CardOracleProps,
+	HideCardsProps,
+	InteractiveBackend,
 	MulliganOracleProps,
 	StripBattletagsProps,
 } from "../interfaces";
 import GameState from "../state/GameState";
 import TwoPlayerGame from "./game/TwoPlayerGame";
 import { CardType, OptionType } from "../enums";
-import Entity from "../Entity";
+import * as Immutable from "immutable";
 import Option from "../Option";
 import PlayerEntity from "../Player";
 import LoadingScreen from "./LoadingScreen";
@@ -52,7 +52,7 @@ export default class GameWrapper extends React.Component<
 	constructor(props: GameWrapperProps, context: any) {
 		super(props, context);
 		let shouldWarn = false;
-		let ignoreWarning = !!+cookie.get("joust_ludicrous", "0");
+		const ignoreWarning = !!+cookie.get("joust_ludicrous", "0");
 		if (!ignoreWarning) {
 			shouldWarn = !(
 				bowser.webkit ||
@@ -115,22 +115,22 @@ export default class GameWrapper extends React.Component<
 		}
 
 		// check if we even have a game state
-		let gameState = this.props.state;
+		const gameState = this.props.state;
 		if (!gameState) {
 			return this.renderLoadingScreen(this.props.playerNames);
 		}
 
-		let entityTree = gameState.entityTree;
-		let optionTree = gameState.optionTree;
+		const entityTree = gameState.entityTree;
+		const optionTree = gameState.optionTree;
 
 		// check if any entities are present
-		let allEntities = gameState.entities;
+		const allEntities = gameState.entities;
 		if (!allEntities) {
 			return this.renderLoadingScreen(this.props.playerNames);
 		}
 
 		// find the game entity
-		let game = gameState.game;
+		const game = gameState.game;
 		if (!game) {
 			return this.renderLoadingScreen(this.props.playerNames);
 		}
@@ -139,7 +139,7 @@ export default class GameWrapper extends React.Component<
 		if (gameState.getPlayerCount() === 0) {
 			return this.renderLoadingScreen(this.props.playerNames);
 		}
-		let players = allEntities.filter(
+		const players = allEntities.filter(
 			GameWrapper.filterByCardType(CardType.PLAYER),
 		) as Immutable.Map<number, PlayerEntity>;
 
@@ -158,13 +158,13 @@ export default class GameWrapper extends React.Component<
 		}
 
 		// find an end turn option
-		let endTurnOption = gameState.options
+		const endTurnOption = gameState.options
 			.filter((option: Option) => {
 				return !!option && option.type === OptionType.END_TURN;
 			})
 			.first();
 
-		let playerCount = players.count();
+		const playerCount = players.count();
 		switch (playerCount) {
 			case 2:
 				let player1 = players.first();

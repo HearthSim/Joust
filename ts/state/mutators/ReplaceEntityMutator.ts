@@ -6,14 +6,14 @@ export default class ReplaceEntityMutator implements GameStateMutator {
 	constructor(public entity: Entity) {}
 
 	public applyTo(state: GameState): GameState {
-		let newEntity = this.entity;
+		const newEntity = this.entity;
 		if (!newEntity) {
 			console.error("Cannot replace null entity");
 			return state;
 		}
 
-		let id = this.entity.id;
-		let oldEntity = state.getEntity(id);
+		const id = this.entity.id;
+		const oldEntity = state.getEntity(id);
 		if (!oldEntity) {
 			console.error("Cannot update non-existent entity #" + id);
 			return state;

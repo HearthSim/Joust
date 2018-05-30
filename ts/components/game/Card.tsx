@@ -57,7 +57,7 @@ export default class Card extends React.Component<CardProps> {
 			return (
 				<div className={classNames.join(" ")}>
 					<InHandCardArt
-						hidden={true}
+						hidden
 						entity={this.props.entity}
 						assetDirectory={this.props.assetDirectory}
 						cardArtDirectory={this.props.cardArtDirectory}

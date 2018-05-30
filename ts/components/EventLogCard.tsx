@@ -20,13 +20,13 @@ export default class EventLogCard extends React.Component<EventLogCardProps> {
 
 	public render(): JSX.Element {
 		let description = "a card";
-		let classNames = ["entity"];
+		const classNames = ["entity"];
 		if (
 			this.props.cards &&
 			this.props.cardId &&
 			this.props.cards.has(this.props.cardId)
 		) {
-			let card = this.props.cards.get(this.props.cardId);
+			const card = this.props.cards.get(this.props.cardId);
 			description = "[" + card.name + "]";
 			if (card.type == "HERO" || card.type == "HERO_POWER") {
 				classNames.push("special");

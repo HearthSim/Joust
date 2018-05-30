@@ -6,27 +6,39 @@ import { GameTag, Step } from "../enums";
 
 describe("GameStateHistory", () => {
 	let history;
-	let stateZero = new GameState(
+	const stateZero = new GameState(
 		undefined,
 		undefined,
 		undefined,
 		undefined,
 		0,
 	);
-	let stateOne = new GameState(undefined, undefined, undefined, undefined, 1);
-	let stateTwo = new GameState(undefined, undefined, undefined, undefined, 2);
-	let stateFour = new GameState(
+	const stateOne = new GameState(
+		undefined,
+		undefined,
+		undefined,
+		undefined,
+		1,
+	);
+	const stateTwo = new GameState(
+		undefined,
+		undefined,
+		undefined,
+		undefined,
+		2,
+	);
+	const stateFour = new GameState(
 		undefined,
 		undefined,
 		undefined,
 		undefined,
 		4,
 	);
-	let onePlayerEntityTree = Immutable.Map<
+	const onePlayerEntityTree = Immutable.Map<
 		number,
 		Immutable.Map<number, Immutable.Map<number, Entity>>
 	>().set(1, null);
-	let stateMulligan = new GameState(
+	const stateMulligan = new GameState(
 		Immutable.Map<number, Entity>().set(
 			1,
 			new Entity(
@@ -42,7 +54,7 @@ describe("GameStateHistory", () => {
 		undefined,
 		15,
 	);
-	let stateTurnOne = new GameState(
+	const stateTurnOne = new GameState(
 		Immutable.Map<number, Entity>().set(
 			1,
 			new Entity(
@@ -58,7 +70,7 @@ describe("GameStateHistory", () => {
 		undefined,
 		20,
 	);
-	let stateTurnOne2 = new GameState(
+	const stateTurnOne2 = new GameState(
 		Immutable.Map<number, Entity>().set(
 			1,
 			new Entity(
@@ -74,7 +86,7 @@ describe("GameStateHistory", () => {
 		undefined,
 		22,
 	);
-	let stateTurnTwoDraw = new GameState(
+	const stateTurnTwoDraw = new GameState(
 		Immutable.Map<number, Entity>().set(
 			1,
 			new Entity(
@@ -90,7 +102,7 @@ describe("GameStateHistory", () => {
 		undefined,
 		24,
 	);
-	let stateTurnTwo = new GameState(
+	const stateTurnTwo = new GameState(
 		Immutable.Map<number, Entity>().set(
 			1,
 			new Entity(

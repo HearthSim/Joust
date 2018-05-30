@@ -1,5 +1,4 @@
 import * as React from "react";
-import * as path from "path";
 import * as ReactDOM from "react-dom";
 import * as electron from "electron";
 import DebugApplication from "./components/DebugApplication";

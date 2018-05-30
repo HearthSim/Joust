@@ -1,5 +1,5 @@
 import * as React from "react";
-import { CardType, GameTag } from "../../../enums";
+import { GameTag } from "../../../enums";
 import CardArt from "./CardArt";
 import { EntityProps } from "../../../interfaces";
 
@@ -17,9 +17,9 @@ export default class InPlayCardArt extends React.Component<EntityProps> {
 	}
 
 	public render(): JSX.Element {
-		let images = [];
-		let entity = this.props.entity;
-		let controller = this.props.controller;
+		const images = [];
+		const entity = this.props.entity;
+		const controller = this.props.controller;
 		let postfix = "";
 
 		if (entity.isPremium()) {

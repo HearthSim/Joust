@@ -5,7 +5,7 @@ import * as Stream from "stream";
  */
 export default class GameStateSink extends Stream.Writable {
 	constructor() {
-		let opts: Stream.WritableOptions = {};
+		const opts: Stream.WritableOptions = {};
 		opts.objectMode = true;
 		super(opts);
 	}

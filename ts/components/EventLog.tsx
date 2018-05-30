@@ -5,21 +5,21 @@ import EventLogLine from "./EventLogLine";
 import {
 	CardDataProps,
 	CardOracleProps,
+	EventLogItemData,
 	GameStateDiff,
 	HistoryEntry,
-	EventLogItemData,
 	LineType,
 	StripBattletagsProps,
 } from "../interfaces";
 import {
-	Zone,
+	BlockType,
 	CardType,
 	GameTag,
-	BlockType,
 	MetaDataType,
 	Mulligan,
 	PlayState,
 	Step,
+	Zone,
 } from "../enums";
 import Player from "../Player";
 import Entity from "../Entity";
@@ -71,7 +71,7 @@ export default class EventLog extends React.Component<
 	}
 
 	private parseHistory(tail: HistoryEntry) {
-		let lines = [];
+		const lines = [];
 		let next,
 			current = tail;
 		if (current) {
@@ -91,10 +91,10 @@ export default class EventLog extends React.Component<
 	}
 
 	private simplify(input: EventLogItemData[]): EventLogItemData[] {
-		let output = [];
+		const output = [];
 		for (let i = 0; i < input.length - 1; i++) {
-			let curr = input[i];
-			let next = input[i + 1];
+			const curr = input[i];
+			const next = input[i + 1];
 			if (curr.targetId == next.targetId) {
 				if (
 					(curr.type == LineType.Summon &&
@@ -102,8 +102,8 @@ export default class EventLog extends React.Component<
 					(curr.type == LineType.Remove &&
 						next.type == LineType.Summon)
 				) {
-					let entity = curr.type == LineType.Summon ? curr : next;
-					let target = curr.type == LineType.Remove ? curr : next;
+					const entity = curr.type == LineType.Summon ? curr : next;
+					const target = curr.type == LineType.Remove ? curr : next;
 					output.push({
 						type: LineType.Replace,
 						time: curr.time,
@@ -142,7 +142,7 @@ export default class EventLog extends React.Component<
 				curr.type == LineType.TurnEnd &&
 				next.type == LineType.Turn
 			) {
-				//skip TurnEnd message
+				// skip TurnEnd message
 			} else {
 				output.push(curr);
 			}
@@ -157,11 +157,11 @@ export default class EventLog extends React.Component<
 		if (this.props.isHidden) {
 			return null;
 		}
-		let activeLines = this.state.lines.filter(
+		const activeLines = this.state.lines.filter(
 			(lid) => lid.time <= this.props.currentTime,
 		).length;
-		let offset = Math.max(0, activeLines - 20);
-		let lines = this.state.lines
+		const offset = Math.max(0, activeLines - 20);
+		const lines = this.state.lines
 			.slice(offset)
 			.map((lid, index) => (
 				<EventLogLine
@@ -195,8 +195,8 @@ export default class EventLog extends React.Component<
 		prev: GameState,
 		curr: GameState,
 	): EventLogItemData[] {
-		let data = [];
-		let turn = this.getTurn(prev, curr);
+		const data = [];
+		const turn = this.getTurn(prev, curr);
 		if (turn) {
 			data.push(turn);
 		}
@@ -208,9 +208,9 @@ export default class EventLog extends React.Component<
 	}
 
 	private getTurn(prev: GameState, curr: GameState): EventLogItemData {
-		let lid = this.newLogItemData(curr);
-		let cGame = curr.game;
-		let pGame = prev.game;
+		const lid = this.newLogItemData(curr);
+		const cGame = curr.game;
+		const pGame = prev.game;
 		if (
 			cGame.getTag(GameTag.TURN) > pGame.getTag(GameTag.TURN) ||
 			(!prev
@@ -244,9 +244,9 @@ export default class EventLog extends React.Component<
 		curr: GameState,
 	): EventLogItemData[] {
 		let lid = this.newLogItemData(curr);
-		let lidStack = [];
+		const lidStack = [];
 
-		let push = (type: LineType) => {
+		const push = (type: LineType) => {
 			lid.type = type;
 			lidStack.push(lid);
 			lid = this.newLogItemData(curr, lid.entityId);
@@ -255,12 +255,12 @@ export default class EventLog extends React.Component<
 		curr.descriptors
 			.filterNot((d) => prev.descriptors.contains(d))
 			.forEach((d) => {
-				let entity = curr.getEntity(d.entityId);
+				const entity = curr.getEntity(d.entityId);
 				lid.entityId = d.entityId;
 				lid.targetId = d.target;
-				let type = d.type;
+				const type = d.type;
 				if (type == BlockType.ATTACK) {
-					let metaDamage = d.metaData.find(
+					const metaDamage = d.metaData.find(
 						(x) => x.type == MetaDataType.DAMAGE,
 					);
 					lid.data = metaDamage && metaDamage.data;
@@ -276,16 +276,16 @@ export default class EventLog extends React.Component<
 					) {
 						push(LineType.Trigger);
 					}
-					let damages = new Map();
-					let heals = new Map();
+					const damages = new Map();
+					const heals = new Map();
 					d.metaData.forEach((x) => {
-						let metaType = x.type;
+						const metaType = x.type;
 						if (
 							metaType == MetaDataType.DAMAGE ||
 							metaType == MetaDataType.HEALING
 						) {
 							x.entities.forEach((e) => {
-								let map =
+								const map =
 									metaType == MetaDataType.DAMAGE
 										? damages
 										: heals;
@@ -317,10 +317,10 @@ export default class EventLog extends React.Component<
 
 	private analyzeDiffs(state: GameState): EventLogItemData[] {
 		let lid = this.newLogItemData(state);
-		let lidStack = [];
+		const lidStack = [];
 		let cthunBuff = 0;
 
-		let push = (type: LineType) => {
+		const push = (type: LineType) => {
 			if (type) {
 				lid.type = type;
 				lidStack.push(lid);
@@ -329,8 +329,8 @@ export default class EventLog extends React.Component<
 		};
 
 		state.diffs.forEach((diff: GameStateDiff) => {
-			let entity = state.getEntity(diff.entity);
-			let descriptor = state.descriptor;
+			const entity = state.getEntity(diff.entity);
+			const descriptor = state.descriptor;
 
 			this.setLidEntity(lid, state, diff.entity);
 			this.setLidTarget(lid, state, descriptor && descriptor.entityId);
@@ -373,11 +373,11 @@ export default class EventLog extends React.Component<
 			}
 		});
 		if (cthunBuff == 3) {
-			let controller = _.find(
+			const controller = _.find(
 				state.getPlayers(),
 				(x) => !!x.getTag(GameTag.CURRENT_PLAYER),
 			);
-			let cthunProxy = state.entities.find(
+			const cthunProxy = state.entities.find(
 				(x) =>
 					x.cardId == "OG_279" &&
 					x.getController() == controller.playerId,
@@ -460,7 +460,7 @@ export default class EventLog extends React.Component<
 				return LineType.CantBeDamaged;
 			case GameTag.WEAPON:
 				if (diff.current) {
-					let entity = state.getEntity(lid.entityId);
+					const entity = state.getEntity(lid.entityId);
 					this.setLidEntity(
 						lid,
 						state,
@@ -573,7 +573,7 @@ export default class EventLog extends React.Component<
 	}
 
 	private getCardData(state: GameState, id: number) {
-		let entity = state.getEntity(id);
+		const entity = state.getEntity(id);
 		return this.props.cards.get(
 			entity ? entity.cardId : this.props.cardOracle.get(id),
 		);
@@ -596,7 +596,7 @@ export default class EventLog extends React.Component<
 		state: GameState,
 		predicate: (player: Player) => boolean,
 	) {
-		let player = state.getPlayers().find((p) => predicate(p));
+		const player = state.getPlayers().find((p) => predicate(p));
 		lid.player = player && player.name;
 	}
 
@@ -608,7 +608,7 @@ export default class EventLog extends React.Component<
 			type: 0,
 			data: 0,
 			time: state.time,
-			entityId: entityId,
+			entityId,
 			indent:
 				state.descriptors.count() > 1 ||
 				state.game.getTag(GameTag.NEXT_STEP) == Step.MAIN_CLEANUP,

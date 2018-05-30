@@ -1,5 +1,5 @@
 import * as React from "react";
-import { StreamScrubber, KeybindingProps, LocaleProps } from "../interfaces";
+import { KeybindingProps, LocaleProps, StreamScrubber } from "../interfaces";
 import Timeline from "./Timeline";
 import SpeedSelector from "./SpeedSelector";
 import Tooltipper from "./Tooltipper";
@@ -61,7 +61,7 @@ export default class Scrubber extends React.Component<
 			canInteract: false,
 			canRewind: false,
 			canPlay: false,
-			speed: speed,
+			speed,
 			isShowingSettings: false,
 		};
 		this.props.scrubber.setSpeed(this.state.speed);
@@ -139,7 +139,7 @@ export default class Scrubber extends React.Component<
 			return;
 		}
 
-		let activeTag =
+		const activeTag =
 			document.activeElement && document.activeElement.tagName;
 		if (
 			activeTag == "TEXTAREA" ||
@@ -192,7 +192,7 @@ export default class Scrubber extends React.Component<
 			case 87: // w
 			case 187: // +
 				{
-					let index = Scrubber.SPEEDS.indexOf(this.state.speed) + 1;
+					const index = Scrubber.SPEEDS.indexOf(this.state.speed) + 1;
 					if (Scrubber.SPEEDS[index]) {
 						this.selectSpeed(Scrubber.SPEEDS[index]);
 					}
@@ -201,7 +201,7 @@ export default class Scrubber extends React.Component<
 			case 83: // s
 			case 189: // -
 				{
-					let index = Scrubber.SPEEDS.indexOf(this.state.speed) - 1;
+					const index = Scrubber.SPEEDS.indexOf(this.state.speed) - 1;
 					if (Scrubber.SPEEDS[index]) {
 						this.selectSpeed(Scrubber.SPEEDS[index]);
 					}

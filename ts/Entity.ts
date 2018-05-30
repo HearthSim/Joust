@@ -135,7 +135,7 @@ export default class Entity {
 	}
 
 	public setTag(key: number, value: number): Entity {
-		let strkey = "" + key;
+		const strkey = "" + key;
 		value = +value;
 		// verify parameters
 		if (strkey === null) {
@@ -178,7 +178,7 @@ export default class Entity {
 	}
 
 	public setTags(tags: Immutable.Map<string, number>): Entity {
-		let mergedTags = this.tags.merge(tags);
+		const mergedTags = this.tags.merge(tags);
 		if (mergedTags === this.tags) {
 			return this;
 		}

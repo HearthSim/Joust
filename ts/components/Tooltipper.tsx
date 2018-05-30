@@ -57,7 +57,7 @@ export default class Tooltipper extends React.Component<
 	}
 
 	public render(): JSX.Element {
-		let classNames = ["joust-tooltipper-tooltip"];
+		const classNames = ["joust-tooltipper-tooltip"];
 		if (this.props.align) {
 			classNames.push(this.props.align);
 		}

@@ -17,18 +17,18 @@ export default class Turn extends React.Component<TurnProps> {
 			return null;
 		}
 
-		let classNames = ["joust-scrubber-turn"];
+		const classNames = ["joust-scrubber-turn"];
 
-		let width = 100 / this.props.totalDuration * this.props.duration;
-		let style = { width: width + "%" };
+		const width = 100 / this.props.totalDuration * this.props.duration;
+		const style = { width: width + "%" };
 
 		if (this.props.state) {
 			let flip = 0;
-			let player = this.props.state.getPlayer(1);
+			const player = this.props.state.getPlayer(1);
 			if (player) {
 				flip += player.getTag(GameTag.FIRST_PLAYER) ? 1 : 0;
 			}
-			let game = this.props.state.game;
+			const game = this.props.state.game;
 			if (game) {
 				classNames.push(
 					!!((game.getTag(GameTag.TURN) + flip) % 2) !=
@@ -41,7 +41,7 @@ export default class Turn extends React.Component<TurnProps> {
 			classNames.push("mulligan");
 		}
 
-		let prettyTurn =
+		const prettyTurn =
 			this.props.turnNumber % 2
 				? Math.floor(this.props.turnNumber / 2) + 1
 				: null;

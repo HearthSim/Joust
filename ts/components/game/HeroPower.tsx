@@ -4,7 +4,6 @@ import EntityInPlay from "./EntityInPlay";
 import Cost from "./stats/Cost";
 import Card from "./Card";
 import HeroPowerArt from "./visuals/HeroPowerArt";
-import { GameTag } from "../../enums";
 
 interface HeroPowerProps extends EntityInPlayProps {
 	activated?: boolean;
@@ -20,7 +19,7 @@ export default class HeroPower extends EntityInPlay<HeroPowerProps> {
 	}
 
 	protected getClassNames(): string[] {
-		let classNames = super.getClassNames();
+		const classNames = super.getClassNames();
 		if (this.props.activated) {
 			classNames.push("highlight");
 		}
@@ -33,13 +32,13 @@ export default class HeroPower extends EntityInPlay<HeroPowerProps> {
 			this.props.cards &&
 			this.props.cards.has(this.props.entity.cardId)
 		) {
-			let data = this.props.cards.get(this.props.entity.cardId);
+			const data = this.props.cards.get(this.props.entity.cardId);
 			defaultCost = data.cost;
 		}
 
-		let entity = this.props.entity;
+		const entity = this.props.entity;
 
-		let components = [
+		const components = [
 			<HeroPowerArt
 				key="art"
 				entity={entity}

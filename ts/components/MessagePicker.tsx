@@ -59,15 +59,15 @@ export default class MessagePicker extends React.Component<
 	}
 
 	private generateSequence(): number[] {
-		let sequence = [];
-		let length = this.props.messages.length;
+		const sequence = [];
+		const length = this.props.messages.length;
 		for (let i = 0; i < length; i++) {
 			sequence[i] = i;
 		}
 		if (this.props.random !== false) {
 			// Knuth shuffle
 			for (let i = 0; i < length - 1; i++) {
-				let j = Math.floor(
+				const j = Math.floor(
 					i + Math.floor(Math.random() * (length - i)),
 				);
 				[sequence[i], sequence[j]] = [sequence[j], sequence[i]];

@@ -1,10 +1,10 @@
+import EnrichDescriptorMutator from "../mutators/EnrichDescriptorMutator";
 import GameState from "../GameState";
-import GameStateMutator from "../GameStateMutator";
 import PopDescriptorMutator from "../mutators/PopDescriptorMutator";
-import { BlockType, GameTag, Step, MetaDataType } from "../../enums";
+import { BlockType, GameTag, MetaDataType, Step } from "../../enums";
 import IncrementTimeMutator from "../mutators/IncrementTimeMutator";
 import PushDescriptorMutator from "../mutators/PushDescriptorMutator";
-import EnrichDescriptorMutator from "../mutators/EnrichDescriptorMutator";
+import GameStateMutator from "../GameStateMutator";
 import TagChangeMutator from "../mutators/TagChangeMutator";
 import SetOptionsMutator from "../mutators/SetOptionsMutator";
 import SetChoicesMutator from "../mutators/SetChoicesMutator";
@@ -46,7 +46,7 @@ export default class Timer extends GameStateTrackerPlugin {
 		state: GameState,
 	): void | GameState {
 		let timeStep = 0;
-		let gameStep = state.game
+		const gameStep = state.game
 			? state.game.getTag(GameTag.STEP)
 			: Step.INVALID;
 
@@ -76,7 +76,7 @@ export default class Timer extends GameStateTrackerPlugin {
 							mutator.descriptor.entityId > 3 &&
 							gameStep !== Step.INVALID
 						) {
-							let entity = state.getEntity(
+							const entity = state.getEntity(
 								mutator.descriptor.entityId,
 							);
 							if (
@@ -154,7 +154,7 @@ export default class Timer extends GameStateTrackerPlugin {
 
 		// damage hits/healing
 		if (mutator instanceof EnrichDescriptorMutator) {
-			let targets = mutator.metaData.entities.toArray();
+			const targets = mutator.metaData.entities.toArray();
 			if (this.lastDescriptorType !== BlockType.ATTACK) {
 				// attack pauses are handled in diffs
 				if (mutator.metaData.type === MetaDataType.TARGET) {

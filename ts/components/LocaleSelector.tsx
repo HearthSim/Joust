@@ -48,7 +48,7 @@ export default class LocaleSelector extends React.Component<
 			thTH: "Thai",
 		};
 
-		let locales = _.map(available, (name: string, key: string) => {
+		const locales = _.map(available, (name: string, key: string) => {
 			return (
 				<option key={key} value={key}>
 					{name}

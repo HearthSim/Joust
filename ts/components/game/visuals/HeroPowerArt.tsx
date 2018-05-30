@@ -1,14 +1,11 @@
 import * as React from "react";
-import { CardType } from "../../../enums";
-import Entity from "../../../Entity";
 import CardArt from "./CardArt";
 import { EntityProps } from "../../../interfaces";
-import InPlayCardArt from "./InPlayCardArt";
 
 export default class HeroPowerArt extends React.Component<EntityProps> {
 	public render(): JSX.Element {
-		let images = [];
-		let entity = this.props.entity;
+		const images = [];
+		const entity = this.props.entity;
 
 		images.push({
 			image: entity.cardId,
@@ -17,7 +14,9 @@ export default class HeroPowerArt extends React.Component<EntityProps> {
 		});
 
 		let frame = "hero_power.png";
-		if (entity.isExhausted()) frame = "hero_power_exhausted.png";
+		if (entity.isExhausted()) {
+			frame = "hero_power_exhausted.png";
+		}
 
 		images.push({
 			image: frame,
@@ -28,8 +27,8 @@ export default class HeroPowerArt extends React.Component<EntityProps> {
 			<CardArt
 				layers={images}
 				scale={1}
-				square={true}
-				margin={true}
+				square
+				margin
 				assetDirectory={this.props.assetDirectory}
 				cardArtDirectory={this.props.cardArtDirectory}
 			/>

@@ -44,7 +44,7 @@ export default class GameStateScrubber extends Stream.Duplex
 	protected startFromTurn: number;
 
 	_write(gameState: any, encoding: string, callback: Function): void {
-		let time = gameState.time;
+		const time = gameState.time;
 
 		let ready = false;
 
@@ -133,13 +133,13 @@ export default class GameStateScrubber extends Stream.Duplex
 			return;
 		}
 
-		let lastTurn = this.currentTurn;
+		const lastTurn = this.currentTurn;
 
 		this.timeSeen[Math.floor(this.currentTime)] = true;
 
 		if (this.isPlaying() && this.speed != 0) {
-			let now = new Date().getTime();
-			let elapsed =
+			const now = new Date().getTime();
+			const elapsed =
 				(now - this.lastUpdate) * this.speed * this.multiplier;
 			this.lastUpdate = now;
 
@@ -154,7 +154,7 @@ export default class GameStateScrubber extends Stream.Duplex
 			}
 		}
 
-		let latest = this.history.getLatest(
+		const latest = this.history.getLatest(
 			this.currentTime + this.initialTime,
 		);
 		if (latest !== this.lastState) {
@@ -162,7 +162,7 @@ export default class GameStateScrubber extends Stream.Duplex
 			this.push(latest);
 		}
 
-		let currentTurn = this.currentTurn;
+		const currentTurn = this.currentTurn;
 		if (lastTurn !== currentTurn) {
 			this.emit("turn", currentTurn);
 		}
@@ -249,14 +249,14 @@ export default class GameStateScrubber extends Stream.Duplex
 		if (!this.lastState) {
 			return null;
 		}
-		let game = this.lastState.game;
+		const game = this.lastState.game;
 		if (!game) {
 			return null;
 		}
 		if (this.history.turnMap.isEmpty()) {
 			return 0;
 		}
-		let turnOne = this.history.turnMap.get(1);
+		const turnOne = this.history.turnMap.get(1);
 		if (turnOne && this.lastState.time < turnOne.time) {
 			return 0;
 		}
@@ -308,13 +308,13 @@ export default class GameStateScrubber extends Stream.Duplex
 	 * Always skips to the previous turn if playback is paused.
 	 */
 	public skipBack(): void {
-		let turnStartState = this.history.turnMap.get(this.currentTurn);
+		const turnStartState = this.history.turnMap.get(this.currentTurn);
 		if (!turnStartState) {
 			this.previousTurn();
 			return;
 		}
-		let turnStart = turnStartState.time;
-		let timeElapsed = this.currentTime - turnStart;
+		const turnStart = turnStartState.time;
+		const timeElapsed = this.currentTime - turnStart;
 		if (
 			timeElapsed >
 			(this.isPlaying() ? 1.5 * this.speed * this.multiplier : 0)

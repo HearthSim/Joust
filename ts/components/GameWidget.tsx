@@ -147,7 +147,7 @@ export default class GameWidget extends React.Component<
 	}
 
 	protected setGameState(gameState: GameState): void {
-		this.setState({ gameState: gameState });
+		this.setState({ gameState });
 	}
 
 	private clearFullscreenErrorTimeout() {
@@ -256,7 +256,7 @@ export default class GameWidget extends React.Component<
 	 */
 	protected triggerResize() {
 		try {
-			let event = document.createEvent("UIEvents");
+			const event = document.createEvent("UIEvents");
 			event.initUIEvent("resize", true, false, window, 0);
 			window.dispatchEvent(event);
 		} catch (e) {}
@@ -266,12 +266,12 @@ export default class GameWidget extends React.Component<
 		if (!this.state.gameState) {
 			return;
 		}
-		let players = this.state.gameState.getPlayers();
+		const players = this.state.gameState.getPlayers();
 		if (!players.length) {
 			return;
 		}
-		let player = players[0];
-		let cards = this.state.gameState.entityTree
+		const player = players[0];
+		const cards = this.state.gameState.entityTree
 			.get(player.playerId)
 			.get(Zone.HAND);
 		if (cards && cards.count() > 0) {
@@ -290,7 +290,7 @@ export default class GameWidget extends React.Component<
 			this.checkForSwap();
 		}
 
-		let parts = [];
+		const parts = [];
 
 		if (this.props.exitGame) {
 			parts.push(
@@ -302,9 +302,9 @@ export default class GameWidget extends React.Component<
 			);
 		}
 
-		let isSwapped = this.swapPlayers !== this.state.swapPlayers /* XOR */;
+		const isSwapped = this.swapPlayers !== this.state.swapPlayers /* XOR */;
 
-		let game = (
+		const game = (
 			<GameWrapper
 				key="game"
 				state={this.state.gameState}
@@ -322,7 +322,7 @@ export default class GameWidget extends React.Component<
 				stripBattletags={this.props.stripBattletags}
 			/>
 		);
-		let log = (
+		const log = (
 			<EventLog
 				key="log"
 				state={this.state.gameState}
@@ -350,7 +350,7 @@ export default class GameWidget extends React.Component<
 					key="scrubber"
 					scrubber={this.props.scrubber}
 					swapPlayers={() => {
-						let newSwap = !this.state.swapPlayers;
+						const newSwap = !this.state.swapPlayers;
 						this.setState({ swapPlayers: newSwap });
 						if (this.props.onToggleSwap) {
 							this.props.onToggleSwap(newSwap);
@@ -401,7 +401,7 @@ export default class GameWidget extends React.Component<
 			);
 		}
 
-		let style = {};
+		const style = {};
 		if (!this.state.isFullscreen) {
 			if (this.props.width) {
 				style["width"] = this.props.width;
@@ -411,7 +411,7 @@ export default class GameWidget extends React.Component<
 			}
 		}
 
-		let classes = ["joust-widget", "game-widget"];
+		const classes = ["joust-widget", "game-widget"];
 		if (this.state.isFullscreen) {
 			classes.push("joust-fullscreen");
 		}

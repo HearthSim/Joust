@@ -19,7 +19,7 @@ export default class EndTurnButton extends React.Component<EndTurnButtonProps> {
 	}
 
 	public render(): JSX.Element {
-		let classNames = ["endTurnButton"];
+		const classNames = ["endTurnButton"];
 		if (this.props.option) {
 			classNames.push("playable");
 		}

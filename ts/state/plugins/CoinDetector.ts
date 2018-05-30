@@ -3,7 +3,7 @@ import GameState from "../GameState";
 import GameStateMutator from "../GameStateMutator";
 import AddEntityMutator from "../mutators/AddEntityMutator";
 import Entity from "../../Entity";
-import { GameTag, Zone, Mulligan, Step } from "../../enums";
+import { GameTag, Mulligan, Step, Zone } from "../../enums";
 
 /**
  * Attempts to detect The Coin at the start of the game and sets it's card id if found.

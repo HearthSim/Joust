@@ -8,7 +8,7 @@ interface HealthProps extends React.ClassAttributes<Health> {
 
 export default class Health extends React.Component<HealthProps> {
 	public render(): JSX.Element {
-		let classNames = ["health"];
+		const classNames = ["health"];
 		if (this.props.health !== null) {
 			if (this.props.damage > 0) {
 				classNames.push("negative");

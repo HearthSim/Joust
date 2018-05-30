@@ -23,13 +23,13 @@ export default class Hand extends EntityList<HandProps> {
 	}
 
 	protected renderEntity(entity: Entity, option: Option, index?: number) {
-		let style = {};
+		const style = {};
 
 		let wasHidden = false;
 
-		let customHealth = undefined;
-		let customAtk = undefined;
-		let customCost = undefined;
+		let customHealth;
+		let customAtk;
+		let customCost;
 
 		if (this.props.hideCards) {
 			entity = new Entity(entity.id, entity.getTags());
@@ -38,13 +38,13 @@ export default class Hand extends EntityList<HandProps> {
 			this.props.cardOracle &&
 			this.props.cardOracle.has(+entity.id)
 		) {
-			let cardId = this.props.cardOracle.get(entity.id);
+			const cardId = this.props.cardOracle.get(entity.id);
 			entity = new Entity(entity.id, entity.getTags(), cardId);
 			if (cardId === "OG_280") {
-				let proxyId = this.props.cardOracle.findKey(
+				const proxyId = this.props.cardOracle.findKey(
 					(x) => x === "OG_279",
 				);
-				let proxy = proxyId && this.props.setAside.get(proxyId);
+				const proxy = proxyId && this.props.setAside.get(proxyId);
 				if (proxy) {
 					customHealth = proxy.getHealth();
 					customAtk = proxy.getAtk();

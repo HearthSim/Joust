@@ -2,7 +2,7 @@ import * as React from "react";
 import SetupWidget from "./SetupWidget";
 import GameWidget from "./GameWidget";
 import HearthstoneJSON, { CardData } from "hearthstonejson-client";
-import { InteractiveBackend, MulliganOracle, CardOracle } from "../interfaces";
+import { CardOracle, InteractiveBackend, MulliganOracle } from "../interfaces";
 import GameStateSink from "../state/GameStateSink";
 import GameStateScrubber from "../state/GameStateScrubber";
 import * as _ from "lodash";
@@ -90,7 +90,7 @@ export default class DebugApplication extends React.Component<
 										".jpg"
 								: null
 						}
-						enableKeybindings={true}
+						enableKeybindings
 						ref={this.onMountGameWidget.bind(this)}
 						locale={this.state.locale}
 						selectLocale={(locale: string, cb: () => void) => {
@@ -140,11 +140,11 @@ export default class DebugApplication extends React.Component<
 	): void {
 		this.setState({
 			currentWidget: Widget.GAME,
-			sink: sink,
-			interaction: interaction,
-			scrubber: scrubber,
-			cardOracle: cardOracle,
-			mulliganOracle: mulliganOracle,
+			sink,
+			interaction,
+			scrubber,
+			cardOracle,
+			mulliganOracle,
 			replayFilename,
 			replayBlob,
 		});
@@ -155,11 +155,11 @@ export default class DebugApplication extends React.Component<
 			this.hsjson = new HearthstoneJSON();
 		}
 		this.setState({
-			locale: locale,
+			locale,
 		});
 		this.hsjson.getLatest(locale).then((cards: CardData[]) => {
 			this.setState({
-				cards: cards,
+				cards,
 			});
 			cb && cb();
 		});

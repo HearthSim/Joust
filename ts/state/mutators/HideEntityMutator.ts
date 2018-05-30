@@ -13,7 +13,7 @@ export default class HideEntityMutator implements GameStateMutator {
 	}
 
 	public applyTo(state: GameState): GameState {
-		let oldEntity = state.getEntity(this.id);
+		const oldEntity = state.getEntity(this.id);
 		if (!oldEntity) {
 			console.error("Cannot hide non-existent entity #" + this.id);
 			return state;
@@ -22,7 +22,7 @@ export default class HideEntityMutator implements GameStateMutator {
 		// reset various tags
 		let tags = oldEntity.getTags();
 		tags = tags.set("" + GameTag.ZONE, this.zone);
-		let newEntity = oldEntity.replaceTags(tags).setCardId(null);
+		const newEntity = oldEntity.replaceTags(tags).setCardId(null);
 
 		return state.apply(new ReplaceEntityMutator(newEntity));
 	}

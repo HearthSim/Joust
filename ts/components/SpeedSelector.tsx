@@ -26,7 +26,7 @@ export default class SpeedSelector extends React.Component<SpeedSelectorProps> {
 	}
 
 	public render(): JSX.Element {
-		let speeds = this.props.speeds.map((val) => {
+		const speeds = this.props.speeds.map((val) => {
 			return (
 				<option key={val} value={"" + val}>
 					{val}&times;{" "}

@@ -5,7 +5,6 @@ import Durability from "./stats/Durability";
 import WeaponArt from "./visuals/WeaponArt";
 import EntityInPlay from "./EntityInPlay";
 import Card from "./Card";
-import { GameTag } from "../../enums";
 
 export default class Weapon extends EntityInPlay<EntityInPlayProps> {
 	constructor(props: EntityInPlayProps, context?: any) {
@@ -13,16 +12,16 @@ export default class Weapon extends EntityInPlay<EntityInPlayProps> {
 	}
 
 	public jsx() {
-		let entity = this.props.entity;
+		const entity = this.props.entity;
 		let defaultAttack = null;
 		let defaultDurability = null;
 		if (this.props.cards && this.props.cards.has(entity.cardId)) {
-			let data = this.props.cards.get(entity.cardId);
+			const data = this.props.cards.get(entity.cardId);
 			defaultAttack = data.attack;
 			defaultDurability = data.durability;
 		}
 
-		let components = [
+		const components = [
 			<WeaponArt
 				key="art"
 				entity={entity}

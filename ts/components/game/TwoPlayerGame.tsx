@@ -2,14 +2,14 @@ import * as React from "react";
 import * as Immutable from "immutable";
 
 import {
-	EntityProps,
-	OptionCallbackProps,
+	AssetDirectoryProps,
 	CardDataProps,
 	CardOracleProps,
-	AssetDirectoryProps,
+	EntityProps,
 	GameStateDescriptorStackProps,
 	HideCardsProps,
 	MulliganOracleProps,
+	OptionCallbackProps,
 	StripBattletagsProps,
 } from "../../interfaces";
 import Entity from "../../Entity";
@@ -18,7 +18,6 @@ import Option from "../../Option";
 import PlayerEntity from "../../Player";
 import EndTurnButton from "./EndTurnButton";
 import { GameTag } from "../../enums";
-import Choice from "../../Choice";
 import Choices from "../../Choices";
 
 interface TwoPlayerGameProps
@@ -48,19 +47,19 @@ interface TwoPlayerGameProps
 
 export default class TwoPlayerGame extends React.Component<TwoPlayerGameProps> {
 	public render(): JSX.Element {
-		let entities = this.props.entities;
-		let options = this.props.options;
-		let player1 = this.props.player1 as PlayerEntity;
-		let player2 = this.props.player2 as PlayerEntity;
-		let currentPlayer = player1.getTag(GameTag.CURRENT_PLAYER)
+		const entities = this.props.entities;
+		const options = this.props.options;
+		const player1 = this.props.player1 as PlayerEntity;
+		const player2 = this.props.player2 as PlayerEntity;
+		const currentPlayer = player1.getTag(GameTag.CURRENT_PLAYER)
 			? player1
 			: player2;
 
-		let emptyEntities = Immutable.Map<
+		const emptyEntities = Immutable.Map<
 			number,
 			Immutable.Map<number, Entity>
 		>();
-		let emptyOptions = Immutable.Map<
+		const emptyOptions = Immutable.Map<
 			number,
 			Immutable.Map<number, Option>
 		>();
@@ -68,7 +67,7 @@ export default class TwoPlayerGame extends React.Component<TwoPlayerGameProps> {
 			<div className="game">
 				<Player
 					player={player1 as PlayerEntity}
-					isTop={true}
+					isTop
 					isCurrent={currentPlayer === player1}
 					entities={entities.get(player1.playerId) || emptyEntities}
 					options={options.get(player1.playerId) || emptyOptions}

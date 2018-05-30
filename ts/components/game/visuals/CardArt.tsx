@@ -72,13 +72,13 @@ class CardArt extends React.Component<CardArtProps, CardArtState> {
 
 	private createStyle(): any {
 		// keep proportions with scale
-		let width = Math.round(this.state.height * this.props.scale);
+		const width = Math.round(this.state.height * this.props.scale);
 		let height = Math.round(this.state.height);
 		if (this.props.square) {
 			height = width;
 		}
-		let margin = Math.round(this.state.height * (1 - this.props.scale));
-		let style = {
+		const margin = Math.round(this.state.height * (1 - this.props.scale));
+		const style = {
 			width: width + "px",
 			height: height + "px",
 			marginTop: "0px",

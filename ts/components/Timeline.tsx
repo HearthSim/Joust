@@ -84,7 +84,7 @@ export default class Timeline
 			return;
 		}
 		e.preventDefault();
-		let touch = e.touches[0];
+		const touch = e.touches[0];
 		this.setState({ isDragging: true });
 		this.seek(touch.clientX);
 	}
@@ -99,7 +99,7 @@ export default class Timeline
 		}
 
 		e.preventDefault();
-		let touch = e.touches[0];
+		const touch = e.touches[0];
 		this.seek(touch.clientX);
 	}
 
@@ -120,7 +120,7 @@ export default class Timeline
 			mulliganTurn && mulliganTurn.time > 0 ? (
 				<Turn
 					key={0}
-					mulligan={true}
+					mulligan
 					duration={mulliganTurn.time}
 					totalDuration={this.props.duration}
 				/>
@@ -140,7 +140,7 @@ export default class Timeline
 					}
 
 					if (map.has(turn + i)) {
-						let next = map.get(turn + i);
+						const next = map.get(turn + i);
 						duration = next.time - current.time;
 					} else {
 						duration = this.props.duration - current.time;

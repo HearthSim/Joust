@@ -1,5 +1,5 @@
+import HeroPower from "./HeroPower";
 import * as React from "react";
-import * as Immutable from "immutable";
 import PlayerEntity from "../../Player";
 import Entity from "../../Entity";
 import Option from "../../Option";
@@ -8,7 +8,7 @@ import ChoiceList from "../../Choices";
 import Deck from "./Deck";
 import Hand from "./Hand";
 import Hero from "./Hero";
-import HeroPower from "./HeroPower";
+import * as Immutable from "immutable";
 import Field from "./Field";
 import Weapon from "./Weapon";
 import Choices from "./Choices";
@@ -16,23 +16,23 @@ import Rank from "./Rank";
 import Card from "./Card";
 import Minion from "./Minion";
 import {
-	Zone,
+	BlockType,
 	CardType,
-	GameTag,
 	ChoiceType,
+	GameTag,
 	Mulligan,
 	PlayState,
-	BlockType,
+	Zone,
 } from "../../enums";
 import {
-	OptionCallbackProps,
-	CardDataProps,
-	CardOracleProps,
 	AssetDirectoryProps,
 	CardArtDirectory,
+	CardDataProps,
+	CardOracleProps,
 	GameStateDescriptorStackProps,
 	HideCardsProps,
 	MulliganOracleProps,
+	OptionCallbackProps,
 	StripBattletagsProps,
 } from "../../interfaces";
 import GameStateDescriptor from "../../state/GameStateDescriptor";
@@ -58,7 +58,7 @@ interface PlayerProps
 
 export default class Player extends React.Component<PlayerProps> {
 	public render(): JSX.Element {
-		let filterByCardType = (cardType: number) => {
+		const filterByCardType = (cardType: number) => {
 			return (entity: Entity) => {
 				return !!entity && entity.getCardType() === cardType;
 			};
@@ -76,8 +76,8 @@ export default class Player extends React.Component<PlayerProps> {
 		if (this.props.descriptors.count() > 0 && !this.props.choices) {
 			this.props.descriptors.forEach(
 				(descriptor: GameStateDescriptor, index: number) => {
-					let outer = this.props.descriptors.get(index + 1);
-					let type = descriptor.type;
+					const outer = this.props.descriptors.get(index + 1);
+					const type = descriptor.type;
 					if (
 						type === BlockType.PLAY ||
 						type === BlockType.TRIGGER ||
@@ -115,7 +115,7 @@ export default class Player extends React.Component<PlayerProps> {
 						);
 						if (entity) {
 							if (type === BlockType.RITUAL) {
-								let setAside = this.props.entities.get(
+								const setAside = this.props.entities.get(
 									Zone.SETASIDE,
 								);
 								if (setAside) {
@@ -172,7 +172,7 @@ export default class Player extends React.Component<PlayerProps> {
 										)) ||
 									entity.getTag(GameTag.SHIFTING)
 								) {
-									let cardId = this.props.cardOracle.get(
+									const cardId = this.props.cardOracle.get(
 										entity.id,
 									);
 									entity = new Entity(
@@ -189,7 +189,7 @@ export default class Player extends React.Component<PlayerProps> {
 											.type;
 									}
 								}
-								let types = [
+								const types = [
 									CardType.WEAPON,
 									CardType.SPELL,
 									CardType.MINION,
@@ -269,7 +269,7 @@ export default class Player extends React.Component<PlayerProps> {
 
 		const buffedEntities = [];
 		playEntities.forEach((entity) => {
-			let attached = entity.getTag(GameTag.ATTACHED);
+			const attached = entity.getTag(GameTag.ATTACHED);
 			if (attached && buffedEntities.indexOf(attached) === -1) {
 				buffedEntities.push(attached);
 			}
@@ -287,7 +287,7 @@ export default class Player extends React.Component<PlayerProps> {
 				.filter(filterByCardType(CardType.HERO))
 				.first();
 		}
-		let hero = (
+		const hero = (
 			<Hero
 				entity={heroEntity}
 				option={heroEntity ? playOptions.get(heroEntity.id) : null}
@@ -304,10 +304,10 @@ export default class Player extends React.Component<PlayerProps> {
 				cardOracle={this.props.cardOracle}
 			/>
 		);
-		let heroPowerEntity = playEntities
+		const heroPowerEntity = playEntities
 			.filter(filterByCardType(CardType.HERO_POWER))
 			.first();
-		let heroPower = (
+		const heroPower = (
 			<HeroPower
 				entity={heroPowerEntity}
 				option={
@@ -321,7 +321,7 @@ export default class Player extends React.Component<PlayerProps> {
 				activated={activatedHeroPower}
 			/>
 		);
-		let weapon = (
+		const weapon = (
 			<Weapon
 				entity={playEntities
 					.filter(filterByCardType(CardType.WEAPON))
@@ -333,7 +333,7 @@ export default class Player extends React.Component<PlayerProps> {
 			/>
 		);
 
-		let field = (
+		const field = (
 			<Field
 				entities={
 					playEntities.filter(filterByCardType(CardType.MINION)) ||
@@ -349,7 +349,7 @@ export default class Player extends React.Component<PlayerProps> {
 				buffedEntities={buffedEntities}
 			/>
 		);
-		let deck = (
+		const deck = (
 			<Deck
 				entities={this.props.entities.get(Zone.DECK) || emptyEntities}
 				options={this.props.options.get(Zone.DECK) || emptyOptions}
@@ -360,7 +360,7 @@ export default class Player extends React.Component<PlayerProps> {
 				fatigue={this.props.player.getTag(GameTag.FATIGUE) + 1}
 			/>
 		);
-		let hand = (
+		const hand = (
 			<Hand
 				entities={
 					((!this.props.choices ||
@@ -383,11 +383,11 @@ export default class Player extends React.Component<PlayerProps> {
 
 		let choices = null;
 		if (this.props.choices) {
-			let choiceEntities = this.props.choices.choices
+			const choiceEntities = this.props.choices.choices
 				.map((choice: Choice) => {
 					let entity = null;
 					// search for the entity in all player zones
-					let id = choice.entityId;
+					const id = choice.entityId;
 					this.props.entities.forEach(
 						(zoneEntities: Immutable.Map<number, Entity>) => {
 							if (zoneEntities.has(id)) {
@@ -436,7 +436,7 @@ export default class Player extends React.Component<PlayerProps> {
 			</div>
 		) : null;
 
-		let rank = (
+		const rank = (
 			<Rank
 				rank={this.props.player.rank}
 				legendRank={this.props.player.legendRank}
@@ -445,13 +445,13 @@ export default class Player extends React.Component<PlayerProps> {
 			/>
 		);
 
-		let crystals = [];
-		let resources =
+		const crystals = [];
+		const resources =
 			this.props.player.getTag(GameTag.RESOURCES) +
 			this.props.player.getTag(GameTag.TEMP_RESOURCES);
-		let available =
+		const available =
 			resources - this.props.player.getTag(GameTag.RESOURCES_USED);
-		let crystalClassNames = ["crystal"];
+		const crystalClassNames = ["crystal"];
 		if (available > 0) {
 			crystalClassNames.push("full");
 		} else {
@@ -461,7 +461,7 @@ export default class Player extends React.Component<PlayerProps> {
 				crystalClassNames.push("empty");
 			}
 		}
-		let tray = (
+		const tray = (
 			<div className="tray">
 				<span>
 					{available}/{resources}
@@ -473,7 +473,7 @@ export default class Player extends React.Component<PlayerProps> {
 			</div>
 		);
 
-		let tall = (
+		const tall = (
 			<section className="tall">
 				<div className="equipment">
 					<section className="entities">
@@ -492,14 +492,14 @@ export default class Player extends React.Component<PlayerProps> {
 			</section>
 		);
 
-		let short = (
+		const short = (
 			<section className="short">
 				{deck}
 				{field}
 			</section>
 		);
 
-		let classNames = ["player"];
+		const classNames = ["player"];
 
 		if (this.props.isTop) {
 			classNames.push("top");

@@ -53,12 +53,12 @@ export default class TexturePreloader extends Stream.Writable {
 	}
 
 	_write(chunk: any, encoding: string, callback: Function) {
-		let mutator = chunk as any;
+		const mutator = chunk as any;
 
 		let id: string = null;
 
 		if (mutator.entity) {
-			let entity = mutator.entity as Entity;
+			const entity = mutator.entity as Entity;
 			id = entity.cardId;
 		}
 
@@ -87,7 +87,7 @@ export default class TexturePreloader extends Stream.Writable {
 
 		this.working++;
 
-		let next = () => {
+		const next = () => {
 			this.working--;
 			this.consume();
 		};
@@ -96,7 +96,7 @@ export default class TexturePreloader extends Stream.Writable {
 		if (!!this.assets && file) {
 			file = this.assets("images/" + file + ".png");
 		} else {
-			let cardId = this.cardArtQueue.shift();
+			const cardId = this.cardArtQueue.shift();
 			file = this.cardArt(cardId);
 		}
 
@@ -107,7 +107,7 @@ export default class TexturePreloader extends Stream.Writable {
 
 		this.fired[file] = true;
 
-		let image = new Image();
+		const image = new Image();
 		image.onload = next;
 		image.onerror = next;
 		image.src = file;

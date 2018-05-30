@@ -32,8 +32,8 @@ export default class LoadingScreen extends React.Component<LoadingScreenProps> {
 		"Feeding Hungry Crab...",
 		"Rolling Need...",
 		"Disguising Toast...",
-		//"Shadowstepping Coldlights...",
-		//"Requiring assistance...",
+		// "Shadowstepping Coldlights...",
+		// "Requiring assistance...",
 
 		// Goblins vs Gnomes
 		"Spinning up...",
@@ -99,7 +99,7 @@ export default class LoadingScreen extends React.Component<LoadingScreenProps> {
 		// other games
 		"Massing Void Rays...",
 		"Assembling Exodia pieces...",
-		//'"Ryuu ga waga teki oh wrong game."',
+		// '"Ryuu ga waga teki oh wrong game."',
 	];
 
 	public render() {

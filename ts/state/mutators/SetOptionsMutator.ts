@@ -8,12 +8,12 @@ export default class SetOptionsMutator implements GameStateMutator {
 	constructor(public options: Immutable.Map<number, Option>) {}
 
 	public applyTo(state: GameState): GameState {
-		let oldOptions = state.options;
+		const oldOptions = state.options;
 		if (this.options === oldOptions) {
 			return state;
 		}
 
-		let optionTree = this.buildOptionTree(this.options, state.entities);
+		const optionTree = this.buildOptionTree(this.options, state.entities);
 
 		return new GameState(
 			state.entities,
@@ -43,7 +43,7 @@ export default class SetOptionsMutator implements GameStateMutator {
 				if (!option.entityId) {
 					return;
 				}
-				let entity = entities.get(option.entityId);
+				const entity = entities.get(option.entityId);
 				map = map.setIn(
 					[entity.getController(), entity.getZone(), entity.id],
 					option,

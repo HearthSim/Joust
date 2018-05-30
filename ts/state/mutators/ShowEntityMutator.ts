@@ -30,7 +30,7 @@ export default class ShowEntityMutator implements GameStateMutator {
 
 		newEntity = newEntity.setTags(this.tags);
 
-		let diffs: GameStateDiff[] = [];
+		const diffs: GameStateDiff[] = [];
 		this.tags.forEach((value: number, tag: string) => {
 			diffs.push({
 				entity: id,

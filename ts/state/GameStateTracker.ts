@@ -33,7 +33,7 @@ export default class GameStateTracker extends Stream.Transform {
 		encoding: string,
 		callback: Function,
 	): void {
-		let oldState = this.gameState;
+		const oldState = this.gameState;
 		this.gameState = this.plugins.reduce(
 			(state: GameState, plugin: GameStateTrackerPlugin): GameState => {
 				return plugin.onBeforeMutate(mutator, state) || state;

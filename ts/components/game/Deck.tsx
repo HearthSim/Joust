@@ -13,7 +13,7 @@ export default class Deck extends EntityList<DeckProps> {
 
 	public render(): JSX.Element {
 		let tooltip = null;
-		let classNames = [this.className()];
+		const classNames = [this.className()];
 		switch (this.props.entities.size) {
 			case 0:
 				tooltip =
