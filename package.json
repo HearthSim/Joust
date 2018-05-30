@@ -82,6 +82,7 @@
 		"phantomjs-prebuilt": "^2.1.14",
 		"prettier": "^1.11.1",
 		"tslint": "^5.6.0",
+		"tslint-config-prettier": "^1.13.0",
 		"tslint-react": "^3.2.0"
 	},
 	"prettier": {
