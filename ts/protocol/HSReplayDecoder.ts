@@ -5,7 +5,7 @@ import TagChangeMutator from "../state/mutators/TagChangeMutator";
 import AddEntityMutator from "../state/mutators/AddEntityMutator";
 import Entity from "../Entity";
 import Player from "../Player";
-import { ChoiceType, GameTag } from "../enums";
+import { BlockType, ChoiceType, GameTag } from "../enums";
 import ShowEntityMutator from "../state/mutators/ShowEntityMutator";
 import { CardOracle, MulliganOracle } from "../interfaces";
 import Choice from "../Choice";
@@ -20,6 +20,7 @@ import MetaData from "../MetaData";
 import GameStateMutator from "../state/GameStateMutator";
 import { Tag } from "sax";
 import HideEntityMutator from "../state/mutators/HideEntityMutator";
+import ResetGameMutator from "../state/mutators/ResetGameMutator";
 
 interface PlayerDetails {
 	id: number;
@@ -138,6 +139,10 @@ export default class HSReplayDecoder extends Stream.Transform
 				break;
 			case "Action":
 			case "Block":
+				// check for GAME_RESET
+				if (+node.attributes["type"] === BlockType.GAME_RESET) {
+					this.push(new ResetGameMutator());
+				}
 				// attach meta information to current game state
 				const descriptor = new GameStateDescriptor(
 					+node.attributes["entity"],
