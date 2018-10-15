@@ -56,24 +56,24 @@ export interface GameWidgetProps
 	replayFilename?: string;
 }
 
-interface GameWidgetState {
-	gameState?: GameState;
-	swapPlayers?: boolean;
-	isFullscreen?: boolean;
-	isFullscreenAvailable?: boolean;
-	fullscreenError?: boolean;
-	cardOracle?: Immutable.Map<number, string>;
-	mulliganOracle?: Immutable.Map<number, boolean>;
-	cards?: Immutable.Map<string, CardData>;
-	cardsByDbfId?: Immutable.Map<number, CardData>;
-	isRevealingCards?: boolean;
-	isLogVisible?: boolean;
-	isLogMounted?: boolean;
+interface State {
+	gameState: GameState;
+	swapPlayers: boolean;
+	isFullscreen: boolean;
+	isFullscreenAvailable: boolean;
+	fullscreenError: boolean;
+	cardOracle: Immutable.Map<number, string>;
+	mulliganOracle: Immutable.Map<number, boolean>;
+	cards: null | Immutable.Map<string, CardData>;
+	cardsByDbfId: null | Immutable.Map<number, CardData>;
+	isRevealingCards: boolean;
+	isLogVisible: boolean;
+	isLogMounted: boolean;
 }
 
 export default class GameWidget extends React.Component<
 	GameWidgetProps,
-	GameWidgetState
+	State
 > {
 	private cb;
 	private cardOracleCb;
@@ -83,8 +83,8 @@ export default class GameWidget extends React.Component<
 	private hasCheckedForSwap = false;
 	private swapPlayers = true;
 
-	constructor(props: GameWidgetProps) {
-		super(props);
+	constructor(props: GameWidgetProps, context?: any) {
+		super(props, context);
 		this.state = {
 			gameState: null,
 			swapPlayers: !!this.props.startSwapped,
@@ -99,10 +99,12 @@ export default class GameWidget extends React.Component<
 			mulliganOracle: null,
 			isLogVisible: false, // we might show it once we receive the first game state
 			isLogMounted: false,
+			cards: null,
+			cardsByDbfId: null,
 		};
 	}
 
-	componentDidMount() {
+	public componentDidMount(): void {
 		this.cb = this.setGameState.bind(this);
 		this.props.sink.once("gamestate", () => {
 			const showLog = !!+cookie.get("joust_event_log", "0");
@@ -140,7 +142,7 @@ export default class GameWidget extends React.Component<
 		}
 	}
 
-	private track(event: string, values: Object, tags?: Object): void {
+	private track(event: string, values: object, tags?: object): void {
 		if (!this.props.events) {
 			return;
 		}
@@ -151,14 +153,14 @@ export default class GameWidget extends React.Component<
 		this.setState({ gameState });
 	}
 
-	private clearFullscreenErrorTimeout() {
+	private clearFullscreenErrorTimeout(): void {
 		if (this.fullscreenErrorTimeout) {
 			window.clearTimeout(this.fullscreenErrorTimeout);
 			this.fullscreenErrorTimeout = null;
 		}
 	}
 
-	componentWillUnmount() {
+	public componentWillUnmount(): void {
 		this.props.sink.removeListener("gamestate", this.cb);
 		this.clearFullscreenErrorTimeout();
 		this.props.cardOracle.removeListener("cards", this.cardOracleCb);
@@ -175,7 +177,7 @@ export default class GameWidget extends React.Component<
 		}
 	}
 
-	protected onAttainFullscreen() {
+	protected onAttainFullscreen(): void {
 		this.setState({ isFullscreen: true });
 		if (
 			"orientation" in screen &&
@@ -191,7 +193,7 @@ export default class GameWidget extends React.Component<
 		this.triggerResize();
 	}
 
-	protected onReleaseFullscreen() {
+	protected onReleaseFullscreen(): void {
 		this.setState({ isFullscreen: false });
 		if (
 			"orientation" in screen &&
@@ -205,33 +207,35 @@ export default class GameWidget extends React.Component<
 		this.triggerResize();
 	}
 
-	public isFullscreenAvailable() {
+	public isFullscreenAvailable(): boolean {
 		return this.state.isFullscreenAvailable;
 	}
 
-	public enterFullscreen() {
+	public enterFullscreen(): void {
 		if (!this.state.isFullscreenAvailable) {
 			return;
 		}
 		screenfull.request(this.ref);
 	}
 
-	public exitFullscreen() {
+	public exitFullscreen(): void {
 		if (!this.state.isFullscreenAvailable) {
 			return;
 		}
 		screenfull.exit();
 	}
 
-	protected updateCardOracle(cards: Immutable.Map<number, string>) {
+	protected updateCardOracle(cards: Immutable.Map<number, string>): void {
 		this.setState({ cardOracle: cards });
 	}
 
-	protected updateMulliganOracle(mulligans: Immutable.Map<number, boolean>) {
+	protected updateMulliganOracle(
+		mulligans: Immutable.Map<number, boolean>,
+	): void {
 		this.setState({ mulliganOracle: mulligans });
 	}
 
-	public setCards(cards: CardData[]) {
+	public setCards(cards: CardData[]): void {
 		let cardMap = null;
 		let dbfMap = null;
 		if (cards) {
@@ -295,7 +299,7 @@ export default class GameWidget extends React.Component<
 		}
 	}
 
-	public render(): JSX.Element {
+	public render(): React.ReactNode {
 		if (!this.hasCheckedForSwap) {
 			this.checkForSwap();
 		}
@@ -440,9 +444,10 @@ export default class GameWidget extends React.Component<
 	}
 
 	public shouldComponentUpdate(
-		nextProps: GameWidgetProps,
-		nextState: GameWidgetState,
-	) {
+		nextProps: Readonly<GameWidgetProps>,
+		nextState: Readonly<State>,
+		nextContext: any,
+	): boolean {
 		if (this.state.cardOracle !== nextState.cardOracle) {
 			if (this.props.scrubber && this.props.scrubber.isPlaying()) {
 				return false;
