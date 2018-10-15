@@ -22,6 +22,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Fix XML errors not terminating parser early
 - Fix Flubbidinous Floop appearing as transformed card in hand (#227)
 - Fix mana cost sometimes flickering when a card is played
+- Fix hero cards not appearing in the just played area
 
 ### Deprecated
 - `Launcher.metadataSource` is no longer supported

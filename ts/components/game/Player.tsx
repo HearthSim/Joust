@@ -194,10 +194,12 @@ export default class Player extends React.Component<PlayerProps> {
 									CardType.SPELL,
 									CardType.MINION,
 									CardType.HERO_POWER,
+									CardType.HERO,
 									"WEAPON",
 									"SPELL",
 									"MINION",
 									"HERO_POWER",
+									"HERO",
 								];
 								if (
 									types.indexOf(type) != -1 ||
