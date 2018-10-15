@@ -228,6 +228,18 @@ export default class Player extends React.Component<PlayerProps> {
 											temporaryCardId,
 										);
 									}
+									if (
+										entity.getTag(
+											GameTag.TAG_LAST_KNOWN_COST_IN_HAND,
+										)
+									) {
+										entity = entity.setTag(
+											GameTag.COST,
+											entity.getTag(
+												GameTag.TAG_LAST_KNOWN_COST_IN_HAND,
+											),
+										);
+									}
 									if (creatorId) {
 										this.props.entities.forEach(
 											(

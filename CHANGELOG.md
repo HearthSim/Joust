@@ -21,6 +21,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Fix weapons in hand not highlighting increased durability
 - Fix XML errors not terminating parser early
 - Fix Flubbidinous Floop appearing as transformed card in hand (#227)
+- Fix mana cost sometimes flickering when a card is played
 
 ### Deprecated
 - `Launcher.metadataSource` is no longer supported
