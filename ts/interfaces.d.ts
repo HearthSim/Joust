@@ -111,6 +111,7 @@ export interface StreamScrubber extends EventEmitter {
 
 export interface CardDataProps {
 	cards?: Immutable.Map<string, CardData>;
+	cardsByDbfId?: Immutable.Map<number, CardData>;
 }
 
 export interface CardOracleProps {

@@ -446,15 +446,22 @@ export default class HSReplayDecoder extends Stream.Transform
 			// do not overwrite entities
 			return;
 		}
-		if (
-			tags &&
-			(tags.has("" + GameTag.SHIFTING) ||
-				tags.has("" + GameTag.SHIFTING_MINION))
-		) {
-			cardId = "OG_123"; // Shifter Zerus
-		}
-		if (tags && tags.has("" + GameTag.SHIFTING_WEAPON)) {
-			cardId = "UNG_929"; // Molten Blade
+		if (tags && tags.has("" + GameTag.TRANSFORMED_FROM_CARD)) {
+			// for now, hardcode a few common ones until we have hsjson here
+			switch (tags.get("" + GameTag.TRANSFORMED_FROM_CARD)) {
+				case 38475:
+					cardId = "OG_123"; // Shifter Zerus
+					break;
+				case 41420:
+					cardId = "UNG_929"; // Molten Blade
+					break;
+				case 48757:
+					cardId = "BOT_434"; // Flobbidinous Floop
+					break;
+				default:
+					// prefer reporting unknown card as opposed to transformed
+					return;
+			}
 		}
 		const newCardIds = this.cardIds.set(id, cardId);
 		if (newCardIds === this.cardIds) {

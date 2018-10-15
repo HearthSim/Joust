@@ -65,6 +65,7 @@ interface GameWidgetState {
 	cardOracle?: Immutable.Map<number, string>;
 	mulliganOracle?: Immutable.Map<number, boolean>;
 	cards?: Immutable.Map<string, CardData>;
+	cardsByDbfId?: Immutable.Map<number, CardData>;
 	isRevealingCards?: boolean;
 	isLogVisible?: boolean;
 	isLogMounted?: boolean;
@@ -232,6 +233,7 @@ export default class GameWidget extends React.Component<
 
 	public setCards(cards: CardData[]) {
 		let cardMap = null;
+		let dbfMap = null;
 		if (cards) {
 			if (!cards.length) {
 				console.error(
@@ -240,14 +242,22 @@ export default class GameWidget extends React.Component<
 				return;
 			}
 			cardMap = Immutable.Map<string, CardData>();
-
 			cardMap = cardMap.withMutations((map) => {
 				cards.forEach((card: CardData) => {
 					map = map.set(card.id, card);
 				});
 			});
+
+			dbfMap = Immutable.Map<number, CardData>();
+			dbfMap = dbfMap.withMutations((map) => {
+				cards.forEach((card: CardData) => {
+					if (card.dbfId) {
+						map = map.set(card.dbfId, card);
+					}
+				});
+			});
 		}
-		this.setState({ cards: cardMap });
+		this.setState({ cards: cardMap, cardsByDbfId: dbfMap });
 	}
 
 	/**
@@ -312,6 +322,7 @@ export default class GameWidget extends React.Component<
 				assetDirectory={this.props.assetDirectory}
 				cardArtDirectory={this.props.cardArtDirectory}
 				cards={this.state.cards}
+				cardsByDbfId={this.state.cardsByDbfId}
 				swapPlayers={isSwapped}
 				hasStarted={this.props.scrubber.canInteract()}
 				cardOracle={this.state.cardOracle}

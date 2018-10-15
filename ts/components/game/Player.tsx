@@ -207,6 +207,27 @@ export default class Player extends React.Component<PlayerProps> {
 									const creatorId = entity.getTag(
 										GameTag.DISPLAYED_CREATOR,
 									);
+									if (
+										entity.getTag(
+											GameTag.TRANSFORMED_FROM_CARD,
+										)
+									) {
+										const dbfId = entity.getTag(
+											GameTag.TRANSFORMED_FROM_CARD,
+										);
+										let temporaryCardId = "";
+										if (
+											this.props.cardsByDbfId &&
+											this.props.cardsByDbfId.has(dbfId)
+										) {
+											temporaryCardId = this.props.cardsByDbfId.get(
+												dbfId,
+											).id;
+										}
+										entity = entity.setCardId(
+											temporaryCardId,
+										);
+									}
 									if (creatorId) {
 										this.props.entities.forEach(
 											(
@@ -574,6 +595,7 @@ export default class Player extends React.Component<PlayerProps> {
 			this.props.optionCallback !== nextProps.optionCallback ||
 			this.props.cardOracle !== nextProps.cardOracle ||
 			this.props.cards !== nextProps.cards ||
+			this.props.cardsByDbfId !== nextProps.cardsByDbfId ||
 			this.props.descriptors !== nextProps.descriptors ||
 			this.props.isCurrent !== nextProps.isCurrent ||
 			this.props.hideCards !== nextProps.hideCards

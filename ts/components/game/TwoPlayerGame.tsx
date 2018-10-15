@@ -76,6 +76,7 @@ export default class TwoPlayerGame extends React.Component<TwoPlayerGameProps> {
 					cardOracle={this.props.cardOracle}
 					mulliganOracle={this.props.mulliganOracle}
 					cards={this.props.cards}
+					cardsByDbfId={this.props.cardsByDbfId}
 					descriptors={this.props.descriptors}
 					assetDirectory={this.props.assetDirectory}
 					cardArtDirectory={this.props.cardArtDirectory}
@@ -101,6 +102,7 @@ export default class TwoPlayerGame extends React.Component<TwoPlayerGameProps> {
 					cardOracle={this.props.cardOracle}
 					mulliganOracle={this.props.mulliganOracle}
 					cards={this.props.cards}
+					cardsByDbfId={this.props.cardsByDbfId}
 					descriptors={this.props.descriptors}
 					assetDirectory={this.props.assetDirectory}
 					cardArtDirectory={this.props.cardArtDirectory}
@@ -122,6 +124,7 @@ export default class TwoPlayerGame extends React.Component<TwoPlayerGameProps> {
 			this.props.optionCallback !== nextProps.optionCallback ||
 			this.props.cardOracle !== nextProps.cardOracle ||
 			this.props.cards !== nextProps.cards ||
+			this.props.cardsByDbfId !== nextProps.cardsByDbfId ||
 			this.props.descriptors !== nextProps.descriptors ||
 			this.props.hideCards !== nextProps.hideCards
 		);
