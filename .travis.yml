@@ -31,16 +31,14 @@ jobs:
         - yarn build
         - aws s3 sync --delete dist/ s3://$S3_DEFAULT_BUCKET/branches/$TRAVIS_BRANCH/
         - gulp sentry:release
+  allow_failures:
+    - env: SCRIPT=lint:tslint
 
 install:
   - npm install -g gulp webpack yarn
   - yarn --pure-lockfile
 
 script: yarn run $SCRIPT
-
-matrix:
-  allow_failures:
-    - env: SCRIPT=lint:tslint
 
 git:
   depth: false
