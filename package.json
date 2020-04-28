@@ -91,5 +91,8 @@
 		"arrowParens": "always",
 		"trailingComma": "all"
 	},
+	"resolutions": {
+		"graceful-fs": "4.2.3"
+	},
 	"private": true
 }
