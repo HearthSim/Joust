@@ -12,6 +12,8 @@ import { GameStateDiff } from "../interfaces";
  * Fully describes a single game constellation ("snapshot")
  */
 export default class GameState {
+	private _cachedGameKey: null | number;
+
 	constructor(
 		protected _entities?: Immutable.Map<number, Entity>,
 		protected _entityTree?: Immutable.Map<
@@ -76,7 +78,17 @@ export default class GameState {
 	}
 
 	get game(): Entity {
-		return this.entities.get(1);
+		if (!this._cachedGameKey) {
+			this._cachedGameKey =
+				this.entities.findKey(
+					(entity: Entity): boolean => {
+						return (
+							!!entity && entity.getCardType() === CardType.GAME
+						);
+					},
+				) || null;
+		}
+		return this.entities.get(this._cachedGameKey);
 	}
 
 	public getPlayer(playerId: number): Player {
