@@ -156,6 +156,9 @@ export default class HSReplayDecoder extends Stream.Transform
 			case "MetaData":
 				node.attributes["entities"] = Immutable.Set<number>() as any;
 				break;
+			case "SubSpell":
+			case "SubSpellTarget":
+				break;
 		}
 
 		this.nodeStack.push(node);
@@ -361,6 +364,9 @@ export default class HSReplayDecoder extends Stream.Transform
 			case "Action":
 			case "Block":
 				mutator = new PopDescriptorMutator();
+				break;
+			case "SubSpell":
+			case "SubSpellTarget":
 				break;
 			case "Info": {
 				const parent = this.nodeStack.pop() as any;
