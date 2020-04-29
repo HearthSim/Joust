@@ -7,7 +7,7 @@ interface LoadingScreenProps extends React.ClassAttributes<LoadingScreen> {
 
 export default class LoadingScreen extends React.Component<LoadingScreenProps> {
 	private messages = [
-		// Cardgames
+		// Card games
 		"Sorting decks...",
 		"Summoning heroes...",
 		"Nerfing cards...",
@@ -31,9 +31,6 @@ export default class LoadingScreen extends React.Component<LoadingScreenProps> {
 		"Enraging Worgen...",
 		"Feeding Hungry Crab...",
 		"Rolling Need...",
-		"Disguising Toast...",
-		// "Shadowstepping Coldlights...",
-		// "Requiring assistance...",
 
 		// Goblins vs Gnomes
 		"Spinning up...",
@@ -69,9 +66,25 @@ export default class LoadingScreen extends React.Component<LoadingScreenProps> {
 		"Loading Cannon...",
 		"Patching Patches...",
 
-		// Goroes
+		// Un'Goro
 		"Rerolling Quests...",
 		"Hunting for Dinosaurs...",
+
+		// Saviors of Uldum
+		"Saving Uldum...",
+		"Wishing for perfect card...",
+
+		// Descent of Dragons & Galakrond's Awakening
+		"Awakening Galakrond...",
+		"Praising Galakrond...",
+
+		// Demon Hunter Initiate
+		"Slicing Twice...",
+		"Consuming Magic...",
+
+		// Ashes of Outlands
+		"Running from Crimson Sigil...",
+		"Holding Gul'dan's Skull...",
 
 		// Greetings
 		'"Well met!"',
@@ -86,20 +99,16 @@ export default class LoadingScreen extends React.Component<LoadingScreenProps> {
 		"Curving perfectly...",
 		"Milling Reno...",
 		"Creeping power...",
-		/*"Going full Northshire...",
-		 "Dropping a 4 mana 7/7...",
-		 "Removing Sorry emote...",
-		 "Restoring Sorry emote...",
-		 "Unlocking more deck slots...",
-		 "Pressing the button...",
-		 "Executing own Sylvanas...",
-		 "Searching for Unicorn Priest",
-		 */
+		"Going full Northshire...",
+		"Dropping a 4 mana 7/7...",
+		"Removing Sorry emote...",
+		"Restoring Sorry emote...",
+		"Rounding pie charts ...",
+		"Unlocking more deck slots...",
 
 		// other games
 		"Massing Void Rays...",
 		"Assembling Exodia pieces...",
-		// '"Ryuu ga waga teki oh wrong game."',
 	];
 
 	public render() {
