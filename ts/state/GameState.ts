@@ -7,6 +7,7 @@ import Player from "../Player";
 import { CardType } from "../enums";
 import GameStateDescriptor from "./GameStateDescriptor";
 import { GameStateDiff } from "../interfaces";
+import Game from "../Game";
 
 /**
  * Fully describes a single game constellation ("snapshot")
@@ -77,7 +78,7 @@ export default class GameState {
 		return this._entityTree;
 	}
 
-	get game(): Entity {
+	get game(): Game {
 		if (!this._cachedGameKey) {
 			this._cachedGameKey =
 				this.entities.findKey(
@@ -88,7 +89,7 @@ export default class GameState {
 					},
 				) || null;
 		}
-		return this.entities.get(this._cachedGameKey);
+		return this.entities.get(this._cachedGameKey) as Game;
 	}
 
 	public getPlayer(playerId: number): Player {

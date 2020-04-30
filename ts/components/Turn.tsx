@@ -1,6 +1,6 @@
 import * as React from "react";
 import GameState from "../state/GameState";
-import { GameTag } from "../enums";
+import { GameTag, GameType } from "../enums";
 
 interface TurnProps extends React.ClassAttributes<Turn> {
 	state?: GameState;
@@ -28,11 +28,17 @@ export default class Turn extends React.Component<TurnProps> {
 			if (player) {
 				flip += player.getTag(GameTag.FIRST_PLAYER) ? 1 : 0;
 			}
+			if (this.props.invert) {
+				flip += 1;
+			}
 			const game = this.props.state.game;
 			if (game) {
+				if (game.type === GameType.GT_BATTLEGROUNDS) {
+					// Battlegrounds always incorrectly has Bobs as FIRST_PLAYER
+					flip += 1;
+				}
 				classNames.push(
-					!!((game.getTag(GameTag.TURN) + flip) % 2) !=
-					this.props.invert
+					(game.getTag(GameTag.TURN) + flip) % 2 === 1
 						? "top"
 						: "bottom",
 				);

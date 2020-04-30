@@ -5,7 +5,7 @@ import TagChangeMutator from "../state/mutators/TagChangeMutator";
 import AddEntityMutator from "../state/mutators/AddEntityMutator";
 import Entity from "../Entity";
 import Player from "../Player";
-import { BlockType, ChoiceType, GameTag } from "../enums";
+import { BlockType, ChoiceType, GameTag, GameType } from "../enums";
 import ShowEntityMutator from "../state/mutators/ShowEntityMutator";
 import { CardOracle, MulliganOracle } from "../interfaces";
 import Choice from "../Choice";
@@ -21,6 +21,7 @@ import GameStateMutator from "../state/GameStateMutator";
 import { Tag } from "sax";
 import HideEntityMutator from "../state/mutators/HideEntityMutator";
 import ResetGameMutator from "../state/mutators/ResetGameMutator";
+import Game from "../Game";
 
 interface PlayerDetails {
 	id: number;
@@ -31,8 +32,9 @@ interface PlayerDetails {
 export default class HSReplayDecoder extends Stream.Transform
 	implements CardOracle, MulliganOracle {
 	private sax: SAXStream;
-	private gameId: number;
-	private currentGame: number;
+	private gameId: number | null;
+	private gameType: GameType | null;
+	private currentGame: number | null;
 	private nodeStack: Tag[];
 	private timeOffset: number;
 	private cardIds: Immutable.Map<number, string>;
@@ -49,6 +51,7 @@ export default class HSReplayDecoder extends Stream.Transform
 		super(opts);
 
 		this.gameId = null;
+		this.gameType = null;
 		this.currentGame = null;
 		this.nodeStack = [];
 		this.timeOffset = null;
@@ -92,6 +95,7 @@ export default class HSReplayDecoder extends Stream.Transform
 				const gameId = node.attributes["id"];
 				if (gameId) {
 					this.gameId = +gameId;
+					this.gameType = +node.attributes["type"] || null;
 					this.currentGame = +gameId;
 				}
 				break;
@@ -194,7 +198,16 @@ export default class HSReplayDecoder extends Stream.Transform
 					this.gameId = 1;
 				}
 				break;
-			case "GameEntity":
+			case "GameEntity": {
+				const id = this.resolveEntityId(node.attributes["id"]);
+				const game = new Game(
+					id,
+					node.attributes["tags"],
+					this.gameType,
+				);
+				mutator = new AddEntityMutator(game);
+				break;
+			}
 			case "FullEntity": {
 				const id = this.resolveEntityId(node.attributes["id"]);
 				const cardId = node.attributes["cardID"] || null;
