@@ -3,6 +3,15 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- Add rudimentary Battlegrounds support
+
+### Changed
+- Update spinner texts
+
+### Fixed
+- Fix distorted deck images (#238, @kadavr95)
+- Fix error messages caused by SubSpell packets
 
 ## [0.12.0] - 2018-10-15
 ### Added
