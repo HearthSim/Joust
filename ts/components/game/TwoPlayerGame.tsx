@@ -19,6 +19,7 @@ import PlayerEntity from "../../Player";
 import EndTurnButton from "./EndTurnButton";
 import { GameTag } from "../../enums";
 import Choices from "../../Choices";
+import Game from "../../Game";
 
 interface TwoPlayerGameProps
 	extends EntityProps,
@@ -67,6 +68,7 @@ export default class TwoPlayerGame extends React.Component<TwoPlayerGameProps> {
 			<div className="game">
 				<Player
 					player={player1 as PlayerEntity}
+					game={this.props.entity as Game}
 					isTop
 					isCurrent={currentPlayer === player1}
 					entities={entities.get(player1.playerId) || emptyEntities}
@@ -93,6 +95,7 @@ export default class TwoPlayerGame extends React.Component<TwoPlayerGameProps> {
 				)}
 				<Player
 					player={player2 as PlayerEntity}
+					game={this.props.entity as Game}
 					isTop={false}
 					isCurrent={currentPlayer === player2}
 					entities={entities.get(player2.playerId) || emptyEntities}

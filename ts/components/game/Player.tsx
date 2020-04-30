@@ -20,6 +20,7 @@ import {
 	CardType,
 	ChoiceType,
 	GameTag,
+	GameType,
 	Mulligan,
 	PlayState,
 	Zone,
@@ -36,6 +37,7 @@ import {
 	StripBattletagsProps,
 } from "../../interfaces";
 import GameStateDescriptor from "../../state/GameStateDescriptor";
+import Game from "../../Game";
 
 interface PlayerProps
 	extends OptionCallbackProps,
@@ -49,6 +51,7 @@ interface PlayerProps
 		StripBattletagsProps,
 		React.ClassAttributes<Player> {
 	player: PlayerEntity;
+	game: Game;
 	entities: Immutable.Map<number, Immutable.Map<number, Entity>>;
 	options: Immutable.Map<number, Immutable.Map<number, Option>>;
 	choices: ChoiceList;
@@ -393,6 +396,10 @@ export default class Player extends React.Component<PlayerProps> {
 				cardArtDirectory={this.props.cardArtDirectory}
 				controller={this.props.player}
 				fatigue={this.props.player.getTag(GameTag.FATIGUE) + 1}
+				hideFatigue={
+					this.props.game &&
+					this.props.game.type === GameType.GT_BATTLEGROUNDS
+				}
 			/>
 		);
 		const hand = (
@@ -603,6 +610,7 @@ export default class Player extends React.Component<PlayerProps> {
 	public shouldComponentUpdate(nextProps: PlayerProps, nextState) {
 		return (
 			this.props.player !== nextProps.player ||
+			this.props.game !== nextProps.game ||
 			this.props.entities !== nextProps.entities ||
 			this.props.options !== nextProps.options ||
 			this.props.choices !== nextProps.choices ||

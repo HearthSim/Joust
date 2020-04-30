@@ -4,6 +4,7 @@ import { EntityListProps } from "../../interfaces";
 
 interface DeckProps extends EntityListProps {
 	fatigue: number;
+	hideFatigue?: boolean;
 }
 
 export default class Deck extends EntityList<DeckProps> {
@@ -12,19 +13,28 @@ export default class Deck extends EntityList<DeckProps> {
 	}
 
 	public render(): JSX.Element {
+		const { entities, fatigue, hideFatigue } = this.props;
+		const deckSize = entities.size;
+		if (hideFatigue && !deckSize) {
+			return (
+				<div
+					className={this.className()}
+					style={{ visibility: "hidden" }}
+				/>
+			);
+		}
 		let tooltip = null;
 		const classNames = [this.className()];
-		switch (this.props.entities.size) {
+		switch (deckSize) {
 			case 0:
-				tooltip =
-					this.props.fatigue + " damage dealt by next card draw";
+				tooltip = fatigue + " damage dealt by next card draw";
 				classNames.push("fatigue");
 				break;
 			case 1:
 				tooltip = "1 card remaining";
 				break;
 			default:
-				tooltip = this.props.entities.size + " cards remaining";
+				tooltip = deckSize + " cards remaining";
 				break;
 		}
 		return (
