@@ -134,7 +134,7 @@ export default class Scrubber extends React.Component<
 			return;
 		}
 
-		if (e.shiftKey || e.altKey || e.ctrlKey || e.metaKey) {
+		if (e.altKey || e.ctrlKey || e.metaKey) {
 			// do not trigger with modifier
 			return;
 		}
@@ -142,42 +142,44 @@ export default class Scrubber extends React.Component<
 		const activeTag =
 			document.activeElement && document.activeElement.tagName;
 		if (
-			activeTag == "TEXTAREA" ||
-			activeTag == "INPUT" ||
-			activeTag == "SELECT"
+			activeTag === "TEXTAREA" ||
+			activeTag === "INPUT" ||
+			activeTag === "SELECT"
 		) {
 			// Do not trigger if an input element is focused
 			return;
 		}
 
-		let preventDefault = true;
-
-		switch (e.keyCode) {
-			case 32: // spacebar
-			case 75: // k
+		switch (e.key) {
+			case " ":
+			case "k":
+			case "K":
 				this.props.scrubber.toggle();
 				break;
-			case 37: // left arrow
-			case 74: // j
+			case "ArrowLeft":
+			case "j":
+			case "J":
 				this.props.scrubber.skipBack();
 				break;
-			case 39: // right arrow
-			case 76: // l
+			case "ArrowRight":
+			case "l":
+			case "L":
 				this.props.scrubber.nextTurn();
 				break;
-			case 38: // up arrow
+			case "ArrowUp":
 				this.props.scrubber.previousAction();
 				break;
-			case 40: // down arrow
+			case "ArrowDown":
 				this.props.scrubber.nextAction();
 				break;
-			case 36: // home
+			case "Home":
 				this.props.scrubber.rewind();
 				break;
-			case 35: // end
+			case "End":
 				this.props.scrubber.fastForward();
 				break;
-			case 88: // x
+			case "x":
+			case "X":
 				if (!this.props.canRevealCards) {
 					return;
 				}
@@ -189,8 +191,9 @@ export default class Scrubber extends React.Component<
 						this.props.onClickRevealCards();
 				}
 				break;
-			case 87: // w
-			case 187: // +
+			case "w":
+			case "W":
+			case "+":
 				{
 					const index = Scrubber.SPEEDS.indexOf(this.state.speed) + 1;
 					if (Scrubber.SPEEDS[index]) {
@@ -198,8 +201,9 @@ export default class Scrubber extends React.Component<
 					}
 				}
 				break;
-			case 83: // s
-			case 189: // -
+			case "s":
+			case "S":
+			case "-":
 				{
 					const index = Scrubber.SPEEDS.indexOf(this.state.speed) - 1;
 					if (Scrubber.SPEEDS[index]) {
@@ -207,10 +211,12 @@ export default class Scrubber extends React.Component<
 					}
 				}
 				break;
-			case 67: // c
+			case "c":
+			case "C":
 				this.props.swapPlayers();
 				break;
-			case 70: // f
+			case "f":
+			case "F":
 				if (!this.props.isFullscreenAvailable) {
 					return;
 				}
@@ -221,13 +227,10 @@ export default class Scrubber extends React.Component<
 				}
 				break;
 			default:
-				preventDefault = false;
-				break;
+				return;
 		}
 
-		if (preventDefault) {
-			e.preventDefault();
-		}
+		e.preventDefault();
 	}
 
 	protected updateState(): void {
