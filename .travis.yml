@@ -29,7 +29,7 @@ jobs:
         - pip install --user awscli
       script:
         - yarn build
-        - aws s3 sync --delete dist/ s3://$S3_DEFAULT_BUCKET/branches/$TRAVIS_BRANCH/
+        - aws s3 sync --delete dist/ s3://$S3_DEFAULT_BUCKET/joust/
         - gulp sentry:release
   allow_failures:
     - env: SCRIPT=lint:tslint
