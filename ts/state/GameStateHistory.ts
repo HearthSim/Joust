@@ -1,7 +1,8 @@
 import GameState from "./GameState";
-import { GameTag, GameType, Step } from "../enums";
+import { GameTag, Step } from "../enums";
 import * as Immutable from "immutable";
 import { HistoryEntry } from "../interfaces";
+import { isBattlegrounds } from "../utils";
 
 /**
  * Organizes game states in a linear history.
@@ -31,8 +32,7 @@ export default class GameStateHistory {
 				// any turn is real once mulligan is done and we have game and players
 				const isClassicPlayerTurn = step === Step.MAIN_START;
 				const isBattlegroundsCombat =
-					game.type === GameType.GT_BATTLEGROUNDS &&
-					step === Step.MAIN_READY;
+					isBattlegrounds(game.type) && step === Step.MAIN_READY;
 				const real =
 					!(step === Step.INVALID || step === Step.BEGIN_MULLIGAN) &&
 					gameState.getPlayerCount() > 0;

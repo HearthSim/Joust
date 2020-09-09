@@ -20,7 +20,6 @@ import {
 	CardType,
 	ChoiceType,
 	GameTag,
-	GameType,
 	Mulligan,
 	PlayState,
 	Zone,
@@ -38,6 +37,7 @@ import {
 } from "../../interfaces";
 import GameStateDescriptor from "../../state/GameStateDescriptor";
 import Game from "../../Game";
+import { isBattlegrounds } from "../../utils";
 
 interface PlayerProps
 	extends OptionCallbackProps,
@@ -397,8 +397,7 @@ export default class Player extends React.Component<PlayerProps> {
 				controller={this.props.player}
 				fatigue={this.props.player.getTag(GameTag.FATIGUE) + 1}
 				hideFatigue={
-					this.props.game &&
-					this.props.game.type === GameType.GT_BATTLEGROUNDS
+					this.props.game && isBattlegrounds(this.props.game.type)
 				}
 			/>
 		);
