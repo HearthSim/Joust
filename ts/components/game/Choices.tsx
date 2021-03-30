@@ -38,7 +38,10 @@ export default class Choices extends EntityList<ChoicesProps> {
 		const cardId = entity.cardId || this.lookup(entity.id);
 
 		// hide the coin, see initial change in #85 and simpler check after #163
-		if (this.props.isMulligan && cardId === "GAME_005") {
+		if (
+			this.props.isMulligan &&
+			(cardId === "GAME_005" || /_COIN/.test(cardId))
+		) {
 			return null;
 		}
 
