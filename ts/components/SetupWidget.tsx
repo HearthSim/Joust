@@ -156,13 +156,16 @@ export default class SetupWidget extends React.Component<
 
 	protected preloadReplay(file: string) {
 		this.setState({ working: true });
-		fs.readFile(file, "utf8", (err, data) => {
+
+		fs.readFile(file, "utf16le", (err, data) => {
 			if (err) {
 				this.setState({ working: false });
 				console.error(err);
 				return;
 			}
-			this.loadFile(new File([data], file));
+			//See https://stackoverflow.com/questions/34783452/cannot-parse-xml-error-non-whitespace-before-first-tag-line-0-column-1-cha
+			var cleanedString = data.replace("\ufeff", "");
+			this.loadFile(new File([cleanedString], file));
 		});
 	}
 

@@ -21,7 +21,12 @@ app.on("window-all-closed", function() {
 // initialization and is ready to create browser windows.
 app.on("ready", function() {
 	// Create the browser window.
-	mainWindow = new BrowserWindow({ width: 800, height: 600, title: "Joust" });
+	mainWindow = new BrowserWindow({
+		width: 800,
+		height: 600,
+		title: "Joust",
+		webPreferences: { webSecurity: false },
+	});
 
 	// and load the electron.html of the app.
 	mainWindow.loadURL("file://" + __dirname + "/dist/debug.html");
