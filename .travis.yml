@@ -12,9 +12,6 @@ stages:
 jobs:
   include:
     - stage: test
-      env: SCRIPT=lint:tslint
-
-    - stage: test
       env: SCRIPT=lint:prettier
 
     - stage: test
