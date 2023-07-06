@@ -1,5 +1,5 @@
 import * as Immutable from "immutable";
-import { GameTag, Rarity } from "./enums";
+import { CardType, GameTag, Rarity } from "./enums";
 
 export default class Entity {
 	constructor(
@@ -126,6 +126,7 @@ export default class Entity {
 			this.getTag(GameTag.CHARGE) === 0 &&
 			!this.getTag(GameTag.UNTOUCHABLE) &&
 			!this.getTag(GameTag.AUTOATTACK) &&
+			this.getCardType() !== CardType.LOCATION &&
 			(!controller || controller.getTag(GameTag.CURRENT_PLAYER) === 1)
 		);
 	}

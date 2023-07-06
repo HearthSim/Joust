@@ -51,6 +51,7 @@ export default class InHandCardArt extends React.Component<InHandCardArtProps> {
 					break;
 				case CardType.SPELL:
 				case CardType.HERO_POWER:
+				case CardType.LOCATION:
 				default:
 					portraitClass = "inhand-spell";
 					if (entity.isPremium()) {

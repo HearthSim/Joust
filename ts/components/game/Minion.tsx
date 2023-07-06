@@ -1,7 +1,7 @@
 import * as React from "react";
 import EntityInPlay from "./EntityInPlay";
 import { EntityInPlayProps } from "../../interfaces";
-import { GameTag, MetaDataType } from "../../enums";
+import { CardType, GameTag, MetaDataType } from "../../enums";
 import InPlayCardArt from "./visuals/InPlayCardArt";
 import Attack from "./stats/Attack";
 import Health from "./stats/Health";
@@ -11,6 +11,7 @@ import MetaData from "../../MetaData";
 import GameStateDescriptor from "../../state/GameStateDescriptor";
 import Card from "./Card";
 import { CardData } from "hearthstonejson-client";
+import Durability from "./stats/Durability";
 
 export default class Minion extends EntityInPlay<EntityInPlayProps> {
 	constructor(props: EntityInPlayProps, context?: any) {
@@ -65,8 +66,15 @@ export default class Minion extends EntityInPlay<EntityInPlayProps> {
 				buffed={this.props.buffed}
 			/>,
 			<div key="stats" className="stats">
-				{entity.getTag(GameTag.HIDE_STATS) == 0
-					? [
+				{entity.getTag(GameTag.HIDE_STATS) == 0 ? (
+					entity.getCardType() === CardType.LOCATION ? (
+						<Durability
+							durability={entity.getHealth()}
+							damage={entity.getDamage()}
+							default={data.health}
+						/>
+					) : (
+						[
 							<Attack
 								key="attack"
 								attack={entity.getAtk()}
@@ -78,8 +86,9 @@ export default class Minion extends EntityInPlay<EntityInPlayProps> {
 								damage={entity.getDamage()}
 								default={data.health}
 							/>,
-					  ]
-					: null}
+						]
+					)
+				) : null}
 				{damage != 0 ? <Damage damage={damage} /> : null}
 				{healing != 0 ? <Healing healing={healing} /> : null}
 			</div>,

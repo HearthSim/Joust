@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 - Add rudimentary Battlegrounds support
+- Add rudimentary Location support
 
 ### Changed
 - Update spinner texts

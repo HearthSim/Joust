@@ -61,9 +61,14 @@ interface PlayerProps
 
 export default class Player extends React.Component<PlayerProps> {
 	public render(): JSX.Element {
-		const filterByCardType = (cardType: number) => {
+		const filterByCardType = (cardType: number | number[]) => {
 			return (entity: Entity) => {
-				return !!entity && entity.getCardType() === cardType;
+				return (
+					!!entity &&
+					(Array.isArray(cardType) ? cardType : [cardType]).indexOf(
+						entity.getCardType(),
+					) !== -1
+				);
 			};
 		};
 
@@ -196,11 +201,13 @@ export default class Player extends React.Component<PlayerProps> {
 									CardType.WEAPON,
 									CardType.SPELL,
 									CardType.MINION,
+									CardType.LOCATION,
 									CardType.HERO_POWER,
 									CardType.HERO,
 									"WEAPON",
 									"SPELL",
 									"MINION",
+									"LOCATION",
 									"HERO_POWER",
 									"HERO",
 								];
@@ -374,8 +381,9 @@ export default class Player extends React.Component<PlayerProps> {
 		const field = (
 			<Field
 				entities={
-					playEntities.filter(filterByCardType(CardType.MINION)) ||
-					emptyEntities
+					playEntities.filter(
+						filterByCardType([CardType.MINION, CardType.LOCATION]),
+					) || emptyEntities
 				}
 				options={playOptions || emptyOptions}
 				optionCallback={this.props.optionCallback}

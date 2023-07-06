@@ -202,6 +202,27 @@ export default class Card extends React.Component<CardProps> {
 				);
 				break;
 			}
+			case CardType.LOCATION: {
+				classNames.push("card-location");
+				if (entity.getTag(GameTag.HIDE_STATS)) {
+					break;
+				}
+				stats = (
+					<div className="stats">
+						<Durability
+							durability={this.getStatValue(
+								GameTag.HEALTH,
+								defaultHealth,
+							)}
+							damage={
+								this.props.defaultStats ? 0 : entity.getDamage()
+							}
+							default={defaultHealth}
+						/>
+					</div>
+				);
+				break;
+			}
 			case CardType.WEAPON: {
 				classNames.push("card-weapon");
 				const attack = (
