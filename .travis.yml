@@ -21,7 +21,7 @@ jobs:
       env: SCRIPT=build
 
     - stage: deploy
-      if: branch = master AND type = push
+      if: branch = main AND type = push
       env: NODE_ENV=production
       install:
         - npm install -g gulp webpack yarn
