@@ -167,9 +167,11 @@ export default class Scrubber extends React.Component<
 				this.props.scrubber.nextTurn();
 				break;
 			case "ArrowUp":
+			case ",":
 				this.props.scrubber.previousAction();
 				break;
 			case "ArrowDown":
+			case ".":
 				this.props.scrubber.nextAction();
 				break;
 			case "Home":
