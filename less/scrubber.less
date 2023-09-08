@@ -46,8 +46,10 @@
 }
 
 .joust-scrubber-timeline {
-	position: relative;
 	flex: 1;
+	display: flex;
+	flex-direction: row;
+	position: relative;
 	background-color: @scrubber-background-color;
 	margin: 0 @scrubber-component-margin 0 0;
 	height: 100%;
@@ -105,6 +107,7 @@
 	border-top: solid @scrubber-inactive-border-width @scrubber-inactive-border-color;
 	border-bottom: solid @scrubber-inactive-border-width @scrubber-inactive-border-color;
 	vertical-align: top;
+	flex-basis: 0;
 
 	padding: @scrubber-turn-padding-top 0 0 0;
 	font-family: sans-serif;

@@ -21,7 +21,7 @@ export default class Turn extends React.Component<TurnProps> {
 		const classNames = ["joust-scrubber-turn"];
 
 		const width = (100 / this.props.totalDuration) * this.props.duration;
-		const style = { width: width + "%" };
+		const style = { flexGrow: width };
 
 		if (this.props.state) {
 			let flip = 0;
