@@ -95,9 +95,9 @@ export default class HSReplayDecoder extends Stream.Transform
 				const gameId = node.attributes["id"];
 				if (gameId) {
 					this.gameId = +gameId;
-					this.gameType = +node.attributes["type"] || null;
 					this.currentGame = +gameId;
 				}
+				this.gameType = +node.attributes["type"] || null;
 				break;
 			case "GameEntity":
 			case "Player":
