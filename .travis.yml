@@ -26,6 +26,7 @@ jobs:
         - pip install --user awscli
       script:
         - yarn build
+        - if [ ! -f dist/joust.js ]; then >&2 echo "Missing critical file"; exit 1; fi
         - aws s3 sync --delete dist/ s3://$S3_DEFAULT_BUCKET/joust/
         - gulp sentry:release
   allow_failures:
