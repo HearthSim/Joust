@@ -3,6 +3,7 @@
 const electron = require("electron");
 const app = electron.app; // Module to control application life.
 const BrowserWindow = electron.BrowserWindow; // Module to create native browser window.
+require("@electron/remote/main").initialize(); // Enable @electron/remote support
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -21,10 +22,20 @@ app.on("window-all-closed", function() {
 // initialization and is ready to create browser windows.
 app.on("ready", function() {
 	// Create the browser window.
-	mainWindow = new BrowserWindow({ width: 800, height: 600, title: "Joust" });
+	mainWindow = new BrowserWindow({
+		width: 800,
+		height: 600,
+		title: "Joust",
+		webPreferences: {
+			nodeIntegration: true,
+			contextIsolation: false,
+		},
+	});
+
+	require("@electron/remote/main").enable(mainWindow.webContents);
 
 	// and load the electron.html of the app.
-	mainWindow.loadURL("file://" + __dirname + "/dist/debug.html");
+	mainWindow.loadURL("file://" + __dirname + "/dist/debug.html?");
 
 	// Open the DevTools.
 	mainWindow.webContents.openDevTools();

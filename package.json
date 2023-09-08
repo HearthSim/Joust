@@ -28,6 +28,7 @@
 		"format:prettier": "prettier --write \"*.{js,json}\" \"ts/**/*.{ts,tsx,js}\""
 	},
 	"dependencies": {
+		"@electron/remote": "^2",
 		"@types/cookiejs": "^1.0.30",
 		"@types/jasmine": "^2.5.46",
 		"@types/lodash": "^4.14.58",
@@ -43,7 +44,7 @@
 		"bowser": "^1.6.0",
 		"cookie_js": "^1.2.2",
 		"cssnano": "^3.10.0",
-		"electron": "^1.7.11",
+		"electron": "^14",
 		"filereader-stream": "^1.0.0",
 		"git-describe": "^4.0.1",
 		"gulp": "^3.9.1",
