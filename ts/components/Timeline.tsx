@@ -126,6 +126,13 @@ export default class Timeline
 				/>
 			) : null;
 
+		const lastIndex =
+			this.props.turnMap.count() > 0
+				? this.props.turnMap
+						.reverse()
+						.keys()
+						.next().value
+				: 0;
 		const turns = this.props.turnMap
 			.map(
 				(
@@ -135,7 +142,7 @@ export default class Timeline
 				): JSX.Element => {
 					let duration = 0;
 					let i = 1;
-					while (!map.has(turn + i) && turn + i < map.count()) {
+					while (!map.has(turn + i) && turn + i < lastIndex) {
 						i++;
 					}
 
