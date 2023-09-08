@@ -44,7 +44,7 @@ export default class MessagePicker extends React.Component<
 	}
 
 	private scheduleUpdates() {
-		this.interval = setInterval(
+		this.interval = window.setInterval(
 			this.cycleMessage.bind(this),
 			this.props.interval * 1000,
 		);

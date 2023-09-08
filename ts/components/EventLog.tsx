@@ -605,13 +605,13 @@ export default class EventLog extends React.Component<
 		entityId?: number,
 	): EventLogItemData {
 		return {
-			type: 0,
+			type: null,
 			data: 0,
 			time: state.time,
 			entityId,
 			indent:
 				state.descriptors.count() > 1 ||
 				state.game.getTag(GameTag.NEXT_STEP) == Step.MAIN_CLEANUP,
-		} as EventLogItemData;
+		};
 	}
 }

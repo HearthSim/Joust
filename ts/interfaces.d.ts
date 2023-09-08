@@ -196,7 +196,7 @@ export interface GameStateDiff {
 }
 
 export interface EventLogItemData {
-	type: LineType;
+	type: LineType | null;
 	time?: number;
 	entityId?: number;
 	targetId?: number;

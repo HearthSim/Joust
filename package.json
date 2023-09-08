@@ -65,7 +65,7 @@
 		"screenfull": "^3.1.0",
 		"through2": "^2.0.3",
 		"ts-loader": "^3.5.0",
-		"typescript": "^2.7.2",
+		"typescript": "~4.9",
 		"webpack": "^3.5.5",
 		"webpack-stream": "^4.0.0",
 		"websocket-stream": "^5.0.1"

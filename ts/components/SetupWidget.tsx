@@ -174,10 +174,10 @@ export default class SetupWidget extends React.Component<
 		const scrubber = new GameStateScrubber();
 
 		Promise.all([
-			new Promise((cb) => {
+			new Promise<void>((cb) => {
 				scrubber.once("ready", () => cb());
 			}),
-			new Promise((cb) => {
+			new Promise<void>((cb) => {
 				filestream.once("end", () => cb());
 			}),
 		]).then(() => scrubber.play());

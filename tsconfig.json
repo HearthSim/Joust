@@ -7,7 +7,6 @@
 		"noLib": false,
 		"removeComments": true,
 		"sourceMap": true,
-		"suppressImplicitAnyIndexErrors": true,
 		"allowSyntheticDefaultImports": true,
 		"target": "es6"
 	}

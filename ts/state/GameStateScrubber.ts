@@ -100,7 +100,7 @@ export default class GameStateScrubber extends Stream.Duplex
 
 	public play(): void {
 		this.lastUpdate = new Date().getTime();
-		this.interval = setInterval(this.update.bind(this), 100);
+		this.interval = window.setInterval(this.update.bind(this), 100);
 		this.hasStarted = true;
 		this.emit("play");
 		this.lastState = null;

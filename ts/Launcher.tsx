@@ -346,16 +346,16 @@ export default class Launcher {
 			});
 
 			Promise.all([
-				new Promise((cb) => {
+				new Promise<void>((cb) => {
 					scrubber.once("ready", () => cb());
 				}),
-				new Promise((cb) => {
+				new Promise<void>((cb) => {
 					decoder.once("build", (buildNumber?: number) => {
 						this._build = buildNumber;
 						this.fetchLocale(cb);
 					});
 				}),
-				new Promise((cb) => {
+				new Promise<void>((cb) => {
 					decoder.once("end", () => cb());
 				}),
 			]).then(() => {
