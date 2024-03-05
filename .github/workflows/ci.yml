@@ -1,0 +1,69 @@
+name: CI
+
+on: [push]
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 10
+          cache: yarn
+
+      - name: Install
+        run: |
+          npm install -g gulp webpack yarn
+          yarn --pure-lockfile
+
+      - name: Prettier
+        run: yarn run lint:prettier
+      
+      - name: TSLint
+        continue-on-error: true
+        run: yarn run lint:tslint
+
+      - name: Build
+        run: yarn run build
+  
+  deploy:
+    name: Deploy
+    needs: [test]
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/heads/main')
+    env:
+      NODE_ENV: production
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 10
+          cache: yarn
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+      - name: Install
+        run: |
+          npm install -g gulp webpack yarn
+          yarn --pure-lockfile
+      - name: Build package
+        run: |
+          yarn build
+          if [ ! -f dist/joust.js ]; then >&2 echo "Missing critical file"; exit 1; fi
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::746159132190:role/github-joust-deploy-role
+          aws-region: us-east-1
+      - name: Upload to static.hsreplay.net
+        run: |
+          aws s3 sync --delete dist/ s3://static.hsreplay.net/joust/
+          gulp sentry:release
