@@ -66,4 +66,3 @@ jobs:
       - name: Upload to static.hsreplay.net
         run: |
           aws s3 sync --delete dist/ s3://static.hsreplay.net/joust/
-          gulp sentry:release
