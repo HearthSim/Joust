@@ -407,6 +407,7 @@ export default class HSReplayDecoder extends Stream.Transform
 			case "Deck":
 			case "Card":
 			case "SubOption":
+			case "ShuffleDeck":
 				// unused
 				break;
 			default:
