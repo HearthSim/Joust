@@ -9,9 +9,6 @@ const postcss = require("gulp-postcss");
 const autoprefixer = require("autoprefixer");
 const cssnano = require("cssnano");
 
-const _ = require("lodash");
-const through = require("through2");
-
 const webpack = require("webpack");
 const webpackStream = require("webpack-stream");
 
@@ -22,57 +19,62 @@ const gitDescribe = require("git-describe").gitDescribe;
 
 const download = require("gulp-download");
 
-const fs = require("fs");
-const path = require("path");
-
-gulp.task("default", ["watch"]);
-
-gulp.task("compile", ["compile:web"]);
-gulp.task("compile:web", [
-	"compile:scripts:web",
-	"compile:styles",
-	"html:web",
-	"assets",
-	"version:write",
-]);
-gulp.task("compile:dev", [
-	"compile:scripts:dev",
-	"compile:styles",
-	"html:dev",
-	"assets",
-]);
-
-gulp.task("compile:scripts", ["compile:scripts:web"]);
-
-gulp.task("compile:scripts:web", ["env:set-release"], function() {
-	const config = require("./webpack.config.js");
-	config.entry = { joust: config.entry.joust }; // remove all bundles but joust
-	config.target = "web";
-	config.plugins = config.plugins.concat([
-		new webpack.optimize.UglifyJsPlugin({
-			comments: false,
-			compress: {
-				warnings: false,
-			},
-			sourceMap: true,
-		}),
-		new webpack.BannerPlugin({
-			banner:
-				"Joust " +
-				process.env.JOUST_RELEASE +
-				"\n" +
-				"https://github.com/HearthSim/Joust",
-		}),
-		new webpack.LoaderOptionsPlugin({
-			minimize: true,
-		}),
-	]);
-	config.devtool = "#source-map";
-	return gulp
-		.src("ts/run.ts")
-		.pipe(webpackStream(config, webpack))
-		.pipe(gulp.dest("dist/"));
+gulp.task("env:set-release", function(done) {
+	gitDescribe(__dirname, { match: null }).then(function(gitInfo) {
+		var release = gitInfo.semverString;
+		if (!release) {
+			throw Error("Unable to determine release");
+		}
+		gutil.log("Setting JOUST_RELEASE to", gutil.colors.green(release));
+		process.env.JOUST_RELEASE = release;
+		done();
+	});
 });
+
+gulp.task(
+	"version:write",
+	gulp.series("env:set-release", function() {
+		const version = process.env.JOUST_RELEASE;
+		return gfile("VERSION", version, { src: true }).pipe(
+			gulp.dest("dist/"),
+		);
+	}),
+);
+
+gulp.task(
+	"compile:scripts:web",
+	gulp.series("env:set-release", function() {
+		const config = require("./webpack.config.js");
+		config.entry = { joust: config.entry.joust }; // remove all bundles but joust
+		config.target = "web";
+		config.plugins = config.plugins.concat([
+			new webpack.optimize.UglifyJsPlugin({
+				comments: false,
+				compress: {
+					warnings: false,
+				},
+				sourceMap: true,
+			}),
+			new webpack.BannerPlugin({
+				banner:
+					"Joust " +
+					process.env.JOUST_RELEASE +
+					"\n" +
+					"https://github.com/HearthSim/Joust",
+			}),
+			new webpack.LoaderOptionsPlugin({
+				minimize: true,
+			}),
+		]);
+		config.devtool = "#source-map";
+		return gulp
+			.src("ts/run.ts")
+			.pipe(webpackStream(config, webpack))
+			.pipe(gulp.dest("dist/"));
+	}),
+);
+
+gulp.task("compile:scripts", gulp.series("compile:scripts:web"));
 
 gulp.task("compile:scripts:dev", function() {
 	return gulp
@@ -107,116 +109,81 @@ gulp.task("compile:styles", function() {
 		.pipe(livereload());
 });
 
-gulp.task("env:set-release", function(cb) {
-	gitDescribe(__dirname, { match: null }).then(function(gitInfo) {
-		var release = gitInfo.semverString;
-		if (!release) {
-			throw Error("Unable to determine release");
-		}
-		gutil.log("Setting JOUST_RELEASE to", gutil.colors.green(release));
-		process.env.JOUST_RELEASE = release;
-		cb();
-	});
-});
-
-gulp.task("version:write", ["env:set-release"], function() {
-	const version = process.env.JOUST_RELEASE;
-	return gfile("VERSION", version, { src: true }).pipe(gulp.dest("dist/"));
-});
-
-gulp.task("html", ["html:dev"]);
-
 gulp.task("html:dev", function() {
 	return gulp.src("html/**/*.html").pipe(gulp.dest("dist/"));
 });
-
 gulp.task("html:web", function() {
 	return gulp.src("html/index.html").pipe(gulp.dest("dist/"));
 });
+gulp.task("html", gulp.series("html:dev"));
 
 gulp.task("assets", function() {
 	return gulp.src("assets/**/*.*").pipe(gulp.dest("dist/assets/"));
 });
 
-gulp.task("watch", ["watch:styles", "watch:html", "watch:assets"], function() {
-	livereload.listen();
-	gutil.log(
-		gutil.colors.yellow(
-			"Warning: not compiling or watching TypeScript files",
-		),
-	);
-	gutil.log(gutil.colors.yellow('Use "webpack --watch -d" for development'));
-});
-
-gulp.task("watch:styles", ["compile:styles"], function() {
-	return gulp.watch(["less/**/*.less"], ["compile:styles"]);
-});
-
-gulp.task("watch:html", ["html"], function() {
-	return gulp.watch(["html/**/*.html"], ["html"]);
-});
-
-gulp.task("watch:assets", ["assets"], function() {
-	return gulp.watch(["assets/**/*.*"], ["assets"]);
-});
-
-gulp.task("enums", function() {
-	gutil.log(
-		gutil.colors.red(
-			'"enums" has been split up in "enums:download" (preferred) and "enums:generate" (legacy)',
-		),
-	);
-});
-
 gulp.task("enums:download", function() {
-	download("https://api.hearthstonejson.com/v1/enums.d.ts").pipe(
+	return download("https://api.hearthstonejson.com/v1/enums.d.ts").pipe(
 		gulp.dest("ts/"),
 	);
 });
 
-gulp.task("enums:download:json", function() {
-	download("https://api.hearthstonejson.com/v1/enums.json").pipe(
-		gulp.dest("./"),
-	);
-});
+gulp.task(
+	"compile:web",
+	gulp.parallel(
+		"compile:scripts:web",
+		"compile:styles",
+		"html:web",
+		"assets",
+		"version:write",
+	),
+);
 
-gulp.task("enums:generate:download", ["enums:download:json", "enums:generate"]);
+gulp.task("compile", gulp.series("compile:web"));
 
-gulp.task("enums:generate", function() {
-	return gulp
-		.src(process.env.ENUMS_JSON || "enums.json")
-		.pipe(
-			through.obj(function(file, encoding, callback) {
-				gutil.log(
-					"Reading enums from",
-					gutil.colors.magenta(file.path),
-				);
-				var json = String(file.contents);
-				var out =
-					"// this file was automatically generated by `gulp enums`\n";
-				out +=
-					"// enums.json can be obtained from https://api.hearthstonejson.com/v1/enums.json\n";
-				var enums = JSON.parse(json);
-				_.each(enums, function(keys, name) {
-					out += "\nexport const enum " + name + " {\n";
-					foo = [];
-					_.each(keys, function(value, key) {
-						foo.push("\t" + key + " = " + value);
-					});
-					out += foo.join(",\n") + "\n";
-					out += "}\n";
-					gutil.log(
-						"Found enum",
-						'"' + gutil.colors.cyan(name) + '"',
-						"with",
-						gutil.colors.magenta(foo.length, "members"),
-					);
-				});
-				file.path = "enums.d.ts";
-				file.contents = new Buffer(out);
-				gutil.log("Writing to", gutil.colors.magenta(file.path));
-				callback(null, file);
-			}),
-		)
-		.pipe(gulp.dest("ts/"));
-});
+gulp.task(
+	"compile:dev",
+	gulp.parallel(
+		"compile:scripts:dev",
+		"compile:styles",
+		"html:dev",
+		"assets",
+	),
+);
+
+gulp.task(
+	"watch:styles",
+	gulp.series("compile:styles", function() {
+		return gulp.watch(["less/**/*.less"], gulp.series("compile:styles"));
+	}),
+);
+
+gulp.task(
+	"watch:html",
+	gulp.series("html", function() {
+		return gulp.watch(["html/**/*.html"], gulp.series("html"));
+	}),
+);
+
+gulp.task(
+	"watch:assets",
+	gulp.series("assets", function() {
+		return gulp.watch(["assets/**/*.*"], gulp.series("assets"));
+	}),
+);
+
+gulp.task(
+	"watch",
+	gulp.parallel("watch:styles", "watch:html", "watch:assets", function() {
+		livereload.listen();
+		gutil.log(
+			gutil.colors.yellow(
+				"Warning: not compiling or watching TypeScript files",
+			),
+		);
+		gutil.log(
+			gutil.colors.yellow('Use "webpack --watch -d" for development'),
+		);
+	}),
+);
+
+gulp.task("default", gulp.series("watch"));

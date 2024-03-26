@@ -47,9 +47,9 @@
 		"electron": "^14",
 		"filereader-stream": "^1.0.0",
 		"git-describe": "^4.0.1",
-		"gulp": "^3.9.1",
+		"gulp": "^4.0.2",
 		"gulp-download": "0.0.1",
-		"gulp-file": "^0.3.0",
+		"gulp-file": "^0.4.0",
 		"gulp-filter": "^5.0.0",
 		"gulp-less": "^3.3.0",
 		"gulp-livereload": "^3.8.1",
@@ -85,9 +85,6 @@
 		"useTabs": true,
 		"arrowParens": "always",
 		"trailingComma": "all"
-	},
-	"resolutions": {
-		"graceful-fs": "4.2.3"
 	},
 	"private": true
 }
