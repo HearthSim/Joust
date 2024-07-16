@@ -65,7 +65,7 @@ export default class Entity {
 	}
 
 	public getDurability(): number {
-		return this.getTag(GameTag.DURABILITY);
+		return this.getTag(GameTag.DURABILITY) || this.getTag(GameTag.HEALTH);
 	}
 
 	public isPremium(): boolean {
