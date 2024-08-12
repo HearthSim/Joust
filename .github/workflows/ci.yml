@@ -29,10 +29,6 @@ jobs:
       - name: Prettier
         run: yarn run lint:prettier
 
-      - name: TSLint
-        continue-on-error: true
-        run: yarn run lint:tslint
-
       - name: Build
         run: yarn run build
 
