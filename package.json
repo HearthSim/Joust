@@ -57,7 +57,7 @@
 		"gulp-postcss": "^7.0.0",
 		"gulp-sourcemaps": "^2.4.1",
 		"gulp-util": "^3.0.8",
-		"hearthstonejson-client": "^0.8.1",
+		"hearthstonejson-client": "^1.16.0",
 		"immutable": "^3.8.1",
 		"lodash": "^4.17.4",
 		"react": "^16.2.0",

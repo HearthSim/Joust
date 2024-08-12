@@ -3135,7 +3135,7 @@ got@^9.6.0:
     to-readable-stream "^1.0.0"
     url-parse-lax "^3.0.0"
 
-graceful-fs@4.2.3, graceful-fs@4.X, graceful-fs@^4.0.0, graceful-fs@^4.1.11, graceful-fs@^4.1.2, graceful-fs@^4.1.6, graceful-fs@^4.1.9, graceful-fs@^4.2.0:
+graceful-fs@4.X, graceful-fs@^4.0.0, graceful-fs@^4.1.11, graceful-fs@^4.1.2, graceful-fs@^4.1.6, graceful-fs@^4.1.9, graceful-fs@^4.2.0:
   version "4.2.3"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.3.tgz#4a12ff1b60376ef09862c2093edd908328be8423"
   integrity sha512-a30VEBm4PEdx1dRB7MFK7BejejvCvBronbLjht+sHuGYj8PHs7M/5Z+rt5lw551vZ7yfTCj4Vuyy3mSJytDWRQ==
@@ -3465,9 +3465,10 @@ hawk@~6.0.2:
     hoek "4.x.x"
     sntp "2.x.x"
 
-hearthstonejson-client@^0.8.1:
-  version "0.8.1"
-  resolved "https://registry.yarnpkg.com/hearthstonejson-client/-/hearthstonejson-client-0.8.1.tgz#2d2201d8b43697b53296defb4faf2101c01bbba6"
+hearthstonejson-client@^1.16.0:
+  version "1.16.0"
+  resolved "https://registry.yarnpkg.com/hearthstonejson-client/-/hearthstonejson-client-1.16.0.tgz#436d27a513dbbb47f612aaf701368932649f50b5"
+  integrity sha512-2FVpc5t41GOqE68SN5e3qcQ34O3lElNrBa/OFwpFYBT4/bUtpAkFmgDC1fEomc+dMJsIX2qqlDKmKJGeIRltGw==
 
 hmac-drbg@^1.0.0:
   version "1.0.1"
