@@ -1,5 +1,4 @@
 # Joust
-[![Travis](https://img.shields.io/travis/HearthSim/Joust/master.svg)](https://travis-ci.org/HearthSim/Joust)
 [![GitHub release](https://img.shields.io/github/release/HearthSim/Joust.svg)](https://github.com/HearthSim/Joust/releases)
 
 Hearthstone replays in your browser, written in Typescript with React.
