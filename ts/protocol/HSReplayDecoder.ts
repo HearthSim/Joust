@@ -479,8 +479,10 @@ export default class HSReplayDecoder extends Stream.Transform
 					cardId = "BOT_434"; // Flobbidinous Floop
 					break;
 				default:
-					// prefer reporting unknown card as opposed to transformed
-					return;
+					// explicitly flag as unknown, so they won't be overridden
+					// again later (e.g. on ChangeEntity)
+					cardId = undefined;
+					break;
 			}
 		}
 		const newCardIds = this.cardIds.set(id, cardId);
