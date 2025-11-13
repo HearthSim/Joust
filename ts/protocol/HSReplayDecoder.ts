@@ -224,7 +224,10 @@ export default class HSReplayDecoder extends Stream.Transform
 				const id = +node.attributes["id"];
 				let rank = +node.attributes["rank"];
 				let legendRank = +node.attributes["legendRank"];
-				let name = "" + node.attributes["name"];
+				let name =
+					typeof node.attributes["name"] !== "undefined"
+						? "" + node.attributes["name"]
+						: "";
 				if (!name) {
 					// this should only be happening in resumed replays
 					this.playerMap.forEach((v: PlayerDetails, k: string) => {
