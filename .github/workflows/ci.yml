@@ -67,4 +67,4 @@ jobs:
           aws-region: us-east-1
       - name: Upload to static.hsreplay.net
         run: |
-          aws s3 sync --delete dist/ s3://static.hsreplay.net/joust/
+          aws s3 sync --delete dist/ s3://static.hsreplay.net/joust/ --cache-control "public, max-age=60, stale-while-revalidate=3600, stale-if-error=86400"
