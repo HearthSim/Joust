@@ -633,7 +633,7 @@ export default class Player extends React.Component<PlayerProps> {
 
 	private cleanPlayerName(): string | null {
 		if (!this.props.player.name) {
-			return null;
+			return "Player";
 		}
 		let playerName = this.props.player.name.trim();
 		if (this.props.stripBattletags) {
