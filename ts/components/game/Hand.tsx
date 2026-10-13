@@ -61,6 +61,7 @@ export default class Hand extends EntityList<HandProps> {
 				optionCallback={this.props.optionCallback}
 				assetDirectory={this.props.assetDirectory}
 				cards={this.props.cards}
+				cardsByDbfId={this.props.cardsByDbfId}
 				isHidden={wasHidden}
 				controller={this.props.controller}
 				cardArtDirectory={this.props.cardArtDirectory}

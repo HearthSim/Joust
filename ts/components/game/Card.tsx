@@ -7,6 +7,10 @@ import Entity from "../../Entity";
 import Health from "./stats/Health";
 import Cost from "./stats/Cost";
 import InHandCardArt from "./visuals/InHandCardArt";
+import {
+	getAssembledCardText,
+	stripCardTextMarkers,
+} from "../../CardTextAssembler";
 import { CardClass, CardType, GameTag } from "../../enums";
 import Durability from "./stats/Durability";
 import { CardData } from "hearthstonejson-client";
@@ -39,6 +43,7 @@ export default class Card extends React.Component<CardProps> {
 			this.props.healing !== nextProps.healing ||
 			this.props.option !== nextProps.option ||
 			this.props.cards !== nextProps.cards ||
+			this.props.cardsByDbfId !== nextProps.cardsByDbfId ||
 			this.props.controller !== nextProps.controller ||
 			this.props.assetDirectory !== nextProps.assetDirectory ||
 			this.props.cardArtDirectory !== nextProps.cardArtDirectory
@@ -327,17 +332,33 @@ export default class Card extends React.Component<CardProps> {
 	}
 
 	protected parseDescription(data: CardData): string {
-		if (!data || !(data.text || data.collectionText)) {
-			return "";
+		// Assemble replaces one half of the card text with the matching half of
+		// another minion, named by a tag on the entity
+		let description = getAssembledCardText(
+			this.props.entity,
+			data,
+			this.props.cardsByDbfId,
+		);
+
+		if (description === null) {
+			if (!data || !(data.text || data.collectionText)) {
+				return "";
+			}
+
+			description = data.collectionText || data.text;
+
+			if (data.mechanics && data.mechanics.indexOf("JADE_GOLEM") !== -1) {
+				description = this.formatJadeGolemText(data.text);
+			} else if (
+				this.props.entity.getTag(GameTag.KAZAKUS_POTION_POWER_1)
+			) {
+				description = this.formatKazakusPotionText(data.text);
+			}
 		}
 
-		let description = data.collectionText || data.text;
-
-		if (data.mechanics && data.mechanics.indexOf("JADE_GOLEM") !== -1) {
-			description = this.formatJadeGolemText(data.text);
-		} else if (this.props.entity.getTag(GameTag.KAZAKUS_POTION_POWER_1)) {
-			description = this.formatKazakusPotionText(data.text);
-		}
+		// cards in the Assemble pool carry the delimiter between their halves
+		// even when they are rendered as printed
+		description = stripCardTextMarkers(description);
 
 		const modifier = (bonus: number, double: number) => {
 			return (match: string, part1: string) => {

@@ -31,6 +31,7 @@ export default class Field extends EntityList<FieldProps> {
 				assetDirectory={this.props.assetDirectory}
 				cardArtDirectory={this.props.cardArtDirectory}
 				cards={this.props.cards}
+				cardsByDbfId={this.props.cardsByDbfId}
 				controller={this.props.controller}
 				descriptors={this.props.descriptors}
 				buffed={
