@@ -70,6 +70,7 @@ export default class Choices extends EntityList<ChoicesProps> {
 				optionCallback={this.props.optionCallback}
 				assetDirectory={this.props.assetDirectory}
 				cards={this.props.cards}
+				cardsByDbfId={this.props.cardsByDbfId}
 				isHidden={hidden}
 				controller={this.props.controller}
 				cardArtDirectory={this.props.cardArtDirectory}

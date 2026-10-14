@@ -388,6 +388,7 @@ export default class Player extends React.Component<PlayerProps> {
 				options={playOptions || emptyOptions}
 				optionCallback={this.props.optionCallback}
 				cards={this.props.cards}
+				cardsByDbfId={this.props.cardsByDbfId}
 				assetDirectory={this.props.assetDirectory}
 				cardArtDirectory={this.props.cardArtDirectory}
 				controller={this.props.player}
@@ -420,6 +421,7 @@ export default class Player extends React.Component<PlayerProps> {
 				options={this.props.options.get(Zone.HAND) || emptyOptions}
 				optionCallback={this.props.optionCallback}
 				cards={this.props.cards}
+				cardsByDbfId={this.props.cardsByDbfId}
 				cardOracle={this.props.cardOracle}
 				isTop={this.props.isTop}
 				assetDirectory={this.props.assetDirectory}
@@ -465,6 +467,7 @@ export default class Player extends React.Component<PlayerProps> {
 				<Choices
 					entities={choiceEntities}
 					cards={this.props.cards}
+					cardsByDbfId={this.props.cardsByDbfId}
 					cardOracle={this.props.cardOracle}
 					mulliganOracle={this.props.mulliganOracle}
 					isTop={this.props.isTop}

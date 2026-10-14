@@ -101,6 +101,7 @@ export default class Minion extends EntityInPlay<EntityInPlayProps> {
 						entity={entity}
 						assetDirectory={this.props.assetDirectory}
 						cards={this.props.cards}
+						cardsByDbfId={this.props.cardsByDbfId}
 						isHidden={false}
 						controller={this.props.controller}
 						cardArtDirectory={this.props.cardArtDirectory}
