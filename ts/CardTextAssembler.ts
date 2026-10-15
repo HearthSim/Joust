@@ -10,8 +10,8 @@ import { GameTag } from "./enums";
  * Cards in that pool have their text split into two halves by an ampersand -
  * the trigger ("After your hero attacks,&") and the effect ("& Gain 3 Armor.").
  * An assembled entity keeps the half it contributes itself and names the card
- * donating the other half in MODULAR_ENTITY_PART_1 (first half) or
- * MODULAR_ENTITY_PART_2 (second half), as a dbfId.
+ * donating the other half in CRAFTABLE_FIRST_HALF_DBID (first half) or
+ * CRAFTABLE_SECOND_HALF_DBID (second half), as a dbfId.
  *
  * The same tags are also set to 1 on the cards offered as parts, to mark which
  * half they would contribute; such a marker is not a card reference.
@@ -124,8 +124,8 @@ export function getAssembledCardText(
 		return null;
 	}
 	const dbfIds = [
-		GameTag.MODULAR_ENTITY_PART_1,
-		GameTag.MODULAR_ENTITY_PART_2,
+		GameTag.CRAFTABLE_FIRST_HALF_DBID,
+		GameTag.CRAFTABLE_SECOND_HALF_DBID,
 	].map((tag: GameTag) => {
 		const value = entity.getTag(tag);
 		// a marker says this card is offered as a part, it does not name one

@@ -160,7 +160,7 @@ describe("getAssembledCardText", () => {
 		);
 
 	const assembled = entity({
-		[GameTag.MODULAR_ENTITY_PART_2]: AXE_OF_THE_FOREFATHERS.dbfId,
+		[GameTag.CRAFTABLE_SECOND_HALF_DBID]: AXE_OF_THE_FOREFATHERS.dbfId,
 	});
 
 	it("should assemble from the part tag", () => {
@@ -181,8 +181,8 @@ describe("getAssembledCardText", () => {
 		expect(
 			getAssembledCardText(
 				entity({
-					[GameTag.MODULAR_ENTITY_PART_1]: 1,
-					[GameTag.MODULAR_ENTITY_PART_2]: 1,
+					[GameTag.CRAFTABLE_FIRST_HALF_DBID]: 1,
+					[GameTag.CRAFTABLE_SECOND_HALF_DBID]: 1,
 				}),
 				TOLVIR_VANGUARD,
 				cards,
@@ -199,7 +199,7 @@ describe("getAssembledCardText", () => {
 	it("should return null for parts missing from the metadata", () => {
 		expect(
 			getAssembledCardText(
-				entity({ [GameTag.MODULAR_ENTITY_PART_2]: 404 }),
+				entity({ [GameTag.CRAFTABLE_SECOND_HALF_DBID]: 404 }),
 				TOLVIR_VANGUARD,
 				cards,
 			),
