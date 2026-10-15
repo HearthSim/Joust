@@ -434,19 +434,11 @@ export default class Player extends React.Component<PlayerProps> {
 
 		let choices = null;
 		if (this.props.choices) {
-			const choiceEntities = this.props.choices.choices
+			const choiceMap = this.getDisplayedChoices(this.props.choices);
+			const choiceEntities = choiceMap
 				.map((choice: Choice) => {
-					let entity = null;
-					// search for the entity in all player zones
 					const id = choice.entityId;
-					this.props.entities.forEach(
-						(zoneEntities: Immutable.Map<number, Entity>) => {
-							if (zoneEntities.has(id)) {
-								entity = zoneEntities.get(id);
-								return false;
-							}
-						},
-					);
+					const entity = this.findEntity(id);
 					if (entity === null) {
 						console.error(
 							"Entity #" +
@@ -475,7 +467,7 @@ export default class Player extends React.Component<PlayerProps> {
 					cardArtDirectory={this.props.cardArtDirectory}
 					controller={this.props.player}
 					isMulligan={this.props.choices.type === ChoiceType.MULLIGAN}
-					choices={this.props.choices && this.props.choices.choices}
+					choices={choiceMap}
 					hideCards={this.props.hideCards}
 				/>
 			);
@@ -631,6 +623,56 @@ export default class Player extends React.Component<PlayerProps> {
 			this.props.descriptors !== nextProps.descriptors ||
 			this.props.isCurrent !== nextProps.isCurrent ||
 			this.props.hideCards !== nextProps.hideCards
+		);
+	}
+
+	/**
+	 * Searches for an entity in all player zones.
+	 */
+	private findEntity(id: number): Entity | null {
+		let entity = null;
+		this.props.entities.forEach(
+			(zoneEntities: Immutable.Map<number, Entity>) => {
+				if (zoneEntities.has(id)) {
+					entity = zoneEntities.get(id);
+					return false;
+				}
+			},
+		);
+		return entity;
+	}
+
+	/**
+	 * Assemble offers every option twice, once per half of the card being
+	 * assembled it can replace: index 2n replaces the first half and index
+	 * 2n + 1 the second. The game shows each option once, on either side of
+	 * the card being assembled, so collapse every pair and put that card (the
+	 * ASSEMBLE_TARGET of the choice's source) in the middle.
+	 */
+	private getDisplayedChoices(
+		choices: ChoiceList,
+	): Immutable.Map<number, Choice> {
+		const source =
+			choices.source !== null ? this.findEntity(choices.source) : null;
+		const targetId = source ? source.getTag(GameTag.ASSEMBLE_TARGET) : 0;
+		if (!targetId || !this.findEntity(targetId)) {
+			return choices.choices;
+		}
+		// groupBy keeps the order of the sorted choices
+		const entityIds = choices.choices
+			.toList()
+			.sortBy((choice: Choice) => choice.index)
+			.groupBy((choice: Choice) => Math.floor(choice.index / 2))
+			.map((pair: Immutable.Iterable<number, Choice>) => pair.first())
+			.map((choice: Choice) => choice.entityId)
+			.toList();
+		return Immutable.Map<number, Choice>(
+			entityIds
+				.insert(Math.ceil(entityIds.count() / 2), targetId)
+				.map((id: number, position: number) => [
+					id,
+					new Choice(position, id),
+				]),
 		);
 	}
 

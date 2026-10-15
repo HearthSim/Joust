@@ -319,9 +319,13 @@ export default class HSReplayDecoder extends Stream.Transform
 						node.attributes["entity"],
 					);
 					const type = +node.attributes["type"];
+					const source = node.attributes["source"]
+						? this.resolveEntityId(node.attributes["source"])
+						: null;
 					const choices = new Choices(
 						node.attributes["choices"],
 						type,
+						source,
 					);
 					mutator = new SetChoicesMutator(entity, choices);
 					// save player entity in choice map

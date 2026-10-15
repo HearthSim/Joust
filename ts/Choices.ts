@@ -5,6 +5,7 @@ export default class Choices {
 	constructor(
 		protected _choices: Immutable.Map<number, Choice>,
 		protected _type: number,
+		protected _source: number = null,
 	) {}
 
 	get choices(): Immutable.Map<number, Choice> {
@@ -13,5 +14,9 @@ export default class Choices {
 
 	get type(): number {
 		return this._type;
+	}
+
+	get source(): number {
+		return this._source;
 	}
 }
