@@ -162,6 +162,7 @@ abstract class EntityInPlay<
 				onTouchEnd={(e) => {
 					this.stopHovering(e);
 				}}
+				data-entity-id={this.props.entity.id}
 			>
 				{this.jsx()}
 			</div>
