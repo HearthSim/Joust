@@ -73,15 +73,10 @@ export default class Settings extends React.Component<SettingsProps> {
 					<a
 						href="https://github.com/HearthSim/Joust/issues"
 						target="_blank"
+						rel="noopener"
+						title={release ? "Joust " + release : undefined}
 					>
-						Report Issue
-					</a>
-					<a
-						href="https://hearthsim.info/joust/"
-						target="_blank"
-						title={release ? "Joust " + release : null}
-					>
-						About
+						Report an Issue
 					</a>
 				</footer>
 			</div>

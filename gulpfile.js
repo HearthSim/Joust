@@ -21,7 +21,7 @@ const download = require("gulp-download");
 
 gulp.task("env:set-release", function(done) {
 	gitDescribe(__dirname, { match: null }).then(function(gitInfo) {
-		var release = gitInfo.semverString;
+		var release = "v" + gitInfo.semverString;
 		if (!release) {
 			throw Error("Unable to determine release");
 		}

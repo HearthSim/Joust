@@ -33,11 +33,37 @@ jobs:
       - name: Run ${{ matrix.script }}
         run: pnpm run ${{ matrix.script }}
 
-  deploy:
-    name: Deploy
+  release:
+    name: Release
     needs: [test]
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/heads/main')
+    permissions:
+      contents: write
+    outputs:
+      version: ${{ steps.release.outputs.version }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: pnpm
+      - name: Install
+        run: pnpm install --frozen-lockfile
+      - name: Release
+        id: release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: pnpm exec semantic-release
+
+  deploy:
+    name: Deploy
+    needs: [release]
+    runs-on: ubuntu-latest
+    if: needs.release.outputs.version != ''
     env:
       NODE_ENV: production
     steps:
@@ -59,7 +85,7 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v6
         with:
-          role-to-assume: arn:aws:iam::746159132190:role/github-joust-deploy-role
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
           aws-region: us-east-1
       - name: Upload to static.hsreplay.net
         run: |
