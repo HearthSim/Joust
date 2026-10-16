@@ -68,7 +68,7 @@ gulp.task(
 		]);
 		config.devtool = "#source-map";
 		return gulp
-			.src("ts/run.ts")
+			.src("src/run.ts")
 			.pipe(webpackStream(config, webpack))
 			.pipe(gulp.dest("dist/"));
 	}),
@@ -78,14 +78,14 @@ gulp.task("compile:scripts", gulp.series("compile:scripts:web"));
 
 gulp.task("compile:scripts:dev", function() {
 	return gulp
-		.src("ts/run.ts")
+		.src("src/run.ts")
 		.pipe(webpackStream(require("./webpack.config.js"), webpack))
 		.pipe(gulp.dest("dist/"));
 });
 
 gulp.task("compile:styles", function() {
 	return gulp
-		.src("less/joust.less")
+		.src("src/styles/joust.less")
 		.pipe(
 			plumber(function(err) {
 				gutil.log(gutil.colors.red(err));
@@ -110,10 +110,10 @@ gulp.task("compile:styles", function() {
 });
 
 gulp.task("html:dev", function() {
-	return gulp.src("html/**/*.html").pipe(gulp.dest("dist/"));
+	return gulp.src("public/**/*.html").pipe(gulp.dest("dist/"));
 });
 gulp.task("html:web", function() {
-	return gulp.src("html/index.html").pipe(gulp.dest("dist/"));
+	return gulp.src("public/index.html").pipe(gulp.dest("dist/"));
 });
 gulp.task("html", gulp.series("html:dev"));
 
@@ -123,7 +123,7 @@ gulp.task("assets", function() {
 
 gulp.task("enums:download", function() {
 	return download("https://api.hearthstonejson.com/v1/enums.d.ts").pipe(
-		gulp.dest("ts/"),
+		gulp.dest("src/"),
 	);
 });
 
@@ -153,14 +153,17 @@ gulp.task(
 gulp.task(
 	"watch:styles",
 	gulp.series("compile:styles", function() {
-		return gulp.watch(["less/**/*.less"], gulp.series("compile:styles"));
+		return gulp.watch(
+			["src/styles/**/*.less"],
+			gulp.series("compile:styles"),
+		);
 	}),
 );
 
 gulp.task(
 	"watch:html",
 	gulp.series("html", function() {
-		return gulp.watch(["html/**/*.html"], gulp.series("html"));
+		return gulp.watch(["public/**/*.html"], gulp.series("html"));
 	}),
 );
 

@@ -18,9 +18,9 @@
 		"test": "vitest run",
 		"postinstall": "gulp enums:download",
 		"lint": "pnpm lint:prettier",
-		"lint:prettier": "prettier -l \"*.{js,json}\" \"ts/**/*.{ts,tsx,js}\"",
+		"lint:prettier": "prettier -l \"*.{js,json}\" \"src/**/*.{ts,tsx,js}\"",
 		"format": "pnpm format:prettier",
-		"format:prettier": "prettier --write \"*.{js,json}\" \"ts/**/*.{ts,tsx,js}\""
+		"format:prettier": "prettier --write \"*.{js,json}\" \"src/**/*.{ts,tsx,js}\""
 	},
 	"dependencies": {
 		"@electron/remote": "^2",

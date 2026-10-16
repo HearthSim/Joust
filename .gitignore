@@ -5,9 +5,5 @@ VERSION
 enums.d.ts
 
 # outdated, but keep around
-less/**/*.css
-less/**/*.css.map
-ts/**/*.js
-ts/**/*.js.map
 typings
 enums.json
