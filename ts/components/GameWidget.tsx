@@ -120,7 +120,7 @@ export default class GameWidget extends React.Component<
 				});
 			}
 		});
-		this.props.sink.on("gamestate", this.cb.bind(this));
+		this.props.sink.on("gamestate", this.cb);
 		if (this.state.isFullscreenAvailable) {
 			screenfull.onchange(() => {
 				if (screenfull.isFullscreen) {
@@ -142,7 +142,7 @@ export default class GameWidget extends React.Component<
 		if (this.props.cardOracle) {
 			this.props.cardOracle.on("cards", this.cardOracleCb);
 		}
-		if (this.props.cardOracle) {
+		if (this.props.mulliganOracle) {
 			this.props.mulliganOracle.on("mulligans", this.mulliganOracleCb);
 		}
 	}
@@ -168,11 +168,15 @@ export default class GameWidget extends React.Component<
 	public componentWillUnmount(): void {
 		this.props.sink.removeListener("gamestate", this.cb);
 		this.clearFullscreenErrorTimeout();
-		this.props.cardOracle.removeListener("cards", this.cardOracleCb);
-		this.props.cardOracle.removeListener(
-			"mulligans",
-			this.mulliganOracleCb,
-		);
+		if (this.props.cardOracle) {
+			this.props.cardOracle.removeListener("cards", this.cardOracleCb);
+		}
+		if (this.props.mulliganOracle) {
+			this.props.mulliganOracle.removeListener(
+				"mulligans",
+				this.mulliganOracleCb,
+			);
+		}
 	}
 
 	protected onClickExit(e): void {
