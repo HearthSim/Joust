@@ -1,0 +1,4 @@
+allowBuilds:
+  electron: true
+  esbuild: true
+  uglifyjs-webpack-plugin: false

@@ -16,24 +16,24 @@ jobs:
           fetch-depth: 500 # Needed for env:set-release
           fetch-tags: true
 
+      - uses: pnpm/action-setup@v6
+
       - uses: actions/setup-node@v3
         with:
           node-version: 22
-          cache: yarn
+          cache: pnpm
 
       - name: Install
-        run: |
-          npm install -g gulp webpack yarn
-          yarn --pure-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Prettier
-        run: yarn run lint:prettier
+        run: pnpm run lint:prettier
 
       - name: Test
-        run: yarn run test
+        run: pnpm run test
 
       - name: Build
-        run: yarn run build
+        run: pnpm run build
 
   deploy:
     name: Deploy
@@ -47,21 +47,20 @@ jobs:
         with:
           fetch-depth: 500 # Needed for env:set-release
           fetch-tags: true
+      - uses: pnpm/action-setup@v6
       - uses: actions/setup-node@v3
         with:
           node-version: 22
-          cache: yarn
+          cache: pnpm
       - name: Set up Python 3.9
         uses: actions/setup-python@v4
         with:
           python-version: '3.9'
       - name: Install
-        run: |
-          npm install -g gulp webpack yarn
-          yarn --pure-lockfile
+        run: pnpm install --frozen-lockfile
       - name: Build package
         run: |
-          yarn build
+          pnpm build
           if [ ! -f dist/joust.js ]; then >&2 echo "Missing critical file"; exit 1; fi
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1

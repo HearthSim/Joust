@@ -1,24 +1,22 @@
 # Joust
+
 [![GitHub release](https://img.shields.io/github/release/HearthSim/Joust.svg)](https://github.com/HearthSim/Joust/releases)
 
 Hearthstone replays in your browser, written in Typescript with React.
-
 
 ## Requirements
 
 - Node.js ~v8 (v4.5 should also work, but is not officially supported)
 - Build system: `npm install -g gulp webpack`
 - Development: `npm install -g electron-prebuilt gulp webpack`
-- [yarn](https://yarnpkg.com/): `npm install -g yarn`
-
+- [pnpm](https://pnpm.io/): `corepack enable`
 
 ## Building
 
 ```
-$ yarn --pure-lockfile
+$ pnpm install --frozen-lockfile
 $ gulp compile
 ```
-
 
 ## Usage
 
@@ -43,7 +41,15 @@ Joust does not do any polyfilling and expects the globals Promise and fetch to b
 ## Development
 
 ```
-$ yarn run dev
+$ pnpm dev
+```
+
+## Electron
+
+With `pnpm dev` running, start Electron in a new terminal tab:
+
+```
+$ pnpm exec electron .
 ```
 
 ## License
@@ -55,7 +61,6 @@ Copyright © HearthSim. All Rights Reserved.
 - The Font Awesome font is licensed under the SIL OFL 1.1.
 - The Font Awesome style code is licensed under the MIT license.
 - Some Hearthstone textures are copyright © Blizzard Entertainment
-
 
 ## Community
 
