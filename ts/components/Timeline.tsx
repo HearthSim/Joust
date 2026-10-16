@@ -138,7 +138,7 @@ export default class Timeline
 				(
 					current: GameState,
 					turn: number,
-					map: Immutable.Map<number, GameState>,
+					map: Immutable.Iterable<number, GameState>,
 				): JSX.Element => {
 					let duration = 0;
 					let i = 1;
