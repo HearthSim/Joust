@@ -161,8 +161,9 @@ export default class EventLog extends React.Component<
 			(lid) => lid.time <= this.props.currentTime,
 		).length;
 		const offset = Math.max(0, activeLines - 20);
+		// upcoming lines are rendered dimmed, but only as many as can fit in the log
 		const lines = this.state.lines
-			.slice(offset)
+			.slice(offset, offset + 100)
 			.map((lid, index) => (
 				<EventLogLine
 					key={index + offset}
