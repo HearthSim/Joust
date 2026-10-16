@@ -86,13 +86,14 @@ export default class GameStateScrubber extends Stream.Duplex
 		return;
 	}
 
-	end(): void {
+	end(...args: any[]): this {
 		if (!this.hasEmittedReady) {
 			// this might happen if a initial turn is requested that we never found
 			this.emit("ready");
 			this.hasEmittedReady = true;
 			this.update();
 		}
+		return super.end(...args);
 	}
 
 	protected lastUpdate: number;
