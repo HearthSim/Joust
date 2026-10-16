@@ -26,6 +26,22 @@ const PROTO_PANDAREN = {
 		"players a random spell.~GAMEPLAY ASPROXY BE 997",
 };
 
+const DEATHCHILLER = {
+	dbfId: 117027,
+	text: "[x]After you cast a spell,&\ndeal 1 damage to two\nrandom enemies.",
+};
+const HOURGLASS_ATTENDANT = {
+	dbfId: 121051,
+	text:
+		"[x]<b>Divine Shield</b>\nAt the end of your turn,&\ngive all " +
+		"minions in your\nhand +1/+1.",
+};
+// Rajh's hero power, which takes both halves from the assembled minions
+const SUNS_RADIANCE = {
+	dbfId: 132368,
+	text: "{0}",
+};
+
 describe("stripCardTextMarkers", () => {
 	it("should remove the half delimiter", () => {
 		expect(stripCardTextMarkers(AXE_OF_THE_FOREFATHERS.text)).toEqual(
@@ -146,6 +162,8 @@ describe("getAssembledCardText", () => {
 	const cards = Immutable.Map<number, CardData>([
 		[AXE_OF_THE_FOREFATHERS.dbfId, AXE_OF_THE_FOREFATHERS],
 		[PROTO_PANDAREN.dbfId, PROTO_PANDAREN],
+		[DEATHCHILLER.dbfId, DEATHCHILLER],
+		[HOURGLASS_ATTENDANT.dbfId, HOURGLASS_ATTENDANT],
 	]);
 
 	const entity = (tags: { [tag: number]: number }): Entity =>
@@ -167,6 +185,22 @@ describe("getAssembledCardText", () => {
 		expect(getAssembledCardText(assembled, TOLVIR_VANGUARD, cards)).toEqual(
 			"<b>Taunt</b>\n<b>Battlecry and Deathrattle:</b> deal 1 damage " +
 				"to all minions.",
+		);
+	});
+
+	it("should assemble a hero power from both part tags", () => {
+		expect(
+			getAssembledCardText(
+				entity({
+					[GameTag.CRAFTABLE_FIRST_HALF_DBID]: DEATHCHILLER.dbfId,
+					[GameTag.CRAFTABLE_SECOND_HALF_DBID]:
+						HOURGLASS_ATTENDANT.dbfId,
+				}),
+				SUNS_RADIANCE,
+				cards,
+			),
+		).toEqual(
+			"After you cast a spell, give all minions in your\nhand +1/+1.",
 		);
 	});
 

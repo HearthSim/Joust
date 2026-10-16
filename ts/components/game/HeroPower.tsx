@@ -55,6 +55,7 @@ export default class HeroPower extends EntityInPlay<HeroPowerProps> {
 						entity={entity}
 						assetDirectory={this.props.assetDirectory}
 						cards={this.props.cards}
+						cardsByDbfId={this.props.cardsByDbfId}
 						isHidden={false}
 						controller={this.props.controller}
 						cardArtDirectory={this.props.cardArtDirectory}

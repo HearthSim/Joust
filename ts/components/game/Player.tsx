@@ -360,6 +360,7 @@ export default class Player extends React.Component<PlayerProps> {
 				}
 				optionCallback={this.props.optionCallback}
 				cards={this.props.cards}
+				cardsByDbfId={this.props.cardsByDbfId}
 				assetDirectory={this.props.assetDirectory}
 				cardArtDirectory={this.props.cardArtDirectory}
 				controller={this.props.player}

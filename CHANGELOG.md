@@ -6,7 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Add rudimentary Battlegrounds support
 - Add rudimentary Location support
-- Render the combined card text of minions created by Assemble
+- Render the combined card text of minions and hero powers created by Assemble
 
 ### Changed
 - Update spinner texts
