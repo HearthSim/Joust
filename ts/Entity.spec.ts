@@ -1,3 +1,4 @@
+import { describe, expect, it } from "vitest";
 import Entity from "./Entity";
 import * as Immutable from "immutable";
 import { GameTag } from "./enums";

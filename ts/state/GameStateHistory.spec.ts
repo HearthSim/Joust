@@ -1,8 +1,9 @@
+import { beforeEach, describe, expect, it } from "vitest";
 import GameStateHistory from "./GameStateHistory";
 import GameState from "./GameState";
 import Entity from "../Entity";
 import * as Immutable from "immutable";
-import { GameTag, Step } from "../enums";
+import { CardType, GameTag, Step } from "../enums";
 
 describe("GameStateHistory", () => {
 	let history;
@@ -44,6 +45,7 @@ describe("GameStateHistory", () => {
 			new Entity(
 				1,
 				Immutable.Map<number>({
+					[GameTag.CARDTYPE]: CardType.GAME,
 					[GameTag.STEP]: Step.BEGIN_MULLIGAN,
 					[GameTag.TURN]: 1,
 				}),
@@ -60,6 +62,7 @@ describe("GameStateHistory", () => {
 			new Entity(
 				1,
 				Immutable.Map<number>({
+					[GameTag.CARDTYPE]: CardType.GAME,
 					[GameTag.STEP]: Step.MAIN_START,
 					[GameTag.TURN]: 1,
 				}),
@@ -76,6 +79,7 @@ describe("GameStateHistory", () => {
 			new Entity(
 				1,
 				Immutable.Map<number>({
+					[GameTag.CARDTYPE]: CardType.GAME,
 					[GameTag.STEP]: Step.MAIN_START,
 					[GameTag.TURN]: 1,
 				}),
@@ -92,6 +96,7 @@ describe("GameStateHistory", () => {
 			new Entity(
 				1,
 				Immutable.Map<number>({
+					[GameTag.CARDTYPE]: CardType.GAME,
 					[GameTag.STEP]: Step.MAIN_DRAW,
 					[GameTag.TURN]: 2,
 				}),
@@ -108,6 +113,7 @@ describe("GameStateHistory", () => {
 			new Entity(
 				1,
 				Immutable.Map<number>({
+					[GameTag.CARDTYPE]: CardType.GAME,
 					[GameTag.STEP]: Step.MAIN_START,
 					[GameTag.TURN]: 2,
 				}),

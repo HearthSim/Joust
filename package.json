@@ -20,7 +20,7 @@
 	"scripts": {
 		"build": "gulp compile:web",
 		"dev": "concurrently 'gulp watch:html watch:assets watch:styles' 'webpack --watch -d'",
-		"test": "karma start --single-run --no-auto-watch karma.conf.js",
+		"test": "vitest run",
 		"postinstall": "gulp enums:download",
 		"lint": "yarn lint:prettier",
 		"lint:prettier": "prettier -l \"*.{js,json}\" \"ts/**/*.{ts,tsx,js}\"",
@@ -30,7 +30,6 @@
 	"dependencies": {
 		"@electron/remote": "^2",
 		"@types/cookiejs": "^1.0.30",
-		"@types/jasmine": "^2.5.46",
 		"@types/lodash": "^4.14.58",
 		"@types/node": "^8.0.24",
 		"@types/react": "^16.0.38",
@@ -73,13 +72,8 @@
 	},
 	"devDependencies": {
 		"concurrently": "^3.5.1",
-		"jasmine": "^2.5.3",
-		"karma": "^1.5.0",
-		"karma-jasmine": "^1.1.0",
-		"karma-phantomjs-launcher": "^1.0.4",
-		"karma-webpack": "^2.0.3",
-		"phantomjs-prebuilt": "^2.1.14",
-		"prettier": "^1.13.2"
+		"prettier": "^1.13.2",
+		"vitest": "^3.2.4"
 	},
 	"prettier": {
 		"useTabs": true,
