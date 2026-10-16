@@ -424,6 +424,7 @@ export default class Player extends React.Component<PlayerProps> {
 				cards={this.props.cards}
 				cardsByDbfId={this.props.cardsByDbfId}
 				cardOracle={this.props.cardOracle}
+				cardTagOracle={this.props.cardTagOracle}
 				isTop={this.props.isTop}
 				assetDirectory={this.props.assetDirectory}
 				cardArtDirectory={this.props.cardArtDirectory}
@@ -619,6 +620,7 @@ export default class Player extends React.Component<PlayerProps> {
 			this.props.choices !== nextProps.choices ||
 			this.props.optionCallback !== nextProps.optionCallback ||
 			this.props.cardOracle !== nextProps.cardOracle ||
+			this.props.cardTagOracle !== nextProps.cardTagOracle ||
 			this.props.cards !== nextProps.cards ||
 			this.props.cardsByDbfId !== nextProps.cardsByDbfId ||
 			this.props.descriptors !== nextProps.descriptors ||

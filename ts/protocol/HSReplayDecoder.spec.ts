@@ -5,6 +5,7 @@ import ClearChoicesMutator from "../state/mutators/ClearChoicesMutator";
 import SetChoicesMutator from "../state/mutators/SetChoicesMutator";
 import ShowEntityMutator from "../state/mutators/ShowEntityMutator";
 import TagChangeMutator from "../state/mutators/TagChangeMutator";
+import { GameTag } from "../enums";
 
 describe("HSReplayDecoder", () => {
 	let decoder;
@@ -114,6 +115,46 @@ describe("HSReplayDecoder", () => {
 				expect(mutator.tags.get("12")).toBe(5);
 				done();
 			});
+		});
+	});
+
+	describe("CardOracle", () => {
+		it("should remember the card id and assembled halves of a revealed entity", (done) => {
+			decoder.once("cards", () => {
+				expect(decoder.getCardMap().get(12)).toBe("TLC_100");
+				expect(
+					decoder
+						.getOracleTags()
+						.get(12)
+						.toJS(),
+				).toEqual({
+					[GameTag.CRAFTABLE_FIRST_HALF_DBID]: 117027,
+					[GameTag.CRAFTABLE_SECOND_HALF_DBID]: 121051,
+				});
+				done();
+			});
+			decoder.write(
+				'<ShowEntity cardID="TLC_100" entity="12">' +
+					'<Tag tag="12" value="5" />' +
+					`<Tag tag="${
+						GameTag.CRAFTABLE_FIRST_HALF_DBID
+					}" value="117027" />` +
+					`<Tag tag="${
+						GameTag.CRAFTABLE_SECOND_HALF_DBID
+					}" value="121051" />` +
+					"</ShowEntity>",
+			);
+		});
+
+		it("should not remember tags for entities revealed without halves", (done) => {
+			decoder.once("cards", () => {
+				expect(decoder.getCardMap().get(12)).toBe("OG_123");
+				expect(decoder.getOracleTags().has(12)).toBe(false);
+				done();
+			});
+			decoder.write(
+				'<ShowEntity cardID="OG_123" entity="12"><Tag tag="12" value="5" /></ShowEntity>',
+			);
 		});
 	});
 

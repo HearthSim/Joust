@@ -190,6 +190,7 @@ export default class GameWrapper extends React.Component<
 						cards={this.props.cards}
 						cardsByDbfId={this.props.cardsByDbfId}
 						cardOracle={this.props.cardOracle}
+						cardTagOracle={this.props.cardTagOracle}
 						mulliganOracle={this.props.mulliganOracle}
 						descriptors={this.props.state.descriptors}
 						assetDirectory={this.props.assetDirectory}

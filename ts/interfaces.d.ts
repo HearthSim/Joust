@@ -116,6 +116,7 @@ export interface CardDataProps {
 
 export interface CardOracleProps {
 	cardOracle?: Immutable.Map<number, string>;
+	cardTagOracle?: Immutable.Map<number, Immutable.Map<string, number>>;
 }
 
 export interface MulliganOracleProps {
@@ -124,6 +125,7 @@ export interface MulliganOracleProps {
 
 export interface CardOracle extends EventEmitter {
 	getCardMap(): Immutable.Map<number, string>;
+	getOracleTags(): Immutable.Map<number, Immutable.Map<string, number>>;
 }
 
 export interface MulliganOracle extends EventEmitter {

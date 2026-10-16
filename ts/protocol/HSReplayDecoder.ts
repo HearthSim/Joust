@@ -38,6 +38,7 @@ export default class HSReplayDecoder extends Stream.Transform
 	private nodeStack: Tag[];
 	private timeOffset: number;
 	private cardIds: Immutable.Map<number, string>;
+	private oracleTags: Immutable.Map<number, Immutable.Map<string, number>>;
 	private mulligans: Immutable.Map<number, boolean>;
 	private playerMap: Immutable.Map<string, PlayerDetails>;
 	private choiceMap: Immutable.Map<number, number>;
@@ -56,6 +57,10 @@ export default class HSReplayDecoder extends Stream.Transform
 		this.nodeStack = [];
 		this.timeOffset = null;
 		this.cardIds = Immutable.Map<number, string>();
+		this.oracleTags = Immutable.Map<
+			number,
+			Immutable.Map<string, number>
+		>();
 		this.mulligans = Immutable.Map<number, boolean>();
 		this.playerMap = Immutable.Map<string, PlayerDetails>();
 		this.choiceMap = Immutable.Map<number, number>();
@@ -497,11 +502,28 @@ export default class HSReplayDecoder extends Stream.Transform
 			return;
 		}
 		this.cardIds = newCardIds;
-		this.emit("cards", this.cardIds);
+		const halfTags = tags
+			? tags.filter(
+					(value: number, tag: string) =>
+						tag === "" + GameTag.CRAFTABLE_FIRST_HALF_DBID ||
+						tag === "" + GameTag.CRAFTABLE_SECOND_HALF_DBID,
+			  )
+			: null;
+		if (halfTags && !halfTags.isEmpty()) {
+			this.oracleTags = this.oracleTags.set(id, halfTags.toMap());
+		}
+		this.emit("cards", this.cardIds, this.oracleTags);
 	}
 
 	public getCardMap(): Immutable.Map<number, string> {
 		return this.cardIds;
+	}
+
+	public getOracleTags(): Immutable.Map<
+		number,
+		Immutable.Map<string, number>
+	> {
+		return this.oracleTags;
 	}
 
 	public getMulligans(): Immutable.Map<number, boolean> {

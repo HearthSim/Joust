@@ -39,7 +39,16 @@ export default class Hand extends EntityList<HandProps> {
 			this.props.cardOracle.has(+entity.id)
 		) {
 			const cardId = this.props.cardOracle.get(entity.id);
-			entity = new Entity(entity.id, entity.getTags(), cardId);
+			const oracleTags =
+				this.props.cardTagOracle &&
+				this.props.cardTagOracle.get(+entity.id);
+			entity = new Entity(
+				entity.id,
+				oracleTags
+					? entity.getTags().merge(oracleTags)
+					: entity.getTags(),
+				cardId,
+			);
 			if (cardId === "OG_280") {
 				const proxyId = this.props.cardOracle.findKey(
 					(x) => x === "OG_279",

@@ -76,6 +76,7 @@ export default class TwoPlayerGame extends React.Component<TwoPlayerGameProps> {
 					choices={this.props.choices.get(player1.id)}
 					optionCallback={this.props.optionCallback}
 					cardOracle={this.props.cardOracle}
+					cardTagOracle={this.props.cardTagOracle}
 					mulliganOracle={this.props.mulliganOracle}
 					cards={this.props.cards}
 					cardsByDbfId={this.props.cardsByDbfId}
@@ -103,6 +104,7 @@ export default class TwoPlayerGame extends React.Component<TwoPlayerGameProps> {
 					choices={this.props.choices.get(player2.id)}
 					optionCallback={this.props.optionCallback}
 					cardOracle={this.props.cardOracle}
+					cardTagOracle={this.props.cardTagOracle}
 					mulliganOracle={this.props.mulliganOracle}
 					cards={this.props.cards}
 					cardsByDbfId={this.props.cardsByDbfId}
@@ -126,6 +128,7 @@ export default class TwoPlayerGame extends React.Component<TwoPlayerGameProps> {
 			this.props.endTurnOption !== nextProps.endTurnOption ||
 			this.props.optionCallback !== nextProps.optionCallback ||
 			this.props.cardOracle !== nextProps.cardOracle ||
+			this.props.cardTagOracle !== nextProps.cardTagOracle ||
 			this.props.cards !== nextProps.cards ||
 			this.props.cardsByDbfId !== nextProps.cardsByDbfId ||
 			this.props.descriptors !== nextProps.descriptors ||

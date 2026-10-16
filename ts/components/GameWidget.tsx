@@ -63,6 +63,7 @@ interface State {
 	isFullscreenAvailable: boolean;
 	fullscreenError: boolean;
 	cardOracle: Immutable.Map<number, string>;
+	cardTagOracle: Immutable.Map<number, Immutable.Map<string, number>>;
 	mulliganOracle: Immutable.Map<number, boolean>;
 	cards: null | Immutable.Map<string, CardData>;
 	cardsByDbfId: null | Immutable.Map<number, CardData>;
@@ -96,6 +97,10 @@ export default class GameWidget extends React.Component<
 					? true
 					: this.props.startRevealed,
 			cardOracle: Immutable.Map<number, string>(),
+			cardTagOracle: Immutable.Map<
+				number,
+				Immutable.Map<string, number>
+			>(),
 			mulliganOracle: null,
 			isLogVisible: false, // we might show it once we receive the first game state
 			isLogMounted: false,
@@ -225,8 +230,11 @@ export default class GameWidget extends React.Component<
 		screenfull.exit();
 	}
 
-	protected updateCardOracle(cards: Immutable.Map<number, string>): void {
-		this.setState({ cardOracle: cards });
+	protected updateCardOracle(
+		cards: Immutable.Map<number, string>,
+		tags: Immutable.Map<number, Immutable.Map<string, number>>,
+	): void {
+		this.setState({ cardOracle: cards, cardTagOracle: tags });
 	}
 
 	protected updateMulliganOracle(
@@ -330,6 +338,7 @@ export default class GameWidget extends React.Component<
 				swapPlayers={isSwapped}
 				hasStarted={this.props.scrubber.canInteract()}
 				cardOracle={this.state.cardOracle}
+				cardTagOracle={this.state.cardTagOracle}
 				mulliganOracle={this.state.mulliganOracle}
 				hideCards={!this.state.isRevealingCards}
 				playerNames={this.props.playerNames || null}
