@@ -16,6 +16,7 @@
 		"build": "gulp compile:web",
 		"dev": "concurrently 'gulp watch:html watch:assets watch:styles' 'webpack --watch -d'",
 		"test": "vitest run",
+		"typecheck": "tsc --noEmit --skipLibCheck",
 		"postinstall": "gulp enums:download",
 		"lint": "pnpm lint:prettier",
 		"lint:prettier": "prettier -l \"*.{js,json}\" \"src/**/*.{ts,tsx,js}\"",
