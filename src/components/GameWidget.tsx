@@ -19,7 +19,6 @@ import * as Immutable from "immutable";
 import { Zone } from "../enums";
 import Entity from "../Entity";
 import { cookie } from "cookie_js";
-import screenfull from "screenfull";
 import GameStateSink from "../state/GameStateSink";
 import { CardData } from "hearthstonejson-client";
 
@@ -90,7 +89,7 @@ export default class GameWidget extends React.Component<
 			gameState: null,
 			swapPlayers: !!this.props.startSwapped,
 			isFullscreen: false,
-			isFullscreenAvailable: screenfull && screenfull.enabled,
+			isFullscreenAvailable: !!document.fullscreenEnabled,
 			fullscreenError: false,
 			isRevealingCards:
 				typeof this.props.startRevealed === "undefined"
@@ -121,22 +120,7 @@ export default class GameWidget extends React.Component<
 			}
 		});
 		this.props.sink.on("gamestate", this.cb);
-		if (this.state.isFullscreenAvailable) {
-			screenfull.onchange(() => {
-				if (screenfull.isFullscreen) {
-					this.onAttainFullscreen();
-				} else {
-					this.onReleaseFullscreen();
-				}
-			});
-			screenfull.onerror(() => {
-				this.setState({ fullscreenError: true });
-				this.clearFullscreenErrorTimeout();
-				this.fullscreenErrorTimeout = window.setTimeout(() => {
-					this.setState({ fullscreenError: false });
-				}, 3000);
-			});
-		}
+		document.addEventListener("fullscreenchange", this.onFullscreenChange);
 		this.cardOracleCb = this.updateCardOracle.bind(this);
 		this.mulliganOracleCb = this.updateMulliganOracle.bind(this);
 		if (this.props.cardOracle) {
@@ -158,6 +142,22 @@ export default class GameWidget extends React.Component<
 		this.setState({ gameState });
 	}
 
+	private onFullscreenChange = (): void => {
+		if (document.fullscreenElement) {
+			this.onAttainFullscreen();
+		} else {
+			this.onReleaseFullscreen();
+		}
+	};
+
+	private onFullscreenError(): void {
+		this.setState({ fullscreenError: true });
+		this.clearFullscreenErrorTimeout();
+		this.fullscreenErrorTimeout = window.setTimeout(() => {
+			this.setState({ fullscreenError: false });
+		}, 3000);
+	}
+
 	private clearFullscreenErrorTimeout(): void {
 		if (this.fullscreenErrorTimeout) {
 			window.clearTimeout(this.fullscreenErrorTimeout);
@@ -167,6 +167,10 @@ export default class GameWidget extends React.Component<
 
 	public componentWillUnmount(): void {
 		this.props.sink.removeListener("gamestate", this.cb);
+		document.removeEventListener(
+			"fullscreenchange",
+			this.onFullscreenChange,
+		);
 		this.clearFullscreenErrorTimeout();
 		if (this.props.cardOracle) {
 			this.props.cardOracle.removeListener("cards", this.cardOracleCb);
@@ -224,14 +228,14 @@ export default class GameWidget extends React.Component<
 		if (!this.state.isFullscreenAvailable) {
 			return;
 		}
-		screenfull.request(this.ref);
+		this.ref.requestFullscreen().catch(() => this.onFullscreenError());
 	}
 
 	public exitFullscreen(): void {
 		if (!this.state.isFullscreenAvailable) {
 			return;
 		}
-		screenfull.exit();
+		document.exitFullscreen();
 	}
 
 	protected updateCardOracle(

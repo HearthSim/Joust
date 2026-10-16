@@ -38,24 +38,6 @@ declare module "http" {
 	}
 }
 
-declare module "screenfull" {
-	class Screenfull {
-		static isFullscreen: boolean;
-
-		static enabled: boolean;
-
-		static request(elem?: Element): void;
-
-		static onerror(cb: () => any);
-
-		static onchange(cb: () => any);
-
-		static exit(): void;
-	}
-
-	export default Screenfull;
-}
-
 declare module "react-dimensions" {
 	function Dimensions(): any;
 
