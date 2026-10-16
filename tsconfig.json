@@ -2,7 +2,8 @@
 	"compilerOptions": {
 		"declaration": false,
 		"jsx": "react",
-		"moduleResolution": "node",
+		"module": "esnext",
+		"moduleResolution": "bundler",
 		"strict": true,
 		"noImplicitAny": false,
 		"strictNullChecks": false,
