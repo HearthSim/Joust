@@ -24,6 +24,22 @@ describe("Entity", () => {
 		expect(entity.getTags()).toBe(tags);
 	});
 
+	it("should read weapon durability from DURABILITY in old replays", () => {
+		const tags = Immutable.Map<string, number>().set(
+			"" + GameTag.DURABILITY,
+			3,
+		);
+		expect(new Entity(30, tags).getDurability()).toBe(3);
+	});
+
+	it("should read weapon durability from HEALTH in new replays", () => {
+		const tags = Immutable.Map<string, number>().set(
+			"" + GameTag.HEALTH,
+			4,
+		);
+		expect(new Entity(31, tags).getDurability()).toBe(4);
+	});
+
 	it("should cast to string", () => {
 		let entity = new Entity(21, Immutable.Map<string, number>());
 		expect(entity.toString()).toEqual("Entity #21");

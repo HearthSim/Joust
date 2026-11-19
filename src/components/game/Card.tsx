@@ -119,7 +119,7 @@ export default class Card extends React.Component<CardProps> {
 			defaultAttack = data.attack;
 			defaultCost = data.cost;
 			defaultHealth = data.health;
-			defaultDurability = data.durability;
+			defaultDurability = data.durability || data.health;
 			if (!cardType) {
 				switch (data.type) {
 					case "MINION":
@@ -457,6 +457,9 @@ export default class Card extends React.Component<CardProps> {
 		}
 		if (this.props.defaultStats || this.props.isHidden) {
 			return defaultValue;
+		}
+		if (tag === GameTag.DURABILITY) {
+			return this.props.entity.getDurability();
 		}
 		return this.props.entity.getTag(tag);
 	}
